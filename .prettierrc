@@ -1,0 +1,20 @@
+{
+  "singleQuote": true,
+  "trailingComma": "none",
+
+  "printWidth": 200,
+  "objectWrap": "collapse",
+  "tabWidth": 2,
+  "useTabs": false,
+  "semi": true,
+
+  "bracketSpacing": true,
+  "arrowParens": "always",
+
+  "bracketSameLine": false,
+  "htmlWhitespaceSensitivity": "ignore",
+  "singleAttributePerLine": true,
+  "endOfLine": "lf",
+
+  "requirePragma": false
+}

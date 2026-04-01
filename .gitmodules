@@ -1,0 +1,4 @@
+[submodule "src/utils/common-lib-commac-generador"]
+	path = src/utils/common-lib-commac-generador
+	url = https://github.com/gesproga/common-lib-commac-generador.git
+	branch = dev
