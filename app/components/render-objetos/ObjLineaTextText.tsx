@@ -1,4 +1,5 @@
 'use client';
+/* eslint-disable react-hooks/static-components */
 
 import { useMemo } from 'react';
 import type { JSX } from 'react';
@@ -27,7 +28,6 @@ export default function ObjLineaTextText({ obj, onNavegar }: ObjLineaTextTextPro
         className="flex items-center gap-5 px-8 py-5 cursor-pointer hover:bg-white/5 active:bg-white/10 transition-colors border-b border-zinc-700"
         onClick={() => navegarSimple(nav, obj.indicePantalla as number, onNavegar)}
       >
-        {/* eslint-disable-next-line react-hooks/static-components */}
         {Icono && (
           <Icono
             className="text-white shrink-0"
