@@ -1,9 +1,9 @@
 // Paleta de colores global para CTI40 PLUS
 export const COLORES = {
-  primary: '#00ff00',      // Verde brillante (índice 1)
-  secondary: '#1e3a8a',    // Azul oscuro (índice 2)
-  tertiary: '#5f5f5fff',     // Gris oscuro (índice 3)
-  error: '#dc2626',        // Rojo (índice 4)
+  primary: '#60D619',      // Verde (índice 1)
+  secondary: '#196BD6',    // Azul (índice 2)
+  tertiary: '#929292',     // Gris (índice 3)
+  error: '#F30703',        // Rojo (índice 4)
   warning: '#f59e0b',      // Ámbar (índice 5)
   info: '#3b82f6',         // Azul (índice 6)
   success: '#10b981',      // Esmeralda (índice 7)

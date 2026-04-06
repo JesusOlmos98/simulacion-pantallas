@@ -3,7 +3,7 @@
 import { LuCircle } from 'react-icons/lu'
 import { ObjBase } from '../components/render-objetos/RenderObjeto'
 import { DescriptorPantalla } from '../components/render-objetos/RenderObjeto'
-import { resolverIconoBarra } from './iconos-barra'
+import { resolverIconoCTI40Plus } from './iconos-cti40plus'
 
 interface Props {
   botones: ObjBase[]
@@ -18,7 +18,7 @@ export default function BarraBotonesCti40Plus({ botones, onNavegar }: Props) {
       {botones.map((obj, index) => {
         const icono = obj.icono as number | undefined
         const navPtr = obj.navegacionPtr as number | undefined
-        const Icono = icono !== undefined ? resolverIconoBarra(icono) : null
+        const Icono = icono !== undefined ? resolverIconoCTI40Plus(icono) : null
 
         return (
           <button

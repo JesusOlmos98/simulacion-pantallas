@@ -12,9 +12,17 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Additional ignores:
+    "src/utils/common-lib-commac-generador/**",
   ]),
   {
     files: ['**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      parserOptions: {
+        project: './tsconfig.json',
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
     rules: {
       '@typescript-eslint/no-explicit-any': ['warn', { 'ignoreRestArgs': true }],
       '@typescript-eslint/no-floating-promises': 'warn',
