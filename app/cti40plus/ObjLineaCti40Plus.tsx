@@ -6,7 +6,7 @@ import type { IconType } from 'react-icons/lib';
 import { LuChevronRight } from 'react-icons/lu';
 import { resolverTexto } from './pantalla-utils';
 import { resolverIconoCTI40Plus } from './iconos-cti40plus';
-import { DescriptorPantalla } from '../components/render-objetos/RenderObjeto';
+import { DescriptorPantalla } from '../components/render-objetos-omega/RenderObjeto';
 
 interface ObjLineaProps {
   obj: Record<string, unknown>;
@@ -28,7 +28,7 @@ export default function ObjLineaCti40Plus({ obj, onNavegar }: ObjLineaProps): JS
 
   return (
     <div
-      className="flex items-center justify-between px-3 py-5 cursor-pointer hover:bg-white/5 transition-colors"
+      className={`flex items-center justify-between px-3 ${IconoLinea ? 'py-5' : 'py-7'} cursor-pointer hover:bg-white/5 transition-colors`}
       onClick={handleClick}
     >
       <div className="flex items-center gap-3">

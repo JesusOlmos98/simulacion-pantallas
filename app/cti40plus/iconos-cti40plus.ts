@@ -7,7 +7,8 @@ import {
   LuSnowflake, // 37  – Refrigeración (copo de nieve)
   LuThermometer, // 23  – Contacto térmico
   LuAirVent, // 22  – Entrada de aire
-  LuMegaphone, // 71  – Alarmas (megáfono)
+  LuBell, // 71  – Alarmas
+  LuBellRing, // 270 – Alarmas
   LuBaby, // 30  – Crianza
   LuHash, // 10  – Contadores
   LuLightbulb, // 59  – Iluminación
@@ -24,13 +25,14 @@ const ICONO_CTI40PLUS_MAP: Record<number, IconType> = {
   37: LuSnowflake, // Refrigeración
   23: LuThermometer, // Contacto térmico
   22: LuAirVent, // Entrada de aire
-  71: LuMegaphone, // Alarmas
+  71: LuBell, // Alarmas
   30: LuBaby, // Crianza
   10: LuHash, // Contadores
   59: LuLightbulb, // Iluminación
   41: LuClock, // Relojes
   17: LuInfo, // Información
-  13: LuSettings // Configuración
+  13: LuSettings, // Configuración
+  270: LuBellRing // Alarmas
 };
 
 /** Devuelve el componente de icono para un id de icono de barra, o null si no existe mapeo. */

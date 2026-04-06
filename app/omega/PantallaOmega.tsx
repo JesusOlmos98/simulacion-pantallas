@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { resolverTexto } from './pantalla-utils';
 import { COLORES } from './colors';
 import { Divider, RenderObjeto } from '../components';
-import { DescriptorPantalla, ObjBase } from '../components/render-objetos/RenderObjeto';
+import { DescriptorPantalla, ObjBase } from '../components/render-objetos-omega/RenderObjeto';
 
 const MAC_OMEGA = '14000208';
 let idEnvioCounter = 1;

@@ -7,9 +7,10 @@ import { LuChevronLeft, LuMenu } from 'react-icons/lu';
 import { resolverTexto, resolverColor } from './pantalla-utils';
 import { COLORES } from './colors';
 import { RenderObjeto } from '../components';
-import { DescriptorPantalla, ObjBase } from '../components/render-objetos/RenderObjeto';
+import { DescriptorPantalla, ObjBase } from '../components/render-objetos-omega/RenderObjeto';
 import BarraBotonesCti40Plus from './BarraBotonesCti40Plus';
 import ObjLineaCti40Plus from './ObjLineaCti40Plus';
+import ObjLineaTextVarCti40Plus from './ObjLineaTextVarCti40Plus';
 
 const MAC_CTI40PLUS = '202000029'; // MAC address para CTI40 PLUS
 let idEnvioCounter = 1;
@@ -108,9 +109,10 @@ export default function PantallaCti40Plus(): JSX.Element {
   // Objetos de barra de acceso directo (tipoObjeto: 66)
   const barraAccesoDirecto = objetos?.filter((o) => o.tipoObjeto === 66) ?? [];
 
-  // Separar objetos: header (tipoObjeto: 2), líneas (tipoObjeto: 5) y otros
+  // Separar objetos: header (tipoObjeto: 2), líneas nav (tipoObjeto: 5), líneas text+var (tipoObjeto: 4) y otros
   const lineasObjetos = objetos?.filter((o) => o.tipoObjeto === 5) ?? [];
-  const otrosObjetos = objetos?.filter((o) => o.tipoObjeto !== 2 && o.tipoObjeto !== 5) ?? [];
+  const lineasTextVar = objetos?.filter((o) => o.tipoObjeto === 4) ?? [];
+  const otrosObjetos = objetos?.filter((o) => o.tipoObjeto !== 2 && o.tipoObjeto !== 5 && o.tipoObjeto !== 4) ?? [];
 
   // Verificar si estamos en pantalla principal (idPantalla: 0)
   const esPantallaPrincipal = (objetos?.find((o) => o.tipoObjeto === 1)?.idPantalla ?? 0) === 0;
@@ -199,7 +201,13 @@ export default function PantallaCti40Plus(): JSX.Element {
               </div>
 
               {/* Objetos — scrollable si hay muchos */}
-              <div className="flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#1E1E1E] [&::-webkit-scrollbar-thumb]:bg-[#60D619] [&::-webkit-scrollbar-thumb:hover]:bg-[#4fa316] [&::-webkit-scrollbar-thumb]:rounded-none">
+              <div 
+                className="flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#1E1E1E] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]"
+                style={{
+                  '--scrollbar-thumb': COLORES.primary,
+                  '--scrollbar-thumb-hover': '#4fa316'
+                } as React.CSSProperties}
+              >
                 {esPantallaPrincipal ? (
                   <div className="flex-1 flex items-center justify-center">
                     <p className="text-white text-2xl">Pantalla principal</p>
@@ -207,13 +215,20 @@ export default function PantallaCti40Plus(): JSX.Element {
                 ) : (
                   <>
                     {/* Contenedor para líneas con esquinas redondeadas y fondo tertiary */}
-                    {lineasObjetos.length > 0 && (
+                    {(lineasObjetos.length > 0 || lineasTextVar.length > 0) && (
                       <div
                         className="rounded-lg mb-4"
                         style={{ backgroundColor: COLORES.tertiary }}
                       >
                         {lineasObjetos.map((obj, i) => (
                           <ObjLineaCti40Plus
+                            key={i}
+                            obj={obj}
+                            onNavegar={navegarA}
+                          />
+                        ))}
+                        {lineasTextVar.map((obj, i) => (
+                          <ObjLineaTextVarCti40Plus
                             key={i}
                             obj={obj}
                             onNavegar={navegarA}
