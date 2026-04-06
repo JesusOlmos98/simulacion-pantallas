@@ -1,5 +1,7 @@
 'use client';
 
+import type { JSX } from 'react';
+
 interface DividerProps {
   color?: string;
   thickness?: string;
@@ -7,7 +9,7 @@ interface DividerProps {
   className?: string;
 }
 
-export default function Divider({ color = '#ffffff', thickness = '1px', marginY = '2px', className = '' }: DividerProps) {
+export default function Divider({ color = '#ffffff', thickness = '1px', marginY = '2px', className = '' }: DividerProps): JSX.Element {
   return (
     <div className="px-4">
       <div

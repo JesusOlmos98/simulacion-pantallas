@@ -1,23 +1,22 @@
-import { EnTextos } from '../../src/utils/common-lib-commac-generador/enumTextos'
-import { EnUnidades, EnTipoVariable } from '../../src/utils/common-lib-commac-generador/NXP_BE/globals/enumOld'
-import { getColorClass } from './colors'
+import { EnTextos } from '../../src/utils/common-lib-commac-generador/enumTextos';
+import { EnUnidades, EnTipoVariable } from '../../src/utils/common-lib-commac-generador/NXP_BE/globals/enumOld';
 
 // Re-exportar para acceso fácil
-export { getColorClass, resolverColor } from './colors'
+export { getColorClass, resolverColor } from './colors';
 
 // ─── Texto ────────────────────────────────────────────────────────────────────
 
 /** Devuelve el nombre legible de un ID de texto (EnTextos). */
-const EnTextosReverse = EnTextos as unknown as Record<number, string | undefined>
+const EnTextosReverse = EnTextos as unknown as Record<number, string | undefined>;
 
 export function resolverTexto(id: number): string {
-  const nombre = EnTextosReverse[id]
-  if (!nombre) return `[txt:${id}]`
+  const nombre = EnTextosReverse[id];
+  if (nombre === undefined) return `[txt:${id}]`;
   // Convierte camelCase a "palabras separadas" y quita el prefijo "text"
   return nombre
     .replace(/^text/, '')
     .replace(/([A-Z])/g, ' $1')
-    .trim()
+    .trim();
 }
 
 // ─── Unidad ───────────────────────────────────────────────────────────────────
@@ -55,14 +54,14 @@ const UNIDAD_SIMBOLO: Record<number, string> = {
   [EnUnidades.mVV]: 'mV/V',
   [EnUnidades.pa]: 'Pa',
   [EnUnidades.libra]: 'lb',
-  [EnUnidades.km3]: 'km³',
-}
+  [EnUnidades.km3]: 'km³'
+};
 
 /** Devuelve el símbolo de unidad (p.ej. "°C", "kg"). Vacío si no tiene unidad. */
 export function resolverUnidad(id: number): string {
-  if (id === EnUnidades.noUnidad) return ''
-  const fallback = (EnUnidades as unknown as Record<number, string | undefined>)[id]
-  return UNIDAD_SIMBOLO[id] ?? fallback ?? `[u:${id}]`
+  if (id === EnUnidades.noUnidad) return '';
+  const fallback = (EnUnidades as unknown as Record<number, string | undefined>)[id];
+  return UNIDAD_SIMBOLO[id] ?? fallback ?? `[u:${id}]`;
 }
 
 // ─── Decodificación de variable ───────────────────────────────────────────────
@@ -74,78 +73,78 @@ export function resolverUnidad(id: number): string {
 export function decodificarVariable(raw: number, tipoVar: number): string {
   switch (tipoVar) {
     case EnTipoVariable.noVariable:
-      return '—'
+      return '—';
 
     case EnTipoVariable.uint8:
     case EnTipoVariable.pUint8:
-      return String(raw & 0xff)
+      return String(raw & 0xff);
 
     case EnTipoVariable.int8:
     case EnTipoVariable.pInt8: {
-      const v = raw & 0xff
-      return String(v >= 0x80 ? v - 0x100 : v)
+      const v = raw & 0xff;
+      return String(v >= 0x80 ? v - 0x100 : v);
     }
 
     case EnTipoVariable.uint16:
     case EnTipoVariable.pUint16:
-      return String(raw & 0xffff)
+      return String(raw & 0xffff);
 
     case EnTipoVariable.int16:
     case EnTipoVariable.pInt16: {
-      const v = raw & 0xffff
-      return String(v >= 0x8000 ? v - 0x10000 : v)
+      const v = raw & 0xffff;
+      return String(v >= 0x8000 ? v - 0x10000 : v);
     }
 
     case EnTipoVariable.uint32:
     case EnTipoVariable.pUint32:
-      return String(raw >>> 0)
+      return String(raw >>> 0);
 
     case EnTipoVariable.int32:
     case EnTipoVariable.pInt32:
-      return String(raw | 0)
+      return String(raw | 0);
 
     case EnTipoVariable.float:
     case EnTipoVariable.pFloat:
-      return formatFloat(rawToFloat(raw), 1)
+      return formatFloat(rawToFloat(raw), 1);
 
     case EnTipoVariable.float0:
     case EnTipoVariable.pFloat0:
-      return formatFloat(rawToFloat(raw), 0)
+      return formatFloat(rawToFloat(raw), 0);
 
     case EnTipoVariable.float1:
     case EnTipoVariable.pFloat1:
     case EnTipoVariable.float1ConSigno:
-      return formatFloat(rawToFloat(raw), 1)
+      return formatFloat(rawToFloat(raw), 1);
 
     case EnTipoVariable.float2:
     case EnTipoVariable.pFloat2:
-      return formatFloat(rawToFloat(raw), 2)
+      return formatFloat(rawToFloat(raw), 2);
 
     case EnTipoVariable.float3:
     case EnTipoVariable.pFloat3:
-      return formatFloat(rawToFloat(raw), 3)
+      return formatFloat(rawToFloat(raw), 3);
 
     case EnTipoVariable.tiempo:
     case EnTipoVariable.pTiempo:
-      return formatTiempoHms(raw)
+      return formatTiempoHms(raw);
 
     case EnTipoVariable.tiempoHm:
     case EnTipoVariable.pTiempoHm:
-      return formatTiempoHm(raw)
+      return formatTiempoHm(raw);
 
     case EnTipoVariable.tiempoMs:
     case EnTipoVariable.pTiempoMs:
-      return formatTiempoMs(raw)
+      return formatTiempoMs(raw);
 
     case EnTipoVariable.tiempoHms:
     case EnTipoVariable.pTiempoHms:
-      return formatTiempoHms(raw)
+      return formatTiempoHms(raw);
 
     case EnTipoVariable.fecha:
-      return formatFecha(raw)
+      return formatFecha(raw);
 
     default:
-      return String(raw)
+      return String(raw);
   }
 }
 
@@ -153,43 +152,43 @@ export function decodificarVariable(raw: number, tipoVar: number): string {
 
 /** Reinterpreta un u32 (number) como float IEEE 754 de 32 bits. */
 function rawToFloat(raw: number): number {
-  const buf = new ArrayBuffer(4)
-  new DataView(buf).setUint32(0, raw >>> 0, false)
-  return new DataView(buf).getFloat32(0, false)
+  const buf = new ArrayBuffer(4);
+  new DataView(buf).setUint32(0, raw >>> 0, false);
+  return new DataView(buf).getFloat32(0, false);
 }
 
 function formatFloat(v: number, decimales: number): string {
-  if (!isFinite(v)) return '—'
-  return v.toFixed(decimales)
+  if (!isFinite(v)) return '—';
+  return v.toFixed(decimales);
 }
 
-function pad2(n: number) {
-  return String(n).padStart(2, '0')
+function pad2(n: number): string {
+  return String(n).padStart(2, '0');
 }
 
 function formatTiempoHms(seg: number): string {
-  const h = Math.floor(seg / 3600)
-  const m = Math.floor((seg % 3600) / 60)
-  const s = seg % 60
-  return `${pad2(h)}:${pad2(m)}:${pad2(s)}`
+  const h = Math.floor(seg / 3600);
+  const m = Math.floor((seg % 3600) / 60);
+  const s = seg % 60;
+  return `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
 }
 
 function formatTiempoHm(seg: number): string {
-  const h = Math.floor(seg / 3600)
-  const m = Math.floor((seg % 3600) / 60)
-  return `${pad2(h)}:${pad2(m)}`
+  const h = Math.floor(seg / 3600);
+  const m = Math.floor((seg % 3600) / 60);
+  return `${pad2(h)}:${pad2(m)}`;
 }
 
 function formatTiempoMs(seg: number): string {
-  const m = Math.floor(seg / 60)
-  const s = seg % 60
-  return `${pad2(m)}:${pad2(s)}`
+  const m = Math.floor(seg / 60);
+  const s = seg % 60;
+  return `${pad2(m)}:${pad2(s)}`;
 }
 
 /** El campo `fecha` es un u32 = AAAAMMDD (BCD o entero plano, según firmware). */
 function formatFecha(raw: number): string {
-  const dia = raw & 0xff
-  const mes = (raw >> 8) & 0xff
-  const anio = (raw >> 16) & 0xffff
-  return `${pad2(dia)}/${pad2(mes)}/${anio}`
+  const dia = raw & 0xff;
+  const mes = (raw >> 8) & 0xff;
+  const anio = (raw >> 16) & 0xffff;
+  return `${pad2(dia)}/${pad2(mes)}/${anio}`;
 }

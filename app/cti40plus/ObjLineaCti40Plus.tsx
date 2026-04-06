@@ -1,30 +1,30 @@
-'use client'
+'use client';
 
-import { LuChevronRight } from 'react-icons/lu'
-import { resolverTexto, resolverColor } from './pantalla-utils'
-import { resolverIconoCTI40Plus } from './iconos-cti40plus'
-import { DescriptorPantalla, ObjBase } from '../components/render-objetos/RenderObjeto'
+import { useMemo } from 'react';
+import type { JSX } from 'react';
+import type { IconType } from 'react-icons/lib';
+import { LuChevronRight } from 'react-icons/lu';
+import { resolverTexto } from './pantalla-utils';
+import { resolverIconoCTI40Plus } from './iconos-cti40plus';
+import { DescriptorPantalla } from '../components/render-objetos/RenderObjeto';
 
 interface ObjLineaProps {
-  obj: any
-  onNavegar: (descriptor: DescriptorPantalla) => void
-  esLista?: boolean
+  obj: Record<string, unknown>;
+  onNavegar: (descriptor: DescriptorPantalla) => void;
+  esLista?: boolean;
 }
 
-export default function ObjLineaCti40Plus({ obj, onNavegar }: ObjLineaProps) {
-  const handleClick = () => {
-    if (obj.valorEditableONav && obj.valorEditableONav > 0) {
-      onNavegar({
-        idPantalla: obj.valorEditableONav,
-        indicePantalla: obj.indicePantalla ?? 0,
-        esPrincipal: false
-      })
-    }
-  }
+export default function ObjLineaCti40Plus({ obj, onNavegar }: ObjLineaProps): JSX.Element {
+  const nav = (obj.valorEditableONav as number | undefined) ?? 0;
 
-  const texto = resolverTexto(obj.texto ?? 0)
-  const colorLinea = resolverColor(obj.coloresLineaEdit ?? 1)
-  const IconoLinea = obj.iconoLinea ? resolverIconoCTI40Plus(obj.iconoLinea) : null
+  const handleClick = (): void => {
+    if (nav > 0) {
+      onNavegar({ idPantalla: nav, indicePantalla: (obj.indicePantalla as number | undefined) ?? 0, esPrincipal: false });
+    }
+  };
+
+  const texto = resolverTexto((obj.texto as number | undefined) ?? 0);
+  const IconoLinea = useMemo<IconType | null>(() => (obj.iconoLinea != null ? resolverIconoCTI40Plus(obj.iconoLinea as number) : null), [obj.iconoLinea]);
 
   return (
     <div
@@ -35,21 +35,25 @@ export default function ObjLineaCti40Plus({ obj, onNavegar }: ObjLineaProps) {
         {/* Icono de la línea */}
         {IconoLinea && (
           <div className="w-14 h-14 flex items-center justify-center">
-            <IconoLinea size={44} color="white" />
+            {/* eslint-disable-next-line react-hooks/static-components */}
+            <IconoLinea
+              size={44}
+              color="white"
+            />
           </div>
         )}
-        
+
         {/* Texto */}
         <span className="text-white text-4xl font-light">{texto}</span>
       </div>
 
       {/* Chevron de navegación */}
-      {obj.valorEditableONav && obj.valorEditableONav > 0 && (
-        <LuChevronRight 
-          size={36} 
+      {nav > 0 && (
+        <LuChevronRight
+          size={36}
           className="text-white"
         />
       )}
     </div>
-  )
+  );
 }
