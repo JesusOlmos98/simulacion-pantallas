@@ -42,8 +42,3 @@ export function getColorClass(colorId: number): {
   }
   return colorMap[colorId] ?? { bg: 'bg-gray-100', text: 'text-gray-100', border: 'border-gray-100' }
 }
-
-/** Obtiene el color para textos del menú */
-// export function getMenuWordsColor(): string {
-//   return COLORES.menuWords
-// }

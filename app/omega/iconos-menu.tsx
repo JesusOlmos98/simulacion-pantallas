@@ -1,4 +1,4 @@
-import type { IconType } from 'react-icons/lu'
+import type { IconType } from 'react-icons/lib'
 import {
   LuCloudSun,       // 3   – Clima Recinto
   LuFan,             // 4   – Ventilación
@@ -33,13 +33,14 @@ const ICONO_MAP: Record<number, IconType> = {
   9:   LuClock,           // Relojes
   10:  LuHash,            // Contadores
   11:  LuChartPie,        // Estadísticas
-  12:  LuDroplet,         // Humidificación
+  12:  LuDroplet,         // Humidificación (menú principal)
   13:  LuCog,             // Configuración
   14:  LuBellRing,        // Alarmas
   15:  LuEgg,             // Crianza
   16:  LuChartSpline,     // Curvas
   17:  LuInfo,            // Información
   19:  LuScale,           // Pesaje
+  21:  LuDroplet,         // Humidificación (submenús)
   31:  LuZap,             // Activaciones
   73:  LuDroplets,        // Agua
   75:  LuWheat,           // Alimentación

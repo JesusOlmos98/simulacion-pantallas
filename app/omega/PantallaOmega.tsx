@@ -2,25 +2,15 @@
 
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
-import { resolverTexto, resolverUnidad, decodificarVariable } from './pantalla-utils'
+import { resolverTexto } from './pantalla-utils'
 import { COLORES } from './colors'
-import { resolverIcono } from './iconos-menu'
-import { Divider } from '../components'
-
-// tipoObjeto llega como NUMBER en el JSON, no como string
-type ObjBase = Record<string, unknown> & { tipoObjeto: number }
+import { Divider, RenderObjeto } from '../components'
+import { DescriptorPantalla, ObjBase } from '../components/render-objetos/RenderObjeto'
 
 const MAC_OMEGA = '14000208'
 let idEnvioCounter = 1
 
 // ─── Descriptor de pantalla ───────────────────────────────────────────────────
-
-interface DescriptorPantalla {
-  idPantalla: number      // 0 para la principal
-  indicePantalla: number
-  esPrincipal: boolean
-  idUnicoEdicion?: number // presente al navegar desde una línea (valorEditableONav)
-}
 
 const PRINCIPAL: DescriptorPantalla = { idPantalla: 0, indicePantalla: 0, esPrincipal: true }
 
@@ -125,6 +115,10 @@ export default function PantallaOmega() {
     | undefined
   const titulo = encabezado ? resolverTexto(encabezado.tituloText ?? 0) : ''
 
+  // tipoPlantilla: 4 = lista de filas, otros = grid de iconos
+  const tipoPlantilla = (objetos?.find((o) => o.tipoObjeto === 1)?.tipoPlantilla as number) ?? 0
+  const esLista = tipoPlantilla === 4
+
   // ── Loading / Error ───────────────────────────────────────────────────────
 
   // ── Render ────────────────────────────────────────────────────────────────
@@ -147,8 +141,8 @@ export default function PantallaOmega() {
         {/* ── Loading ── */}
         {loading && (
           <div className="flex-1 flex flex-col items-center justify-center gap-4">
-            <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
-            <p className="text-zinc-500 text-sm">Esperando respuesta del dispositivo…</p>
+            <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+            {/* <p className="text-zinc-500 text-sm">Esperando respuesta del dispositivo…</p> */}
           </div>
         )}
 
@@ -201,17 +195,24 @@ export default function PantallaOmega() {
             </div>
 
             {/* Línea divisoria */}
-            <div className="px-4">
               <Divider color={COLORES.primary} thickness="4px" marginY="8px" />
-            </div>
+            {/* </div> */}
 
             {/* Objetos — scrollable si hay muchos */}
             <div className="flex-1 overflow-y-auto">
-              <div className="grid grid-cols-7 gap-2 p-2">
-                {objetos.map((obj, i) => (
-                  <RenderObjeto key={i} obj={obj} onNavegar={navegarA} idPantallaActual={actual.idPantalla} />
-                ))}
-              </div>
+              {esLista ? (
+                <div className="flex flex-col">
+                  {objetos.map((obj, i) => (
+                    <RenderObjeto key={i} obj={obj} onNavegar={navegarA} idPantallaActual={actual.idPantalla} esLista />
+                  ))}
+                </div>
+              ) : (
+                <div className="grid grid-cols-7 gap-2 p-2">
+                  {objetos.map((obj, i) => (
+                    <RenderObjeto key={i} obj={obj} onNavegar={navegarA} idPantallaActual={actual.idPantalla} />
+                  ))}
+                </div>
+              )}
             </div>
           </>
         )}
@@ -220,119 +221,3 @@ export default function PantallaOmega() {
   )
 }
 
-// ─── Renderizador por tipo ────────────────────────────────────────────────────
-
-interface RenderObjetoProps {
-  obj: ObjBase
-  onNavegar: (d: DescriptorPantalla) => void
-  idPantallaActual: number
-}
-
-function RenderObjeto({ obj, onNavegar, idPantallaActual }: RenderObjetoProps) {
-  function navSiProcede(nav: number, indicePantalla: number) {
-    if (nav <= 0) return
-    onNavegar({ idPantalla: nav, indicePantalla, esPrincipal: false, idUnicoEdicion: nav })
-  }
-
-  switch (obj.tipoObjeto) {
-
-    // objPlantilla — metadatos, no se pinta
-    case 1:
-      return null
-
-    // objEncabezado — se muestra en la barra superior, no aquí
-    case 2:
-      return null
-
-    // objLineaText — menú con recuadro en grid 6 columnas
-    case 5: {
-      const nav = obj.valorEditableONav as number
-      const texto = resolverTexto(obj.texto as number)
-      const Icono = resolverIcono(obj.iconoLinea as number)
-      return (
-        <div
-          className="aspect-square rounded-lg flex flex-col items-center justify-center text-center gap-2 p-4 cursor-pointer transition-all duration-200 hover:scale-110"
-          onClick={() => navSiProcede(nav, obj.indicePantalla as number)}
-        >
-          {Icono && <Icono className="text-white" size={72} />}
-          <span className="text-base font-medium break-words leading-tight" style={{ color: COLORES.menuWords }}>{texto}</span>
-        </div>
-      )
-    }
-
-    // objVarIndividual — variable sin navegación (fila completa)
-    case 36: {
-      const tipoDato = obj.tipoDato as number
-      if (tipoDato === 0) return null // noVariable, nada que mostrar
-      const valor = decodificarVariable(obj.valorVariable as number, tipoDato)
-      const unidad = resolverUnidad(obj.unidad as number)
-      return (
-        <div className="col-span-6 flex justify-end items-center px-4 py-2 text-sm border-b border-zinc-100">
-          <span className="font-mono text-white">
-            {valor}
-            {unidad && <span className="text-gray-300 text-xs ml-0.5">{unidad}</span>}
-          </span>
-        </div>
-      )
-    }
-
-    // objVarIndividualNavegacionOEdit — variable con navegación opcional
-    case 37: {
-      const nav = obj.valorEditableONav as number
-      const tipoDato = obj.tipoDato as number
-      // Sin valor y sin nav: no pintar (p.ej. slots vacíos de la pantalla principal)
-      if (tipoDato === 0 && nav === 0) return null
-      // Solo nav (tipoDato=0): mostrar como recuadro en menú
-      if (tipoDato === 0) {
-        return (
-          <div
-            className="aspect-square border border-zinc-200 rounded-lg flex items-center justify-center cursor-pointer hover:bg-zinc-600 active:bg-zinc-500 transition-colors"
-            onClick={() => navSiProcede(nav, obj.indicePantalla as number)}
-          >
-            <span className="text-zinc-400 text-xs italic">[nav]</span>
-          </div>
-        )
-      }
-      const valor = decodificarVariable(obj.valorVariable as number, tipoDato)
-      const unidad = resolverUnidad(obj.unidad as number)
-      return (
-        <div className="col-span-6 flex justify-between items-center px-4 py-2 border-b border-zinc-100 cursor-pointer hover:bg-zinc-50 active:bg-zinc-100 transition-colors" onClick={() => navSiProcede(nav, obj.indicePantalla as number)}>
-          <span className="font-mono text-white">
-            {valor}
-            {unidad && <span className="text-gray-300 text-xs ml-0.5">{unidad}</span>}
-          </span>
-          {nav > 0 && <ChevronRight />}
-        </div>
-      )
-    }
-
-    // objLineaGrafica — separador (fila completa)
-    case 20:
-      return <hr className="col-span-6 border-zinc-200 my-1" />
-
-    // objEtapasVentiladoresVisualSize — sin renderizador por ahora
-    case 47:
-      return null
-
-    // objClaveParaEntrar — sin renderizador por ahora
-    case 53:
-      return null
-
-    default:
-      return (
-        <div className="col-span-6 px-4 py-0.5 text-xs text-zinc-300 italic">
-          [{obj.tipoObjeto}]
-        </div>
-      )
-  }
-}
-
-// ─── Helpers ──────────────────────────────────────────────────────────────────
-
-function ChevronRight() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0 text-zinc-400">
-      <path d="M6 12L10 8L6 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
-}
