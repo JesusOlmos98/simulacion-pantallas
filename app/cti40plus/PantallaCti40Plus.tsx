@@ -2,10 +2,12 @@
 
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import { LuChevronLeft, LuMenu } from 'react-icons/lu'
 import { resolverTexto } from './pantalla-utils'
 import { COLORES } from './colors'
 import { Divider, RenderObjeto } from '../components'
 import { DescriptorPantalla, ObjBase } from '../components/render-objetos/RenderObjeto'
+import BarraBotonesCti40Plus from './BarraBotonesCti40Plus'
 
 const MAC_CTI40PLUS = '202000029' // MAC address para CTI40 PLUS
 let idEnvioCounter = 1
@@ -130,125 +132,110 @@ export default function PantallaCti40Plus() {
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-zinc-950 flex items-center justify-center p-6">
-      <div className="relative flex flex-col w-[80vw] aspect-[16/9] bg-black overflow-hidden rounded-lg border border-zinc-800 shadow-2xl" style={{
-        width: '1280px',
-        height: '720px',
-        minWidth: '1280px',
-        maxWidth: '1280px',
-        minHeight: '720px',
-        maxHeight: '720px',
-        backgroundImage: 'url(/FONDO_CTI40PLUS.png)', // Fondo específico para CTI40 PLUS
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
-      }}>
+    <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center p-6">
+      <div className="flex flex-col items-center">
 
-        {/* ── Loading ── */}
-        {loading && (
-          <div className="flex-1 flex flex-col items-center justify-center gap-4">
-            <div className="w-12 h-12 border-4 border-green-600 border-t-transparent rounded-full animate-spin" />
-            {/* <p className="text-zinc-500 text-sm">Esperando respuesta del dispositivo…</p> */}
-          </div>
-        )}
+        {/* ── Pantalla 4:3 ── */}
+        <div className="relative flex flex-col bg-black overflow-hidden rounded-lg border border-zinc-800 shadow-2xl" style={{
+          width: '960px',
+          height: '720px',
+          minWidth: '960px',
+          maxWidth: '960px',
+          minHeight: '720px',
+          maxHeight: '720px',
+          backgroundImage: 'url(/FONDO_CTI40PLUS.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}>
 
-        {/* ── Error ── */}
-        {!loading && error && (
-          <div className="flex-1 flex flex-col items-center justify-center gap-4">
-            <p className="text-red-500 text-sm">{error}</p>
-            <button onClick={volver} className="px-4 py-2 bg-zinc-800 rounded text-sm text-white hover:bg-zinc-700">
-              Volver
-            </button>
-          </div>
-        )}
+          {/* ── Loading ── */}
+          {loading && (
+            <div className="flex-1 flex flex-col items-center justify-center gap-4">
+              <div className="w-12 h-12 border-4 border-green-600 border-t-transparent rounded-full animate-spin" />
+            </div>
+          )}
 
-        {/* ── Contenido ── */}
-        {!loading && !error && !!objetos?.length && (
-          <>
-            {/* Barra superior sin fondo */}
-            <div className="flex items-center justify-between px-3 py-3 shrink-0">
+          {/* ── Error ── */}
+          {!loading && error && (
+            <div className="flex-1 flex flex-col items-center justify-center gap-4">
+              <p className="text-red-500 text-sm">{error}</p>
+              <button onClick={volver} className="px-4 py-2 bg-zinc-800 rounded text-sm text-white hover:bg-zinc-700">
+                Volver
+              </button>
+            </div>
+          )}
 
-              {/* Izquierda: flecha + hamburguesa */}
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={volver}
-                  className="p-1 text-white hover:text-gray-200 transition-colors"
-                  aria-label={pila.length === 0 ? 'Inicio' : 'Atrás'}
-                >
-                  <svg width="48" height="48" viewBox="0 0 20 20" fill="none">
-                    <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </button>
+          {/* ── Contenido ── */}
+          {!loading && !error && !!objetos?.length && (
+            <>
+              {/* Barra superior */}
+              <div className="flex items-center justify-between px-3 py-3 shrink-0">
 
-                {menuNavPtr !== undefined && (
+                {/* Izquierda: flecha + hamburguesa */}
+                <div className="flex items-center gap-1">
                   <button
-                    onClick={() => navegarA({ idPantalla: menuNavPtr, indicePantalla: 0, esPrincipal: false })}
+                    onClick={volver}
                     className="p-1 text-white hover:text-gray-200 transition-colors"
-                    aria-label="Menú"
+                    aria-label={pila.length === 0 ? 'Inicio' : 'Atrás'}
                   >
-                    <svg width="48" height="48" viewBox="0 0 20 20" fill="none">
-                      <path d="M3 5H17M3 10H17M3 15H17" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-                    </svg>
+                    <LuChevronLeft size={48} />
                   </button>
-                )}
+
+                  {menuNavPtr !== undefined && (
+                    <button
+                      onClick={() => navegarA({ idPantalla: menuNavPtr, indicePantalla: 0, esPrincipal: false })}
+                      className="p-1 text-white hover:text-gray-200 transition-colors"
+                      aria-label="Menú"
+                    >
+                      <LuMenu size={48} />
+                    </button>
+                  )}
+                </div>
+
+                {/* Título */}
+                <span className="text-6xl font-normal text-white truncate px-2">
+                  {esPantallaPrincipal ? 'Pantalla principal' : titulo}
+                </span>
+
+                {/* Placeholder derecho para centrar el título */}
+                <div className="w-12" />
               </div>
 
-              {/* Título */}
-              <span className="text-6xl font-normal text-white truncate px-2">
-                {esPantallaPrincipal ? 'Pantalla principal' : titulo}
-              </span>
-
-              {/* Placeholder derecho para centrar el título */}
-              <div className="w-12" />
-            </div>
-
-            {/* Línea divisoria */}
+              {/* Línea divisoria */}
               <Divider color={COLORES.primary} thickness="4px" marginY="8px" />
-            {/* </div> */}
 
-            {/* Objetos — scrollable si hay muchos */}
-            <div className="flex-1 overflow-y-auto">
-              {esPantallaPrincipal ? (
-                <div className="flex-1 flex items-center justify-center">
-                  <p className="text-white text-2xl">Pantalla principal</p>
-                </div>
-              ) : (
-                <>
-                  {esLista ? (
-                    <div className="flex flex-col">
-                      {objetos.map((obj, i) => (
-                        <RenderObjeto key={i} obj={obj} onNavegar={navegarA} idPantallaActual={actual.idPantalla} esLista />
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-7 gap-2 p-2">
-                      {objetos.map((obj, i) => (
-                        <RenderObjeto key={i} obj={obj} onNavegar={navegarA} idPantallaActual={actual.idPantalla} />
-                      ))}
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          </>
-        )}
+              {/* Objetos — scrollable si hay muchos */}
+              <div className="flex-1 overflow-y-auto">
+                {esPantallaPrincipal ? (
+                  <div className="flex-1 flex items-center justify-center">
+                    <p className="text-white text-2xl">Pantalla principal</p>
+                  </div>
+                ) : (
+                  <>
+                    {esLista ? (
+                      <div className="flex flex-col">
+                        {objetos.map((obj, i) => (
+                          <RenderObjeto key={i} obj={obj} onNavegar={navegarA} idPantallaActual={actual.idPantalla} esLista />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-7 gap-2 p-2">
+                        {objetos.map((obj, i) => (
+                          <RenderObjeto key={i} obj={obj} onNavegar={navegarA} idPantallaActual={actual.idPantalla} />
+                        ))}
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            </>
+          )}
+        </div>
 
-        {/* Botones de acceso directo fuera de la pantalla */}
-        {esPantallaPrincipal && barraAccesoDirecto.length > 0 && (
-          <div className="flex gap-4 mt-4">
-            {barraAccesoDirecto.map((obj, index) => (
-              <button
-                key={index}
-                className="w-12 h-12 rounded-full bg-[#bddc28] flex items-center justify-center hover:bg-[#a8c023] transition-colors"
-                title={`Botón ${index + 1}`}
-              >
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M10 12V10M10 8H10.01M18 10C18 14.4183 14.4183 18 10 18C5.58172 18 2 14.4183 2 10C2 5.58172 5.58172 2 10 2C14.4183 2 18 5.58172 18 10Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-            ))}
-          </div>
-        )}
+        {/* ── Barra de botones de acceso directo (fuera de la pantalla) ── */}
+        <BarraBotonesCti40Plus botones={barraAccesoDirecto} onNavegar={navegarA} />
+
       </div>
     </div>
   )
