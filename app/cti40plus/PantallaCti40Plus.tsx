@@ -199,7 +199,7 @@ export default function PantallaCti40Plus(): JSX.Element {
               </div>
 
               {/* Objetos — scrollable si hay muchos */}
-              <div className="flex-1 overflow-y-auto p-4">
+              <div className="flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#1E1E1E] [&::-webkit-scrollbar-thumb]:bg-[#60D619] [&::-webkit-scrollbar-thumb:hover]:bg-[#4fa316] [&::-webkit-scrollbar-thumb]:rounded-none">
                 {esPantallaPrincipal ? (
                   <div className="flex-1 flex items-center justify-center">
                     <p className="text-white text-2xl">Pantalla principal</p>

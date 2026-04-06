@@ -4,7 +4,7 @@ import type { JSX } from 'react';
 import OmegaButton from './components/OmegaButton';
 import CTI40PlusButton from './components/CTI40PlusButton';
 
-export default function Home(): JSX.Element {
+export default async function Home(): Promise<JSX.Element> {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-50 dark:bg-black">
       <div className="flex flex-col gap-6">

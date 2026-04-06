@@ -28,7 +28,7 @@ export default function ObjLineaTextVar({ obj, onNavegar }: ObjLineaTextVarProps
       <div
         className="flex items-center gap-5 px-8 py-5 cursor-pointer hover:bg-white/5 active:bg-white/10 transition-colors border-b border-zinc-700"
         onClick={() => navegarSimple(nav, obj.indicePantalla as number, onNavegar)}
-        >
+      >
         {Icono && (
           <Icono
             className="text-white shrink-0"
