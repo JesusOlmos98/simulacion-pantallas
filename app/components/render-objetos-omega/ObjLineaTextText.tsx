@@ -4,9 +4,9 @@
 import { useMemo } from 'react';
 import type { JSX } from 'react';
 import type { IconType } from 'react-icons/lib';
-import { COLORES } from '@/app/omega/colors';
-import { resolverIcono } from '@/app/omega/iconos-menu';
-import { resolverTexto } from '@/app/omega/pantalla-utils';
+import { COLORES } from './colors';
+import { resolverIcono } from './iconos-menu';
+import { resolverTexto } from './pantalla-utils';
 import { navegarSimple, ChevronRight } from './RenderHelpers';
 
 type OnNavegar = (d: { idPantalla: number; indicePantalla: number; esPrincipal: boolean; idUnicoEdicion?: number }) => void;

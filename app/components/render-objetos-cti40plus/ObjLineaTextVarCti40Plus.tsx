@@ -4,7 +4,7 @@ import type { JSX } from 'react';
 import { LuChevronRight } from 'react-icons/lu';
 import { resolverTexto, resolverUnidad, decodificarVariable } from './pantalla-utils';
 import { COLORES } from './colors';
-import { DescriptorPantalla } from '../components/render-objetos-omega/RenderObjeto';
+import type { DescriptorPantalla } from '../pantalla-types';
 
 interface ObjLineaTextVarProps {
   obj: Record<string, unknown>;
@@ -26,7 +26,7 @@ export default function ObjLineaTextVarCti40Plus({ obj, onNavegar }: ObjLineaTex
 
   return (
     <div
-      className={`flex items-center justify-between px-3 ${(obj.iconoLinea as number | undefined) ? 'py-5' : 'py-7'} cursor-pointer hover:bg-white/5 transition-colors`}
+      className={`flex items-center justify-between px-3 ${(obj.iconoLinea as number | undefined) !== undefined ? 'py-5' : 'py-7'} cursor-pointer hover:bg-white/5 transition-colors`}
       onClick={handleClick}
     >
       {/* Texto etiqueta */}
@@ -34,12 +34,19 @@ export default function ObjLineaTextVarCti40Plus({ obj, onNavegar }: ObjLineaTex
 
       {/* Valor + unidad + chevron */}
       <div className="flex items-center gap-2">
-        <span className="text-4xl " style={{ color: COLORES.primary }}>
-          {valor}{unidad ? ` ${unidad}` : ''}
+        <span
+          className="text-4xl "
+          style={{ color: COLORES.primary }}
+        >
+          {valor}
+          {unidad ? ` ${unidad}` : ''}
         </span>
 
         {nav > 0 && (
-          <LuChevronRight size={36} className="text-white" />
+          <LuChevronRight
+            size={36}
+            className="text-white"
+          />
         )}
       </div>
     </div>

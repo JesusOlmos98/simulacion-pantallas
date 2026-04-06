@@ -6,7 +6,7 @@ import type { IconType } from 'react-icons/lib';
 import { LuChevronRight } from 'react-icons/lu';
 import { resolverTexto } from './pantalla-utils';
 import { resolverIconoCTI40Plus } from './iconos-cti40plus';
-import { DescriptorPantalla } from '../components/render-objetos-omega/RenderObjeto';
+import type { DescriptorPantalla } from '../pantalla-types';
 
 interface ObjLineaProps {
   obj: Record<string, unknown>;

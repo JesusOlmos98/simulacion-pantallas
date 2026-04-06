@@ -1,7 +1,7 @@
 'use client';
 
 import type { JSX } from 'react';
-import { decodificarVariable, resolverUnidad } from '@/app/omega/pantalla-utils';
+import { decodificarVariable, resolverUnidad } from './pantalla-utils';
 import { ChevronRight, navegarConEdicion } from './RenderHelpers';
 
 type OnNavegar = (d: { idPantalla: number; indicePantalla: number; esPrincipal: boolean; idUnicoEdicion?: number }) => void;

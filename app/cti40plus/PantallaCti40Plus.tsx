@@ -4,13 +4,9 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import type { JSX } from 'react';
 import { useRouter } from 'next/navigation';
 import { LuChevronLeft, LuMenu } from 'react-icons/lu';
-import { resolverTexto, resolverColor } from './pantalla-utils';
-import { COLORES } from './colors';
+import { resolverTexto, resolverColor, COLORES, ObjLineaCti40Plus, ObjLineaTextVarCti40Plus, BarraBotonesCti40Plus } from '../components/render-objetos-cti40plus';
 import { RenderObjeto } from '../components';
-import { DescriptorPantalla, ObjBase } from '../components/render-objetos-omega/RenderObjeto';
-import BarraBotonesCti40Plus from './BarraBotonesCti40Plus';
-import ObjLineaCti40Plus from './ObjLineaCti40Plus';
-import ObjLineaTextVarCti40Plus from './ObjLineaTextVarCti40Plus';
+import type { DescriptorPantalla, ObjBase } from '../components/pantalla-types';
 
 const MAC_CTI40PLUS = '202000029'; // MAC address para CTI40 PLUS
 let idEnvioCounter = 1;
@@ -201,12 +197,9 @@ export default function PantallaCti40Plus(): JSX.Element {
               </div>
 
               {/* Objetos — scrollable si hay muchos */}
-              <div 
+              <div
                 className="flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#1E1E1E] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]"
-                style={{
-                  '--scrollbar-thumb': COLORES.primary,
-                  '--scrollbar-thumb-hover': '#4fa316'
-                } as React.CSSProperties}
+                style={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}
               >
                 {esPantallaPrincipal ? (
                   <div className="flex-1 flex items-center justify-center">

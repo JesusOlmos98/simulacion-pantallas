@@ -2,8 +2,7 @@
 
 import type { JSX } from 'react';
 import { LuCircle } from 'react-icons/lu';
-import { ObjBase } from '../components/render-objetos-omega/RenderObjeto';
-import { DescriptorPantalla } from '../components/render-objetos-omega/RenderObjeto';
+import type { ObjBase, DescriptorPantalla } from '../pantalla-types';
 import { resolverIconoCTI40Plus } from './iconos-cti40plus';
 
 interface Props {

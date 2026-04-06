@@ -1,7 +1,7 @@
 'use client';
 
 import type { JSX } from 'react';
-import { decodificarVariable, resolverUnidad } from '@/app/omega/pantalla-utils';
+import { decodificarVariable, resolverUnidad } from './pantalla-utils';
 
 interface ObjVarIndividualProps {
   obj: Record<string, unknown>;

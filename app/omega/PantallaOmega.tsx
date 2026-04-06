@@ -3,10 +3,9 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import type { JSX } from 'react';
 import { useRouter } from 'next/navigation';
-import { resolverTexto } from './pantalla-utils';
-import { COLORES } from './colors';
+import { resolverTexto, COLORES } from '../components/render-objetos-omega';
 import { Divider, RenderObjeto } from '../components';
-import { DescriptorPantalla, ObjBase } from '../components/render-objetos-omega/RenderObjeto';
+import type { DescriptorPantalla, ObjBase } from '../components/pantalla-types';
 
 const MAC_OMEGA = '14000208';
 let idEnvioCounter = 1;

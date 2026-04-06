@@ -2,16 +2,9 @@
 
 import type { JSX } from 'react';
 import { ObjLineaText, ObjLineaTextText, ObjLineaTextVar, ObjVarIndividual, ObjVarIndividualNavegacion } from '.';
+import type { ObjBase, DescriptorPantalla } from '../pantalla-types';
 
-// tipoObjeto llega como NUMBER en el JSON, no como string
-export type ObjBase = Record<string, unknown> & { tipoObjeto: number };
-
-export interface DescriptorPantalla {
-  idPantalla: number; // 0 para la principal
-  indicePantalla: number;
-  esPrincipal: boolean;
-  idUnicoEdicion?: number; // presente al navegar desde una línea (valorEditableONav)
-}
+export type { ObjBase, DescriptorPantalla };
 
 export interface RenderObjetoProps {
   obj: ObjBase;
