@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import type { JSX } from 'react';
 import { useRouter } from 'next/navigation';
 import { LuChevronLeft, LuMenu } from 'react-icons/lu';
+import { resolverIconoCTI40Plus } from '../components/render-objetos-cti40plus';
 import { resolverTexto, resolverColor, COLORES, ObjLineaCti40Plus, ObjLineaTextVarCti40Plus, BarraBotonesCti40Plus } from '../components/render-objetos-cti40plus';
 import { RenderObjeto } from '../components';
 import type { DescriptorPantalla, ObjBase } from '../components/pantalla-types';
@@ -45,6 +46,10 @@ export default function PantallaCti40Plus(): JSX.Element {
   // Ref para poder cancelar el fetch en vuelo al desmontar o al lanzar uno nuevo
   const controllerRef = useRef<AbortController | null>(null);
 
+  // Botones de barra de acceso directo (tipoObjeto: 66) — solo llegan en pantallaId=0,
+  // se guardan aquí la primera vez y persisten durante toda la sesión CTI40 Plus.
+  const barraAccesoDirectoPersistente = useRef<ObjBase[]>([]);
+
   const cargarPantalla = useCallback((descriptor: DescriptorPantalla) => {
     // Cancela silenciosamente cualquier petición en vuelo
     controllerRef.current?.abort();
@@ -66,6 +71,10 @@ export default function PantallaCti40Plus(): JSX.Element {
 
     fetchPantalla(descriptor, controller.signal)
       .then((data) => {
+        if (descriptor.esPrincipal) {
+          const botones = data.filter((o) => o.tipoObjeto === 66);
+          if (botones.length > 0) barraAccesoDirectoPersistente.current = botones;
+        }
         setObjetos(data);
         setLoading(false);
       })
@@ -102,8 +111,8 @@ export default function PantallaCti40Plus(): JSX.Element {
 
   // ── Derivados ─────────────────────────────────────────────────────────────
 
-  // Objetos de barra de acceso directo (tipoObjeto: 66)
-  const barraAccesoDirecto = objetos?.filter((o) => o.tipoObjeto === 66) ?? [];
+  // Objetos de barra de acceso directo (tipoObjeto: 66) — se usan los persistentes (capturados en pantallaId=0)
+  const barraAccesoDirecto = barraAccesoDirectoPersistente.current;
 
   // Separar objetos: header (tipoObjeto: 2), líneas nav (tipoObjeto: 5), líneas text+var (tipoObjeto: 4) y otros
   const lineasObjetos = objetos?.filter((o) => o.tipoObjeto === 5) ?? [];
@@ -120,9 +129,24 @@ export default function PantallaCti40Plus(): JSX.Element {
     : undefined;
 
   // Título: viene en objEncabezado (tipoObjeto=2) si la pantalla lo tiene
-  const encabezado = objetos?.find((o) => o.tipoObjeto === 2) as { tituloText?: number; colorTitulo?: number } | undefined;
+  const encabezado = objetos?.find((o) => o.tipoObjeto === 2) as {
+    tituloText?: number;
+    colorTitulo?: number;
+    iconoTarea2?: number;
+    pantallaSaltoTarea2?: number;
+    indicePantallaTarea2?: number;
+    iconoTarea3?: number;
+    pantallaSaltoTarea3?: number;
+    indicePantallaTarea3?: number;
+  } | undefined;
   const titulo = encabezado ? resolverTexto(encabezado.tituloText ?? 0) : '';
   const colorHeader = resolverColor(encabezado?.colorTitulo ?? 0);
+
+  // Tareas de navegación del encabezado (botones a la derecha del header)
+  const tareas = [
+    { icono: encabezado?.iconoTarea3 ?? 0, pantalla: encabezado?.pantallaSaltoTarea3 ?? 0, indice: encabezado?.indicePantallaTarea3 ?? 0 },
+    { icono: encabezado?.iconoTarea2 ?? 0, pantalla: encabezado?.pantallaSaltoTarea2 ?? 0, indice: encabezado?.indicePantallaTarea2 ?? 0 },
+  ].filter((t) => t.pantalla > 0);
 
   // tipoPlantilla: 4 = lista de filas, otros = grid de iconos
   const tipoPlantilla = (objetos?.find((o) => o.tipoObjeto === 1)?.tipoPlantilla as number) ?? 0;
@@ -163,38 +187,54 @@ export default function PantallaCti40Plus(): JSX.Element {
           {/* ── Contenido ── */}
           {!loading && error === null && objetos !== null && objetos.length > 0 && (
             <>
-              {/* Barra superior */}
-              <div
-                className="flex items-center justify-between px-3 py-5 shrink-0"
-                style={{ backgroundColor: colorHeader }}
-              >
-                {/* Izquierda: flecha + hamburguesa */}
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={volver}
-                    className="p-1 text-white hover:text-gray-200 transition-colors"
-                    aria-label={pila.length === 0 ? 'Inicio' : 'Atrás'}
-                  >
-                    <LuChevronLeft size={48} />
-                  </button>
-
-                  {menuNavPtr !== undefined && (
+              {/* Barra superior — solo en pantallas que no son la principal */}
+              {!esPantallaPrincipal && (
+                <div
+                  className="flex items-center justify-between px-3 py-5 shrink-0"
+                  style={{ backgroundColor: colorHeader }}
+                >
+                  {/* Izquierda: flecha + hamburguesa */}
+                  <div className="flex items-center gap-1">
                     <button
-                      onClick={() => navegarA({ idPantalla: menuNavPtr, indicePantalla: 0, esPrincipal: false })}
+                      onClick={volver}
                       className="p-1 text-white hover:text-gray-200 transition-colors"
-                      aria-label="Menú"
+                      aria-label={pila.length === 0 ? 'Inicio' : 'Atrás'}
                     >
-                      <LuMenu size={48} />
+                      <LuChevronLeft size={48} />
                     </button>
-                  )}
+
+                    {menuNavPtr !== undefined && (
+                      <button
+                        onClick={() => navegarA({ idPantalla: menuNavPtr, indicePantalla: 0, esPrincipal: false })}
+                        className="p-1 text-white hover:text-gray-200 transition-colors"
+                        aria-label="Menú"
+                      >
+                        <LuMenu size={48} />
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Título */}
+                  <span className="text-4xl font-normal text-white truncate px-2">{titulo}</span>
+
+                  {/* Derecha: botones de tarea (iconoTarea2/3 con pantallaSalto > 0) */}
+                  <div className="flex items-center gap-1">
+                    {tareas.map((tarea, i) => {
+                      const IconoTarea = resolverIconoCTI40Plus(tarea.icono);
+                      return (
+                        <button
+                          key={i}
+                          onClick={() => navegarA({ idPantalla: tarea.pantalla, indicePantalla: tarea.indice, esPrincipal: false })}
+                          className="p-1 text-white hover:text-gray-200 transition-colors"
+                        >
+                          {IconoTarea ? <IconoTarea size={48} /> : null}
+                        </button>
+                      );
+                    })}
+                    {tareas.length === 0 && <div className="w-12" />}
+                  </div>
                 </div>
-
-                {/* Título */}
-                <span className="text-4xl font-normal text-white truncate px-2">{esPantallaPrincipal ? 'Pantalla principal' : titulo}</span>
-
-                {/* Placeholder derecho para centrar el título */}
-                <div className="w-12" />
-              </div>
+              )}
 
               {/* Objetos — scrollable si hay muchos */}
               <div
