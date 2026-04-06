@@ -1,6 +1,7 @@
 "use server";
 
 import OmegaButton from './components/OmegaButton'
+import CTI40PlusButton from './components/CTI40PlusButton'
 
 export default async function Home() {
   return (
@@ -10,9 +11,7 @@ export default async function Home() {
         <button className="px-8 py-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold text-lg">
           SILOWS
         </button>
-        <button className="px-8 py-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold text-lg">
-          CTI40 PLUS
-        </button>
+        <CTI40PlusButton />
       </div>
     </div>
   );
