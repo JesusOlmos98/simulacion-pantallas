@@ -1,6 +1,7 @@
 'use client';
 
 import type { JSX } from 'react';
+import ObjLineaGrafica from './ObjLineaGrafica';
 import ObjLineaText from './ObjLineaText';
 import ObjLineaTextText from './ObjLineaTextText';
 import ObjLineaTextVar from './ObjLineaTextVar';
@@ -57,7 +58,7 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual: _idPant
 
     // objLineaGrafica — separador lógico entre bloques, no pinta nada
     case 20:
-      return null;
+      return <ObjLineaGrafica />;
 
     // objVarIndividual — variable sin navegación
     case 36:

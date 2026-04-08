@@ -1,3 +1,4 @@
+export { default as ObjLineaGrafica } from './ObjLineaGrafica';
 export { default as ObjLineaInfoTextText } from './ObjLineaInfoTextText';
 export { default as ObjLineaText } from './ObjLineaText';
 export { default as ObjLineaTextText } from './ObjLineaTextText';
