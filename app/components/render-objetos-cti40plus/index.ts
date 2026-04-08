@@ -1,4 +1,7 @@
 export { default as ObjLineaGrafica } from './ObjLineaGrafica';
+export { default as ObjTablaDinamica } from './ObjTablaDinamica';
+export { default as ObjTablaDinamicaInit } from './ObjTablaDinamicaInit';
+export { default as ObjTablaDinamicaFila } from './ObjTablaDinamicaFila';
 export { default as ObjLineaInfoTextText } from './ObjLineaInfoTextText';
 export { default as ObjLineaText } from './ObjLineaText';
 export { default as ObjLineaTextText } from './ObjLineaTextText';

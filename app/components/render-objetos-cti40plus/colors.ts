@@ -3,10 +3,11 @@ export const COLORES = {
   primary: '#91DE5D', //'#60D619', // Verde (índice 1)
   secondary: '#196BD6', // Azul (índice 2)
   tertiary: '#929292', // Gris (índice 3)
-  error: '#F30703', // Rojo (índice 4)
-  warning: '#f59e0b', // Ámbar (índice 5)
-  info: '#3b82f6', // Azul (índice 6)
-  success: '#10b981', // Esmeralda (índice 7)
+  quaternary: '#777777ff', // Naranja (índice 4)
+  error: '#F30703', // Rojo (índice 5)
+  warning: '#f59e0b', // Ámbar (índice 6)
+  info: '#3b82f6', // Azul (índice 7)
+  success: '#10b981', // Esmeralda (índice 8)
   light: '#f5f5f5', // Gris muy claro (fallback para 0 u otros)
   light_gray: '#c4c4c4ff', // Gris claro (índice 15)
   menuWords: '#FFA505' // Naranja para textos del menú
@@ -18,10 +19,11 @@ export function getColorHex(colorId: number): string {
     1: COLORES.primary, // Verde
     2: COLORES.secondary, // Azul
     3: COLORES.tertiary, // Gris
-    4: COLORES.error, // Rojo
-    5: COLORES.warning, // Ámbar
-    6: COLORES.info, // Azul
-    7: COLORES.success, // Esmeralda
+    4: COLORES.quaternary, // Naranja
+    5: COLORES.error, // Rojo
+    6: COLORES.warning, // Ámbar
+    7: COLORES.info, // Azul
+    8: COLORES.success, // Esmeralda
     15: COLORES.light_gray // Gris claro
   };
   return colorMap[colorId] ?? COLORES.light;

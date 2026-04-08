@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import type { JSX } from 'react';
 import { useRouter } from 'next/navigation';
 import { LuChevronLeft, LuInfo, LuMenu, LuX } from 'react-icons/lu';
-import { RenderObjeto, resolverIconoCTI40Plus } from '../components/render-objetos-cti40plus';
+import { RenderObjeto, resolverIconoCTI40Plus, ObjTablaDinamica } from '../components/render-objetos-cti40plus';
 import ObjLineaInfoTextText from '../components/render-objetos-cti40plus/ObjLineaInfoTextText';
 import { resolverTexto, COLORES, BarraBotonesCti40Plus } from '../components/render-objetos-cti40plus';
 import type { DescriptorPantalla, ObjBase } from '../components/pantalla-types';
@@ -131,8 +131,28 @@ export default function PantallaCti40Plus(): JSX.Element {
     }
     if (grupoActual.length > 0) gruposLineas.push(grupoActual);
   }
+  // Agrupar bloques de tabla: objTablaDinamicaInit (70) + filas objTablaDinamicaFila (71) consecutivas
+  const tablasGrupos: { init: ObjBase; filas: ObjBase[] }[] = [];
+  if (objetos) {
+    let i = 0;
+    while (i < objetos.length) {
+      const obj = objetos[i]!;
+      if (obj.tipoObjeto === 70) {
+        const filas: ObjBase[] = [];
+        let j = i + 1;
+        while (j < objetos.length && objetos[j]!.tipoObjeto === 71) {
+          filas.push(objetos[j]!);
+          j++;
+        }
+        tablasGrupos.push({ init: obj, filas });
+        i = j;
+      } else {
+        i++;
+      }
+    }
+  }
   const infoObjetos = objetos?.filter((o) => o.tipoObjeto === 7) ?? [];
-  const otrosObjetos = objetos?.filter((o) => o.tipoObjeto !== 2 && o.tipoObjeto !== 7 && o.tipoObjeto !== 20 && !TIPOS_LINEA.has(o.tipoObjeto)) ?? [];
+  const otrosObjetos = objetos?.filter((o) => o.tipoObjeto !== 2 && o.tipoObjeto !== 7 && o.tipoObjeto !== 20 && o.tipoObjeto !== 70 && o.tipoObjeto !== 71 && !TIPOS_LINEA.has(o.tipoObjeto)) ?? [];
 
   // Verificar si estamos en pantalla principal (idPantalla: 0)
   const esPantallaPrincipal = (objetos?.find((o) => o.tipoObjeto === 1)?.idPantalla ?? 0) === 0;
@@ -284,6 +304,20 @@ export default function PantallaCti40Plus(): JSX.Element {
                           </div>
                         ))}
                       </>
+                    )}
+
+                    {/* Tablas dinámicas — edge-to-edge, sin esquinas ni margen lateral */}
+                    {tablasGrupos.length > 0 && (
+                      <div className="-mx-4 -mt-4">
+                        {tablasGrupos.map((tabla, ti) => (
+                          <ObjTablaDinamica
+                            key={ti}
+                            init={tabla.init}
+                            filas={tabla.filas}
+                            onNavegar={navegarA}
+                          />
+                        ))}
+                      </div>
                     )}
 
                     {/* Botón de información — aparece si hay objLineaInfoTextText (tipo 7) */}

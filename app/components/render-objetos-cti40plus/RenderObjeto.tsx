@@ -2,6 +2,7 @@
 
 import type { JSX } from 'react';
 import ObjLineaGrafica from './ObjLineaGrafica';
+import ObjTablaDinamicaInit from './ObjTablaDinamicaInit';
 import ObjLineaText from './ObjLineaText';
 import ObjLineaTextText from './ObjLineaTextText';
 import ObjLineaTextVar from './ObjLineaTextVar';
@@ -55,6 +56,14 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual: _idPant
     // objBotonAccesoDirecto — botones de acceso directo (tipoObjeto: 66)
     case 66:
       return null; // Se manejan en BarraBotonesCti40Plus
+
+    // objTablaDinamicaInit — metadatos de tabla, se maneja agrupado en PantallaCti40Plus
+    case 70:
+      return <ObjTablaDinamicaInit />;
+
+    // objTablaDinamicaFila — filas de tabla, se manejan agrupadas en PantallaCti40Plus
+    case 71:
+      return null;
 
     // objLineaGrafica — separador lógico entre bloques, no pinta nada
     case 20:

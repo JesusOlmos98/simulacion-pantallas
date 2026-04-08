@@ -16,7 +16,9 @@ export function resolverTexto(id: number): string {
   return nombre
     .replace(/^text/, '')
     .replace(/([A-Z])/g, ' $1')
-    .trim();
+    .replace(/([a-zA-Z])(\d)/g, '$1 $2')
+    .trim()
+    .replace(/\s([A-Z])/g, (_, c: string) => ' ' + c.toLowerCase());
 }
 
 // ─── Unidad ───────────────────────────────────────────────────────────────────
