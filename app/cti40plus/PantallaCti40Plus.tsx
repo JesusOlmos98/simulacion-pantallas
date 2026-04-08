@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { LuChevronLeft, LuInfo, LuMenu, LuX } from 'react-icons/lu';
 import { RenderObjeto, resolverIconoCTI40Plus, ObjTablaDinamica } from '../components/render-objetos-cti40plus';
 import ObjLineaInfoTextText from '../components/render-objetos-cti40plus/ObjLineaInfoTextText';
+import ObjEncabezadoEditIcono from '../components/render-objetos-cti40plus/ObjEncabezadoEditIcono';
 import { resolverTexto, COLORES, BarraBotonesCti40Plus } from '../components/render-objetos-cti40plus';
 import type { DescriptorPantalla, ObjBase } from '../components/pantalla-types';
 import { getColorHex } from '../components/render-objetos-cti40plus/colors';
@@ -179,6 +180,9 @@ export default function PantallaCti40Plus(): JSX.Element {
   const titulo = encabezado ? resolverTexto(encabezado.tituloText ?? 0) : '';
   const colorHeader = getColorHex(encabezado?.colorTitulo ?? 0);
 
+  // objEncabezadoEditIcono (tipoObjeto: 31) — botón de acción a la derecha del header
+  const encabezadoEditIcono = objetos?.find((o) => o.tipoObjeto === 31);
+
   // Tareas de navegación del encabezado (botones a la derecha del header)
   const tareas = [
     { icono: encabezado?.iconoTarea3 ?? 0, pantalla: encabezado?.pantallaSaltoTarea3 ?? 0, indice: encabezado?.indicePantallaTarea3 ?? 0 },
@@ -227,7 +231,7 @@ export default function PantallaCti40Plus(): JSX.Element {
               {/* Barra superior — solo en pantallas que no son la principal */}
               {!esPantallaPrincipal && (
                 <div
-                  className="flex items-center justify-between px-3 py-5 shrink-0"
+                  className="flex items-center justify-between px-3 py-6 shrink-0"
                   style={{ backgroundColor: colorHeader }}
                 >
                   {/* Izquierda: flecha + hamburguesa */}
@@ -237,7 +241,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                       className="p-1 text-white hover:text-gray-200 transition-colors"
                       aria-label={pila.length === 0 ? 'Inicio' : 'Atrás'}
                     >
-                      <LuChevronLeft size={48} />
+                      <LuChevronLeft size={60} />
                     </button>
 
                     {menuNavPtr !== undefined && (
@@ -246,15 +250,15 @@ export default function PantallaCti40Plus(): JSX.Element {
                         className="p-1 text-white hover:text-gray-200 transition-colors"
                         aria-label="Menú"
                       >
-                        <LuMenu size={48} />
+                        <LuMenu size={60} />
                       </button>
                     )}
                   </div>
 
                   {/* Título */}
-                  <span className="text-4xl font-normal text-white truncate px-2">{titulo}</span>
+                  <span className="text-5xl font-normal text-white truncate px-2">{titulo}</span>
 
-                  {/* Derecha: botones de tarea (iconoTarea2/3 con pantallaSalto > 0) */}
+                  {/* Derecha: botones de tarea (iconoTarea2/3 con pantallaSalto > 0) + objEncabezadoEditIcono */}
                   <div className="flex items-center gap-1">
                     {tareas.map((tarea, i) => {
                       const IconoTarea = resolverIconoCTI40Plus(tarea.icono);
@@ -264,11 +268,12 @@ export default function PantallaCti40Plus(): JSX.Element {
                           onClick={() => navegarA({ idPantalla: tarea.pantalla, indicePantalla: tarea.indice, esPrincipal: false })}
                           className="p-1 text-white hover:text-gray-200 transition-colors"
                         >
-                          {IconoTarea ? <IconoTarea size={48} /> : null}
+                          {IconoTarea ? <IconoTarea size={60} /> : null}
                         </button>
                       );
                     })}
-                    {tareas.length === 0 && <div className="w-12" />}
+                    {encabezadoEditIcono && <ObjEncabezadoEditIcono obj={encabezadoEditIcono} />}
+                    {tareas.length === 0 && !encabezadoEditIcono && <div className="w-12" />}
                   </div>
                 </div>
               )}
@@ -280,7 +285,7 @@ export default function PantallaCti40Plus(): JSX.Element {
               >
                 {esPantallaPrincipal ? (
                   <div className="flex-1 flex items-center justify-center">
-                    <p className="text-white text-2xl">Pantalla principal</p>
+                    <p className="text-white text-5xl">Pantalla principal</p>
                   </div>
                 ) : (
                   <>
@@ -379,7 +384,7 @@ export default function PantallaCti40Plus(): JSX.Element {
             >
               {/* Header del dialog */}
               <div
-                className="flex items-center px-3 py-5 shrink-0"
+                className="flex items-center px-3 py-6 shrink-0"
                 style={{ backgroundColor: COLORES.info }}
               >
                 <button
@@ -387,9 +392,9 @@ export default function PantallaCti40Plus(): JSX.Element {
                   aria-label="Cerrar"
                   onClick={() => setInfoDialogAbierto(false)}
                 >
-                  <LuX size={48} />
+                  <LuX size={60} />
                 </button>
-                <span className="flex-1 text-center text-4xl font-normal text-white truncate px-2">{titulo}</span>
+                <span className="flex-1 text-center text-5xl font-normal text-white truncate px-2">{titulo}</span>
                 {/* Espaciador simétrico para centrar el título */}
                 <div style={{ width: 56 }} />
               </div>

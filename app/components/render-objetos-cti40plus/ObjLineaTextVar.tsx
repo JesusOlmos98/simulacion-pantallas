@@ -30,12 +30,12 @@ export default function ObjLineaTextVar({ obj, onNavegar }: ObjLineaTextVarProps
 
   return (
     <div
-      className={`flex items-center justify-between px-3 ${(obj.iconoLinea as number | undefined) !== undefined ? 'py-5' : 'py-7'} cursor-pointer hover:bg-white/5 transition-colors`}
+      className={`flex items-center justify-between px-3 py-7 cursor-pointer hover:bg-white/5 transition-colors rounded-2xl`}
       onClick={handleClick}
     >
       {/* Texto etiqueta */}
       <span
-        className="text-4xl font-light"
+        className="text-5xl font-light"
         style={{ color: colorTexto }}
       >
         {texto}
@@ -44,7 +44,7 @@ export default function ObjLineaTextVar({ obj, onNavegar }: ObjLineaTextVarProps
       {/* Valor + unidad + chevron */}
       <div className="flex items-center gap-2">
         <span
-          className="text-4xl "
+          className="text-5xl "
           style={{ color: COLORES.primary }}
         >
           {valor}
@@ -53,7 +53,7 @@ export default function ObjLineaTextVar({ obj, onNavegar }: ObjLineaTextVarProps
 
         {nav > 0 && (
           <LuChevronRight
-            size={36}
+            size={50}
             color="#ffffff"
           />
         )}

@@ -58,7 +58,7 @@ export default function ObjTablaDinamicaFila({ fila, rowIdx, onNavegar }: ObjTab
       {fila.celdas.map((celda, colIdx) => (
         <div
           key={colIdx}
-          className="flex-1 flex items-center justify-center text-center text-4xl px-2"
+          className="flex-1 flex items-center justify-center text-center text-5xl px-2"
           style={{ backgroundColor: bg, color: COLORES.light }}
         >
           {renderCelda(celda)}

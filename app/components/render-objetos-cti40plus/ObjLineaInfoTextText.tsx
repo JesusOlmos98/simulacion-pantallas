@@ -21,15 +21,15 @@ export default function ObjLineaInfoTextText({ obj }: ObjLineaInfoTextTextProps)
   const color = esVacio ? COLORES.light_gray : resolverColor(coloresLineaEdit);
 
   return (
-    <div className="flex items-center justify-between pl-3 pr-6 py-7">
+    <div className="flex items-center justify-between pl-3 pr-6 py-7 rounded-2xl">
       <span
-        className="text-4xl font-light"
+        className="text-5xl font-light"
         style={{ color }}
       >
         {texto}
       </span>
       <span
-        className="text-4xl"
+        className="text-5xl"
         style={{ color }}
       >
         {textoVar}

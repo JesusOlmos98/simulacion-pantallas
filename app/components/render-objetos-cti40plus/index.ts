@@ -1,3 +1,4 @@
+export { default as ObjEncabezadoEditIcono } from './ObjEncabezadoEditIcono';
 export { default as ObjLineaGrafica } from './ObjLineaGrafica';
 export { default as ObjTablaDinamica } from './ObjTablaDinamica';
 export { default as ObjTablaDinamicaInit } from './ObjTablaDinamicaInit';

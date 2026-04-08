@@ -31,7 +31,7 @@ export default function ObjLineaText({ obj, onNavegar }: ObjLineaProps): JSX.Ele
 
   return (
     <div
-      className={`flex items-center justify-between px-3 ${IconoLinea ? 'py-5' : 'py-7'} cursor-pointer hover:bg-white/5 transition-colors`}
+      className={`flex items-center justify-between px-3 py-7 cursor-pointer hover:bg-white/5 transition-colors rounded-2xl`}
       onClick={handleClick}
     >
       <div className="flex items-center gap-3">
@@ -40,7 +40,7 @@ export default function ObjLineaText({ obj, onNavegar }: ObjLineaProps): JSX.Ele
           <div className="w-14 h-14 flex items-center justify-center">
             {/* eslint-disable-next-line react-hooks/static-components */}
             <IconoLinea
-              size={44}
+              size={56}
               color="white"
             />
           </div>
@@ -48,7 +48,7 @@ export default function ObjLineaText({ obj, onNavegar }: ObjLineaProps): JSX.Ele
 
         {/* Texto */}
         <span
-          className="text-4xl font-light"
+          className="text-5xl font-light"
           style={{ color: colorTexto }}
         >
           {texto}
@@ -58,7 +58,7 @@ export default function ObjLineaText({ obj, onNavegar }: ObjLineaProps): JSX.Ele
       {/* Chevron de navegación */}
       {nav > 0 && (
         <LuChevronRight
-          size={36}
+          size={50}
           color="#ffffff"
         />
       )}

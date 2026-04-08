@@ -15,7 +15,8 @@ import {
   LuClock, // 41  – Relojes
   LuInfo, // 17  – Información
   LuSettings, // 13  – Configuración
-  LuEllipsisVertical // 322 – Más opciones (tres puntos verticales)
+  LuEllipsisVertical, // 322 – Más opciones (tres puntos verticales)
+  LuPlus // 24  – Añadir / editar
 } from 'react-icons/lu';
 
 const ICONO_CTI40PLUS_MAP: Record<number, IconType> = {
@@ -34,7 +35,8 @@ const ICONO_CTI40PLUS_MAP: Record<number, IconType> = {
   17: LuInfo, // Información
   13: LuSettings, // Configuración
   270: LuBellRing, // Alarmas
-  322: LuEllipsisVertical // Más opciones
+  322: LuEllipsisVertical, // Más opciones
+  24: LuPlus // Añadir / editar
 };
 
 /** Devuelve el componente de icono para un id de icono de barra, o null si no existe mapeo. */

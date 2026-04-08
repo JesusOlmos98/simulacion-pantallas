@@ -33,7 +33,7 @@ export default function ObjLineaTextText({ obj, onNavegar }: ObjLineaTextTextPro
 
   return (
     <div
-      className={`flex items-center justify-between px-3 ${IconoLinea ? 'py-5' : 'py-7'} cursor-pointer hover:bg-white/5 transition-colors`}
+      className={`flex items-center justify-between px-3 py-7 cursor-pointer hover:bg-white/5 transition-colors rounded-2xl`}
       onClick={handleClick}
     >
       <div className="flex items-center gap-3">
@@ -41,13 +41,13 @@ export default function ObjLineaTextText({ obj, onNavegar }: ObjLineaTextTextPro
           <div className="w-14 h-14 flex items-center justify-center">
             {/* eslint-disable-next-line react-hooks/static-components */}
             <IconoLinea
-              size={44}
+              size={56}
               color="white"
             />
           </div>
         )}
         <span
-          className="text-4xl font-light"
+          className="text-5xl font-light"
           style={{ color: colorTexto }}
         >
           {texto}
@@ -56,14 +56,14 @@ export default function ObjLineaTextText({ obj, onNavegar }: ObjLineaTextTextPro
 
       <div className="flex items-center gap-2">
         <span
-          className="text-4xl"
+          className="text-5xl"
           style={{ color: COLORES.primary }}
         >
           {textoVar}
         </span>
         {nav > 0 && (
           <LuChevronRight
-            size={36}
+            size={50}
             color="#ffffff"
           />
         )}
