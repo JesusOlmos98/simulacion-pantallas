@@ -3,8 +3,9 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import type { JSX } from 'react';
 import { useRouter } from 'next/navigation';
-import { LuChevronLeft, LuMenu } from 'react-icons/lu';
-import { ObjLineaText, ObjLineaTextVar, RenderObjeto, resolverIconoCTI40Plus } from '../components/render-objetos-cti40plus';
+import { LuChevronLeft, LuInfo, LuMenu, LuX } from 'react-icons/lu';
+import { RenderObjeto, resolverIconoCTI40Plus } from '../components/render-objetos-cti40plus';
+import ObjLineaInfoTextText from '../components/render-objetos-cti40plus/ObjLineaInfoTextText';
 import { resolverTexto, COLORES, BarraBotonesCti40Plus } from '../components/render-objetos-cti40plus';
 import type { DescriptorPantalla, ObjBase } from '../components/pantalla-types';
 import { getColorHex } from '../components/render-objetos-cti40plus/colors';
@@ -42,6 +43,7 @@ export default function PantallaCti40Plus(): JSX.Element {
   const [objetos, setObjetos] = useState<ObjBase[] | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [infoDialogAbierto, setInfoDialogAbierto] = useState(false);
 
   // Ref para poder cancelar el fetch en vuelo al desmontar o al lanzar uno nuevo
   const controllerRef = useRef<AbortController | null>(null);
@@ -113,10 +115,24 @@ export default function PantallaCti40Plus(): JSX.Element {
   // Objetos de barra de acceso directo (tipoObjeto: 66) — se usan los persistentes (capturados en pantallaId=0)
   const barraAccesoDirecto = barraAccesoDirectoPersistente.current;
 
-  // Separar objetos: header (tipoObjeto: 2), líneas nav (tipoObjeto: 5), líneas text+var (tipoObjeto: 4) y otros
-  const lineasObjetos = objetos?.filter((o) => o.tipoObjeto === 5) ?? [];
-  const lineasTextVar = objetos?.filter((o) => o.tipoObjeto === 4) ?? [];
-  const otrosObjetos = objetos?.filter((o) => o.tipoObjeto !== 2 && o.tipoObjeto !== 5 && o.tipoObjeto !== 4) ?? [];
+  // Separar objetos: header (tipoObjeto: 2), líneas (tipoObjeto: 4, 5, 16), info (tipoObjeto: 7) y otros
+  const TIPOS_LINEA = new Set([4, 5, 16]);
+  // Agrupar líneas en bloques separados por objLineaGrafica (tipoObjeto: 20)
+  const gruposLineas: ObjBase[][] = [];
+  if (objetos) {
+    let grupoActual: ObjBase[] = [];
+    for (const obj of objetos) {
+      if (TIPOS_LINEA.has(obj.tipoObjeto)) {
+        grupoActual.push(obj);
+      } else if (obj.tipoObjeto === 20 && grupoActual.length > 0) {
+        gruposLineas.push(grupoActual);
+        grupoActual = [];
+      }
+    }
+    if (grupoActual.length > 0) gruposLineas.push(grupoActual);
+  }
+  const infoObjetos = objetos?.filter((o) => o.tipoObjeto === 7) ?? [];
+  const otrosObjetos = objetos?.filter((o) => o.tipoObjeto !== 2 && o.tipoObjeto !== 7 && o.tipoObjeto !== 20 && !TIPOS_LINEA.has(o.tipoObjeto)) ?? [];
 
   // Verificar si estamos en pantalla principal (idPantalla: 0)
   const esPantallaPrincipal = (objetos?.find((o) => o.tipoObjeto === 1)?.idPantalla ?? 0) === 0;
@@ -248,26 +264,41 @@ export default function PantallaCti40Plus(): JSX.Element {
                   </div>
                 ) : (
                   <>
-                    {/* Contenedor para líneas con esquinas redondeadas y fondo tertiary */}
-                    {(lineasObjetos.length > 0 || lineasTextVar.length > 0) && (
-                      <div
-                        className="rounded-lg mb-4"
-                        style={{ backgroundColor: COLORES.tertiary }}
-                      >
-                        {lineasObjetos.map((obj, i) => (
-                          <ObjLineaText
-                            key={i}
-                            obj={obj}
-                            onNavegar={navegarA}
-                          />
+                    {/* Bloques de líneas — cada grupo separado por objLineaGrafica (tipo 20) va en su propio contenedor */}
+                    {gruposLineas.length > 0 && (
+                      <>
+                        {gruposLineas.map((grupo, gi) => (
+                          <div
+                            key={gi}
+                            className="rounded-lg mb-4"
+                            style={{ backgroundColor: COLORES.tertiary }}
+                          >
+                            {grupo.map((obj, i) => (
+                              <RenderObjeto
+                                key={i}
+                                obj={obj}
+                                onNavegar={navegarA}
+                                idPantallaActual={actual.idPantalla}
+                              />
+                            ))}
+                          </div>
                         ))}
-                        {lineasTextVar.map((obj, i) => (
-                          <ObjLineaTextVar
-                            key={i}
-                            obj={obj}
-                            onNavegar={navegarA}
+                      </>
+                    )}
+
+                    {/* Botón de información — aparece si hay objLineaInfoTextText (tipo 7) */}
+                    {infoObjetos.length > 0 && (
+                      <div className="flex justify-center mt-10 mb-4">
+                        <button
+                          className="flex items-center gap-2 px-8 py-1 rounded-xl font-medium"
+                          style={{ backgroundColor: COLORES.primary }}
+                          onClick={() => setInfoDialogAbierto(true)}
+                        >
+                          <LuInfo
+                            size={50}
+                            color={COLORES.light}
                           />
-                        ))}
+                        </button>
                       </div>
                     )}
 
@@ -304,6 +335,46 @@ export default function PantallaCti40Plus(): JSX.Element {
                 )}
               </div>
             </>
+          )}
+
+          {/* ── Dialog de información (objLineaInfoTextText) ── */}
+          {infoDialogAbierto && infoObjetos.length > 0 && (
+            <div
+              className="absolute inset-0 flex flex-col"
+              style={{ backgroundColor: '#1E1E1E' }}
+            >
+              {/* Header del dialog */}
+              <div
+                className="flex items-center px-3 py-5 shrink-0"
+                style={{ backgroundColor: COLORES.info }}
+              >
+                <button
+                  className="p-1 text-white hover:text-gray-200 transition-colors"
+                  aria-label="Cerrar"
+                  onClick={() => setInfoDialogAbierto(false)}
+                >
+                  <LuX size={48} />
+                </button>
+                <span className="flex-1 text-center text-4xl font-normal text-white truncate px-2">{titulo}</span>
+                {/* Espaciador simétrico para centrar el título */}
+                <div style={{ width: 56 }} />
+              </div>
+
+              {/* Filas info */}
+              <div className="flex-1 overflow-y-auto p-4 my-2">
+                <div
+                  className="rounded-lg"
+                  style={{ backgroundColor: COLORES.tertiary }}
+                >
+                  {infoObjetos.map((obj, i) => (
+                    <ObjLineaInfoTextText
+                      key={i}
+                      obj={obj}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
           )}
         </div>
 

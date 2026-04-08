@@ -2,6 +2,7 @@
 
 import type { JSX } from 'react';
 import ObjLineaText from './ObjLineaText';
+import ObjLineaTextText from './ObjLineaTextText';
 import ObjLineaTextVar from './ObjLineaTextVar';
 import type { ObjBase, DescriptorPantalla } from '../pantalla-types';
 
@@ -21,6 +22,15 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual: _idPant
     // objEncabezado — se muestra en la barra superior, no aquí
     case 2:
       return null;
+
+    // objLineaTextText — fila con texto principal + texto secundario (en primary) + flecha
+    case 16:
+      return (
+        <ObjLineaTextText
+          obj={obj}
+          onNavegar={onNavegar}
+        />
+      );
 
     // objLineaTextVar — fila con texto principal + variable decodificada + flecha
     case 4:
@@ -45,24 +55,20 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual: _idPant
     case 66:
       return null; // Se manejan en BarraBotonesCti40Plus
 
-    // objLineaGrafica — separador
+    // objLineaGrafica — separador lógico entre bloques, no pinta nada
     case 20:
-      return <hr className="col-span-7 border-zinc-600 my-1" />;
+      return null;
 
     // objVarIndividual — variable sin navegación
     case 36:
-      return (
-        <div className="col-span-7 px-4 py-2 text-4xl text-white">
-          {JSON.stringify(obj)}
-        </div>
-      );
+      return <div className="col-span-7 px-4 py-2 text-4xl text-white">{JSON.stringify(obj)}</div>;
 
     // objVarIndividualNavegacionOEdit — variable con navegación
     case 37:
       const nav = (obj.valorEditableONav as number | undefined) ?? 0;
       if (nav > 0) {
         return (
-          <div 
+          <div
             className="col-span-7 px-4 py-2 text-4xl text-white cursor-pointer hover:bg-white/5 transition-colors"
             onClick={() => onNavegar({ idPantalla: nav, indicePantalla: (obj.indicePantalla as number | undefined) ?? 0, esPrincipal: false })}
           >
@@ -70,17 +76,9 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual: _idPant
           </div>
         );
       }
-      return (
-        <div className="col-span-7 px-4 py-2 text-4xl text-white">
-          {JSON.stringify(obj)}
-        </div>
-      );
+      return <div className="col-span-7 px-4 py-2 text-4xl text-white">{JSON.stringify(obj)}</div>;
 
     default:
-      return (
-        <div className="col-span-7 px-4 py-2 text-2xl text-zinc-400 italic">
-          [Tipo {obj.tipoObjeto} sin renderizador]
-        </div>
-      );
+      return <div className="col-span-7 px-4 py-2 text-2xl text-zinc-400 italic">[Tipo {obj.tipoObjeto} sin renderizador]</div>;
   }
 }

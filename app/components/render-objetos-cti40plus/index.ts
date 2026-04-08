@@ -1,4 +1,6 @@
+export { default as ObjLineaInfoTextText } from './ObjLineaInfoTextText';
 export { default as ObjLineaText } from './ObjLineaText';
+export { default as ObjLineaTextText } from './ObjLineaTextText';
 export { default as ObjLineaTextVar } from './ObjLineaTextVar';
 export { default as RenderObjeto } from './RenderObjeto';
 export { default as BarraBotonesCti40Plus } from './BarraBotonesCti40Plus';
