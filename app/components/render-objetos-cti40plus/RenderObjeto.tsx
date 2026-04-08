@@ -6,6 +6,7 @@ import ObjTablaDinamicaInit from './ObjTablaDinamicaInit';
 import ObjLineaText from './ObjLineaText';
 import ObjLineaTextText from './ObjLineaTextText';
 import ObjLineaTextVar from './ObjLineaTextVar';
+import ObjLineaTextVarVar from './ObjLineaTextVarVar';
 import type { ObjBase, DescriptorPantalla } from '../pantalla-types';
 
 export interface RenderObjetoProps {
@@ -33,6 +34,15 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual: _idPant
     case 16:
       return (
         <ObjLineaTextText
+          obj={obj}
+          onNavegar={onNavegar}
+        />
+      );
+
+    // objLineaTextVarVar — fila con texto principal + variable central + variable secundaria + flecha
+    case 3:
+      return (
+        <ObjLineaTextVarVar
           obj={obj}
           onNavegar={onNavegar}
         />

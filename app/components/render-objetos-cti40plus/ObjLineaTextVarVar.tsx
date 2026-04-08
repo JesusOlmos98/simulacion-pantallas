@@ -6,12 +6,12 @@ import { resolverTexto, resolverUnidad, decodificarVariable } from './pantalla-u
 import { COLORES, resolverColor } from './colors';
 import type { DescriptorPantalla } from '../pantalla-types';
 
-interface ObjLineaTextVarProps {
+interface ObjLineaTextVarVarProps {
   obj: Record<string, unknown>;
   onNavegar: (descriptor: DescriptorPantalla) => void;
 }
 
-export default function ObjLineaTextVar({ obj, onNavegar }: ObjLineaTextVarProps): JSX.Element {
+export default function ObjLineaTextVarVar({ obj, onNavegar }: ObjLineaTextVarVarProps): JSX.Element {
   const nav = (obj.valorEditableONav as number | undefined) ?? 0;
 
   const handleClick = (): void => {
@@ -21,12 +21,14 @@ export default function ObjLineaTextVar({ obj, onNavegar }: ObjLineaTextVarProps
   };
 
   const texto = resolverTexto((obj.texto as number | undefined) ?? 0);
+
+  const valorCentral = decodificarVariable((obj.variableCentral as number | undefined) ?? 0, (obj.tipoVarCentral as number | undefined) ?? 0);
+  const unidadCentral = resolverUnidad((obj.unidadCentral as number | undefined) ?? 0);
+
   const valor = decodificarVariable((obj.variable as number | undefined) ?? 0, (obj.tipoVar as number | undefined) ?? 0);
   const unidad = resolverUnidad((obj.unidad as number | undefined) ?? 0);
 
-  // Aplicar la misma lógica de colores que ObjLineaText
-  const coloresLineaEdit = (obj.coloresLineaEdit as number | undefined) ?? 0;
-  const colorTexto = resolverColor(coloresLineaEdit);
+  const colorTexto = resolverColor((obj.coloresLinea as number | undefined) ?? 0);
 
   return (
     <div
@@ -41,10 +43,27 @@ export default function ObjLineaTextVar({ obj, onNavegar }: ObjLineaTextVarProps
         {texto}
       </span>
 
-      {/* Valor + unidad + chevron */}
+      {/* Variables + chevron */}
       <div className="flex items-center gap-2">
+        {/* Columna central — ancho fijo, alineada a la derecha */}
+        <div
+          className="flex justify-end"
+          style={{ minWidth: '160px' }}
+        >
+          <span
+            className="text-5xl"
+            style={{ color: COLORES.light }}
+          >
+            {valorCentral}
+            {unidadCentral ?? ''}
+          </span>
+        </div>
+
+        {/* Separador visual */}
+        <div style={{ minWidth: '48px' }} />
+
         <span
-          className="text-5xl "
+          className="text-5xl"
           style={{ color: COLORES.primary }}
         >
           {valor}
