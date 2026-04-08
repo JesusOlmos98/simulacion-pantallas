@@ -10,7 +10,7 @@ export const COLORES = {
   success: '#10b981', // Esmeralda (índice 8)
   light: '#f5f5f5', // Gris muy claro (fallback para 0 u otros)
   light_gray: '#c4c4c4ff', // Gris claro (índice 15)
-  menuWords: '#FFA505' // Naranja para textos del menú
+  menuWords: '#FFA505' // Naranja para textos del menú de Omega
 } as const;
 
 /** Obtiene el color HEX correspondiente a un número (1-indexed) */

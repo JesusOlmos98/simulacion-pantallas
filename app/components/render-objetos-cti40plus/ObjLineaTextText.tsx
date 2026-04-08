@@ -33,7 +33,7 @@ export default function ObjLineaTextText({ obj, onNavegar }: ObjLineaTextTextPro
 
   return (
     <div
-      className={`flex items-center justify-between px-3 py-7 cursor-pointer hover:bg-white/5 transition-colors rounded-2xl`}
+      className="flex items-center justify-between px-3 py-7 cursor-pointer hover:bg-white/5 transition-colors"
       onClick={handleClick}
     >
       <div className="flex items-center gap-3">

@@ -30,7 +30,7 @@ export default function ObjLineaTextVar({ obj, onNavegar }: ObjLineaTextVarProps
 
   return (
     <div
-      className={`flex items-center justify-between px-3 py-7 cursor-pointer hover:bg-white/5 transition-colors rounded-2xl`}
+      className="flex items-center justify-between px-3 py-7 cursor-pointer hover:bg-white/5 transition-colors"
       onClick={handleClick}
     >
       {/* Texto etiqueta */}

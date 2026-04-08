@@ -295,7 +295,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                         {gruposLineas.map((grupo, gi) => (
                           <div
                             key={gi}
-                            className="rounded-lg mb-4"
+                            className="rounded-2xl mb-4"
                             style={{ backgroundColor: COLORES.tertiary }}
                           >
                             {grupo.map((obj, i) => (
@@ -322,22 +322,6 @@ export default function PantallaCti40Plus(): JSX.Element {
                             onNavegar={navegarA}
                           />
                         ))}
-                      </div>
-                    )}
-
-                    {/* Botón de información — aparece si hay objLineaInfoTextText (tipo 7) */}
-                    {infoObjetos.length > 0 && (
-                      <div className="flex justify-center mt-10 mb-4">
-                        <button
-                          className="flex items-center gap-2 px-8 py-1 rounded-xl font-medium"
-                          style={{ backgroundColor: COLORES.primary }}
-                          onClick={() => setInfoDialogAbierto(true)}
-                        >
-                          <LuInfo
-                            size={50}
-                            color={COLORES.light}
-                          />
-                        </button>
                       </div>
                     )}
 
@@ -373,6 +357,19 @@ export default function PantallaCti40Plus(): JSX.Element {
                   </>
                 )}
               </div>
+
+              {/* Footer: botón de información — aparece si hay objLineaInfoTextText (tipo 7) */}
+              {infoObjetos.length > 0 && (
+                <div className="flex justify-center shrink-0 py-2" style={{ backgroundColor: '#1E1E1E' }}>
+                  <button
+                    className="flex items-center gap-2 px-8 rounded-xl font-medium"
+                    style={{ backgroundColor: COLORES.primary }}
+                    onClick={() => setInfoDialogAbierto(true)}
+                  >
+                    <LuInfo size={62} color={COLORES.light} />
+                  </button>
+                </div>
+              )}
             </>
           )}
 
@@ -402,7 +399,7 @@ export default function PantallaCti40Plus(): JSX.Element {
               {/* Filas info */}
               <div className="flex-1 overflow-y-auto p-4 my-2">
                 <div
-                  className="rounded-lg"
+                  className="rounded-2xl"
                   style={{ backgroundColor: COLORES.tertiary }}
                 >
                   {infoObjetos.map((obj, i) => (

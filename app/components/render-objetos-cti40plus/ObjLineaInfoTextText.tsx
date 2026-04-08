@@ -23,13 +23,13 @@ export default function ObjLineaInfoTextText({ obj }: ObjLineaInfoTextTextProps)
   return (
     <div className="flex items-center justify-between pl-3 pr-6 py-7 rounded-2xl">
       <span
-        className="text-5xl font-light"
+        className="text-5xl font-light leading-[50px]"
         style={{ color }}
       >
         {texto}
       </span>
       <span
-        className="text-5xl"
+        className="text-5xl leading-[50px]"
         style={{ color }}
       >
         {textoVar}
