@@ -6,6 +6,7 @@ import type { IconType } from 'react-icons/lib';
 import { LuChevronRight } from 'react-icons/lu';
 import { resolverTexto } from './pantalla-utils';
 import { resolverIconoCTI40Plus } from './iconos-cti40plus';
+import { resolverColor } from './colors';
 import type { DescriptorPantalla } from '../pantalla-types';
 
 interface ObjLineaProps {
@@ -14,7 +15,7 @@ interface ObjLineaProps {
   esLista?: boolean;
 }
 
-export default function ObjLineaCti40Plus({ obj, onNavegar }: ObjLineaProps): JSX.Element {
+export default function ObjLineaText({ obj, onNavegar }: ObjLineaProps): JSX.Element {
   const nav = (obj.valorEditableONav as number | undefined) ?? 0;
 
   const handleClick = (): void => {
@@ -24,6 +25,8 @@ export default function ObjLineaCti40Plus({ obj, onNavegar }: ObjLineaProps): JS
   };
 
   const texto = resolverTexto((obj.texto as number | undefined) ?? 0);
+  const coloresLineaEdit = (obj.coloresLineaEdit as number | undefined) ?? 0;
+  const colorTexto = resolverColor(coloresLineaEdit);
   const IconoLinea = useMemo<IconType | null>(() => (obj.iconoLinea != null ? resolverIconoCTI40Plus(obj.iconoLinea as number) : null), [obj.iconoLinea]);
 
   return (
@@ -44,14 +47,19 @@ export default function ObjLineaCti40Plus({ obj, onNavegar }: ObjLineaProps): JS
         )}
 
         {/* Texto */}
-        <span className="text-white text-4xl font-light">{texto}</span>
+        <span
+          className="text-4xl font-light"
+          style={{ color: colorTexto }}
+        >
+          {texto}
+        </span>
       </div>
 
       {/* Chevron de navegación */}
       {nav > 0 && (
         <LuChevronRight
           size={36}
-          className="text-white"
+          color="#ffffff"
         />
       )}
     </div>

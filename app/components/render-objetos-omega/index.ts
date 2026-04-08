@@ -8,3 +8,4 @@ export { ChevronRight, navegarSimple, navegarConEdicion } from './RenderHelpers'
 export { COLORES, resolverColor, getColorClass } from './colors';
 export { resolverIcono } from './iconos-menu';
 export { resolverTexto, resolverUnidad, decodificarVariable } from './pantalla-utils';
+export { default as Divider } from './Divider';

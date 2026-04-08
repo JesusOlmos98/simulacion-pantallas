@@ -3,7 +3,7 @@
 import type { JSX } from 'react';
 import { LuChevronRight } from 'react-icons/lu';
 import { resolverTexto, resolverUnidad, decodificarVariable } from './pantalla-utils';
-import { COLORES } from './colors';
+import { COLORES, resolverColor } from './colors';
 import type { DescriptorPantalla } from '../pantalla-types';
 
 interface ObjLineaTextVarProps {
@@ -11,7 +11,7 @@ interface ObjLineaTextVarProps {
   onNavegar: (descriptor: DescriptorPantalla) => void;
 }
 
-export default function ObjLineaTextVarCti40Plus({ obj, onNavegar }: ObjLineaTextVarProps): JSX.Element {
+export default function ObjLineaTextVar({ obj, onNavegar }: ObjLineaTextVarProps): JSX.Element {
   const nav = (obj.valorEditableONav as number | undefined) ?? 0;
 
   const handleClick = (): void => {
@@ -24,13 +24,22 @@ export default function ObjLineaTextVarCti40Plus({ obj, onNavegar }: ObjLineaTex
   const valor = decodificarVariable((obj.variable as number | undefined) ?? 0, (obj.tipoVar as number | undefined) ?? 0);
   const unidad = resolverUnidad((obj.unidad as number | undefined) ?? 0);
 
+  // Aplicar la misma lógica de colores que ObjLineaText
+  const coloresLineaEdit = (obj.coloresLineaEdit as number | undefined) ?? 0;
+  const colorTexto = resolverColor(coloresLineaEdit);
+
   return (
     <div
       className={`flex items-center justify-between px-3 ${(obj.iconoLinea as number | undefined) !== undefined ? 'py-5' : 'py-7'} cursor-pointer hover:bg-white/5 transition-colors`}
       onClick={handleClick}
     >
       {/* Texto etiqueta */}
-      <span className="text-white text-4xl font-light">{texto}</span>
+      <span
+        className="text-4xl font-light"
+        style={{ color: colorTexto }}
+      >
+        {texto}
+      </span>
 
       {/* Valor + unidad + chevron */}
       <div className="flex items-center gap-2">
@@ -45,7 +54,7 @@ export default function ObjLineaTextVarCti40Plus({ obj, onNavegar }: ObjLineaTex
         {nav > 0 && (
           <LuChevronRight
             size={36}
-            className="text-white"
+            color="#ffffff"
           />
         )}
       </div>

@@ -4,10 +4,10 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import type { JSX } from 'react';
 import { useRouter } from 'next/navigation';
 import { LuChevronLeft, LuMenu } from 'react-icons/lu';
-import { resolverIconoCTI40Plus } from '../components/render-objetos-cti40plus';
-import { resolverTexto, resolverColor, COLORES, ObjLineaCti40Plus, ObjLineaTextVarCti40Plus, BarraBotonesCti40Plus } from '../components/render-objetos-cti40plus';
-import { RenderObjeto } from '../components';
+import { ObjLineaText, ObjLineaTextVar, RenderObjeto, resolverIconoCTI40Plus } from '../components/render-objetos-cti40plus';
+import { resolverTexto, COLORES, BarraBotonesCti40Plus } from '../components/render-objetos-cti40plus';
 import type { DescriptorPantalla, ObjBase } from '../components/pantalla-types';
+import { getColorHex } from '../components/render-objetos-cti40plus/colors';
 
 const MAC_CTI40PLUS = '202000029'; // MAC address para CTI40 PLUS
 let idEnvioCounter = 1;
@@ -87,7 +87,6 @@ export default function PantallaCti40Plus(): JSX.Element {
   }, []);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     cargarPantalla(PRINCIPAL);
     return (): void => {
       controllerRef.current?.abort();
@@ -129,23 +128,25 @@ export default function PantallaCti40Plus(): JSX.Element {
     : undefined;
 
   // Título: viene en objEncabezado (tipoObjeto=2) si la pantalla lo tiene
-  const encabezado = objetos?.find((o) => o.tipoObjeto === 2) as {
-    tituloText?: number;
-    colorTitulo?: number;
-    iconoTarea2?: number;
-    pantallaSaltoTarea2?: number;
-    indicePantallaTarea2?: number;
-    iconoTarea3?: number;
-    pantallaSaltoTarea3?: number;
-    indicePantallaTarea3?: number;
-  } | undefined;
+  const encabezado = objetos?.find((o) => o.tipoObjeto === 2) as
+    | {
+        tituloText?: number;
+        colorTitulo?: number;
+        iconoTarea2?: number;
+        pantallaSaltoTarea2?: number;
+        indicePantallaTarea2?: number;
+        iconoTarea3?: number;
+        pantallaSaltoTarea3?: number;
+        indicePantallaTarea3?: number;
+      }
+    | undefined;
   const titulo = encabezado ? resolverTexto(encabezado.tituloText ?? 0) : '';
-  const colorHeader = resolverColor(encabezado?.colorTitulo ?? 0);
+  const colorHeader = getColorHex(encabezado?.colorTitulo ?? 0);
 
   // Tareas de navegación del encabezado (botones a la derecha del header)
   const tareas = [
     { icono: encabezado?.iconoTarea3 ?? 0, pantalla: encabezado?.pantallaSaltoTarea3 ?? 0, indice: encabezado?.indicePantallaTarea3 ?? 0 },
-    { icono: encabezado?.iconoTarea2 ?? 0, pantalla: encabezado?.pantallaSaltoTarea2 ?? 0, indice: encabezado?.indicePantallaTarea2 ?? 0 },
+    { icono: encabezado?.iconoTarea2 ?? 0, pantalla: encabezado?.pantallaSaltoTarea2 ?? 0, indice: encabezado?.indicePantallaTarea2 ?? 0 }
   ].filter((t) => t.pantalla > 0);
 
   // tipoPlantilla: 4 = lista de filas, otros = grid de iconos
@@ -254,14 +255,14 @@ export default function PantallaCti40Plus(): JSX.Element {
                         style={{ backgroundColor: COLORES.tertiary }}
                       >
                         {lineasObjetos.map((obj, i) => (
-                          <ObjLineaCti40Plus
+                          <ObjLineaText
                             key={i}
                             obj={obj}
                             onNavegar={navegarA}
                           />
                         ))}
                         {lineasTextVar.map((obj, i) => (
-                          <ObjLineaTextVarCti40Plus
+                          <ObjLineaTextVar
                             key={i}
                             obj={obj}
                             onNavegar={navegarA}

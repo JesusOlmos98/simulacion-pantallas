@@ -2,7 +2,7 @@ import { EnTextos } from '../../../src/utils/common-lib-commac-generador/enumTex
 import { EnUnidades, EnTipoVariable } from '../../../src/utils/common-lib-commac-generador/NXP_BE/globals/enumOld';
 
 // Re-exportar para acceso fácil
-export { getColorClass, resolverColor } from './colors';
+export { resolverColor, getColorHex } from './colors';
 
 // ─── Texto ────────────────────────────────────────────────────────────────────
 

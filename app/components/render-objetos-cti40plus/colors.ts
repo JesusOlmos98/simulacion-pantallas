@@ -8,25 +8,36 @@ export const COLORES = {
   info: '#3b82f6', // Azul (índice 6)
   success: '#10b981', // Esmeralda (índice 7)
   light: '#f5f5f5', // Gris muy claro (fallback para 0 u otros)
+  light_gray: '#c4c4c4ff', // Gris claro (índice 15)
   menuWords: '#FFA505' // Naranja para textos del menú
 } as const;
 
-/** Resuelve un índice de color a su valor hex (1-indexed) */
-export function resolverColor(id: number): string {
-  const colorMap: Record<number, string> = { 1: COLORES.primary, 2: COLORES.secondary, 3: COLORES.tertiary, 4: COLORES.error, 5: COLORES.warning, 6: COLORES.info, 7: COLORES.success };
-  return colorMap[id] ?? COLORES.light;
+/** Obtiene el color HEX correspondiente a un número (1-indexed) */
+export function getColorHex(colorId: number): string {
+  const colorMap: Record<number, string> = {
+    1: COLORES.primary, // Verde
+    2: COLORES.secondary, // Azul
+    3: COLORES.tertiary, // Gris
+    4: COLORES.error, // Rojo
+    5: COLORES.warning, // Ámbar
+    6: COLORES.info, // Azul
+    7: COLORES.success, // Esmeralda
+    15: COLORES.light_gray // Gris claro
+  };
+  return colorMap[colorId] ?? COLORES.light;
 }
 
-/** Obtiene la clase Tailwind correspondiente para un color (1-indexed) */
-export function getColorClass(colorId: number): { bg: string; text: string; border: string } {
-  const colorMap: Record<number, { bg: string; text: string; border: string }> = {
-    1: { bg: 'bg-green-500', text: 'text-green-500', border: 'border-green-500' }, // primary
-    2: { bg: 'bg-blue-900', text: 'text-blue-900', border: 'border-blue-900' }, // secondary
-    3: { bg: 'bg-zinc-900', text: 'text-zinc-900', border: 'border-zinc-900' }, // tertiary
-    4: { bg: 'bg-red-600', text: 'text-red-600', border: 'border-red-600' }, // error
-    5: { bg: 'bg-amber-500', text: 'text-amber-500', border: 'border-amber-500' }, // warning
-    6: { bg: 'bg-blue-500', text: 'text-blue-500', border: 'border-blue-500' }, // info
-    7: { bg: 'bg-emerald-500', text: 'text-emerald-500', border: 'border-emerald-500' } // success
-  };
-  return colorMap[colorId] ?? { bg: 'bg-gray-100', text: 'text-gray-100', border: 'border-gray-100' };
+/** Resuelve color con lógica especial para CTI40 PLUS:
+ * - Si es 15, usa light_gray
+ * - Si es 1 o fallback (0), usa light
+ * - Otros colores usan resolverColor() normalmente
+ */
+export function resolverColor(coloresLineaEdit: number): string {
+  if (coloresLineaEdit === 15) {
+    return COLORES.light_gray;
+  } else if (coloresLineaEdit === 1 || coloresLineaEdit === 0) {
+    return COLORES.light;
+  } else {
+    return getColorHex(coloresLineaEdit);
+  }
 }
