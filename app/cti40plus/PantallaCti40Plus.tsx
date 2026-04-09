@@ -489,6 +489,7 @@ export default function PantallaCti40Plus(): JSX.Element {
         {/* ── Barra de botones de acceso directo (fuera de la pantalla) ── */}
         <BarraBotonesCti40Plus
           botones={barraAccesoDirecto}
+          idPantallaActual={actual.idPantalla}
           onNavegar={navegarA}
         />
       </div>

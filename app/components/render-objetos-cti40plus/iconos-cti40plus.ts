@@ -22,17 +22,12 @@ import {
   LuSlidersHorizontal, // 55  - Barritas horizontales con sliders (Ajustes)
   LuWrench, // 123 - Llave inglesa (Mantenimiento)
   LuUnplug,
-  LuChevronsRightLeft,
-  LuZap, // 346 - tally-1 (icono extraño de rayo)
-  LuZapOff, // 146 - tally-2 (icono extraño de rayo tachado)
-  LuCloud, // 47 - tally-3 (nube CO₂)  48 - tally-4 (nube NH₃)
-  LuWifiOff, // 145 - WiFi mínimo (sin cobertura)
+  LuChevronsRightLeft, // 146 - tally-2 (icono extraño de rayo tachado)
+  LuCloud, // 145 - WiFi mínimo (sin cobertura)
   LuWifi, // 146 - WiFi con 1 raya de cobertura
   LuWifiLow, // 147 - WiFi con 2 rayas de cobertura
   LuWifiHigh, // 148 - WiFi máximo (full cobertura)
   LuWifiZero,
-  LuSquare,
-  LuDiamond,
   LuSmartphone
 } from 'react-icons/lu';
 import { COLORES } from './colors';
@@ -130,14 +125,13 @@ const ICONO_CTI40PLUS_MAP: Record<number, IconType> = {
   270: LuBellRing, // Alarmas
   322: LuEllipsisVertical, // Más opciones
   // Iconos tally (extraños/distintivos)
-  346: IconoVentiladorGirando, // tally-1 (ventilador girando en color naranja)
-  47: IconoNubeCO2, // tally-3 (nube CO₂)
-  48: IconoNubeNH3, // tally-4 (nube NH₃)
-  // Iconos WiFi por nivel de cobertura
-  145: LuWifiZero, //!probar
-  146: LuWifiLow, //done
-  147: LuWifiHigh, //done
-  148: LuWifi //!probar
+  346: IconoVentiladorGirando, // Ventilador girando en color naranja
+  47: IconoNubeCO2, // Nube CO₂
+  48: IconoNubeNH3, // Nube NH₃
+  145: LuWifiZero,
+  146: LuWifiLow,
+  147: LuWifiHigh,
+  148: LuWifi
 };
 
 /** Devuelve el componente de icono para un id de icono de barra, o null si no existe mapeo. */
