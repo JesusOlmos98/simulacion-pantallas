@@ -42,7 +42,7 @@ export default function ObjLineaTextVar({ obj, onNavegar }: ObjLineaTextVarProps
       </span>
 
       {/* Valor + unidad + chevron */}
-      <div className="flex items-center gap-2">
+      <div className={`flex items-center gap-2 ${nav === 0 ? 'pr-4' : ''}`}>
         <span
           className="text-5xl "
           style={{ color: COLORES.primary }}

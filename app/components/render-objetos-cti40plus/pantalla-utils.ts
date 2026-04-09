@@ -233,10 +233,11 @@ function formatTiempoHms(seg: number): string {
   return `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
 }
 
-function formatTiempoHm(seg: number): string {
-  const h = Math.floor(seg / 3600);
-  const m = Math.floor((seg % 3600) / 60);
-  return `${pad2(h)}:${pad2(m)}`;
+// tiempoHm viene empaquetado en bytes [seg, min, hora] del uint32 (protocolo ST)
+function formatTiempoHm(raw: number): string {
+  const hora = (raw >>> 16) & 0xff;
+  const min = (raw >>> 8) & 0xff;
+  return `${pad2(hora)}h${pad2(min)}m`;
 }
 
 function formatTiempoMs(seg: number): string {

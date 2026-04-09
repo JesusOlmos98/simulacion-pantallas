@@ -10,6 +10,9 @@ import ObjLineaTextVarVar from './ObjLineaTextVarVar';
 import ObjLineaInfoTextText from './ObjLineaInfoTextText';
 import ObjLineaInfoTextVar from './ObjLineaInfoTextVar';
 import ObjLineaInfoTextTextVarVar from './ObjLineaInfoTextTextVarVar';
+import ObjPosXyLibreIcon from './ObjPosXyLibreIcon';
+import ObjPosXyLibreVariable from './ObjPosXyLibreVariable';
+import ObjPosXyLibreLineas from './ObjPosXyLibreLineas';
 import type { ObjBase, DescriptorPantalla } from '../pantalla-types';
 
 export interface RenderObjetoProps {
@@ -87,6 +90,22 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual: _idPant
     // objTablaDinamicaFila — filas de tabla, se manejan agrupadas en PantallaCti40Plus
     case 71:
       return null;
+
+    // objPosXyLibreResolucion — metadatos del canvas libre, no pinta nada
+    case 72:
+      return null;
+
+    // objPosXyLibreIcon — icono posicionado en coordenadas absolutas
+    case 73:
+      return <ObjPosXyLibreIcon obj={obj} />;
+
+    // objPosXyLibreVariable — variable posicionada en coordenadas absolutas
+    case 75:
+      return <ObjPosXyLibreVariable obj={obj} />;
+
+    // objPosXyLibreLineas — rectángulo posicionado en coordenadas absolutas
+    case 76:
+      return <ObjPosXyLibreLineas obj={obj} />;
 
     // objLineaGrafica — separador lógico entre bloques, no pinta nada
     case 20:

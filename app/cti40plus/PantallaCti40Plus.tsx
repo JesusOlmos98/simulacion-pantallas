@@ -10,6 +10,7 @@ import ObjEncabezadoEditIcono from '../components/render-objetos-cti40plus/ObjEn
 import { resolverTexto, parseConcatenado, COLORES, BarraBotonesCti40Plus } from '../components/render-objetos-cti40plus';
 import type { DescriptorPantalla, ObjBase } from '../components/pantalla-types';
 import { getColorHex } from '../components/render-objetos-cti40plus/colors';
+import PantallaLibre from './PantallaLibre';
 
 const MAC_CTI40PLUS = '202000029'; // MAC address para CTI40 PLUS
 let idEnvioCounter = 1;
@@ -218,9 +219,10 @@ export default function PantallaCti40Plus(): JSX.Element {
     { icono: encabezado?.iconoTarea2 ?? 0, pantalla: encabezado?.pantallaSaltoTarea2 ?? 0, indice: encabezado?.indicePantallaTarea2 ?? 0 }
   ].filter((t) => t.pantalla > 0);
 
-  // tipoPlantilla: 4 = lista de filas, otros = grid de iconos
+  // tipoPlantilla: 4 = lista de filas, 21 = canvas libre (objPosXyLibre*), otros = grid de iconos
   const tipoPlantilla = (objetos?.find((o) => o.tipoObjeto === 1)?.tipoPlantilla as number) ?? 0;
   const esLista = tipoPlantilla === 4;
+  const esLibre = tipoPlantilla === 21;
 
   // ── Loading / Error ───────────────────────────────────────────────────────
 
@@ -307,87 +309,97 @@ export default function PantallaCti40Plus(): JSX.Element {
                 </div>
               )}
 
+              {/* Canvas libre (tipoPlantilla 21) — ocupa todo el espacio sin padding */}
+              {esLibre && (
+                <PantallaLibre
+                  objetos={objetos}
+                  onNavegar={navegarA}
+                />
+              )}
+
               {/* Objetos — scrollable si hay muchos */}
-              <div
-                className="flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#1E1E1E] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]"
-                style={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}
-              >
-                {esPantallaPrincipal ? (
-                  <div className="flex-1 flex items-center justify-center">
-                    <p className="text-white text-5xl">Pantalla principal</p>
-                  </div>
-                ) : (
-                  <>
-                    {/* Bloques de líneas — cada grupo separado por objLineaGrafica (tipo 20) va en su propio contenedor */}
-                    {gruposLineas.length > 0 && (
-                      <>
-                        {gruposLineas.map((grupo, gi) => (
-                          <div
-                            key={gi}
-                            className="rounded-2xl mb-4"
-                            style={{ backgroundColor: COLORES.tertiary }}
-                          >
-                            {grupo.map((obj, i) => (
-                              <RenderObjeto
-                                key={i}
-                                obj={obj}
-                                onNavegar={navegarA}
-                                idPantallaActual={actual.idPantalla}
-                                textoConcatenados={textoConcatenadoMap}
-                              />
-                            ))}
-                          </div>
-                        ))}
-                      </>
-                    )}
+              {!esLibre && (
+                <div
+                  className="flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#1E1E1E] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]"
+                  style={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}
+                >
+                  {esPantallaPrincipal ? (
+                    <div className="flex-1 flex items-center justify-center">
+                      <p className="text-white text-5xl">Pantalla principal</p>
+                    </div>
+                  ) : (
+                    <>
+                      {/* Bloques de líneas — cada grupo separado por objLineaGrafica (tipo 20) va en su propio contenedor */}
+                      {gruposLineas.length > 0 && (
+                        <>
+                          {gruposLineas.map((grupo, gi) => (
+                            <div
+                              key={gi}
+                              className="rounded-2xl mb-4"
+                              style={{ backgroundColor: COLORES.tertiary }}
+                            >
+                              {grupo.map((obj, i) => (
+                                <RenderObjeto
+                                  key={i}
+                                  obj={obj}
+                                  onNavegar={navegarA}
+                                  idPantallaActual={actual.idPantalla}
+                                  textoConcatenados={textoConcatenadoMap}
+                                />
+                              ))}
+                            </div>
+                          ))}
+                        </>
+                      )}
 
-                    {/* Tablas dinámicas — edge-to-edge, sin esquinas ni margen lateral */}
-                    {tablasGrupos.length > 0 && (
-                      <div className="-mx-4 -mt-4">
-                        {tablasGrupos.map((tabla, ti) => (
-                          <ObjTablaDinamica
-                            key={ti}
-                            init={tabla.init}
-                            filas={tabla.filas}
-                            onNavegar={navegarA}
-                          />
-                        ))}
-                      </div>
-                    )}
+                      {/* Tablas dinámicas — edge-to-edge, sin esquinas ni margen lateral */}
+                      {tablasGrupos.length > 0 && (
+                        <div className="-mx-4 -mt-4">
+                          {tablasGrupos.map((tabla, ti) => (
+                            <ObjTablaDinamica
+                              key={ti}
+                              init={tabla.init}
+                              filas={tabla.filas}
+                              onNavegar={navegarA}
+                            />
+                          ))}
+                        </div>
+                      )}
 
-                    {/* Otros objetos (grid o lista) */}
-                    {otrosObjetos.length > 0 && (
-                      <>
-                        {esLista ? (
-                          <div className="flex flex-col">
-                            {otrosObjetos.map((obj, i) => (
-                              <RenderObjeto
-                                key={i}
-                                obj={obj}
-                                onNavegar={navegarA}
-                                idPantallaActual={actual.idPantalla}
-                                esLista
-                              />
-                            ))}
-                          </div>
-                        ) : (
-                          <div className="grid grid-cols-7 gap-2 p-2">
-                            {otrosObjetos.map((obj, i) => (
-                              <RenderObjeto
-                                key={i}
-                                obj={obj}
-                                onNavegar={navegarA}
-                                idPantallaActual={actual.idPantalla}
-                                textoConcatenados={textoConcatenadoMap}
-                              />
-                            ))}
-                          </div>
-                        )}
-                      </>
-                    )}
-                  </>
-                )}
-              </div>
+                      {/* Otros objetos (grid o lista) */}
+                      {otrosObjetos.length > 0 && (
+                        <>
+                          {esLista ? (
+                            <div className="flex flex-col">
+                              {otrosObjetos.map((obj, i) => (
+                                <RenderObjeto
+                                  key={i}
+                                  obj={obj}
+                                  onNavegar={navegarA}
+                                  idPantallaActual={actual.idPantalla}
+                                  esLista
+                                />
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="grid grid-cols-7 gap-2 p-2">
+                              {otrosObjetos.map((obj, i) => (
+                                <RenderObjeto
+                                  key={i}
+                                  obj={obj}
+                                  onNavegar={navegarA}
+                                  idPantallaActual={actual.idPantalla}
+                                  textoConcatenados={textoConcatenadoMap}
+                                />
+                              ))}
+                            </div>
+                          )}
+                        </>
+                      )}
+                    </>
+                  )}
+                </div>
+              )}
 
               {/* Footer: botón de información — aparece si hay objLineaInfoTextText (tipo 7) */}
               {infoObjetos.length > 0 && (
