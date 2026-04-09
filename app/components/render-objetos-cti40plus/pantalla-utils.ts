@@ -12,13 +12,26 @@ const EnTextosReverse = EnTextos as unknown as Record<number, string | undefined
 export function resolverTexto(id: number): string {
   const nombre = EnTextosReverse[id];
   if (nombre === undefined) return `[txt:${id}]`;
+  
   // Convierte camelCase a "palabras separadas" y quita el prefijo "text"
-  return nombre
+  let resultado = nombre
     .replace(/^text/, '')
-    .replace(/([A-Z])/g, ' $1')
-    .replace(/([a-zA-Z])(\d)/g, '$1 $2')
+    .replace(/([A-Z])/g, ' $1');
+  
+  // Separar letras-números pero preservando fórmulas químicas conocidas
+  // Usamos negative lookahead para evitar separar CO2, NH3, H2O, etc.
+  resultado = resultado.replace(/([a-zA-Z])(\d)(?!(?:2|3|H|O|N))/g, '$1 $2');
+  
+  // Casos especiales: manejar CO2, NH3, H2O que sí deben mantenerse juntos
+  resultado = resultado.replace(/\bCo\s2\b/gi, 'CO2');
+  resultado = resultado.replace(/\bNh\s3\b/gi, 'NH3');
+  resultado = resultado.replace(/\bH\s2\sO\b/gi, 'H2O');
+  resultado = resultado.replace(/\bO\s2\b/gi, 'O2');
+  resultado = resultado.replace(/\bN\s2\b/gi, 'N2');
+  
+  return resultado
     .trim()
-    .replace(/\s([A-Z])/g, (_, c: string) => ' ' + c.toLowerCase());
+    .replace(/\s([A-Z])(?![A-Z]*\d)/g, (_, c: string) => ' ' + c.toLowerCase());
 }
 
 // ─── Unidad ───────────────────────────────────────────────────────────────────
@@ -32,7 +45,7 @@ const UNIDAD_SIMBOLO: Record<number, string> = {
   [EnUnidades.metros]: 'm',
   [EnUnidades.cm]: 'cm',
   [EnUnidades.mm]: 'mm',
-  [EnUnidades.seg]: 's',
+  [EnUnidades.seg]: 'seg',
   [EnUnidades.minutos]: 'min',
   [EnUnidades.horas]: 'h',
   [EnUnidades.miliSeg]: 'ms',
@@ -56,7 +69,7 @@ const UNIDAD_SIMBOLO: Record<number, string> = {
   [EnUnidades.mVV]: 'mV/V',
   [EnUnidades.pa]: 'Pa',
   [EnUnidades.libra]: 'lb',
-  [EnUnidades.km3]: 'km³'
+  [EnUnidades.km3]: 'm³h K'
 };
 
 /** Devuelve el símbolo de unidad (p.ej. "°C", "kg"). Vacío si no tiene unidad. */

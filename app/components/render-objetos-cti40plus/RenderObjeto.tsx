@@ -7,6 +7,9 @@ import ObjLineaText from './ObjLineaText';
 import ObjLineaTextText from './ObjLineaTextText';
 import ObjLineaTextVar from './ObjLineaTextVar';
 import ObjLineaTextVarVar from './ObjLineaTextVarVar';
+import ObjLineaInfoTextText from './ObjLineaInfoTextText';
+import ObjLineaInfoTextVar from './ObjLineaInfoTextVar';
+import ObjLineaInfoTextTextVarVar from './ObjLineaInfoTextTextVarVar';
 import type { ObjBase, DescriptorPantalla } from '../pantalla-types';
 
 export interface RenderObjetoProps {
@@ -82,6 +85,18 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual: _idPant
     // objLineaGrafica — separador lógico entre bloques, no pinta nada
     case 20:
       return <ObjLineaGrafica />;
+
+    // objLineaInfoTextText — fila info con texto principal + texto secundario
+    case 15:
+      return <ObjLineaInfoTextText obj={obj} />;
+
+    // objLineaInfoTextVar — fila info con texto principal + variable numérica
+    case 6:
+      return <ObjLineaInfoTextVar obj={obj} />;
+
+    // objLineaInfoTextTextVarVar — fila info con texto principal + dos variables
+    case 19:
+      return <ObjLineaInfoTextTextVarVar obj={obj} />;
 
     // objVarIndividual — variable sin navegación
     case 36:

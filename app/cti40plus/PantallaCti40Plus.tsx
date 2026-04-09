@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import type { JSX } from 'react';
 import { useRouter } from 'next/navigation';
 import { LuChevronLeft, LuInfo, LuMenu, LuX } from 'react-icons/lu';
-import { RenderObjeto, resolverIconoCTI40Plus, ObjTablaDinamica } from '../components/render-objetos-cti40plus';
+import { RenderObjeto, resolverIconoCTI40Plus, ObjTablaDinamica, ObjLineaInfoTextVar, ObjLineaInfoTextTextVarVar } from '../components/render-objetos-cti40plus';
 import ObjLineaInfoTextText from '../components/render-objetos-cti40plus/ObjLineaInfoTextText';
 import ObjEncabezadoEditIcono from '../components/render-objetos-cti40plus/ObjEncabezadoEditIcono';
 import { resolverTexto, COLORES, BarraBotonesCti40Plus } from '../components/render-objetos-cti40plus';
@@ -152,8 +152,8 @@ export default function PantallaCti40Plus(): JSX.Element {
       }
     }
   }
-  const infoObjetos = objetos?.filter((o) => o.tipoObjeto === 7) ?? [];
-  const otrosObjetos = objetos?.filter((o) => o.tipoObjeto !== 2 && o.tipoObjeto !== 7 && o.tipoObjeto !== 20 && o.tipoObjeto !== 70 && o.tipoObjeto !== 71 && !TIPOS_LINEA.has(o.tipoObjeto)) ?? [];
+  const infoObjetos = objetos?.filter((o) => o.tipoObjeto === 7 || o.tipoObjeto === 6 || o.tipoObjeto === 19) ?? [];
+  const otrosObjetos = objetos?.filter((o) => o.tipoObjeto !== 2 && o.tipoObjeto !== 7 && o.tipoObjeto !== 6 && o.tipoObjeto !== 19 && o.tipoObjeto !== 20 && o.tipoObjeto !== 70 && o.tipoObjeto !== 71 && !TIPOS_LINEA.has(o.tipoObjeto)) ?? [];
 
   // Verificar si estamos en pantalla principal (idPantalla: 0)
   const esPantallaPrincipal = (objetos?.find((o) => o.tipoObjeto === 1)?.idPantalla ?? 0) === 0;
@@ -403,17 +403,40 @@ export default function PantallaCti40Plus(): JSX.Element {
               </div>
 
               {/* Filas info */}
-              <div className="flex-1 overflow-y-auto p-4 my-2">
+              <div 
+                className="flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#1E1E1E] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]"
+                style={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}
+              >
                 <div
                   className="rounded-2xl"
                   style={{ backgroundColor: COLORES.tertiary }}
                 >
-                  {infoObjetos.map((obj, i) => (
-                    <ObjLineaInfoTextText
-                      key={i}
-                      obj={obj}
-                    />
-                  ))}
+                  {infoObjetos.map((obj, i) => {
+                    switch (obj.tipoObjeto) {
+                      case 6:
+                        return (
+                          <ObjLineaInfoTextVar
+                            key={i}
+                            obj={obj}
+                          />
+                        );
+                      case 19:
+                        return (
+                          <ObjLineaInfoTextTextVarVar
+                            key={i}
+                            obj={obj}
+                          />
+                        );
+                      case 7:
+                      default:
+                        return (
+                          <ObjLineaInfoTextText
+                            key={i}
+                            obj={obj}
+                          />
+                        );
+                    }
+                  })}
                 </div>
               </div>
             </div>
