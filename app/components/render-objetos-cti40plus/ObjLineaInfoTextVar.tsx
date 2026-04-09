@@ -28,7 +28,8 @@ export default function ObjLineaInfoTextVar({ obj }: ObjLineaInfoTextVarProps): 
         className="text-5xl leading-[50px]"
         style={{ color: COLORES.light }}
       >
-        {valor}{unidad}
+        {valor}
+        {unidad}
       </span>
     </div>
   );

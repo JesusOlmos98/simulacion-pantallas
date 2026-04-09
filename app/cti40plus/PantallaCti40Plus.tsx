@@ -153,7 +153,19 @@ export default function PantallaCti40Plus(): JSX.Element {
     }
   }
   const infoObjetos = objetos?.filter((o) => o.tipoObjeto === 7 || o.tipoObjeto === 6 || o.tipoObjeto === 19) ?? [];
-  const otrosObjetos = objetos?.filter((o) => o.tipoObjeto !== 2 && o.tipoObjeto !== 7 && o.tipoObjeto !== 6 && o.tipoObjeto !== 19 && o.tipoObjeto !== 20 && o.tipoObjeto !== 67 && o.tipoObjeto !== 70 && o.tipoObjeto !== 71 && !TIPOS_LINEA.has(o.tipoObjeto)) ?? [];
+  const otrosObjetos =
+    objetos?.filter(
+      (o) =>
+        o.tipoObjeto !== 2 &&
+        o.tipoObjeto !== 7 &&
+        o.tipoObjeto !== 6 &&
+        o.tipoObjeto !== 19 &&
+        o.tipoObjeto !== 20 &&
+        o.tipoObjeto !== 67 &&
+        o.tipoObjeto !== 70 &&
+        o.tipoObjeto !== 71 &&
+        !TIPOS_LINEA.has(o.tipoObjeto)
+    ) ?? [];
 
   // Mapa de textos concatenados: idTextoConcatenado → texto resuelto (tipo 67)
   const textoConcatenadoMap = useMemo<Map<number, string>>(() => {
@@ -422,7 +434,7 @@ export default function PantallaCti40Plus(): JSX.Element {
               </div>
 
               {/* Filas info */}
-              <div 
+              <div
                 className="flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#1E1E1E] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]"
                 style={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}
               >

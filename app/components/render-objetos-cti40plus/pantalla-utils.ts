@@ -10,33 +10,35 @@ export { resolverColor, getColorHex } from './colors';
 const EnTextosReverse = EnTextos as unknown as Record<number, string | undefined>;
 
 export function resolverTexto(id: number): string {
+  // Caso especial: textVacio (ID 151) debe mostrar "--"
+  if (id === 151) return '--';
+
   const nombre = EnTextosReverse[id];
   if (nombre === undefined) return `[txt:${id}]`;
-  
+
   // Convierte camelCase a "palabras separadas" y quita el prefijo "text"
-  let resultado = nombre
-    .replace(/^text/, '')
-    .replace(/([A-Z])/g, ' $1');
-  
+  let resultado = nombre.replace(/^text/, '').replace(/([A-Z])/g, ' $1');
+
   // Separar letras-números pero preservando fórmulas químicas conocidas
   // Usamos negative lookahead para evitar separar CO2, NH3, H2O, etc.
   resultado = resultado.replace(/([a-zA-Z])(\d)(?!(?:2|3|H|O|N))/g, '$1 $2');
-  
+
   // Casos especiales: manejar CO2, NH3, H2O que sí deben mantenerse juntos
   resultado = resultado.replace(/\bCo\s2\b/gi, 'CO2');
   resultado = resultado.replace(/\bNh\s3\b/gi, 'NH3');
   resultado = resultado.replace(/\bH\s2\sO\b/gi, 'H2O');
   resultado = resultado.replace(/\bO\s2\b/gi, 'O2');
   resultado = resultado.replace(/\bN\s2\b/gi, 'N2');
-  
-  return resultado
-    .trim()
-    .replace(/\s([A-Z])(?![A-Z]*\d)/g, (_, c: string) => ' ' + c.toLowerCase());
+
+  return resultado.trim().replace(/\s([A-Z])(?![A-Z]*\d)/g, (_, c: string) => ' ' + c.toLowerCase());
 }
 
 // ─── Textos concatenados (objTextoConcatenadoPlantilla, tipo 67) ──────────────
 
-interface BufferLike { type: string; data: number[] }
+interface BufferLike {
+  type: string;
+  data: number[];
+}
 
 /**
  * Parsea una `cadenaConcatenadaRaw` según el protocolo NXP de textos concatenados.

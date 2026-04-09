@@ -12,9 +12,7 @@ export default function ObjLineaInfoTextTextVarVar({ obj }: ObjLineaInfoTextText
   const texto = resolverTexto((obj.texto as number | undefined) ?? 0);
 
   const tipoVar1 = (obj.tipoVar1 as number | undefined) ?? 0;
-  const var1Raw = tipoVar1 === 31
-    ? resolverTexto(((obj.variable1 as number | undefined) ?? 0) & 0xffff)
-    : decodificarVariable((obj.variable1 as number | undefined) ?? 0, tipoVar1);
+  const var1Raw = tipoVar1 === 31 ? resolverTexto(((obj.variable1 as number | undefined) ?? 0) & 0xffff) : decodificarVariable((obj.variable1 as number | undefined) ?? 0, tipoVar1);
   // En el firmware CTI40+ las etiquetas textG0…textGN (IDs 254…) son sondas S0…SN
   const var1 = var1Raw.replace(/^G (\d+)$/, 'S$1');
 
@@ -44,7 +42,8 @@ export default function ObjLineaInfoTextTextVarVar({ obj }: ObjLineaInfoTextText
           className="text-5xl leading-[50px]"
           style={{ color: COLORES.light }}
         >
-          {var2}{unidad2}
+          {var2}
+          {unidad2}
         </span>
       </div>
     </div>
