@@ -19,6 +19,7 @@ export default function ObjPosXyLibreIcon({ obj }: Props): JSX.Element {
 
   const Icono = resolverIconoCTI40Plus(icono);
   const iconSize = Math.min(anchoPx, altoPx);
+  const shouldBlink = icono === 270;
 
   return (
     <div
@@ -38,12 +39,23 @@ export default function ObjPosXyLibreIcon({ obj }: Props): JSX.Element {
         <Icono
           size={iconSize}
           color="#ffffff"
+          style={shouldBlink ? {
+            animation: 'blink 1s infinite'
+          } : {}}
         />
       ) : (
         <LuCircle
           size={iconSize}
           color="#555"
         />
+      )}
+      {shouldBlink && (
+        <style>{`
+          @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+          }
+        `}</style>
       )}
     </div>
   );

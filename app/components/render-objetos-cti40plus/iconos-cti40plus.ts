@@ -88,6 +88,21 @@ const IconoNubeNH3: IconType = ({ size = 24, color, className }) => {
   );
 };
 
+// Iconos WiFi con fondo LuWifi en color quaternary para mostrar las barras apagadas
+const iconStyle = { position: 'absolute' as const, top: 0, left: 0 };
+const makeIconoWifi = (ForegroundIcon: IconType): IconType =>
+  ({ size = 24, color, className }) =>
+    React.createElement(
+      'span',
+      { className, style: { position: 'relative', display: 'inline-flex', width: size, height: size, flexShrink: 0 } },
+      React.createElement(LuWifi, { size, color: COLORES.wifi, style: iconStyle }),
+      React.createElement(ForegroundIcon, { size, color, style: iconStyle })
+    );
+
+const IconoWifiZero: IconType = makeIconoWifi(LuWifiZero);
+const IconoWifiLow: IconType = makeIconoWifi(LuWifiLow);
+const IconoWifiHigh: IconType = makeIconoWifi(LuWifiHigh);
+
 // Icono de ventilador girando en color naranja para el ID 346
 const IconoVentiladorGirando: IconType = ({ size = 24, className }) => {
   return React.createElement(
@@ -116,22 +131,21 @@ const ICONO_CTI40PLUS_MAP: Record<number, IconType> = {
   38: LuFlame, // Calefacción
   41: LuClock, // Relojes
   46: LuWind, // Viento (Depresiómetro)
+  47: IconoNubeCO2, // Nube CO2
+  48: IconoNubeNH3, // Nube NH3
   55: LuSlidersHorizontal, // Barritas horizontales con sliders (Ajustes)
   59: LuLightbulb, // Iluminación
   69: IconoClimaRecinto, // Clima recinto
   71: LuBell, // Alarmas
   72: LuDroplet, // Gota de agua
   123: LuWrench, // Llave inglesa (Mantenimiento)
+  145: IconoWifiZero,
+  146: IconoWifiLow,
+  147: IconoWifiHigh,
+  148: LuWifi,
   270: LuBellRing, // Alarmas
   322: LuEllipsisVertical, // Más opciones
-  // Iconos tally (extraños/distintivos)
-  346: IconoVentiladorGirando, // Ventilador girando en color naranja
-  47: IconoNubeCO2, // Nube CO₂
-  48: IconoNubeNH3, // Nube NH₃
-  145: LuWifiZero,
-  146: LuWifiLow,
-  147: LuWifiHigh,
-  148: LuWifi
+  346: IconoVentiladorGirando // Ventilador girando en color naranja
 };
 
 /** Devuelve el componente de icono para un id de icono de barra, o null si no existe mapeo. */
