@@ -17,9 +17,10 @@ export interface RenderObjetoProps {
   onNavegar: (d: DescriptorPantalla) => void;
   idPantallaActual: number;
   esLista?: boolean;
+  textoConcatenados?: Map<number, string>;
 }
 
-export default function RenderObjeto({ obj, onNavegar, idPantallaActual: _idPantallaActual, esLista }: RenderObjetoProps): JSX.Element | null {
+export default function RenderObjeto({ obj, onNavegar, idPantallaActual: _idPantallaActual, esLista, textoConcatenados }: RenderObjetoProps): JSX.Element | null {
   switch (obj.tipoObjeto) {
     // objPlantilla — metadatos, no se pinta
     case 1:
@@ -67,8 +68,13 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual: _idPant
           obj={obj}
           onNavegar={onNavegar}
           esLista={esLista}
+          textoConcatenados={textoConcatenados}
         />
       );
+
+    // objTextoConcatenadoPlantilla — define el texto de un objLineaText, no pinta nada por sí solo
+    case 67:
+      return null;
 
     // objBotonAccesoDirecto — botones de acceso directo (tipoObjeto: 66)
     case 66:

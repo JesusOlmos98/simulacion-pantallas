@@ -12,7 +12,7 @@ interface Props {
  *  Pinta el icono indicado en iconoBarraTareas a la derecha del header. */
 export default function ObjEncabezadoEditIcono({ obj }: Props): JSX.Element | null {
   const iconoId = obj.iconoBarraTareas as number | undefined;
-  if (!iconoId) return null;
+  if (iconoId === null || iconoId === undefined) return null;
 
   const Icono = resolverIconoCTI40Plus(iconoId);
   if (!Icono) return null;

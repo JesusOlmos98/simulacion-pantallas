@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import type { JSX } from 'react';
 import { useRouter } from 'next/navigation';
 import { LuChevronLeft, LuInfo, LuMenu, LuX } from 'react-icons/lu';
 import { RenderObjeto, resolverIconoCTI40Plus, ObjTablaDinamica, ObjLineaInfoTextVar, ObjLineaInfoTextTextVarVar } from '../components/render-objetos-cti40plus';
 import ObjLineaInfoTextText from '../components/render-objetos-cti40plus/ObjLineaInfoTextText';
 import ObjEncabezadoEditIcono from '../components/render-objetos-cti40plus/ObjEncabezadoEditIcono';
-import { resolverTexto, COLORES, BarraBotonesCti40Plus } from '../components/render-objetos-cti40plus';
+import { resolverTexto, parseConcatenado, COLORES, BarraBotonesCti40Plus } from '../components/render-objetos-cti40plus';
 import type { DescriptorPantalla, ObjBase } from '../components/pantalla-types';
 import { getColorHex } from '../components/render-objetos-cti40plus/colors';
 
@@ -153,7 +153,23 @@ export default function PantallaCti40Plus(): JSX.Element {
     }
   }
   const infoObjetos = objetos?.filter((o) => o.tipoObjeto === 7 || o.tipoObjeto === 6 || o.tipoObjeto === 19) ?? [];
-  const otrosObjetos = objetos?.filter((o) => o.tipoObjeto !== 2 && o.tipoObjeto !== 7 && o.tipoObjeto !== 6 && o.tipoObjeto !== 19 && o.tipoObjeto !== 20 && o.tipoObjeto !== 70 && o.tipoObjeto !== 71 && !TIPOS_LINEA.has(o.tipoObjeto)) ?? [];
+  const otrosObjetos = objetos?.filter((o) => o.tipoObjeto !== 2 && o.tipoObjeto !== 7 && o.tipoObjeto !== 6 && o.tipoObjeto !== 19 && o.tipoObjeto !== 20 && o.tipoObjeto !== 67 && o.tipoObjeto !== 70 && o.tipoObjeto !== 71 && !TIPOS_LINEA.has(o.tipoObjeto)) ?? [];
+
+  // Mapa de textos concatenados: idTextoConcatenado → texto resuelto (tipo 67)
+  const textoConcatenadoMap = useMemo<Map<number, string>>(() => {
+    const map = new Map<number, string>();
+    if (!objetos) return map;
+    for (const obj of objetos) {
+      if (obj.tipoObjeto === 67) {
+        const id = obj.idTextoConcatenado as number | undefined;
+        const raw = obj.cadenaConcatenadaRaw as { type: string; data: number[] } | number[] | undefined;
+        if (id !== undefined && raw !== undefined) {
+          map.set(id, parseConcatenado(raw));
+        }
+      }
+    }
+    return map;
+  }, [objetos]);
 
   // Verificar si estamos en pantalla principal (idPantalla: 0)
   const esPantallaPrincipal = (objetos?.find((o) => o.tipoObjeto === 1)?.idPantalla ?? 0) === 0;
@@ -177,7 +193,8 @@ export default function PantallaCti40Plus(): JSX.Element {
         indicePantallaTarea3?: number;
       }
     | undefined;
-  const titulo = encabezado ? resolverTexto(encabezado.tituloText ?? 0) : '';
+  const tituloTextId = encabezado?.tituloText ?? 0;
+  const titulo = encabezado ? (textoConcatenadoMap.get(tituloTextId) ?? resolverTexto(tituloTextId)) : '';
   const colorHeader = getColorHex(encabezado?.colorTitulo ?? 0);
 
   // objEncabezadoEditIcono (tipoObjeto: 31) — botón de acción a la derecha del header
@@ -304,6 +321,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                                 obj={obj}
                                 onNavegar={navegarA}
                                 idPantallaActual={actual.idPantalla}
+                                textoConcatenados={textoConcatenadoMap}
                               />
                             ))}
                           </div>
@@ -348,6 +366,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                                 obj={obj}
                                 onNavegar={navegarA}
                                 idPantallaActual={actual.idPantalla}
+                                textoConcatenados={textoConcatenadoMap}
                               />
                             ))}
                           </div>

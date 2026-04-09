@@ -34,6 +34,49 @@ export function resolverTexto(id: number): string {
     .replace(/\s([A-Z])(?![A-Z]*\d)/g, (_, c: string) => ' ' + c.toLowerCase());
 }
 
+// ─── Textos concatenados (objTextoConcatenadoPlantilla, tipo 67) ──────────────
+
+interface BufferLike { type: string; data: number[] }
+
+/**
+ * Parsea una `cadenaConcatenadaRaw` según el protocolo NXP de textos concatenados.
+ * Soporta marcadores 0xFFFD (texto fijo), 0xFFFC (fin de sección) y 0xFFFB (fin total).
+ * Los textos personalizados se decodifican como UTF-16LE.
+ * Devuelve el texto completo resultante de concatenar todas las secciones.
+ */
+export function parseConcatenado(raw: BufferLike | number[]): string {
+  const bytes: number[] = Array.isArray(raw) ? raw : raw.data;
+  const u16s: number[] = [];
+  for (let i = 0; i + 1 < bytes.length; i += 2) {
+    u16s.push((bytes[i]! | (bytes[i + 1]! << 8)) >>> 0);
+  }
+
+  const partes: string[] = [];
+  let j = 0;
+  while (j < u16s.length) {
+    const w = u16s[j++]!;
+    if (w === 0xfffb) break;
+    if (w === 0xfffc) continue;
+    if (w === 0xfffd) {
+      if (j >= u16s.length) break;
+      const id = u16s[j++]!;
+      partes.push(resolverTexto(id));
+      continue;
+    }
+    // Texto personalizado UTF-16LE
+    const chars: number[] = [w];
+    while (j < u16s.length) {
+      const w2 = u16s[j]!;
+      if (w2 === 0xfffc || w2 === 0xfffb || w2 === 0xfffd) break;
+      chars.push(w2);
+      j++;
+    }
+    partes.push(String.fromCharCode(...chars));
+  }
+
+  return partes.join('');
+}
+
 // ─── Unidad ───────────────────────────────────────────────────────────────────
 
 const UNIDAD_SIMBOLO: Record<number, string> = {

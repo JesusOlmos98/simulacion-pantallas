@@ -13,9 +13,10 @@ interface ObjLineaProps {
   obj: Record<string, unknown>;
   onNavegar: (descriptor: DescriptorPantalla) => void;
   esLista?: boolean;
+  textoConcatenados?: Map<number, string>;
 }
 
-export default function ObjLineaText({ obj, onNavegar }: ObjLineaProps): JSX.Element {
+export default function ObjLineaText({ obj, onNavegar, textoConcatenados }: ObjLineaProps): JSX.Element {
   const nav = (obj.valorEditableONav as number | undefined) ?? 0;
 
   const handleClick = (): void => {
@@ -24,7 +25,8 @@ export default function ObjLineaText({ obj, onNavegar }: ObjLineaProps): JSX.Ele
     }
   };
 
-  const texto = resolverTexto((obj.texto as number | undefined) ?? 0);
+  const textoId = (obj.texto as number | undefined) ?? 0;
+  const texto = textoConcatenados?.get(textoId) ?? resolverTexto(textoId);
   const coloresLineaEdit = (obj.coloresLineaEdit as number | undefined) ?? 0;
   const colorTexto = resolverColor(coloresLineaEdit);
   const IconoLinea = useMemo<IconType | null>(() => (obj.iconoLinea != null ? resolverIconoCTI40Plus(obj.iconoLinea as number) : null), [obj.iconoLinea]);
