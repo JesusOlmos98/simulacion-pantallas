@@ -9,17 +9,24 @@ import { resolverIconoCTI40Plus } from './iconos-cti40plus';
 import { COLORES, resolverColor } from './colors';
 import type { DescriptorPantalla } from '../pantalla-types';
 
+// Umbral para distinguir punteros de pantalla (>65535) de índices idUnicoEdicion (<=65535)
+const SCREEN_PTR_MIN = 65536;
+
 interface ObjLineaTextTextProps {
   obj: Record<string, unknown>;
   onNavegar: (descriptor: DescriptorPantalla) => void;
+  idPantallaActual: number;
 }
 
-export default function ObjLineaTextText({ obj, onNavegar }: ObjLineaTextTextProps): JSX.Element {
+export default function ObjLineaTextText({ obj, onNavegar, idPantallaActual }: ObjLineaTextTextProps): JSX.Element {
   const nav = (obj.valorEditableONav as number | undefined) ?? 0;
 
   const handleClick = (): void => {
-    if (nav > 0) {
+    if (nav <= 0) return;
+    if (nav >= SCREEN_PTR_MIN) {
       onNavegar({ idPantalla: nav, indicePantalla: (obj.indicePantalla as number | undefined) ?? 0, esPrincipal: false });
+    } else {
+      onNavegar({ idPantalla: idPantallaActual, indicePantalla: (obj.indicePantalla as number | undefined) ?? 0, esPrincipal: false, idUnicoEdicion: nav });
     }
   };
 

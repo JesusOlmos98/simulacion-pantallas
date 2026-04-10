@@ -6,17 +6,26 @@ import { resolverTexto, resolverUnidad, decodificarVariable } from './pantalla-u
 import { COLORES, resolverColor } from './colors';
 import type { DescriptorPantalla } from '../pantalla-types';
 
+// Umbral para distinguir punteros de pantalla (>65535) de índices idUnicoEdicion (<=65535)
+const SCREEN_PTR_MIN = 65536;
+
 interface ObjLineaTextVarProps {
   obj: Record<string, unknown>;
   onNavegar: (descriptor: DescriptorPantalla) => void;
+  idPantallaActual: number;
 }
 
-export default function ObjLineaTextVar({ obj, onNavegar }: ObjLineaTextVarProps): JSX.Element {
+export default function ObjLineaTextVar({ obj, onNavegar, idPantallaActual }: ObjLineaTextVarProps): JSX.Element {
   const nav = (obj.valorEditableONav as number | undefined) ?? 0;
 
   const handleClick = (): void => {
-    if (nav > 0) {
+    if (nav <= 0) return;
+    if (nav >= SCREEN_PTR_MIN) {
+      // Puntero a otra pantalla
       onNavegar({ idPantalla: nav, indicePantalla: (obj.indicePantalla as number | undefined) ?? 0, esPrincipal: false });
+    } else {
+      // Índice de edición — misma pantalla con idUnicoEdicion
+      onNavegar({ idPantalla: idPantallaActual, indicePantalla: (obj.indicePantalla as number | undefined) ?? 0, esPrincipal: false, idUnicoEdicion: nav });
     }
   };
 

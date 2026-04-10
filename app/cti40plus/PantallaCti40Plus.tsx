@@ -3,11 +3,12 @@
 import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import type { JSX } from 'react';
 import { useRouter } from 'next/navigation';
-import { LuChevronLeft, LuInfo, LuMenu, LuX } from 'react-icons/lu';
+import { LuCheck, LuChevronLeft, LuInfo, LuMenu, LuX } from 'react-icons/lu';
 import { RenderObjeto, resolverIconoCTI40Plus, ObjTablaDinamica, ObjLineaInfoTextVar, ObjLineaInfoTextTextVarVar } from '../components/render-objetos-cti40plus';
 import ObjLineaInfoTextText from '../components/render-objetos-cti40plus/ObjLineaInfoTextText';
 import ObjEncabezadoEditIcono from '../components/render-objetos-cti40plus/ObjEncabezadoEditIcono';
-import { resolverTexto, parseConcatenado, COLORES, BarraBotonesCti40Plus } from '../components/render-objetos-cti40plus';
+import ObjEditVariables from '../components/render-objetos-cti40plus/ObjEditVariables';
+import { resolverTexto, parseConcatenado, COLORES, BarraBotonesCti40Plus, decodificarVariable } from '../components/render-objetos-cti40plus';
 import type { DescriptorPantalla, ObjBase } from '../components/pantalla-types';
 import { getColorHex } from '../components/render-objetos-cti40plus/colors';
 import PantallaLibre from './PantallaLibre';
@@ -46,6 +47,7 @@ export default function PantallaCti40Plus(): JSX.Element {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [infoDialogAbierto, setInfoDialogAbierto] = useState(false);
+  const [editValue, setEditValue] = useState('');
 
   // Ref para poder cancelar el fetch en vuelo al desmontar o al lanzar uno nuevo
   const controllerRef = useRef<AbortController | null>(null);
@@ -96,6 +98,15 @@ export default function PantallaCti40Plus(): JSX.Element {
       controllerRef.current?.abort();
     };
   }, [cargarPantalla]);
+
+  // Inicializa el valor del input cuando carga una pantalla de edición (tipoPlantilla: 2)
+  useEffect(() => {
+    const editObj = objetos?.find((o) => o.tipoObjeto === 8);
+    if (!editObj) return;
+    const tipoVar = editObj.tipoVar as number;
+    const valorVariable = editObj.valorVariable as number;
+    setEditValue(decodificarVariable(valorVariable, tipoVar));
+  }, [objetos]);
 
   function navegarA(descriptor: DescriptorPantalla): void {
     setPila((prev) => [...prev, actual]);
@@ -219,10 +230,25 @@ export default function PantallaCti40Plus(): JSX.Element {
     { icono: encabezado?.iconoTarea2 ?? 0, pantalla: encabezado?.pantallaSaltoTarea2 ?? 0, indice: encabezado?.indicePantallaTarea2 ?? 0 }
   ].filter((t) => t.pantalla > 0);
 
-  // tipoPlantilla: 4 = lista de filas, 21 = canvas libre (objPosXyLibre*), otros = grid de iconos
+  // tipoPlantilla: 2 = teclado (edición), 4 = lista de filas, 21 = canvas libre (objPosXyLibre*), otros = grid de iconos
   const tipoPlantilla = (objetos?.find((o) => o.tipoObjeto === 1)?.tipoPlantilla as number) ?? 0;
   const esLista = tipoPlantilla === 4;
   const esLibre = tipoPlantilla === 21;
+  const esTeclado = tipoPlantilla === 2;
+
+  // Objeto de edición de variable (tipoObjeto: 8 — objEditVariables), presente solo en pantallas de edición
+  const objEditVariables = esTeclado ? (objetos?.find((o) => o.tipoObjeto === 8) ?? null) : null;
+
+  // Validez del valor introducido: debe ser un número dentro del rango [minimo, maximo]
+  const editValido = useMemo<boolean>(() => {
+    if (!objEditVariables) return false;
+    const tipoVar = objEditVariables.tipoVar as number;
+    const val = parseFloat(editValue);
+    if (!isFinite(val)) return false;
+    const minVal = parseFloat(decodificarVariable(objEditVariables.minimo as number, tipoVar));
+    const maxVal = parseFloat(decodificarVariable(objEditVariables.maximo as number, tipoVar));
+    return val >= minVal && val <= maxVal;
+  }, [editValue, objEditVariables]);
 
   // ── Loading / Error ───────────────────────────────────────────────────────
 
@@ -259,8 +285,34 @@ export default function PantallaCti40Plus(): JSX.Element {
           {/* ── Contenido ── */}
           {!loading && error === null && objetos !== null && objetos.length > 0 && (
             <>
-              {/* Barra superior — solo en pantallas que no son la principal */}
-              {!esPantallaPrincipal && (
+              {/* Barra superior — pantallas de edición (tipoPlantilla 2): X + título + Check */}
+              {!esPantallaPrincipal && esTeclado && (
+                <div
+                  className="flex items-center justify-between px-3 py-6 shrink-0"
+                  style={{ backgroundColor: COLORES.tertiary }}
+                >
+                  <button
+                    onClick={volver}
+                    className="p-1 text-white hover:text-gray-200 transition-colors"
+                    aria-label="Cancelar"
+                  >
+                    <LuX size={60} />
+                  </button>
+                  <span className="text-5xl font-normal text-white truncate px-2">{objEditVariables ? resolverTexto(objEditVariables.textoVar as number) : ''}</span>
+                  <button
+                    onClick={() => {
+                      if (editValido) volver();
+                    }}
+                    className={`p-1 transition-colors ${editValido ? 'text-white hover:text-gray-200' : 'text-white/30 cursor-not-allowed'}`}
+                    aria-label="Confirmar"
+                  >
+                    <LuCheck size={60} />
+                  </button>
+                </div>
+              )}
+
+              {/* Barra superior — pantallas normales (no principal, no edición) */}
+              {!esPantallaPrincipal && !esTeclado && (
                 <div
                   className="flex items-center justify-between px-3 py-6 shrink-0"
                   style={{ backgroundColor: colorHeader }}
@@ -317,8 +369,19 @@ export default function PantallaCti40Plus(): JSX.Element {
                 />
               )}
 
+              {/* Pantalla de edición (tipoPlantilla 2) — input centrado */}
+              {esTeclado && objEditVariables && (
+                <div className="flex-1 flex items-center justify-center">
+                  <ObjEditVariables
+                    obj={objEditVariables}
+                    value={editValue}
+                    onChange={setEditValue}
+                  />
+                </div>
+              )}
+
               {/* Objetos — scrollable si hay muchos */}
-              {!esLibre && (
+              {!esLibre && !esTeclado && (
                 <div
                   className="flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#1E1E1E] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]"
                   style={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}

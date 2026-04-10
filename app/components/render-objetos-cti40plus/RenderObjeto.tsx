@@ -23,7 +23,7 @@ export interface RenderObjetoProps {
   textoConcatenados?: Map<number, string>;
 }
 
-export default function RenderObjeto({ obj, onNavegar, idPantallaActual: _idPantallaActual, esLista, textoConcatenados }: RenderObjetoProps): JSX.Element | null {
+export default function RenderObjeto({ obj, onNavegar, idPantallaActual, esLista, textoConcatenados }: RenderObjetoProps): JSX.Element | null {
   switch (obj.tipoObjeto) {
     // objPlantilla — metadatos, no se pinta
     case 1:
@@ -37,12 +37,21 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual: _idPant
     case 31:
       return null;
 
+    // objIdUnicoEdicion — metadatos de edición, se gestiona a nivel de pantalla
+    case 12:
+      return null;
+
+    // objEditVariables — se renderiza como pantalla completa de edición, no aquí
+    case 8:
+      return null;
+
     // objLineaTextText — fila con texto principal + texto secundario (en primary) + flecha
     case 16:
       return (
         <ObjLineaTextText
           obj={obj}
           onNavegar={onNavegar}
+          idPantallaActual={idPantallaActual}
         />
       );
 
@@ -52,6 +61,7 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual: _idPant
         <ObjLineaTextVarVar
           obj={obj}
           onNavegar={onNavegar}
+          idPantallaActual={idPantallaActual}
         />
       );
 
@@ -61,6 +71,7 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual: _idPant
         <ObjLineaTextVar
           obj={obj}
           onNavegar={onNavegar}
+          idPantallaActual={idPantallaActual}
         />
       );
 
