@@ -21,9 +21,13 @@ export default function ObjPosXyLibreVariable({ obj }: Props): JSX.Element {
   const unidad = (obj.unidad as number) ?? 0;
   const justificacion = (obj.justificacion as number) ?? 0;
 
+  const TIPOS_TEXTO = [30, 31, 43]; // string4, texto, textoTexto
   const valor = decodificarVariable(variable, tipoVariable);
-  const unidadStr = resolverUnidad(unidad);
+  const unidadStr = TIPOS_TEXTO.includes(tipoVariable) ? '' : resolverUnidad(unidad);
   const transform = TRANSFORM_JUSTIFY[justificacion] ?? 'none';
+  // Puede que esto sea una ñapa de manual, no hay forma de identificar a esta variable que
+  // por algún motivo se pinta de verde, sólo por sus coordenadas.
+  const color = (posX === 150 && posY === 8) ? COLORES.primary : COLORES.light;
 
   return (
     <div
@@ -36,7 +40,7 @@ export default function ObjPosXyLibreVariable({ obj }: Props): JSX.Element {
         display: 'flex',
         alignItems: 'center',
         whiteSpace: 'nowrap',
-        color: COLORES.light,
+        color,
         fontSize: `${altoPx}px`,
         lineHeight: 1
       }}

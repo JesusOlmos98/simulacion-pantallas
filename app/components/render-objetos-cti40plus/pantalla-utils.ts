@@ -9,9 +9,14 @@ export { resolverColor, getColorHex } from './colors';
 /** Devuelve el nombre legible de un ID de texto (EnTextos). */
 const EnTextosReverse = EnTextos as unknown as Record<number, string | undefined>;
 
-export function resolverTexto(id: number): string {
+export function resolverTexto(id: number| EnTextos): string {
   // Caso especial: textVacio (ID 151) debe mostrar "--"
   if (id === 151) return '--';
+
+  // Excepción para G0-G31 (IDs 254-285) deben mostrar "S1", "S2", etc.
+  if (id >= 254 && id <= 285) {
+    return `S${id - 254}`; // G0 (254) -> S1, G1 (255) -> S2, ..., G31 (285) -> S32
+  }
 
   const nombre = EnTextosReverse[id];
   if (nombre === undefined) return `[txt:${id}]`;
@@ -112,7 +117,7 @@ const UNIDAD_SIMBOLO: Record<number, string> = {
   [EnUnidades.kgM3]: 'kg/m³',
   [EnUnidades.grados]: '°',
   [EnUnidades.mVV]: 'mV/V',
-  [EnUnidades.pa]: 'Pa',
+  [EnUnidades.pa]: 'PA',
   [EnUnidades.libra]: 'lb',
   [EnUnidades.km3]: 'm³h K'
 };
@@ -202,6 +207,11 @@ export function decodificarVariable(raw: number, tipoVar: number): string {
 
     case EnTipoVariable.fecha:
       return formatFecha(raw);
+
+    case EnTipoVariable.string4:
+    case EnTipoVariable.texto:
+    case EnTipoVariable.textoTexto:
+      return resolverTexto(raw);
 
     default:
       return String(raw);

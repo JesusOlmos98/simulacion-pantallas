@@ -7,6 +7,7 @@ import {
   LuSnowflake, // 37  – Refrigeración (copo de nieve)
   LuThermometer, // 23  – Contacto térmico
   LuAirVent, // 22  – Entrada de aire
+  LuDroplets, // 21  – Gotas de agua
   LuBell, // 71  – Alarmas
   LuBellRing, // 270 – Alarmas
   LuBaby, // 30  – Crianza
@@ -122,6 +123,7 @@ const ICONO_CTI40PLUS_MAP: Record<number, IconType> = {
   10: LuHash, // Contadores
   13: LuSettings, // Configuración
   17: LuInfo, // Información
+  21: LuDroplets, // Gotas de agua
   22: LuAirVent, // Entrada de aire
   23: LuUnplug, // Contacto térmico
   24: LuPlus, // Añadir / editar

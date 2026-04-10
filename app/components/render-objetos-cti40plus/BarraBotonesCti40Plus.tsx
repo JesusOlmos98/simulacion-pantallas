@@ -28,8 +28,8 @@ export default function BarraBotonesCti40Plus({ botones, idPantallaActual, onNav
             key={index}
             onClick={() => {
               if (navPtr === undefined || navPtr <= 0) return;
-              if (navPtr === idPantallaActual) {
-                onNavegar(PRINCIPAL);
+              if (icono === 3) {
+                onNavegar(idPantallaActual !== 0 ? PRINCIPAL : { idPantalla: navPtr, indicePantalla: 0, esPrincipal: false });
               } else {
                 onNavegar({ idPantalla: navPtr, indicePantalla: 0, esPrincipal: false });
               }
