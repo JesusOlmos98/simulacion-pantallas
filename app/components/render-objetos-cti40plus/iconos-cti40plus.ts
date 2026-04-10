@@ -91,18 +91,30 @@ const IconoNubeNH3: IconType = ({ size = 24, color, className }) => {
 
 // Iconos WiFi con fondo LuWifi en color quaternary para mostrar las barras apagadas
 const iconStyle = { position: 'absolute' as const, top: 0, left: 0 };
-const makeIconoWifi = (ForegroundIcon: IconType): IconType =>
-  ({ size = 24, color, className }) =>
-    React.createElement(
-      'span',
-      { className, style: { position: 'relative', display: 'inline-flex', width: size, height: size, flexShrink: 0 } },
-      React.createElement(LuWifi, { size, color: COLORES.wifi, style: iconStyle }),
-      React.createElement(ForegroundIcon, { size, color, style: iconStyle })
-    );
 
-const IconoWifiZero: IconType = makeIconoWifi(LuWifiZero);
-const IconoWifiLow: IconType = makeIconoWifi(LuWifiLow);
-const IconoWifiHigh: IconType = makeIconoWifi(LuWifiHigh);
+const IconoWifiZero: IconType = ({ size = 24, color, className }) =>
+  React.createElement(
+    'span',
+    { className, style: { position: 'relative', display: 'inline-flex', width: size, height: size, flexShrink: 0 } },
+    React.createElement(LuWifi, { size, color: COLORES.wifi, style: iconStyle }),
+    React.createElement(LuWifiZero, { size, color, style: iconStyle })
+  );
+
+const IconoWifiLow: IconType = ({ size = 24, color, className }) =>
+  React.createElement(
+    'span',
+    { className, style: { position: 'relative', display: 'inline-flex', width: size, height: size, flexShrink: 0 } },
+    React.createElement(LuWifi, { size, color: COLORES.wifi, style: iconStyle }),
+    React.createElement(LuWifiLow, { size, color, style: iconStyle })
+  );
+
+const IconoWifiHigh: IconType = ({ size = 24, color, className }) =>
+  React.createElement(
+    'span',
+    { className, style: { position: 'relative', display: 'inline-flex', width: size, height: size, flexShrink: 0 } },
+    React.createElement(LuWifi, { size, color: COLORES.wifi, style: iconStyle }),
+    React.createElement(LuWifiHigh, { size, color, style: iconStyle })
+  );
 
 // Icono de ventilador girando en color naranja para el ID 346
 const IconoVentiladorGirando: IconType = ({ size = 24, className }) => {

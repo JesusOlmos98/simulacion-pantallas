@@ -27,24 +27,10 @@ export default function ObjPosXyLibreVariable({ obj }: Props): JSX.Element {
   const transform = TRANSFORM_JUSTIFY[justificacion] ?? 'none';
   // Puede que esto sea una ñapa de manual, no hay forma de identificar a esta variable que
   // por algún motivo se pinta de verde, sólo por sus coordenadas.
-  const color = (posX === 150 && posY === 8) ? COLORES.primary : COLORES.light;
+  const color = posX === 150 && posY === 8 ? COLORES.primary : COLORES.light;
 
   return (
-    <div
-      style={{
-        position: 'absolute',
-        left: posX,
-        top: posY,
-        height: altoPx,
-        transform,
-        display: 'flex',
-        alignItems: 'center',
-        whiteSpace: 'nowrap',
-        color,
-        fontSize: `${altoPx}px`,
-        lineHeight: 1
-      }}
-    >
+    <div style={{ position: 'absolute', left: posX, top: posY, height: altoPx, transform, display: 'flex', alignItems: 'center', whiteSpace: 'nowrap', color, fontSize: `${altoPx}px`, lineHeight: 1 }}>
       {valor}
       {unidadStr}
     </div>

@@ -34,17 +34,17 @@ export default function BarraBotonesCti40Plus({ botones, idPantallaActual, onNav
                 onNavegar({ idPantalla: navPtr, indicePantalla: 0, esPrincipal: false });
               }
             }}
-            className="w-16 h-16 rounded-full bg-[#bddc28] flex items-center justify-center hover:bg-[#a8c023] active:scale-95 transition-all shadow-md"
+            className="w-20 h-20 rounded-full bg-[#bddc28] flex items-center justify-center hover:bg-[#a8c023] active:scale-95 transition-all shadow-md"
             title={`Acceso directo ${index + 1}`}
           >
             {Icono ? (
               <Icono
-                size={32}
+                size={46}
                 color="#1a1a1a"
               />
             ) : (
               <LuCircle
-                size={32}
+                size={46}
                 color="#1a1a1a"
               />
             )}

@@ -9,7 +9,7 @@ export { resolverColor, getColorHex } from './colors';
 /** Devuelve el nombre legible de un ID de texto (EnTextos). */
 const EnTextosReverse = EnTextos as unknown as Record<number, string | undefined>;
 
-export function resolverTexto(id: number| EnTextos): string {
+export function resolverTexto(id: number | EnTextos): string {
   // Caso especial: textVacio (ID 151) debe mostrar "--"
   if (id === 151) return '--';
 

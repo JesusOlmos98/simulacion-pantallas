@@ -39,9 +39,7 @@ export default function ObjPosXyLibreIcon({ obj }: Props): JSX.Element {
         <Icono
           size={iconSize}
           color="#ffffff"
-          style={shouldBlink ? {
-            animation: 'blink 1s infinite'
-          } : {}}
+          style={shouldBlink ? { animation: 'blink 1s infinite' } : {}}
         />
       ) : (
         <LuCircle
