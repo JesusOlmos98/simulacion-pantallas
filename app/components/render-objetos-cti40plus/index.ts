@@ -19,4 +19,4 @@ export { default as ObjPosXyLibreVariable } from './ObjPosXyLibreVariable';
 export { default as ObjPosXyLibreLineas } from './ObjPosXyLibreLineas';
 export { COLORES, resolverColor, getColorHex } from './colors';
 export { resolverIconoCTI40Plus } from './iconos-cti40plus';
-export { resolverTexto, resolverUnidad, decodificarVariable, parseConcatenado } from './pantalla-utils';
+export { resolverTexto, resolverUnidad, decodificarVariable, decodificarStringVariable, parseConcatenado } from './pantalla-utils';

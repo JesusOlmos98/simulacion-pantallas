@@ -218,6 +218,24 @@ export function decodificarVariable(raw: number, tipoVar: number): string {
   }
 }
 
+/**
+ * Decodifica un buffer UTF-16LE (enviado como {type:"Buffer",data:number[]}) a string.
+ * Para en el primer carácter nulo (0x0000). Se usa en objLineaTextString (tipo 35).
+ */
+export function decodificarStringVariable(raw: unknown): string {
+  if (!raw) return '';
+  const bytes = Array.isArray(raw) ? (raw as number[]) : ((raw as { data?: number[] })?.data ?? []);
+  if (bytes.length === 0) return '';
+
+  const chars: number[] = [];
+  for (let i = 0; i + 1 < bytes.length; i += 2) {
+    const cp = (bytes[i]! | (bytes[i + 1]! << 8)) >>> 0;
+    if (cp === 0) break; // terminador nulo
+    chars.push(cp);
+  }
+  return String.fromCharCode(...chars);
+}
+
 // ─── Helpers internos ─────────────────────────────────────────────────────────
 
 /** Reinterpreta un u32 (number) como float IEEE 754 de 32 bits. */

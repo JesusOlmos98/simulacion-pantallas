@@ -6,6 +6,7 @@ import ObjTablaDinamicaInit from './ObjTablaDinamicaInit';
 import ObjLineaText from './ObjLineaText';
 import ObjLineaTextText from './ObjLineaTextText';
 import ObjLineaTextVar from './ObjLineaTextVar';
+import ObjLineaTextString from './ObjLineaTextString';
 import ObjLineaTextVarVar from './ObjLineaTextVarVar';
 import ObjLineaInfoTextText from './ObjLineaInfoTextText';
 import ObjLineaInfoTextVar from './ObjLineaInfoTextVar';
@@ -43,6 +44,10 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, esLista
 
     // objEditVariables — se renderiza como pantalla completa de edición, no aquí
     case 8:
+      return null;
+
+    // objEditVariablesString — se renderiza como pantalla completa de edición, no aquí
+    case 33:
       return null;
 
     // objLineaTextText — fila con texto principal + texto secundario (en primary) + flecha
@@ -83,6 +88,16 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, esLista
           onNavegar={onNavegar}
           esLista={esLista}
           textoConcatenados={textoConcatenados}
+        />
+      );
+
+    // objLineaTextString — fila con texto principal + variable string editable + flecha
+    case 35:
+      return (
+        <ObjLineaTextString
+          obj={obj}
+          onNavegar={onNavegar}
+          idPantallaActual={idPantallaActual}
         />
       );
 

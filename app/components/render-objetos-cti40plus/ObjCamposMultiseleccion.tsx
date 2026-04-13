@@ -19,19 +19,13 @@ export default function ObjCamposMultiseleccion({ obj, isSelected, onSelect, isD
 
   return (
     <div
-      className={`flex items-center gap-6 px-6 py-7 transition-colors ${
-        isDisabled ? 'cursor-not-allowed' : 'cursor-pointer hover:bg-white/5'
-      }`}
+      className={`flex items-center gap-6 px-6 py-7 transition-colors ${isDisabled ? 'cursor-not-allowed' : 'cursor-pointer hover:bg-white/5'}`}
       onClick={() => !isDisabled && onSelect()}
     >
       {/* Radio circle / Checkbox */}
       <div
         className="shrink-0 flex items-center justify-center rounded-full border-4"
-        style={{
-          width: 52,
-          height: 52,
-          borderColor: isDisabled ? COLORES.quaternary : isSelected ? COLORES.primary : '#ffffff'
-        }}
+        style={{ width: 52, height: 52, borderColor: isDisabled ? COLORES.quaternary : isSelected ? COLORES.primary : '#ffffff' }}
       >
         {isSelected && !isDisabled && (
           <div

@@ -8,8 +8,9 @@ import { RenderObjeto, resolverIconoCTI40Plus, ObjTablaDinamica, ObjLineaInfoTex
 import ObjLineaInfoTextText from '../components/render-objetos-cti40plus/ObjLineaInfoTextText';
 import ObjEncabezadoEditIcono from '../components/render-objetos-cti40plus/ObjEncabezadoEditIcono';
 import ObjEditVariables from '../components/render-objetos-cti40plus/ObjEditVariables';
+import ObjEditVariablesString from '../components/render-objetos-cti40plus/ObjEditVariablesString';
 import ObjCamposMultiseleccion from '../components/render-objetos-cti40plus/ObjCamposMultiseleccion';
-import { resolverTexto, parseConcatenado, COLORES, BarraBotonesCti40Plus, decodificarVariable } from '../components/render-objetos-cti40plus';
+import { resolverTexto, parseConcatenado, COLORES, BarraBotonesCti40Plus, decodificarVariable, decodificarStringVariable } from '../components/render-objetos-cti40plus';
 import type { DescriptorPantalla, ObjBase } from '../components/pantalla-types';
 import { getColorHex } from '../components/render-objetos-cti40plus/colors';
 import PantallaLibre from './PantallaLibre';
@@ -116,15 +117,18 @@ export default function PantallaCti40Plus(): JSX.Element {
       }
     } else if (objEditVars.length > 1) {
       // CHECKBOX: agregar todas las opciones preseleccionadas (opcionSeleccionada=2) al Set
-      const selecciones = objetos
-        .filter((o) => o.tipoObjeto === 10 && (o.opcionSeleccionada as number) === 2)
-        .map((o) => o.idSeleccion as number);
+      const selecciones = objetos.filter((o) => o.tipoObjeto === 10 && (o.opcionSeleccionada as number) === 2).map((o) => o.idSeleccion as number);
       setSelectedIdSelecciones(new Set(selecciones));
     }
   }, [objetos]);
 
   // Inicializa el valor del input cuando carga una pantalla de edición (tipoPlantilla: 2)
   useEffect(() => {
+    const editObjString = objetos?.find((o) => o.tipoObjeto === 33);
+    if (editObjString) {
+      setEditValue(decodificarStringVariable(editObjString.valorVariable));
+      return;
+    }
     const editObj = objetos?.find((o) => o.tipoObjeto === 8);
     if (!editObj) return;
     const tipoVar = editObj.tipoVar as number;
@@ -172,6 +176,48 @@ export default function PantallaCti40Plus(): JSX.Element {
       punteroFuncionSaltoTrasEdit: String(ptrSalto !== 0 ? ptrSalto : idPantalla),
       textoTituloVariable: String(objEditVariables.textoVar as number),
       textoNombreVariable: String(objEditVariables.textoVar as number)
+    });
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch(`http://localhost:8020/api/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+      if (!res.ok) throw new Error(`Error ${res.status}`);
+      volver();
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Error al escribir variable');
+      setLoading(false);
+    }
+  }
+
+  async function escribirVariableString(valor: string): Promise<void> {
+    if (!objEditVariablesString || !objetos) return;
+    const objPlantilla = objetos.find((o) => o.tipoObjeto === 1);
+    const objIdUnicoEdicion = objetos.find((o) => o.tipoObjeto === 12);
+    if (!objPlantilla || !objIdUnicoEdicion) return;
+
+    const idPantalla = objPlantilla.idPantalla as number;
+    const ptrSalto = objEditVariablesString.ptrFuncionSaltoTrasEdit as number;
+
+    const params = new URLSearchParams({
+      eventId: '1',
+      idEnvio: String(idEnvioCounter++),
+      mac: MAC_CTI40PLUS,
+      readWrite: '1',
+      esPantallaPrincipal: '0',
+      idNav: String(idPantalla),
+      indicePantalla: String(objPlantilla.indicePantalla as number),
+      idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
+      navIdPantallaRespuestaTrama: String(idPantalla),
+      navegacion: '0',
+      tipoVariableEdicion: String(objEditVariablesString.tipoVarEdicion as number),
+      valorVariableTexto: valor,
+      punteroVariableEdicion: String(objEditVariablesString.ptrVariableEdicion as number),
+      punteroFuncionSaltoTrasEdit: String(ptrSalto !== 0 ? ptrSalto : idPantalla),
+      textoTituloVariable: String(objEditVariablesString.textoVar as number),
+      textoNombreVariable: String(objEditVariablesString.textoVar as number),
+      textoOpcionCambioParametro: '0'
     });
 
     setLoading(true);
@@ -288,7 +334,7 @@ export default function PantallaCti40Plus(): JSX.Element {
   const barraAccesoDirecto = barraAccesoDirectoPersistente.current;
 
   // Separar objetos: header (tipoObjeto: 2), líneas (tipoObjeto: 4, 5, 16), info (tipoObjeto: 7) y otros
-  const TIPOS_LINEA = new Set([3, 4, 5, 16]);
+  const TIPOS_LINEA = new Set([3, 4, 5, 16, 35]);
   // Agrupar líneas en bloques separados por objLineaGrafica (tipoObjeto: 20)
   const gruposLineas: ObjBase[][] = [];
   if (objetos) {
@@ -400,16 +446,19 @@ export default function PantallaCti40Plus(): JSX.Element {
   const camposMultiseleccion = objetos?.filter((o) => o.tipoObjeto === 10) ?? [];
   const esSeleccion = camposMultiseleccion.length > 0;
 
-  // Objeto de edición de variable (tipoObjeto: 8 — objEditVariables), presente solo en pantallas de edición
+  // Objeto de edición de variable numérica (tipoObjeto: 8 — objEditVariables), presente solo en pantallas de edición
   const objEditVariables = esTeclado ? (objetos?.find((o) => o.tipoObjeto === 8) ?? null) : null;
+  // Objeto de edición de variable string (tipoObjeto: 33 — objEditVariablesString), presente solo en pantallas de edición de texto
+  const objEditVariablesString = esTeclado ? (objetos?.find((o) => o.tipoObjeto === 33) ?? null) : null;
 
   // Detectar si es RADIO BUTTON (1 objEditVariables) o CHECKBOX (múltiples objEditVariables)
   const objEditVariablesMultiples = objetos?.filter((o) => o.tipoObjeto === 8) ?? [];
   const esRadioButton = esSeleccion && objEditVariablesMultiples.length === 1;
   const esCheckbox = esSeleccion && objEditVariablesMultiples.length > 1;
 
-  // Validez del valor introducido: debe ser un número dentro del rango [minimo, maximo]
+  // Validez del valor introducido: siempre válido para strings, rango numérico para el resto
   const editValido = useMemo<boolean>(() => {
+    if (objEditVariablesString) return true;
     if (!objEditVariables) return false;
     const tipoVar = objEditVariables.tipoVar as number;
     const val = parseFloat(editValue);
@@ -417,7 +466,7 @@ export default function PantallaCti40Plus(): JSX.Element {
     const minVal = parseFloat(decodificarVariable(objEditVariables.minimo as number, tipoVar));
     const maxVal = parseFloat(decodificarVariable(objEditVariables.maximo as number, tipoVar));
     return val >= minVal && val <= maxVal;
-  }, [editValue, objEditVariables]);
+  }, [editValue, objEditVariables, objEditVariablesString]);
 
   // ── Loading / Error ───────────────────────────────────────────────────────
 
@@ -467,9 +516,15 @@ export default function PantallaCti40Plus(): JSX.Element {
                   >
                     <LuX size={60} />
                   </button>
-                  <span className="text-5xl font-normal text-white truncate px-2">{objEditVariables ? resolverTexto(objEditVariables.textoVar as number) : ''}</span>
+                  <span className="text-5xl font-normal text-white truncate px-2">
+                    {objEditVariablesString ? resolverTexto(objEditVariablesString.textoVar as number) : objEditVariables ? resolverTexto(objEditVariables.textoVar as number) : ''}
+                  </span>
                   <button
                     onClick={() => {
+                      if (objEditVariablesString) {
+                        void escribirVariableString(editValue);
+                        return;
+                      }
                       if (editValido) void escribirVariable(editValue);
                     }}
                     className={`p-1 transition-colors ${editValido ? 'text-white hover:text-gray-200' : 'text-white/30 cursor-not-allowed'}`}
@@ -497,9 +552,13 @@ export default function PantallaCti40Plus(): JSX.Element {
                   <button
                     onClick={() => void escribirSeleccion()}
                     className={`p-1 transition-colors ${
-                      esRadioButton ? (selectedIdSeleccion !== null ? 'text-white hover:text-gray-200' : 'text-white/30 cursor-not-allowed')
-                      : esCheckbox ? 'text-white hover:text-gray-200'
-                      : 'text-white/30 cursor-not-allowed'
+                      esRadioButton
+                        ? selectedIdSeleccion !== null
+                          ? 'text-white hover:text-gray-200'
+                          : 'text-white/30 cursor-not-allowed'
+                        : esCheckbox
+                          ? 'text-white hover:text-gray-200'
+                          : 'text-white/30 cursor-not-allowed'
                     }`}
                     aria-label="Confirmar"
                   >
@@ -566,7 +625,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                 />
               )}
 
-              {/* Pantalla de edición (tipoPlantilla 2) — input centrado */}
+              {/* Pantalla de edición numérica (tipoPlantilla 2) — input centrado */}
               {esTeclado && objEditVariables && (
                 <div className="flex-1 flex items-center justify-center">
                   <ObjEditVariables
@@ -574,6 +633,16 @@ export default function PantallaCti40Plus(): JSX.Element {
                     value={editValue}
                     onChange={setEditValue}
                     isValid={editValido}
+                  />
+                </div>
+              )}
+
+              {/* Pantalla de edición de texto (tipoPlantilla 2 + tipoObjeto 33) — input de texto centrado */}
+              {esTeclado && objEditVariablesString && (
+                <div className="flex-1 flex items-center justify-center">
+                  <ObjEditVariablesString
+                    value={editValue}
+                    onChange={setEditValue}
                   />
                 </div>
               )}
