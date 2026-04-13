@@ -123,6 +123,46 @@ export default function PantallaCti40Plus(): JSX.Element {
     cargarPantalla(anterior);
   }
 
+  async function escribirVariable(valor: string): Promise<void> {
+    if (!objEditVariables || !objetos) return;
+    const objPlantilla = objetos.find((o) => o.tipoObjeto === 1);
+    const objIdUnicoEdicion = objetos.find((o) => o.tipoObjeto === 12);
+    if (!objPlantilla || !objIdUnicoEdicion) return;
+
+    const idPantalla = objPlantilla.idPantalla as number;
+    const ptrSalto = objEditVariables.ptrFuncionSaltoTrasEdit as number;
+
+    const params = new URLSearchParams({
+      eventId: '255',
+      idEnvio: String(idEnvioCounter++),
+      mac: MAC_CTI40PLUS,
+      readWrite: '1',
+      esPantallaPrincipal: '0',
+      idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
+      indicePantalla: String(objPlantilla.indicePantalla as number),
+      navIdPantallaRespuestaTrama: String(idPantalla),
+      tipoVariableEdicion: String(objEditVariables.tipoVarEdicion as number),
+      valorVariable: valor,
+      punteroVariableEdicion: String(objEditVariables.ptrVariableEdicion as number),
+      // Si ptrFuncionSaltoTrasEdit es 0 el servidor espera el idPantalla actual como destino de salto
+      punteroFuncionSaltoTrasEdit: String(ptrSalto !== 0 ? ptrSalto : idPantalla),
+      textoTituloVariable: String(objEditVariables.textoVar as number),
+      textoNombreVariable: String(objEditVariables.textoVar as number),
+    });
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch(`http://localhost:8020/api/pruebas/peticionPantallas?${params}`, { method: 'POST' });
+      if (!res.ok) throw new Error(`Error ${res.status}`);
+      volver();
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Error al escribir variable');
+      setLoading(false);
+    }
+  }
+
   // ── Derivados ─────────────────────────────────────────────────────────────
 
   // Objetos de barra de acceso directo (tipoObjeto: 66) — se usan los persistentes (capturados en pantallaId=0)
@@ -301,7 +341,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                   <span className="text-5xl font-normal text-white truncate px-2">{objEditVariables ? resolverTexto(objEditVariables.textoVar as number) : ''}</span>
                   <button
                     onClick={() => {
-                      if (editValido) volver();
+                      if (editValido) void escribirVariable(editValue);
                     }}
                     className={`p-1 transition-colors ${editValido ? 'text-white hover:text-gray-200' : 'text-white/30 cursor-not-allowed'}`}
                     aria-label="Confirmar"
