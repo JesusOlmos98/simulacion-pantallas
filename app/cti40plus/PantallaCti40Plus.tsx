@@ -50,6 +50,7 @@ export default function PantallaCti40Plus(): JSX.Element {
   const [infoDialogAbierto, setInfoDialogAbierto] = useState(false);
   const [editValue, setEditValue] = useState('');
   const [selectedIdSeleccion, setSelectedIdSeleccion] = useState<number | null>(null);
+  const [selectedIdSelecciones, setSelectedIdSelecciones] = useState<Set<number>>(new Set());
 
   // Ref para poder cancelar el fetch en vuelo al desmontar o al lanzar uno nuevo
   const controllerRef = useRef<AbortController | null>(null);
@@ -101,11 +102,25 @@ export default function PantallaCti40Plus(): JSX.Element {
     };
   }, [cargarPantalla]);
 
-  // Inicializa la opción seleccionada cuando carga una pantalla de selección única (tipoObjeto: 10)
+  // Inicializa las opciones seleccionadas cuando carga una pantalla de selección (tipoObjeto: 10)
   useEffect(() => {
-    const seleccionActual = objetos?.find((o) => o.tipoObjeto === 10 && (o.opcionSeleccionada as number) === 2);
-    if (!seleccionActual) return;
-    setSelectedIdSeleccion(seleccionActual.idSeleccion as number);
+    if (!objetos) return;
+    const objEditVars = objetos.filter((o) => o.tipoObjeto === 8);
+    const esRadio = objEditVars.length === 1;
+
+    if (esRadio) {
+      // RADIO BUTTON: buscar la opción preseleccionada (opcionSeleccionada=2)
+      const seleccionActual = objetos.find((o) => o.tipoObjeto === 10 && (o.opcionSeleccionada as number) === 2);
+      if (seleccionActual) {
+        setSelectedIdSeleccion(seleccionActual.idSeleccion as number);
+      }
+    } else if (objEditVars.length > 1) {
+      // CHECKBOX: agregar todas las opciones preseleccionadas (opcionSeleccionada=2) al Set
+      const selecciones = objetos
+        .filter((o) => o.tipoObjeto === 10 && (o.opcionSeleccionada as number) === 2)
+        .map((o) => o.idSeleccion as number);
+      setSelectedIdSelecciones(new Set(selecciones));
+    }
   }, [objetos]);
 
   // Inicializa el valor del input cuando carga una pantalla de edición (tipoPlantilla: 2)
@@ -173,42 +188,97 @@ export default function PantallaCti40Plus(): JSX.Element {
   }
 
   async function escribirSeleccion(): Promise<void> {
-    if (selectedIdSeleccion === null || !objetos) return;
+    if (!objetos) return;
     const objPlantilla = objetos.find((o) => o.tipoObjeto === 1);
     const objIdUnicoEdicion = objetos.find((o) => o.tipoObjeto === 12);
-    const objEditVar = objetos.find((o) => o.tipoObjeto === 8);
-    const objSeleccionado = objetos.find((o) => o.tipoObjeto === 10 && (o.idSeleccion as number) === selectedIdSeleccion);
-    if (!objPlantilla || !objIdUnicoEdicion || !objEditVar || !objSeleccionado) return;
+    if (!objPlantilla || !objIdUnicoEdicion) return;
 
     const idPantalla = objPlantilla.idPantalla as number;
     const encabezadoObj = objetos.find((o) => o.tipoObjeto === 2);
 
-    const params = new URLSearchParams({
-      eventId: '255',
-      idEnvio: String(idEnvioCounter++),
-      mac: MAC_CTI40PLUS,
-      readWrite: '1',
-      esPantallaPrincipal: '0',
-      idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
-      indicePantalla: String(objPlantilla.indicePantalla as number),
-      navIdPantallaRespuestaTrama: String(idPantalla),
-      tipoVariableEdicion: String(objEditVar.tipoVarEdicion as number),
-      valorVariable: String(selectedIdSeleccion),
-      punteroVariableEdicion: String(objEditVar.ptrVariableEdicion as number),
-      textoTituloVariable: String((encabezadoObj?.tituloText as number | undefined) ?? 0),
-      textoNombreVariable: String(objSeleccionado.textoVar as number)
-    });
+    // RADIO BUTTON: una selección
+    if (esRadioButton) {
+      if (selectedIdSeleccion === null) return;
+      const objEditVar = objetos.find((o) => o.tipoObjeto === 8);
+      const objSeleccionado = objetos.find((o) => o.tipoObjeto === 10 && (o.idSeleccion as number) === selectedIdSeleccion);
+      if (!objEditVar || !objSeleccionado) return;
 
-    setLoading(true);
-    setError(null);
+      const params = new URLSearchParams({
+        eventId: '255',
+        idEnvio: String(idEnvioCounter++),
+        mac: MAC_CTI40PLUS,
+        readWrite: '1',
+        esPantallaPrincipal: '0',
+        idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
+        indicePantalla: String(objPlantilla.indicePantalla as number),
+        navIdPantallaRespuestaTrama: String(idPantalla),
+        tipoVariableEdicion: String(objEditVar.tipoVarEdicion as number),
+        valorVariable: String(selectedIdSeleccion),
+        punteroVariableEdicion: String(objEditVar.ptrVariableEdicion as number),
+        textoTituloVariable: String((encabezadoObj?.tituloText as number | undefined) ?? 0),
+        textoNombreVariable: String(objSeleccionado.textoVar as number)
+      });
 
-    try {
-      const res = await fetch(`http://localhost:8020/api/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
-      if (!res.ok) throw new Error(`Error ${res.status}`);
-      volver();
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Error al escribir selección');
-      setLoading(false);
+      setLoading(true);
+      setError(null);
+
+      try {
+        const res = await fetch(`http://localhost:8020/api/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+        if (!res.ok) throw new Error(`Error ${res.status}`);
+        volver();
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Error al escribir selección');
+        setLoading(false);
+      }
+    }
+    // CHECKBOX: múltiples selecciones (puede haber cero selecciones)
+    else if (esCheckbox) {
+      const objEditVars = objetos.filter((o) => o.tipoObjeto === 8);
+      setLoading(true);
+      setError(null);
+
+      try {
+        // Si no hay selecciones, simplemente volver
+        if (selectedIdSelecciones.size === 0) {
+          volver();
+          return;
+        }
+
+        // Hacer una petición por cada objEditVariables con su correspondiente selección
+        for (let idx = 0; idx < objEditVars.length; idx++) {
+          const objEditVar = objEditVars[idx]!;
+          const idSeleccionParaEsteVar = Array.from(selectedIdSelecciones)[idx];
+
+          // Si no hay selección para este índice, saltar
+          if (idSeleccionParaEsteVar === undefined) continue;
+
+          const objSeleccionado = objetos.find((o) => o.tipoObjeto === 10 && (o.idSeleccion as number) === idSeleccionParaEsteVar);
+          if (!objSeleccionado) continue;
+
+          const params = new URLSearchParams({
+            eventId: '255',
+            idEnvio: String(idEnvioCounter++),
+            mac: MAC_CTI40PLUS,
+            readWrite: '1',
+            esPantallaPrincipal: '0',
+            idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
+            indicePantalla: String(objPlantilla.indicePantalla as number),
+            navIdPantallaRespuestaTrama: String(idPantalla),
+            tipoVariableEdicion: String(objEditVar.tipoVarEdicion as number),
+            valorVariable: String(idSeleccionParaEsteVar),
+            punteroVariableEdicion: String(objEditVar.ptrVariableEdicion as number),
+            textoTituloVariable: String((encabezadoObj?.tituloText as number | undefined) ?? 0),
+            textoNombreVariable: String(objSeleccionado.textoVar as number)
+          });
+
+          const res = await fetch(`http://localhost:8020/api/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+          if (!res.ok) throw new Error(`Error ${res.status} en petición ${idx + 1}`);
+        }
+        volver();
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Error al escribir selecciones');
+        setLoading(false);
+      }
     }
   }
 
@@ -333,6 +403,11 @@ export default function PantallaCti40Plus(): JSX.Element {
   // Objeto de edición de variable (tipoObjeto: 8 — objEditVariables), presente solo en pantallas de edición
   const objEditVariables = esTeclado ? (objetos?.find((o) => o.tipoObjeto === 8) ?? null) : null;
 
+  // Detectar si es RADIO BUTTON (1 objEditVariables) o CHECKBOX (múltiples objEditVariables)
+  const objEditVariablesMultiples = objetos?.filter((o) => o.tipoObjeto === 8) ?? [];
+  const esRadioButton = esSeleccion && objEditVariablesMultiples.length === 1;
+  const esCheckbox = esSeleccion && objEditVariablesMultiples.length > 1;
+
   // Validez del valor introducido: debe ser un número dentro del rango [minimo, maximo]
   const editValido = useMemo<boolean>(() => {
     if (!objEditVariables) return false;
@@ -405,7 +480,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                 </div>
               )}
 
-              {/* Barra superior — pantallas de selección única: X + título + Check */}
+              {/* Barra superior — pantallas de selección (radio o checkbox): X + título + Check */}
               {!esPantallaPrincipal && esSeleccion && (
                 <div
                   className="flex items-center justify-between px-3 py-6 shrink-0"
@@ -421,7 +496,11 @@ export default function PantallaCti40Plus(): JSX.Element {
                   <span className="text-5xl font-normal text-white truncate px-2">{titulo}</span>
                   <button
                     onClick={() => void escribirSeleccion()}
-                    className={`p-1 transition-colors ${selectedIdSeleccion !== null ? 'text-white hover:text-gray-200' : 'text-white/30 cursor-not-allowed'}`}
+                    className={`p-1 transition-colors ${
+                      esRadioButton ? (selectedIdSeleccion !== null ? 'text-white hover:text-gray-200' : 'text-white/30 cursor-not-allowed')
+                      : esCheckbox ? 'text-white hover:text-gray-200'
+                      : 'text-white/30 cursor-not-allowed'
+                    }`}
                     aria-label="Confirmar"
                   >
                     <LuCheck size={60} />
@@ -494,25 +573,55 @@ export default function PantallaCti40Plus(): JSX.Element {
                     obj={objEditVariables}
                     value={editValue}
                     onChange={setEditValue}
+                    isValid={editValido}
                   />
                 </div>
               )}
 
-              {/* Pantalla de selección única — lista de radio buttons */}
+              {/* Pantalla de selección — lista de radio buttons o checkboxes */}
               {esSeleccion && (
                 <div
                   className="flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#1E1E1E] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]"
                   style={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}
                 >
                   <div>
-                    {camposMultiseleccion.map((obj, i) => (
-                      <ObjCamposMultiseleccion
-                        key={i}
-                        obj={obj}
-                        isSelected={selectedIdSeleccion === (obj.idSeleccion as number)}
-                        onSelect={() => setSelectedIdSeleccion(obj.idSeleccion as number)}
-                      />
-                    ))}
+                    {camposMultiseleccion.map((obj, i) => {
+                      const idSeleccion = obj.idSeleccion as number;
+                      const opcionSeleccionada = obj.opcionSeleccionada as number;
+                      const isDisabled = opcionSeleccionada === 0;
+
+                      const isSelectedRadio = esRadioButton && selectedIdSeleccion === idSeleccion;
+                      const isSelectedCheckbox = esCheckbox && selectedIdSelecciones.has(idSeleccion);
+                      const isSelected = (isSelectedRadio || isSelectedCheckbox) && !isDisabled;
+
+                      const handleSelect = (): void => {
+                        if (isDisabled) return;
+
+                        if (esRadioButton) {
+                          // RADIO: reemplazar la selección
+                          setSelectedIdSeleccion(idSeleccion);
+                        } else if (esCheckbox) {
+                          // CHECKBOX: toggle (agregar o remover)
+                          const newSet = new Set(selectedIdSelecciones);
+                          if (newSet.has(idSeleccion)) {
+                            newSet.delete(idSeleccion);
+                          } else {
+                            newSet.add(idSeleccion);
+                          }
+                          setSelectedIdSelecciones(newSet);
+                        }
+                      };
+
+                      return (
+                        <ObjCamposMultiseleccion
+                          key={i}
+                          obj={obj}
+                          isSelected={isSelected}
+                          onSelect={handleSelect}
+                          isDisabled={isDisabled}
+                        />
+                      );
+                    })}
                   </div>
                 </div>
               )}

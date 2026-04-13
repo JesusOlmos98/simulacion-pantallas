@@ -20,7 +20,7 @@ export function getColorHex(colorId: number): string {
     1: COLORES.primary, // Verde
     2: COLORES.secondary, // Azul
     3: COLORES.tertiary, // Gris
-    4: COLORES.quaternary, // Naranja
+    4: COLORES.quaternary, // Opcion inhabiltiada
     5: COLORES.error, // Rojo
     6: COLORES.warning, // Ámbar
     7: COLORES.info, // Azul

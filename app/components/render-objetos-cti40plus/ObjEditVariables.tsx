@@ -9,11 +9,12 @@ interface Props {
   obj: ObjBase;
   value: string;
   onChange: (v: string) => void;
+  isValid: boolean;
 }
 
 /** Input de edición de variable (tipoObjeto: 8 — objEditVariables).
  *  Muestra el campo numérico con hint de rango. El valor y la validación se gestionan desde el padre. */
-export default function ObjEditVariables({ obj, value, onChange }: Props): JSX.Element {
+export default function ObjEditVariables({ obj, value, onChange, isValid }: Props): JSX.Element {
   const tipoVar = obj.tipoVar as number;
   const maximo = obj.maximo as number;
   const minimo = obj.minimo as number;
@@ -43,8 +44,8 @@ export default function ObjEditVariables({ obj, value, onChange }: Props): JSX.E
         {unidadStr && <span className="text-white text-5xl">{unidadStr}</span>}
       </div>
       {/* Rango permitido */}
-      <span className="text-white/60 text-2xl">
-        {minStr} – {maxStr}
+      <span className={`text-2xl ${isValid ? 'text-white/60' : 'text-red-500'}`}>
+        {minStr} - {maxStr}
         {unidadStr ? ` ${unidadStr}` : ''}
       </span>
     </div>

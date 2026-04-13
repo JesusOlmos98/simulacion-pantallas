@@ -40,7 +40,7 @@ const IconoInfluencias: IconType = ({ size = 24, color, className }) => {
   return React.createElement(
     'span',
     { className, style: { position: 'relative', display: 'inline-flex', width: s, height: s, flexShrink: 0 } },
-    React.createElement(LuChevronsRightLeft, { size: s, color }),
+    React.createElement(LuChevronsRightLeft, { size: badge, color, style: { position: 'absolute', bottom: 0, right: 0 } }),
     React.createElement(LuInfo, { size: badge, color, style: { position: 'absolute', bottom: 0, right: 0 } })
   );
 };
@@ -128,6 +128,16 @@ const IconoVentiladorGirando: IconType = ({ size = 24, className }) => {
   );
 };
 
+// Icono de 3 puntitos verticales con tamaño reducido al 80%
+const IconoEllipsisVertical: IconType = ({ size = 24, color, className }) => {
+  const actualSize = typeof size === 'number' ? Math.round(size * 1) : size;
+  return React.createElement(
+    'span',
+    { className, style: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: size, height: size } },
+    React.createElement(LuEllipsisVertical, { size: actualSize, color })
+  );
+};
+
 const ICONO_CTI40PLUS_MAP: Record<number, IconType> = {
   1: LuThermometer, // Termómetro de mercurio (Sondas)
   2: LuFan, // Ventilación
@@ -158,7 +168,7 @@ const ICONO_CTI40PLUS_MAP: Record<number, IconType> = {
   147: IconoWifiHigh,
   148: LuWifi,
   270: LuBellRing, // Alarmas
-  322: LuEllipsisVertical, // Más opciones
+  322: IconoEllipsisVertical, // Más opciones
   346: IconoVentiladorGirando // Ventilador girando en color naranja
 };
 
