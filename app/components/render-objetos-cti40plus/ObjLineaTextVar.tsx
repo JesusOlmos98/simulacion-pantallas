@@ -36,6 +36,7 @@ export default function ObjLineaTextVar({ obj, onNavegar, idPantallaActual }: Ob
   // Aplicar la misma lógica de colores que ObjLineaText
   const coloresLineaEdit = (obj.coloresLineaEdit as number | undefined) ?? 0;
   const colorTexto = resolverColor(coloresLineaEdit);
+  const inhabilitada = coloresLineaEdit === 15;
 
   return (
     <div
@@ -45,7 +46,7 @@ export default function ObjLineaTextVar({ obj, onNavegar, idPantallaActual }: Ob
       {/* Texto etiqueta */}
       <span
         className="text-5xl font-light"
-        style={{ color: colorTexto }}
+        style={{ color: inhabilitada ? COLORES.light_gray : colorTexto }}
       >
         {texto}
       </span>
@@ -54,7 +55,7 @@ export default function ObjLineaTextVar({ obj, onNavegar, idPantallaActual }: Ob
       <div className={`flex items-center gap-2 ${nav === 0 ? 'pr-4' : ''}`}>
         <span
           className="text-5xl "
-          style={{ color: COLORES.primary }}
+          style={{ color: inhabilitada ? COLORES.light_gray : COLORES.primary }}
         >
           {valor}
           {unidad ?? ''}

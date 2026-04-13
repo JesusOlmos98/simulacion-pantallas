@@ -24,11 +24,7 @@ export default function ObjCamposMultiseleccion({ obj, isSelected, onSelect }: P
       {/* Radio circle */}
       <div
         className="shrink-0 flex items-center justify-center rounded-full border-4"
-        style={{
-          width: 52,
-          height: 52,
-          borderColor: isSelected ? COLORES.primary : '#ffffff',
-        }}
+        style={{ width: 52, height: 52, borderColor: isSelected ? COLORES.primary : '#ffffff' }}
       >
         {isSelected && (
           <div

@@ -3,7 +3,7 @@ export const COLORES = {
   primary: '#97dd69ff', //'#60D619', // Verde (índice 1)
   secondary: '#196BD6', // Azul (índice 2)
   tertiary: '#929292', // Gris (índice 3)
-  quaternary: '#777777ff', // Naranja (índice 4)
+  quaternary: '#777777ff', // Opcion inhabiltiada (índice 4)
   error: '#f84340ff', // Rojo (índice 5)
   warning: '#f59e0b', // Ámbar (índice 6)
   info: '#3b82f6', // Azul (índice 7)

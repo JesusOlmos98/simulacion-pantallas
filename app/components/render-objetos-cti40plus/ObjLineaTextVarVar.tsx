@@ -36,6 +36,7 @@ export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual }:
   const unidad = resolverUnidad((obj.unidad as number | undefined) ?? 0);
 
   const colorTexto = resolverColor((obj.coloresLinea as number | undefined) ?? 0);
+  const inhabilitada = (obj.coloresLinea as number | undefined) === 15;
 
   return (
     <div
@@ -59,7 +60,7 @@ export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual }:
         >
           <span
             className="text-5xl"
-            style={{ color: COLORES.light }}
+            style={{ color: inhabilitada ? COLORES.light_gray : COLORES.light }}
           >
             {valorCentral}
             {unidadCentral ?? ''}
@@ -71,7 +72,7 @@ export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual }:
 
         <span
           className="text-5xl"
-          style={{ color: COLORES.primary }}
+          style={{ color: inhabilitada ? COLORES.light_gray : COLORES.primary }}
         >
           {valor}
           {unidad ?? ''}

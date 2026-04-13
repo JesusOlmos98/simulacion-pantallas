@@ -156,18 +156,58 @@ export default function PantallaCti40Plus(): JSX.Element {
       // Si ptrFuncionSaltoTrasEdit es 0 el servidor espera el idPantalla actual como destino de salto
       punteroFuncionSaltoTrasEdit: String(ptrSalto !== 0 ? ptrSalto : idPantalla),
       textoTituloVariable: String(objEditVariables.textoVar as number),
-      textoNombreVariable: String(objEditVariables.textoVar as number),
+      textoNombreVariable: String(objEditVariables.textoVar as number)
     });
 
     setLoading(true);
     setError(null);
 
     try {
-      const res = await fetch(`http://localhost:8020/api/pruebas/peticionPantallas?${params}`, { method: 'POST' });
+      const res = await fetch(`http://localhost:8020/api/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
       if (!res.ok) throw new Error(`Error ${res.status}`);
       volver();
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Error al escribir variable');
+      setLoading(false);
+    }
+  }
+
+  async function escribirSeleccion(): Promise<void> {
+    if (selectedIdSeleccion === null || !objetos) return;
+    const objPlantilla = objetos.find((o) => o.tipoObjeto === 1);
+    const objIdUnicoEdicion = objetos.find((o) => o.tipoObjeto === 12);
+    const objEditVar = objetos.find((o) => o.tipoObjeto === 8);
+    const objSeleccionado = objetos.find((o) => o.tipoObjeto === 10 && (o.idSeleccion as number) === selectedIdSeleccion);
+    if (!objPlantilla || !objIdUnicoEdicion || !objEditVar || !objSeleccionado) return;
+
+    const idPantalla = objPlantilla.idPantalla as number;
+    const encabezadoObj = objetos.find((o) => o.tipoObjeto === 2);
+
+    const params = new URLSearchParams({
+      eventId: '255',
+      idEnvio: String(idEnvioCounter++),
+      mac: MAC_CTI40PLUS,
+      readWrite: '1',
+      esPantallaPrincipal: '0',
+      idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
+      indicePantalla: String(objPlantilla.indicePantalla as number),
+      navIdPantallaRespuestaTrama: String(idPantalla),
+      tipoVariableEdicion: String(objEditVar.tipoVarEdicion as number),
+      valorVariable: String(selectedIdSeleccion),
+      punteroVariableEdicion: String(objEditVar.ptrVariableEdicion as number),
+      textoTituloVariable: String((encabezadoObj?.tituloText as number | undefined) ?? 0),
+      textoNombreVariable: String(objSeleccionado.textoVar as number)
+    });
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch(`http://localhost:8020/api/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+      if (!res.ok) throw new Error(`Error ${res.status}`);
+      volver();
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Error al escribir selección');
       setLoading(false);
     }
   }
@@ -380,8 +420,8 @@ export default function PantallaCti40Plus(): JSX.Element {
                   </button>
                   <span className="text-5xl font-normal text-white truncate px-2">{titulo}</span>
                   <button
-                    onClick={volver}
-                    className="p-1 text-white hover:text-gray-200 transition-colors"
+                    onClick={() => void escribirSeleccion()}
+                    className={`p-1 transition-colors ${selectedIdSeleccion !== null ? 'text-white hover:text-gray-200' : 'text-white/30 cursor-not-allowed'}`}
                     aria-label="Confirmar"
                   >
                     <LuCheck size={60} />

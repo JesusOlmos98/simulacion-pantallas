@@ -35,6 +35,7 @@ export default function ObjLineaTextText({ obj, onNavegar, idPantallaActual }: O
 
   const coloresLineaEdit = (obj.coloresLineaEdit as number | undefined) ?? 0;
   const colorTexto = resolverColor(coloresLineaEdit);
+  const inhabilitada = coloresLineaEdit === 15;
 
   const IconoLinea = useMemo<IconType | null>(() => (obj.iconoLinea != null ? resolverIconoCTI40Plus(obj.iconoLinea as number) : null), [obj.iconoLinea]);
 
@@ -64,7 +65,7 @@ export default function ObjLineaTextText({ obj, onNavegar, idPantallaActual }: O
       <div className={`flex items-center gap-2 min-w-[30%] justify-end ${nav === 0 ? 'pr-4' : ''}`}>
         <span
           className="text-5xl"
-          style={{ color: COLORES.primary }}
+          style={{ color: inhabilitada ? COLORES.light_gray : COLORES.primary }}
         >
           {textoVar}
         </span>
