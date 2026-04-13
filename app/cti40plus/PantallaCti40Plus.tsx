@@ -8,6 +8,7 @@ import { RenderObjeto, resolverIconoCTI40Plus, ObjTablaDinamica, ObjLineaInfoTex
 import ObjLineaInfoTextText from '../components/render-objetos-cti40plus/ObjLineaInfoTextText';
 import ObjEncabezadoEditIcono from '../components/render-objetos-cti40plus/ObjEncabezadoEditIcono';
 import ObjEditVariables from '../components/render-objetos-cti40plus/ObjEditVariables';
+import ObjCamposMultiseleccion from '../components/render-objetos-cti40plus/ObjCamposMultiseleccion';
 import { resolverTexto, parseConcatenado, COLORES, BarraBotonesCti40Plus, decodificarVariable } from '../components/render-objetos-cti40plus';
 import type { DescriptorPantalla, ObjBase } from '../components/pantalla-types';
 import { getColorHex } from '../components/render-objetos-cti40plus/colors';
@@ -48,6 +49,7 @@ export default function PantallaCti40Plus(): JSX.Element {
   const [error, setError] = useState<string | null>(null);
   const [infoDialogAbierto, setInfoDialogAbierto] = useState(false);
   const [editValue, setEditValue] = useState('');
+  const [selectedIdSeleccion, setSelectedIdSeleccion] = useState<number | null>(null);
 
   // Ref para poder cancelar el fetch en vuelo al desmontar o al lanzar uno nuevo
   const controllerRef = useRef<AbortController | null>(null);
@@ -98,6 +100,13 @@ export default function PantallaCti40Plus(): JSX.Element {
       controllerRef.current?.abort();
     };
   }, [cargarPantalla]);
+
+  // Inicializa la opción seleccionada cuando carga una pantalla de selección única (tipoObjeto: 10)
+  useEffect(() => {
+    const seleccionActual = objetos?.find((o) => o.tipoObjeto === 10 && (o.opcionSeleccionada as number) === 2);
+    if (!seleccionActual) return;
+    setSelectedIdSeleccion(seleccionActual.idSeleccion as number);
+  }, [objetos]);
 
   // Inicializa el valor del input cuando carga una pantalla de edición (tipoPlantilla: 2)
   useEffect(() => {
@@ -211,6 +220,7 @@ export default function PantallaCti40Plus(): JSX.Element {
         o.tipoObjeto !== 2 &&
         o.tipoObjeto !== 7 &&
         o.tipoObjeto !== 6 &&
+        o.tipoObjeto !== 10 &&
         o.tipoObjeto !== 19 &&
         o.tipoObjeto !== 20 &&
         o.tipoObjeto !== 67 &&
@@ -275,6 +285,10 @@ export default function PantallaCti40Plus(): JSX.Element {
   const esLista = tipoPlantilla === 4;
   const esLibre = tipoPlantilla === 21;
   const esTeclado = tipoPlantilla === 2;
+
+  // Campos de selección única (tipoObjeto: 10 — objCamposMultiseleccion)
+  const camposMultiseleccion = objetos?.filter((o) => o.tipoObjeto === 10) ?? [];
+  const esSeleccion = camposMultiseleccion.length > 0;
 
   // Objeto de edición de variable (tipoObjeto: 8 — objEditVariables), presente solo en pantallas de edición
   const objEditVariables = esTeclado ? (objetos?.find((o) => o.tipoObjeto === 8) ?? null) : null;
@@ -351,8 +365,32 @@ export default function PantallaCti40Plus(): JSX.Element {
                 </div>
               )}
 
-              {/* Barra superior — pantallas normales (no principal, no edición) */}
-              {!esPantallaPrincipal && !esTeclado && (
+              {/* Barra superior — pantallas de selección única: X + título + Check */}
+              {!esPantallaPrincipal && esSeleccion && (
+                <div
+                  className="flex items-center justify-between px-3 py-6 shrink-0"
+                  style={{ backgroundColor: COLORES.tertiary }}
+                >
+                  <button
+                    onClick={volver}
+                    className="p-1 text-white hover:text-gray-200 transition-colors"
+                    aria-label="Cancelar"
+                  >
+                    <LuX size={60} />
+                  </button>
+                  <span className="text-5xl font-normal text-white truncate px-2">{titulo}</span>
+                  <button
+                    onClick={volver}
+                    className="p-1 text-white hover:text-gray-200 transition-colors"
+                    aria-label="Confirmar"
+                  >
+                    <LuCheck size={60} />
+                  </button>
+                </div>
+              )}
+
+              {/* Barra superior — pantallas normales (no principal, no edición, no selección) */}
+              {!esPantallaPrincipal && !esTeclado && !esSeleccion && (
                 <div
                   className="flex items-center justify-between px-3 py-6 shrink-0"
                   style={{ backgroundColor: colorHeader }}
@@ -420,8 +458,27 @@ export default function PantallaCti40Plus(): JSX.Element {
                 </div>
               )}
 
+              {/* Pantalla de selección única — lista de radio buttons */}
+              {esSeleccion && (
+                <div
+                  className="flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#1E1E1E] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]"
+                  style={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}
+                >
+                  <div>
+                    {camposMultiseleccion.map((obj, i) => (
+                      <ObjCamposMultiseleccion
+                        key={i}
+                        obj={obj}
+                        isSelected={selectedIdSeleccion === (obj.idSeleccion as number)}
+                        onSelect={() => setSelectedIdSeleccion(obj.idSeleccion as number)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Objetos — scrollable si hay muchos */}
-              {!esLibre && !esTeclado && (
+              {!esLibre && !esTeclado && !esSeleccion && (
                 <div
                   className="flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#1E1E1E] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]"
                   style={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}

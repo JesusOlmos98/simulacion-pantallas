@@ -1,3 +1,4 @@
+export { default as ObjCamposMultiseleccion } from './ObjCamposMultiseleccion';
 export { default as ObjEncabezadoEditIcono } from './ObjEncabezadoEditIcono';
 export { default as ObjEditVariables } from './ObjEditVariables';
 export { default as ObjLineaGrafica } from './ObjLineaGrafica';
