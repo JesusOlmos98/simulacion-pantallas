@@ -1297,10 +1297,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textCondicionVientoFuerte, 'Strong wind condition'],
   [EnTextos.textTemperaturaExteriorMenorQue, 'Outdoor temperature less than'],
   [EnTextos.textTemperaturaExteriorMayorQue, 'Outdoor temperature greater than'],
-  [EnTextos.textMensajeVentNaturalTempExtMenorQue, 'If outdoor temperature is less than this value, natural ventilation won\'t be executed'],
-  [EnTextos.textMensajeVentNaturalTempExtMayorQue, 'If outdoor temperature is greater than this value, natural ventilation won\'t be executed'],
-  [EnTextos.textMensajeVentNaturalVelociVientoMenorQue, 'If the wind speed is less than this value, natural ventilation won\'t be executed.'],
-  [EnTextos.textMensajeVentNaturalVelociVientoMayorQue, 'If the wind speed is higher than this value, natural ventilation won\'t be executed.'],
+  [EnTextos.textMensajeVentNaturalTempExtMenorQue, "If outdoor temperature is less than this value, natural ventilation won't be executed"],
+  [EnTextos.textMensajeVentNaturalTempExtMayorQue, "If outdoor temperature is greater than this value, natural ventilation won't be executed"],
+  [EnTextos.textMensajeVentNaturalVelociVientoMenorQue, "If the wind speed is less than this value, natural ventilation won't be executed."],
+  [EnTextos.textMensajeVentNaturalVelociVientoMayorQue, "If the wind speed is higher than this value, natural ventilation won't be executed."],
   [EnTextos.textVelocidadVientoMenorQue, 'Wind speed lower than'],
   [EnTextos.textVelocidadVientoMayorQue, 'Wind speed greater than'],
   [EnTextos.textTiempoPasarEtapaNaturalANatural, 'Time to pass from Natural Stage to natural'],
@@ -1632,7 +1632,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textEstaticos, 'Static fan'],
   [EnTextos.textTemporizados, 'Timed fan'],
   [EnTextos.textDiferenciaEntreExteriorYDeseada, 'Offset desired humidity connection '],
-  [EnTextos.textMensajeHumedadInterior, 'Influence will start when indoor humidity goes over desired and outdoor humidity is less than difference between outdoor and Offset desired humidity connection '],
+  [
+    EnTextos.textMensajeHumedadInterior,
+    'Influence will start when indoor humidity goes over desired and outdoor humidity is less than difference between outdoor and Offset desired humidity connection '
+  ],
   [EnTextos.textCorreccionUsuario, 'User correction'],
   [EnTextos.textOffsetVentilacionMinima, 'Minimum ventilation offset'],
   [EnTextos.textOffsetVentilacionMaxima, 'Maximum ventilation offset'],
@@ -1658,8 +1661,11 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textNivelCo2DeControl, 'CO₂ control level'],
   [EnTextos.textNivelNh3DeControl, 'NH₃ control level'],
   [EnTextos.textMensajeOffsetNatural, 'This is the range for natural ventilation, in this range the adjusted stage of natural ventilation will be used.'],
-  [EnTextos.textMensajeRangoNatural, 'This range is executed next to natural offset. If we don\'t have natural stage configured, this range will be executed after room climate'],
-  [EnTextos.textMensajeOffsetSalidaNatural, 'After range this offset is executed. This one introduces a delay in ventilation activation in case the temperature rises or a delay in natural activation in case the temperature falls.'],
+  [EnTextos.textMensajeRangoNatural, "This range is executed next to natural offset. If we don't have natural stage configured, this range will be executed after room climate"],
+  [
+    EnTextos.textMensajeOffsetSalidaNatural,
+    'After range this offset is executed. This one introduces a delay in ventilation activation in case the temperature rises or a delay in natural activation in case the temperature falls.'
+  ],
   [EnTextos.textMensajeTiempoEnaturalANatural, 'Time to change from natural stage to natural'],
   [EnTextos.textEntradaTolvaLlena, 'Hopper full input'],
   [EnTextos.textEntradaAireTunel, 'Tunnel air inlet'],
@@ -1669,7 +1675,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textMensEntradaAireTunel, 'We have to indicate the air inlets of the tunnel.'],
   [EnTextos.textMensEsperaPorcentajeMovimientoEntrada, 'Total air inlet movement percentage to end transition (regulated - tunnel) '],
   [EnTextos.textMensEsperaTiempoMaximoTransicion, 'Maximum wait time for air inlet to reach position. If not reached in time, the (regulated - tunnel) transition will be ended '],
-  [EnTextos.textMensTipoTransicionTunel, 'Transition type to perform when changing from regulated to tunnel. Example: We\'re executing regulated and must change to tunnel, the device will execute tunnel stage air inlet positions and regulated stage ventilation. Regulated ventilation will be ended and tunnel started when time wait expires or when positions are reached, whatever happens the first.'],
+  [
+    EnTextos.textMensTipoTransicionTunel,
+    "Transition type to perform when changing from regulated to tunnel. Example: We're executing regulated and must change to tunnel, the device will execute tunnel stage air inlet positions and regulated stage ventilation. Regulated ventilation will be ended and tunnel started when time wait expires or when positions are reached, whatever happens the first."
+  ],
   [EnTextos.textMachosYHembrasSeparados, 'Males and females separated'],
   [EnTextos.textSoloMachos, 'Males only'],
   [EnTextos.textSoloHembras, 'Females only'],
@@ -1700,7 +1709,7 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textEliminarUltimoRegistro, 'Delete last inserted register'],
   [EnTextos.textAddRegistro, 'Add register of Entry/Wastage/Withdrawal'],
   [EnTextos.textEliminarTodosLosRegistros, 'Delete all registers'],
-  [EnTextos.textMensajeNoSePuedeIntroducirRegistros, 'Registers can\'t be added, no animals added.'],
+  [EnTextos.textMensajeNoSePuedeIntroducirRegistros, "Registers can't be added, no animals added."],
   [EnTextos.textCrianzaFinalizada, 'Breeding finished'],
   [EnTextos.textAddRegistroAlta, 'Add entry register'],
   [EnTextos.textAddRegistroBaja, 'Add wastage register'],
@@ -1876,7 +1885,7 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textDiaAnimal, 'Animal day'],
   [EnTextos.textMensajeNumeroAnimales0, 'Number of animals not set'],
   [EnTextos.textMensajeSiAnimales0PodraIntroducirDespues, 'You can let number of animals at 0 and do the animal entry later, but you must enter the number of animals before breeding day 3'],
-  [EnTextos.textMensajeConDiasNegativosNoAnimales, 'Animal entries can\'t be added in negative days, it can only be done when animals arrive'],
+  [EnTextos.textMensajeConDiasNegativosNoAnimales, "Animal entries can't be added in negative days, it can only be done when animals arrive"],
   [EnTextos.textMensajeEjecutaNaturalSiSeEncuentraEnElRango, 'Go to natural ventilation when it is in the established range'],
   [EnTextos.textMaximo, 'Maximum'],
   [EnTextos.textMinimo, 'Minimum'],
@@ -1909,7 +1918,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textVentiladorConSalida010NoPermitido, 'Fan with 0-10V output not allowed'],
   [EnTextos.textSalida010NoAsignadaVentiladorGrupo, 'This 0-10V output is not assigned to any fan of this group'],
   [EnTextos.textTemporiza, 'Timing'],
-  [EnTextos.textMensajeTemporizaSal010Ventila, 'When this output is timed, it will be timed if it\'s associated with a fan and the fan is also timed, but it will not be timed when associated to an static fan. It won\'t be timed either when associated to a mixed combination of timed and static fans on the same stage. When setted as not timed, this output will not be timed in any case.'],
+  [
+    EnTextos.textMensajeTemporizaSal010Ventila,
+    "When this output is timed, it will be timed if it's associated with a fan and the fan is also timed, but it will not be timed when associated to an static fan. It won't be timed either when associated to a mixed combination of timed and static fans on the same stage. When setted as not timed, this output will not be timed in any case."
+  ],
   [EnTextos.textReduccion1EtapaEdadAnimal, '1st stage reduction due to animal age'],
   [EnTextos.textReduccion1EtapaPorTempExterior, '1st stage reduction due to outdoor temperature'],
   [EnTextos.textMensajePorfavorEspereReseteandoEquipo, 'Resetting device, please wait and do not turn off the device...'],
@@ -2000,7 +2012,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textTiempoRespuestaDepresiometro, 'Negative pressure probe response time'],
   [EnTextos.textMensaTiempoRespuestaDepresiometro, 'Time that takes the negative pressure probe to measure a new value after a change in ventilation.'],
   [EnTextos.textTiempoAdelantoEntradasDeAire, 'Anticipation time of the inlet (increasing m3h)'],
-  [EnTextos.textMensaTiempoAdelantoEntradasDeAire, 'This is the anticipation time for the inlet to start moving before the corresponding fans will switch on. This time cannot be greater or equal that the \'minimum time off\'(configuration/ventilation/advanced) and the minimum cycles of all the stages, including hatcheries, S0 and natural stage.'],
+  [
+    EnTextos.textMensaTiempoAdelantoEntradasDeAire,
+    "This is the anticipation time for the inlet to start moving before the corresponding fans will switch on. This time cannot be greater or equal that the 'minimum time off'(configuration/ventilation/advanced) and the minimum cycles of all the stages, including hatcheries, S0 and natural stage."
+  ],
   [EnTextos.textDepresionDeseadaTunel, 'Negative pressure for tunnel area'],
   [EnTextos.textDepresionActual, 'Current negative pressure'],
   [EnTextos.textDiasDeCrianza, 'Breeding days'],
@@ -2081,9 +2096,15 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textPorcentajeTiempoMovimientoVentanaE, 'Air inlet T1 movement time'],
   [EnTextos.textPorcentajeTiempoMovimientoVentanaT, 'Air inlet T2 movement time'],
   [EnTextos.textIntervaloDepresionCorrecta, 'Interval considered correct for negative pressure'],
-  [EnTextos.textMensaIntervaloDepresionCorrecta, 'We indicate the value above and below the desired negative pressure that we will consider the value as correct. Ex: If we want 25 PA and in this parameter we introduce 2PA, the device will consider as good all the values between 23PA and 27PA.'],
+  [
+    EnTextos.textMensaIntervaloDepresionCorrecta,
+    'We indicate the value above and below the desired negative pressure that we will consider the value as correct. Ex: If we want 25 PA and in this parameter we introduce 2PA, the device will consider as good all the values between 23PA and 27PA.'
+  ],
   [EnTextos.textTiempoAdelantoEntradasDeAireMenosM3, 'Anticipation time of the inlet (decreasing m3h)'],
-  [EnTextos.textMensaTiempoAdelantoEntradasDeAireMenosm3, 'This is the time that the windows will close before the disconnection of the ventilation. This time can not exceed the minimum off time (Menu/Configuration/Ventilation/Advanced) and lower than the minimum cycles of all stages, including the brooder stage, S0 and natural stage.'],
+  [
+    EnTextos.textMensaTiempoAdelantoEntradasDeAireMenosm3,
+    'This is the time that the windows will close before the disconnection of the ventilation. This time can not exceed the minimum off time (Menu/Configuration/Ventilation/Advanced) and lower than the minimum cycles of all stages, including the brooder stage, S0 and natural stage.'
+  ],
   [EnTextos.textWarningOnOffDepresionDeseada, 'Warning! Not reached the desired negative pressure'],
   [EnTextos.textAjustesWarning, 'Warning adjusts'],
   [EnTextos.textTiempoMaxNoAlcanzaDepresionDeseada, 'Max. time to reach the desired negative pressure'],
@@ -2236,7 +2257,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textReloj2Programa5, 'Clock 2 Program 5'],
   [EnTextos.textImportacionExportacion, 'Import / Export'],
   [EnTextos.textPantalla, 'Screen'],
-  [EnTextos.textExportFileExists, 'A file with the selected name already exists. Click \'Replace\' if you want to replace the file information with the new configuration, or click \'Cancel\' if you want to change the file name of the new configuration.'],
+  [
+    EnTextos.textExportFileExists,
+    "A file with the selected name already exists. Click 'Replace' if you want to replace the file information with the new configuration, or click 'Cancel' if you want to change the file name of the new configuration."
+  ],
   [EnTextos.textExportNoSeDetectaUsb, 'No USB connected to the device is detected.'],
   [EnTextos.textExportando, 'Exporting'],
   [EnTextos.textImportando, 'Importing'],
@@ -2247,7 +2271,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textSeleccioneDeLaLista, 'Select the file you want to import from the list:'],
   [EnTextos.textIniciarImportacion, 'Start import'],
   [EnTextos.textIniciarExportacion, 'Start export'],
-  [EnTextos.textExporteInserteMemoriaUsb, 'Insert a USB stick, assign a name to the destination file and press the \'Export\' button to start the export. The configuration file will be saved in the \'/CTI/CFG/\' folder of the USB memory.'],
+  [
+    EnTextos.textExporteInserteMemoriaUsb,
+    "Insert a USB stick, assign a name to the destination file and press the 'Export' button to start the export. The configuration file will be saved in the '/CTI/CFG/' folder of the USB memory."
+  ],
   [EnTextos.textNombreDelFichero, 'File name:'],
   [EnTextos.textCancelar, 'Cancel'],
   [EnTextos.textSobrescribir, 'Overwrite'],
@@ -2256,7 +2283,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textImportacionCompletada, 'Import completed.'],
   [EnTextos.textImportacionEnCurso, 'Import in progress. You must wait for it to finish to perform any other operation.'],
   [EnTextos.textImportacionRealizadaConExito, 'Import successfully made. The computer will restart to complete the import. Please wait'],
-  [EnTextos.textLaImportacionNoSePuedeCancelar, 'The import can not be canceled once started. Do not turn off the computer or disconnect the USB while the import is being carried out because it could cause unwanted operation. If the import is not completed, you must do it again as soon as possible.'],
+  [
+    EnTextos.textLaImportacionNoSePuedeCancelar,
+    'The import can not be canceled once started. Do not turn off the computer or disconnect the USB while the import is being carried out because it could cause unwanted operation. If the import is not completed, you must do it again as soon as possible.'
+  ],
   [EnTextos.textNoSeEncuentranDirectorios, 'Directory error The export files must be copied to the folder / CTI / CFG / of the USB memory.'],
   [EnTextos.textNoSePuedeCrearDirectorio, 'Error during the export, failed when trying to create / CTI / CFG / folder on USB memory.'],
   [EnTextos.textHisteresisRele2, 'Hysteresis relay 2'],
@@ -2318,13 +2348,25 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textPorFecha, 'By date'],
   [EnTextos.textTablaRangosTemperatura, 'Temperature ranges table'],
   [EnTextos.textNumeroDeEtapas, 'Number of stages'],
-  [EnTextos.textMensaInfoOffsetTempRangoConectadoCurvaRango, 'Temperature offset is connected to the temperature range curve (Menu/Curves /Temperature range curve) if you want to edit it you have to change it in the curve.'],
-  [EnTextos.textMensaHoraPunto, 'Point mode, the device will use the value of the point where we are until the day is equal or bigger to the next point. Hour mode, the device calculates the progression between the two points hour by hour.'],
-  [EnTextos.textMensaNumeroEtapas, 'We indicate the number of stages to which we want to modify the range from the curve. If we place 5, the range of the first 5 stages of ventilation will be modified.'],
+  [
+    EnTextos.textMensaInfoOffsetTempRangoConectadoCurvaRango,
+    'Temperature offset is connected to the temperature range curve (Menu/Curves /Temperature range curve) if you want to edit it you have to change it in the curve.'
+  ],
+  [
+    EnTextos.textMensaHoraPunto,
+    'Point mode, the device will use the value of the point where we are until the day is equal or bigger to the next point. Hour mode, the device calculates the progression between the two points hour by hour.'
+  ],
+  [
+    EnTextos.textMensaNumeroEtapas,
+    'We indicate the number of stages to which we want to modify the range from the curve. If we place 5, the range of the first 5 stages of ventilation will be modified.'
+  ],
   [EnTextos.textRetireElJumper, 'Remove the jumper to continue'],
   [EnTextos.textGraficoAyudaZoom, 'Use the magnifying glass buttons to enlarge x2 [+] or reduce x2 [-] time. To re-visualize all the time, use the third magnifying glass button.'],
-  [EnTextos.textGraficoAyudaZoomManual, 'You can also manually zoom a specific area by touching one of the corners of the area to be enlarged and moving the finger -without lifting it- to the opposite corner of the area to be enlarged.'],
-  [EnTextos.textGraficoAyudaPaginas, 'Use the navigation buttons \'◄ and ►\' to display the previous time segment and the next one that is being viewed.'],
+  [
+    EnTextos.textGraficoAyudaZoomManual,
+    'You can also manually zoom a specific area by touching one of the corners of the area to be enlarged and moving the finger -without lifting it- to the opposite corner of the area to be enlarged.'
+  ],
+  [EnTextos.textGraficoAyudaPaginas, "Use the navigation buttons '◄ and ►' to display the previous time segment and the next one that is being viewed."],
   [EnTextos.textGraficoAyudaInfo, 'Touching on the graph, without dragging, a window with the numeric information of the day or hour corresponding to the touched point is shown.'],
   [EnTextos.textGraficoAyudaLeyenda, 'The legend and maximum and minimum buttons let you show and hide the corresponding element from the graph.'],
   [EnTextos.textMensajeActivaTestReles, 'When activating the relay test, all the relays of the equipment are disconnected, and only the one indicated in the following option can be connected.'],
@@ -2333,7 +2375,7 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textRotatoriosTempoMenorQueConfigurados, 'Vent. (rotational+temporised) <Set'],
   [EnTextos.textRotatoriosAl100, '100% rotational'],
   [EnTextos.textEstadoRefrigeracionPorInfluenciaHumedad, 'Cooling status by humidity influence'],
-  [EnTextos.textEstadoRefrigeracionPorInfluenciaDelDiaCrianza, 'Cooling state by \'Cooling OFF\' curve'],
+  [EnTextos.textEstadoRefrigeracionPorInfluenciaDelDiaCrianza, "Cooling state by 'Cooling OFF' curve"],
   [EnTextos.textEstadoRefrigeracionDespuesDeLasInfluencias, 'Cooling status after influences'],
   [EnTextos.textEstadoRefrigeracionPorTemperatura, 'Cooling status by temperature'],
   [EnTextos.textNumeroVentanasA1Criadero1, 'Air inlets on A1 side (brooder 1):'],
@@ -2374,8 +2416,14 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textTarjetaRl3, 'RL3 board'],
   [EnTextos.textTarjetaRl4, 'RL4 board'],
   [EnTextos.textTarjetaCom1, 'COM board'],
-  [EnTextos.textMensaMinimoTiempoOff, 'The minimum time that a fan can be off. If the shutdown time is shorter than this parameter, the fan will not turn off, it will keep on. This parameter must be greater than the time indicated for \'Anticipation time of the inlet (increasing / decreasing m3h)\' in “Menu - Configuration - Negative pressure – Advanced\''],
-  [EnTextos.textMensaCiloMinimo, 'The minimum time that the fan has to remain on. The minimum cycle have to be greater than the air inlet advance opening before turn on the ventilation (Menu/Configuration/Negative pressure/Advanced) and have to be less or equal to the cycle duration.'],
+  [
+    EnTextos.textMensaMinimoTiempoOff,
+    "The minimum time that a fan can be off. If the shutdown time is shorter than this parameter, the fan will not turn off, it will keep on. This parameter must be greater than the time indicated for 'Anticipation time of the inlet (increasing / decreasing m3h)' in “Menu - Configuration - Negative pressure – Advanced'"
+  ],
+  [
+    EnTextos.textMensaCiloMinimo,
+    'The minimum time that the fan has to remain on. The minimum cycle have to be greater than the air inlet advance opening before turn on the ventilation (Menu/Configuration/Negative pressure/Advanced) and have to be less or equal to the cycle duration.'
+  ],
   [EnTextos.textTestSalida010, '0-10V output test'],
   [EnTextos.textEeprom, 'EEPROM'],
   [EnTextos.textOk, 'OK'],
@@ -2384,7 +2432,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textEstadisticoEtapaCriadero2Hora, 'Brooder 2 stage activity by hour'],
   [EnTextos.textEstadisticoEtapaS0Hora, 'S0 stage activity by hour'],
   [EnTextos.textEstadisticoEtapaNaturalHora, 'Natural stage activity by hour'],
-  [EnTextos.textMensCambioModoEstadoNave, 'Changing the status of the house will reset the corrections made by the user to the climate. Switching to empty house will turn off all general alarms and warnings, all other modes will activate general alarms and warnings.'],
+  [
+    EnTextos.textMensCambioModoEstadoNave,
+    'Changing the status of the house will reset the corrections made by the user to the climate. Switching to empty house will turn off all general alarms and warnings, all other modes will activate general alarms and warnings.'
+  ],
   [EnTextos.textMensTestRelesActivado, 'The relay test is activated. With this option activated, the device can not perform any action with the relays. (Menu/Configuration/Settings/Test relays)'],
   [EnTextos.textEstadisticoEtapaCriadero1Dia, 'Brooder 1 stage activity by day'],
   [EnTextos.textEstadisticoEtapaCriadero2Dia, 'Brooder 2 stage activity by day'],
@@ -2405,8 +2456,14 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textReleEtapa4, 'Relay stage 4'],
   [EnTextos.textReleAuxCo2, 'Auxiliary relay CO₂'],
   [EnTextos.textMensHisteresisTiempo, 'Hysteresis to change from one stage to another.'],
-  [EnTextos.textMensModoRefrigeracionPorEtapas, 'Progressive mode: In this mode you turn on the stages one behind one. Rotary mode: in this mode you turn on one stage after another but changing the first stage that is connected. The first stage will change each time the cooling is switched off.'],
-  [EnTextos.textMensModoRefrigeracionSimplePorEtapas, 'Simple mode: When the cooling is connected, it will connect the relay indicated in the following option. Multi-stage mode: In this mode we can connect different stages at different temperatures.'],
+  [
+    EnTextos.textMensModoRefrigeracionPorEtapas,
+    'Progressive mode: In this mode you turn on the stages one behind one. Rotary mode: in this mode you turn on one stage after another but changing the first stage that is connected. The first stage will change each time the cooling is switched off.'
+  ],
+  [
+    EnTextos.textMensModoRefrigeracionSimplePorEtapas,
+    'Simple mode: When the cooling is connected, it will connect the relay indicated in the following option. Multi-stage mode: In this mode we can connect different stages at different temperatures.'
+  ],
   [EnTextos.textNumeroEtapasConectadas, 'Number of stages connected'],
   [EnTextos.textIluminacionAmanecer1, 'Lighting mode: dawn 1'],
   [EnTextos.textIluminacionAmanecer2, 'Lighting mode: dawn 2'],
@@ -2512,7 +2569,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textRelativaMin, 'Relative MIN'],
   [EnTextos.textMensaValorEnCurvaModificarEnCurva, 'The parameter is being injected by the curve, if you want to change this parameter go to the curve (options/curve).'],
   [EnTextos.textMensaAlarmaTemperaturaDiferencia, 'If any value of temperature probe of the ventilation is more or less than desired temperature + - difference alarm the alarm will turn ON.'],
-  [EnTextos.textMensaAlarmaTemperaturaRelativa, 'If the temperature value of the ventilation probes is more or less than the desired temperature + -relative temperature will turn ON the relative alarm'],
+  [
+    EnTextos.textMensaAlarmaTemperaturaRelativa,
+    'If the temperature value of the ventilation probes is more or less than the desired temperature + -relative temperature will turn ON the relative alarm'
+  ],
   [EnTextos.textOffsetCo2, 'Offset CO₂'],
   [EnTextos.textCurvaCo2Nh3Control, 'CO₂ NH₃ Control curve'],
   [EnTextos.textOffsetNh3, 'Offset NH₃'],
@@ -2525,10 +2585,16 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textInfluenciaCalefacciones, 'Heating inertia influence on minimum ventilation'],
   [EnTextos.textTiempoEsperaEvaluarCondiciones, 'Waiting time to evaluate condition'],
   [EnTextos.textOffsetMaximoSobreTemperaturaDeseada, 'Maximum offset over desired temperature'],
-  [EnTextos.textMensajeInfluenciaCalefaccion, 'When all the heaters stop, the inertia of these causes the temperature to increase, this influence means that even if the temperature rises, the ventilation remains at the minimum. Once it has finished the time (waiting time to evaluate condition), the influence will take the current ventilation temperature and remain at the minimum temperature until the temperature increases 0.2ºC. Influence not active if: influence CO₂/NH₃ running or natural ventilation is activated'],
+  [
+    EnTextos.textMensajeInfluenciaCalefaccion,
+    'When all the heaters stop, the inertia of these causes the temperature to increase, this influence means that even if the temperature rises, the ventilation remains at the minimum. Once it has finished the time (waiting time to evaluate condition), the influence will take the current ventilation temperature and remain at the minimum temperature until the temperature increases 0.2ºC. Influence not active if: influence CO₂/NH₃ running or natural ventilation is activated'
+  ],
   [EnTextos.textMensaVentNaturalYInfluCalefacConectado, 'We have natural ventilation connected so this influence will not work.'],
   [EnTextos.textMensaVentiInfluCalefacTiempoEsperaEvaluar, 'After all the heaters turn off, we wait for this time to evaluate the temperature and decide if we continue with the influence.'],
-  [EnTextos.textMensaVentiInfluCalefacOffsetMaximoSobreTemperaturaDeseada, 'If the ventilation temperature is higher than (desired ventilation temperature + maximum offset over desired temperature) the influence is not executed.'],
+  [
+    EnTextos.textMensaVentiInfluCalefacOffsetMaximoSobreTemperaturaDeseada,
+    'If the ventilation temperature is higher than (desired ventilation temperature + maximum offset over desired temperature) the influence is not executed.'
+  ],
   [EnTextos.textRefrigeracionInfluenciaHoraria, 'Hourly influence on cooling'],
   [EnTextos.textRefrigeracionInfluenciaIluminacion, 'Lighting influence on cooling'],
   [EnTextos.textCurvaRefrigeracion, 'Cooling curve'],
@@ -2544,7 +2610,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textInfluenciaHorariaHoraFin, 'Hourly influence: end time'],
   [EnTextos.textRefrigeracionPorEtapasNEtapas, 'Cooling by stages. No. of stages'],
   [EnTextos.textOffsetRefrigeracion, 'Cooling offset'],
-  [EnTextos.textMensaValorEnCurvaModificarEnCurvaRefrigeracion, 'The parameter value is injected by the curve, if you want to change this parameter go to the curve. (Main cooling / Plus button / Curve)'],
+  [
+    EnTextos.textMensaValorEnCurvaModificarEnCurvaRefrigeracion,
+    'The parameter value is injected by the curve, if you want to change this parameter go to the curve. (Main cooling / Plus button / Curve)'
+  ],
   [EnTextos.textEstadoRefrigeracionInfluenciaIluminacion, 'Cooling status after lighting influence'],
   [EnTextos.textEstadoRefrigeracionInfluenciaHoraria, 'Cooling status after hourly influence'],
   [EnTextos.textInfluenciaHumedad, 'Humidity influence'],
@@ -2570,9 +2639,15 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textTemperaturaSeccionCorregir, 'Correct section temperature'],
   [EnTextos.textCorreccionActualEntradasDeAire, 'Air inlets current correction'],
   [EnTextos.textEntradasDeAireCorregir, 'Correct air inlets'],
-  [EnTextos.textMensaEaInfluenciaTempInterior, 'In this influence 2 sections are defined (reference, correcting), you assign the inlets to be corrected (open more). If the temperature of the section to be corrected is higher (temperature differential) than the reference section, the influence will begin gradually opening the inlet in the section to be corrected, up to the maximum correction if the condition continues true. When the condition change to not true and we are making a correction we will decrease the correction progressively.'],
+  [
+    EnTextos.textMensaEaInfluenciaTempInterior,
+    'In this influence 2 sections are defined (reference, correcting), you assign the inlets to be corrected (open more). If the temperature of the section to be corrected is higher (temperature differential) than the reference section, the influence will begin gradually opening the inlet in the section to be corrected, up to the maximum correction if the condition continues true. When the condition change to not true and we are making a correction we will decrease the correction progressively.'
+  ],
   [EnTextos.textMensaEaInfluenciaTempInteriorZonaTunel, 'We indicate if we want to use this influence in the tunnel zone.'],
-  [EnTextos.textMensaEaInfluenciaTempInteriorEntradasAireCorregir, 'We indicate the air inlets that we want to correct, the correction will be made in windows that controlled by negative pressure or by position.'],
+  [
+    EnTextos.textMensaEaInfluenciaTempInteriorEntradasAireCorregir,
+    'We indicate the air inlets that we want to correct, the correction will be made in windows that controlled by negative pressure or by position.'
+  ],
   [EnTextos.textInfluenciaEntradaAire, 'Air inlets influence'],
   [EnTextos.textCalculoTeorico, 'Theoretical calculation'],
   [EnTextos.textMensaDebugDepreCalculoTeorico, 'Theoretical calculation of the percentage of opening for each air inlet with the internal temperature correction if appropriate.'],
@@ -2594,7 +2669,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textVentilacionInfluenciaTemperaturaInteriorBaja, 'Ventilation low indoor temperature influence'],
   [EnTextos.textDiferenciaDeConexionInfluencia, 'Influence connection differential'],
   [EnTextos.textRangoCorreccion, 'Correction range'],
-  [EnTextos.textMensaInfluTempInterior, 'When the temperature of the probes assigned to the ventilation is lower than (desired ventilation temperature - influence connection differential), the minimum ventilation will begin to decrease in the calculated correction percentage, the maximum correction will be reached if the temperature falls below (desired ventilation temperature - influence connection differential - range).'],
+  [
+    EnTextos.textMensaInfluTempInterior,
+    'When the temperature of the probes assigned to the ventilation is lower than (desired ventilation temperature - influence connection differential), the minimum ventilation will begin to decrease in the calculated correction percentage, the maximum correction will be reached if the temperature falls below (desired ventilation temperature - influence connection differential - range).'
+  ],
   [EnTextos.textTemperaturaInteriorMinusculas, 'Indoor temperature'],
   [EnTextos.textRelesAuxiliares, 'Auxiliary relays'],
   [EnTextos.textReleA, 'Auxiliary relay A'],
@@ -2616,11 +2694,20 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textSeguridadElectricaAjustes, 'Electrical safety settings'],
   [EnTextos.textHisteresisInfluenciaTemperaturaExterior, 'Outdoor temperature influence hysteresis'],
   [EnTextos.textTiempoEsperaCambioFalloElectrico, 'Delay to change to power failure mode'],
-  [EnTextos.textMensaSeguridadElectrica, 'When the power failure is detected, all ventilation will be turned off for the time indicated in the \'Delay to change to power failure mode\', and when this time pass, the ventilation will be switched on progressively. You can indicate in \'Ventilation position\' the ventilation percentage when the power failure occurs.'],
-  [EnTextos.textMensaSeguridadElectricaEdadAnimal, 'Introduce the animals age to go to a ventilation position when the animal\'s age is lower and to another position when the animal\'s age is equal or older.'],
+  [
+    EnTextos.textMensaSeguridadElectrica,
+    "When the power failure is detected, all ventilation will be turned off for the time indicated in the 'Delay to change to power failure mode', and when this time pass, the ventilation will be switched on progressively. You can indicate in 'Ventilation position' the ventilation percentage when the power failure occurs."
+  ],
+  [
+    EnTextos.textMensaSeguridadElectricaEdadAnimal,
+    "Introduce the animals age to go to a ventilation position when the animal's age is lower and to another position when the animal's age is equal or older."
+  ],
   [EnTextos.textMensaSeguridadElectricaInfluTempExte, 'If the outdoor temperature is lower than the target temperature, it will make a correction to the calculated percentage of ventilation.'],
   [EnTextos.textPorcentajeVentilacionCalculado, 'Calculated percentage ventilation '],
-  [EnTextos.textMensaSeguridadElectricaTiempoEspera, 'When the power supply fault is detected, the ventilation will stop for the time indicated in this option and after this time it will start to connect progressively the fans.'],
+  [
+    EnTextos.textMensaSeguridadElectricaTiempoEspera,
+    'When the power supply fault is detected, the ventilation will stop for the time indicated in this option and after this time it will start to connect progressively the fans.'
+  ],
   [EnTextos.textDetectado, 'Detected'],
   [EnTextos.textNoDetectado, 'Not detected'],
   [EnTextos.textPosicionCriadero1, 'Brooder position 1'],
@@ -2695,9 +2782,15 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textSilo3, 'Silo 3'],
   [EnTextos.textTiempoCuentaPienso, 'Feed delivery time'],
   [EnTextos.textPiensoConsumidoEnElTiempo, 'Amount of feed delivered'],
-  [EnTextos.textMensOrigenPienso, 'We indicate from where the total consumed feed originates. Time counter, the consumed feed is carried out by the time counter. Silos, the consumed feed is the one consumed in all the connected silos. Silo (1,2,3), we indicate which of the silos is the one that will count the consumed feed.'],
+  [
+    EnTextos.textMensOrigenPienso,
+    'We indicate from where the total consumed feed originates. Time counter, the consumed feed is carried out by the time counter. Silos, the consumed feed is the one consumed in all the connected silos. Silo (1,2,3), we indicate which of the silos is the one that will count the consumed feed.'
+  ],
   [EnTextos.textContadorPorTiempo, 'Time counter'],
-  [EnTextos.textMensTiempoCuentaPienso, 'To configure the feed counter we have to indicate the grams that are delivered in a specific time. Example: every 30 seconds of engine operation, 1000g is delivered, we have to place 30 seconds in time and 1000 g in feed.'],
+  [
+    EnTextos.textMensTiempoCuentaPienso,
+    'To configure the feed counter we have to indicate the grams that are delivered in a specific time. Example: every 30 seconds of engine operation, 1000g is delivered, we have to place 30 seconds in time and 1000 g in feed.'
+  ],
   [EnTextos.textCuentaPorHora, 'Account per hour'],
   [EnTextos.textMensTiempoEntradaPiensoTiempo, 'NC- When the digital input is open it will start counting. NA- When the digital input is closed it will start counting.'],
   [EnTextos.textContadorPiensoDiaActual, 'Current day feed counter'],
@@ -2780,7 +2873,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textPiensoDosificado, 'Dosed feed'],
   [EnTextos.textPiensoDosificar, 'Remaining to be dosed'],
   [EnTextos.textControlDeLaVariacionDelPeso, 'Weight Variation Control'],
-  [EnTextos.textMensajeVariacionDelPeso, 'In this option we can control the weight variation that the silos have to experiment during dosing.  In the weight and time parameters we have to indicate the weight variation that the silo has to have in the indicated time. If this variation is not produced in the indicated time, the system will give an alarm.'],
+  [
+    EnTextos.textMensajeVariacionDelPeso,
+    'In this option we can control the weight variation that the silos have to experiment during dosing.  In the weight and time parameters we have to indicate the weight variation that the silo has to have in the indicated time. If this variation is not produced in the indicated time, the system will give an alarm.'
+  ],
   [EnTextos.textPesoMinimoDosificarSilo, 'Minimum weight for silo dosing'],
   [EnTextos.textMensajePesoMinimoDosificarSilo, 'When the feed counter is configured by silos and the silos have a lower weight than indicated in this option you will have a warning.'],
   [EnTextos.textTolvaEbus, 'Hopper EBUS'],
@@ -2864,15 +2960,21 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textAdvertenciaSiCantidadNoAlcanzada, 'Warning if the quantity is not dosed'],
   [EnTextos.textAlimentacionSimpleControlAux, 'AUX control simple feeding'],
   [EnTextos.textModoControlAuxYPrincipalIguales, 'AUX and main control mode are the same'],
-  [EnTextos.textMensModoControlAuxYPrincipalIguales, 'When this mode is on, the main relay of the program will turn on during the dosing hours of the auxiliary control. The relay will remain on for the time indicated in the following option.'],
+  [
+    EnTextos.textMensModoControlAuxYPrincipalIguales,
+    'When this mode is on, the main relay of the program will turn on during the dosing hours of the auxiliary control. The relay will remain on for the time indicated in the following option.'
+  ],
   [EnTextos.textTiempoControlAuxYPrincipalIguales, 'AUX and main control time equal'],
-  [EnTextos.textMensTiempoControlAuxYPrincipalIguales, 'In this option we indicate the time the relay will remain connected when we have activated \'AUX and main control mode are the same\'.'],
+  [EnTextos.textMensTiempoControlAuxYPrincipalIguales, "In this option we indicate the time the relay will remain connected when we have activated 'AUX and main control mode are the same'."],
   [EnTextos.textReleAvance, 'Forward relay'],
   [EnTextos.textTiempoEncendidoReleAvance, 'Time on forward relay'],
   [EnTextos.textReleRetroceso, 'Backward relay '],
   [EnTextos.textTiempoEncendidoReleRetroceso, 'Time on backward relay'],
   [EnTextos.textAlimentacionSimplePrograma, 'Simple feeding program'],
-  [EnTextos.textMensAlimentacionSimpleFinalizar, 'End Time: the program will end when it reaches the end time Quantity: the program will end when it reaches the indicated amount and the auxiliary control will continue until it reaches the end time.'],
+  [
+    EnTextos.textMensAlimentacionSimpleFinalizar,
+    'End Time: the program will end when it reaches the end time Quantity: the program will end when it reaches the indicated amount and the auxiliary control will continue until it reaches the end time.'
+  ],
   [EnTextos.textMensAdvertenciaCantidadNoDosificada, 'If we activate this option the system will give us a warning if a program finish by time without having dosed the indicated amount.'],
   [EnTextos.textMensOrigen, 'We indicate which feed source will count the feed amount in case that the relay is assigned to a program with quantity.'],
   [EnTextos.textSiloConCelulaCarga, 'Silo with load cells'],
@@ -3010,7 +3112,7 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textElEquipoSeActualizara, 'The device will be updated'],
   [EnTextos.textElEquipoYaTieneLaUltimaVersionEtc, 'The device already has the latest version. It will not be updated'],
   [EnTextos.textEquipoSinBootloaderEtc, 'Device without bootloader. Cannot be updated.'],
-  [EnTextos.textNoSePuedeActualizarPorModelo, 'The device cannot be updated, the model doesn\'t match the defined one'],
+  [EnTextos.textNoSePuedeActualizarPorModelo, "The device cannot be updated, the model doesn't match the defined one"],
   [EnTextos.textEquipoNoDetectado, 'Device not detected'],
   [EnTextos.textActualizando, 'Updating...'],
   [EnTextos.textActualizado, 'Updated.'],
@@ -3216,7 +3318,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textVx1, 'VX1'],
   [EnTextos.textVx3, 'VX3'],
   [EnTextos.textTiempoEsperaCambioReanudadoElectrico, 'Delay to disconnect the power failure mode'],
-  [EnTextos.textMensaSeguridadElectricaTiempoEsperaReanudado, 'When the power supply is reestablished, the ventilation will stop for the time indicated in this option and after this time it will start to connect progressively the fans.'],
+  [
+    EnTextos.textMensaSeguridadElectricaTiempoEsperaReanudado,
+    'When the power supply is reestablished, the ventilation will stop for the time indicated in this option and after this time it will start to connect progressively the fans.'
+  ],
   [EnTextos.textIniciarCalibracionEaA, 'Start calibration of air inlet A'],
   [EnTextos.textIniciarCalibracionEaB, 'Start calibration of air inlet B'],
   [EnTextos.textIniciarCalibracionEaC, 'Start calibration of air inlet C'],
@@ -3307,10 +3412,22 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textDepresionDeseadaReguladaPa, 'Target neg. pressure on tunnel (PA)'],
   [EnTextos.textDepresionDeseadaTunelPa, 'Target neg. pressure regulated area (PA)'],
   [EnTextos.textDepresiometroManual, 'Hand held negative pressure meter'],
-  [EnTextos.textMsjModoDepresiometro, 'Automatic: the position of the windows will be calculated automatically according to the negative pressure./nManual: we need to indicate in the ventilation stages the opening of the inlets controlled by negative pressure.'],
-  [EnTextos.textMsjDepresiometroManual, 'We indicate the opening of the air inlet start and end. Start is the inlet position when all timed fans are switched off. End is the position of the inlet when all the fans of the stage are connected. For the intermediate timings of the fans in the stage, the device will progressively calculate the opening of the inlet according to the number of fans connected.'],
-  [EnTextos.textMsjInfluenciaTemperaturaEsteriorBajaTramos, 'This influence is used to correct the target negative prssure according to the outdoor temperature. When the outdoor temperature is lower than the start temperature, the correction will be applied progressively until the end temperature.'],
-  [EnTextos.textMsjArranqueProgresivoVentilaciores, 'If this option is activated during the transition from regulated to tunnel area or form tunnel to regulated area. All the fans will be switched off and will start to be switched on gradually according to the ventilation/advanced/progressive fan settings.'],
+  [
+    EnTextos.textMsjModoDepresiometro,
+    'Automatic: the position of the windows will be calculated automatically according to the negative pressure./nManual: we need to indicate in the ventilation stages the opening of the inlets controlled by negative pressure.'
+  ],
+  [
+    EnTextos.textMsjDepresiometroManual,
+    'We indicate the opening of the air inlet start and end. Start is the inlet position when all timed fans are switched off. End is the position of the inlet when all the fans of the stage are connected. For the intermediate timings of the fans in the stage, the device will progressively calculate the opening of the inlet according to the number of fans connected.'
+  ],
+  [
+    EnTextos.textMsjInfluenciaTemperaturaEsteriorBajaTramos,
+    'This influence is used to correct the target negative prssure according to the outdoor temperature. When the outdoor temperature is lower than the start temperature, the correction will be applied progressively until the end temperature.'
+  ],
+  [
+    EnTextos.textMsjArranqueProgresivoVentilaciores,
+    'If this option is activated during the transition from regulated to tunnel area or form tunnel to regulated area. All the fans will be switched off and will start to be switched on gradually according to the ventilation/advanced/progressive fan settings.'
+  ],
   [EnTextos.textTestAlarmas, 'Alarm test'],
   [EnTextos.textIniciar, 'Start'],
   [EnTextos.textTiempoDeTest, 'Test time'],
@@ -3342,7 +3459,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textCrianzaSincronizada, 'Breeding synchronized'],
   [EnTextos.textLimpiarWarning, 'Clean warnings'],
   [EnTextos.textDosificacionAlimento, 'Feed dosage'],
-  [EnTextos.textMsjAdvertenciasSonorasNoSonoras, 'If we set the warning to \'Sound\' mode when it occur, the alarm relay will be activated. If the warning is set to \'No sound\' mode, when it occurs, it will appear in current warnings without switching on the alarm relay.'],
+  [
+    EnTextos.textMsjAdvertenciasSonorasNoSonoras,
+    "If we set the warning to 'Sound' mode when it occur, the alarm relay will be activated. If the warning is set to 'No sound' mode, when it occurs, it will appear in current warnings without switching on the alarm relay."
+  ],
   [EnTextos.textMrt20Ebus, 'MRT20 EBUS'],
   [EnTextos.textSondas010, 'Probes (0-10V)'],
   [EnTextos.textLinea6, 'Line 6'],
@@ -3509,7 +3629,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textCerrada, 'Closed'],
   [EnTextos.textVigilanciaAlimentacionPorTiempoActivo, 'Surveillance of feeding by active time'],
   [EnTextos.textTiempoMaximoActivo, 'Maximum active time'],
-  [EnTextos.textMsjAlarmasVigilanciaPorTiempoActivo, 'Every time feeding start, the digital input has to change its status, then starts a time counter. If the digital input remains connected for longer than the time indicated in (maximum active time) an alarm will be activated (relay aux).'],
+  [
+    EnTextos.textMsjAlarmasVigilanciaPorTiempoActivo,
+    'Every time feeding start, the digital input has to change its status, then starts a time counter. If the digital input remains connected for longer than the time indicated in (maximum active time) an alarm will be activated (relay aux).'
+  ],
   [EnTextos.textAlarmaVigilanciaAlimentacion, 'Feeding surveillance alarm'],
   [EnTextos.textDetectada, 'Detected'],
   [EnTextos.textNoDetectada, 'Not detected'],
@@ -3652,7 +3775,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textProgramaNoIniciadoCfg, 'Program @@1,program number:1-2-3...@@ not started, configuration error'],
   [EnTextos.textProgramaRepeticionNoIniciadoCfg, 'Program @@1,program number:1-2-3..@@, repeat @@2,repeat number:1-2-3..@@ not started, configuration error'],
   [EnTextos.textProgramaCurvasNoIniciadoCfg, 'Program @@1,program number:1-2-3..@@, point @@2,point number:1-2-3..@@ not started, configuration error'],
-  [EnTextos.textProgramaCurvasRepeticionNoIniciadoCfg, 'Program @@1,program number:1-2-3..@@, point @@2,point number:1-2-3..@@, repetition @@3,repetition number:1-2-3..@@ not started, configuration error'],
+  [
+    EnTextos.textProgramaCurvasRepeticionNoIniciadoCfg,
+    'Program @@1,program number:1-2-3..@@, point @@2,point number:1-2-3..@@, repetition @@3,repetition number:1-2-3..@@ not started, configuration error'
+  ],
   [EnTextos.textFinalizadaDosificacion, 'Finished dosage program @@1,program number: 1-2-3.@@'],
   [EnTextos.textFinalizadaDosificacionRepeticion, 'Finished dosage program @@1,program number:1-2-3..@@, repetition @@2,repetition number:1-2-3..@@'],
   [EnTextos.textFinalizadaDosificacionCurvas, 'Finished dosage program @@1,program number:1-2-3..@@, point @@2,point number:1-2-3..@@'],
@@ -3691,7 +3817,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textVersionNoCompatible, 'Version not supported'],
   [EnTextos.textRepeticionX, 'repetition @@1,number repetition@@'],
   [EnTextos.textProgramaRepFinalizadoSolapamiento, 'Program @@1,program number:1-2-3...@@, rep. @@2,repeat number:1-2-3...@@ finished, overlap with program @@3,program number:1-2-3...@@'],
-  [EnTextos.textProgramaRepFinalizadoSolapamientoRep, 'Program @@1,program number:1-2-3..@@, repeat @@2,repeat number:1-2-3...@@ finished, overlap with program @@3,program number:1-2-3...@@, repeat @@4,repeat number:1-2-3..@@'],
+  [
+    EnTextos.textProgramaRepFinalizadoSolapamientoRep,
+    'Program @@1,program number:1-2-3..@@, repeat @@2,repeat number:1-2-3...@@ finished, overlap with program @@3,program number:1-2-3...@@, repeat @@4,repeat number:1-2-3..@@'
+  ],
   [EnTextos.textProgramaXInterrumpido, 'Program @@1,program number:1-2-3..@@ interrupted'],
   [EnTextos.textOrigenX, 'feed source @@1,feed source number:1-2-3...@@'],
   [EnTextos.textEntradaNoAsignadaEnOrigenX, 'Input not assigned in feed source @@1,feed source number:1-2-3...@@'],
@@ -3720,7 +3849,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textMaximasEntradasDeAire, 'Air inlet maximum opening'],
   [EnTextos.textHungaroIdioma, 'Magyar'],
   [EnTextos.textFeedium, 'Feedium'],
-  [EnTextos.textMensajePorcentajeErrorMovimiento, 'If the percentage of movement of the inlet is less than or equal to that indicated in this option, the inlet will not perform any movement. This parameter is used only when the air inlet is not controlled by temperature.'],
+  [
+    EnTextos.textMensajePorcentajeErrorMovimiento,
+    'If the percentage of movement of the inlet is less than or equal to that indicated in this option, the inlet will not perform any movement. This parameter is used only when the air inlet is not controlled by temperature.'
+  ],
   [EnTextos.textFaltaAsignarSensorDeLlenadoAAlgunDosificador, 'Filling sensor for dispenser not specified'],
   [EnTextos.textConCarga, 'Loading'],
   [EnTextos.textSinCarga, 'No loading'],
@@ -3886,7 +4018,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textVietnamitaIdioma, 'Tiếng Việt'],
   [EnTextos.textEstadoTest, 'Test status'],
   [EnTextos.textRecalcular, 'Recalculate'],
-  [EnTextos.textMensTestConectado, 'The device test is turned on. In this mode, the device will only perform the actions configured in the test. To configure go to Menu / Configuration / Maintenance / Commissioning'],
+  [
+    EnTextos.textMensTestConectado,
+    'The device test is turned on. In this mode, the device will only perform the actions configured in the test. To configure go to Menu / Configuration / Maintenance / Commissioning'
+  ],
   [EnTextos.textMensTipoTest, 'Ventilation stages: The test can be performed if the breeding is not active and the house status have to be set to (Entire house).'],
   [EnTextos.textGriegoIdioma, 'Ελληνικά'],
   [EnTextos.textSilows3, 'Silows 3'],
@@ -3985,7 +4120,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textTrenDePulsos, 'Chain of pulses'],
   [EnTextos.text50Hz, '50 Hz'],
   [EnTextos.text60Hz, '60 Hz'],
-  [EnTextos.textMensajeTemporizaTriacVentila, 'If TRIAC is timed, it means that when a fan has a TRIAC associated with it, the TRIAC and the fan will be timed, if it is a static fan the TRIAC will not be timed, if in a stage we have a static and a timed fan with the same TRIAC the TRIAC will not be timed. If we don\'t time, the TRIAC will not be timed in any case.'],
+  [
+    EnTextos.textMensajeTemporizaTriacVentila,
+    "If TRIAC is timed, it means that when a fan has a TRIAC associated with it, the TRIAC and the fan will be timed, if it is a static fan the TRIAC will not be timed, if in a stage we have a static and a timed fan with the same TRIAC the TRIAC will not be timed. If we don't time, the TRIAC will not be timed in any case."
+  ],
   [EnTextos.textVentilacionTriac, 'TRIAC Ventilation'],
   [EnTextos.textInicioTriac, 'Start TRIAC'],
   [EnTextos.textFinTriac, 'End TRIAC'],
@@ -4007,7 +4145,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textTemporizacionConVentilador, 'Timing with fan'],
   [EnTextos.textTemporizacionTriacVentilacionMinima, 'TRIAC minimum ventilation timing'],
   [EnTextos.textHisteresisSalidaTemporizacion, 'Hysteresis to finish the timing'],
-  [EnTextos.textMsjHisteresisSalidaTemporizacionTriac, 'The timing will start at the target ventilation temperature minus the hysteresis. And it will switch off the timer at the desired temperature.'],
+  [
+    EnTextos.textMsjHisteresisSalidaTemporizacionTriac,
+    'The timing will start at the target ventilation temperature minus the hysteresis. And it will switch off the timer at the desired temperature.'
+  ],
   [EnTextos.textDepresion, 'Negative pressure'],
   [EnTextos.textActivacionParametrosCalefaccion, 'Activation of heating parameters'],
   [EnTextos.textTemperaturaCalefaccion2, 'Heating temperature 2'],
@@ -4040,11 +4181,17 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textMsgPorcentajeMovimientoInmediato, 'If the difference between the calculated position and the actual position is greater than this parameter we move inlet immediately.'],
   [EnTextos.textAjustesEntradasAirePorTemperatura, 'Air inlet temperature settings'],
   [EnTextos.textMsgMinimoPorcentajeMovimiento, 'If the difference between the calculated position and the actual position is less than this parameter, the inlet will not move.'],
-  [EnTextos.textMsgTiempoEsperaMovimientoVentanaTemperatura, 'If the difference between the calculated position and the current position is greater than the minimum percentage of movement and less than the immediate percentage of movement, it will wait for the time configured in this parameter to perform the movement.'],
+  [
+    EnTextos.textMsgTiempoEsperaMovimientoVentanaTemperatura,
+    'If the difference between the calculated position and the current position is greater than the minimum percentage of movement and less than the immediate percentage of movement, it will wait for the time configured in this parameter to perform the movement.'
+  ],
   [EnTextos.textLento, 'Slow'],
   [EnTextos.textMsgMotorLento, 'Slow motor type, used when the motor moves so slowly that it gives false jam errors.'],
   [EnTextos.textVelocidadAire, 'Air speed'],
-  [EnTextos.textMsjModoVelocidadAire, 'Automatic: It will calculate the position of the inlets automatically according to the air speed. /n Manual: We will indicate in the ventilation stages the opening of the inlets that control the air speed.'],
+  [
+    EnTextos.textMsjModoVelocidadAire,
+    'Automatic: It will calculate the position of the inlets automatically according to the air speed. /n Manual: We will indicate in the ventilation stages the opening of the inlets that control the air speed.'
+  ],
   [EnTextos.textVelocidadAireManual, 'Manual air speed'],
   [EnTextos.textInfluenciaRefrigeracionDepresiometro, 'Influence of depressiometer cooling'],
   [EnTextos.textCurvaVelocidadAire, 'Air speed curve'],
@@ -4062,7 +4209,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textDia7, 'Day 7'],
   [EnTextos.textMsjCalefaccionActivarCurvaDinamica, 'Cannot connected because the heating curve is already injecting.'],
   [EnTextos.textMsjCalefaccionActivarCurva, 'Cannot connect because it is injecting the dynamic heating table.'],
-  [EnTextos.textMsjValorEnTablaDinamicaModificarEnTabla, 'The parameter is being injected by the dynamic heating table, if you want to change this parameter go to the table (options/dynamic heating).'],
+  [
+    EnTextos.textMsjValorEnTablaDinamicaModificarEnTabla,
+    'The parameter is being injected by the dynamic heating table, if you want to change this parameter go to the table (options/dynamic heating).'
+  ],
   [EnTextos.textDepositos, 'Cisterns'],
   [EnTextos.textDeposito1, 'Cistern 1'],
   [EnTextos.textDeposito2, 'Cistern 2'],
@@ -4160,7 +4310,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textVolumen, 'Volume'],
   [EnTextos.textAjusteSondaHumedadInterior, 'Indoor humidity sensor adjustment'],
   [EnTextos.textAjusteSondaHumedadExterior, 'Outdoor humidity sensor adjustment'],
-  [EnTextos.textMsjInfluenciaTemperaturaExteriorBajaDepresiometro, 'This influence is used to correct the desired underpressure according to the outdoor temperature. When the outdoor temperature is lower than correction temperature 1, correction 1 is applied, and when it is lower than correction temperature 2, correction 2 is applied.'],
+  [
+    EnTextos.textMsjInfluenciaTemperaturaExteriorBajaDepresiometro,
+    'This influence is used to correct the desired underpressure according to the outdoor temperature. When the outdoor temperature is lower than correction temperature 1, correction 1 is applied, and when it is lower than correction temperature 2, correction 2 is applied.'
+  ],
   [EnTextos.textEslovacoIdioma, 'Slovenský'],
   [EnTextos.textIncluirCuentaEnElContadorGeneral, 'Include in the general counter\t'],
   [EnTextos.textAltoVentanaSobrepresion, 'High overpressure inlets'],
@@ -4175,7 +4328,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textRegulacionMaxima, 'Maximum regulation'],
   [EnTextos.textDesestimar0EnLaMedida, 'Reject 0 for the average'],
   [EnTextos.textPermitirOffsetPositivo, 'Allow positive offset'],
-  [EnTextos.textMensajeHumedadInteriorModoRango, 'Correction shall start when the indoor humidity is higher than the starting humidity. The ventilation correction will be proportional to the humidity range. Example humidity start=50%, range=10%, ventilation correction=20% indoor humidity=55% correction made on ventilation=10%.'],
+  [
+    EnTextos.textMensajeHumedadInteriorModoRango,
+    'Correction shall start when the indoor humidity is higher than the starting humidity. The ventilation correction will be proportional to the humidity range. Example humidity start=50%, range=10%, ventilation correction=20% indoor humidity=55% correction made on ventilation=10%.'
+  ],
   [EnTextos.textCurvaInfluenciaHumedadInterior, 'Indoor humidity influence curve'],
   [EnTextos.textEliminarPuntoInfluencaHumedadInteriorVentilacion, 'Eliminates interior humidity influence point Vent.'],
   [EnTextos.textVentiladorEtapaActualEnManual, 'One fan of current stage are in manual mode in CP'],
@@ -4282,7 +4438,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textPanelControlLinea8, 'Control panel line 8'],
   [EnTextos.textConSeccionReferencia, 'With reference section'],
   [EnTextos.textSinSeccionReferencia, 'Without reference section'],
-  [EnTextos.textMensaEaInfluenciaTempInteriorModoSinReferencia, 'In this influence 2 sections are defined (reference, correcting), you assign the inlets to be corrected (open more). If the temperature of the section to be corrected is higher (temperature differential) than the reference section, the influence will begin gradually opening the inlet in the section to be corrected, up to the maximum correction if the condition continues true. When the condition change to not true and we are making a correction we will decrease the correction progressively.'],
+  [
+    EnTextos.textMensaEaInfluenciaTempInteriorModoSinReferencia,
+    'In this influence 2 sections are defined (reference, correcting), you assign the inlets to be corrected (open more). If the temperature of the section to be corrected is higher (temperature differential) than the reference section, the influence will begin gradually opening the inlet in the section to be corrected, up to the maximum correction if the condition continues true. When the condition change to not true and we are making a correction we will decrease the correction progressively.'
+  ],
   [EnTextos.textSondasSeccion1, 'Probes section 1'],
   [EnTextos.textSondasSeccion2, 'Probes section 2'],
   [EnTextos.textEntradasDeAireSeccion1, 'Air inlets section 1'],
@@ -4293,12 +4452,18 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textCorreccionSeccion2, 'Correction section 2'],
   [EnTextos.textCorreccionVentanasPosicion, 'Air inlets position correction'],
   [EnTextos.textMensaEaInfluenciaTempInteriorCorreccionPosicion, 'We indicate if we want to correct the air inlets that are working by position in each section.'],
-  [EnTextos.textMensaEaInfluenciaTempInteriorTempExterior, 'If the outdoor temperature is higher than the temperature of the hottest section plus the temperature offset, the indoor temperature influence will not be executed.'],
+  [
+    EnTextos.textMensaEaInfluenciaTempInteriorTempExterior,
+    'If the outdoor temperature is higher than the temperature of the hottest section plus the temperature offset, the indoor temperature influence will not be executed.'
+  ],
   [EnTextos.textCurvaVentilacion, 'Ventilation curve'],
   [EnTextos.textCurvaVentilacionActivaParametros, 'Active ventilation curve parameters.'],
   [EnTextos.textCorreccionTemperaturaExteriorAlta, 'High outdoor temperature correction.'],
   [EnTextos.textEliminarPuntoCurvaVentilacion, 'Eliminate ventilation curve point'],
-  [EnTextos.textMensaValorEnCurvaModificarEnCurvaVentilacion, 'The parameter is being injected by the curve, if you want to change this parameter go to the curve (ventilation/settings/ventilation curve).'],
+  [
+    EnTextos.textMensaValorEnCurvaModificarEnCurvaVentilacion,
+    'The parameter is being injected by the curve, if you want to change this parameter go to the curve (ventilation/settings/ventilation curve).'
+  ],
   [EnTextos.textConectarConFalloEnSondaExterior, 'Stays on when there is a fault in the external sensor'],
   [EnTextos.textMensaCambioTipoDosificacion, 'When changing the dosing type, all programmes will be switched off.'],
   [EnTextos.textDosificacionAguaDestino1, 'Water dosage target 1'],
@@ -4347,7 +4512,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textWpa3, 'WPA3'],
   [EnTextos.textConectandoRouter, 'Connecting router'],
   [EnTextos.textConexionRouterErronea, 'Router connection error'],
-  [EnTextos.textMensajeInfluenciaCalefaccion2, 'After all heaters have stopped, their inertia causes the temperature to rise, this influence means that even if the ventilation temperature rises, it will remain at (minimum + influence corrections). After (waiting time to evaluate the condition) the influence will take the current ventilation temperature and will stay at the calculated percentage until the temperature does not rise by 0.2°C. No influence is executed if natural ventilation is activated.'],
+  [
+    EnTextos.textMensajeInfluenciaCalefaccion2,
+    'After all heaters have stopped, their inertia causes the temperature to rise, this influence means that even if the ventilation temperature rises, it will remain at (minimum + influence corrections). After (waiting time to evaluate the condition) the influence will take the current ventilation temperature and will stay at the calculated percentage until the temperature does not rise by 0.2°C. No influence is executed if natural ventilation is activated.'
+  ],
   [EnTextos.textConfiguracionModoDosificadores, 'Dispensers mode configuration'],
   [EnTextos.textTiempoAperturaDosificadores, 'Duration of opening of the dispensers'],
   [EnTextos.textTiempoEntreAperturaCierre, 'Wait time between opening and closing'],
@@ -4401,7 +4569,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textSolapeProgramaXProgramaYDosificadores, 'Dispensers, programme @@1,programme number:1-2-3...@@ overlap with @@2,programme number:1-2-3...@@'],
   [EnTextos.textSolapePuntoXProgramaYProgramaZCarrosT1, 'T1 trolleys point @@1,point number:1-2-3...@@, programme @@2,programme number:1-2-3...@@ overlaps with @@3,programme number:1-2-3...@@'],
   [EnTextos.textSolapePuntoXProgramaYProgramaZCarrosT2, 'T2 trolleys point @@1,point number:1-2-3...@@, programme @@2,programme number:1-2-3...@@ overlaps with @@3,programme number:1-2-3...@@'],
-  [EnTextos.textSolapePuntoXProgramaYProgramaZDosificadores, 'Dispensers point @@1,point number:1-2-3...@@, programme @@2,programme number:1-2-3...@@ overlaps with the @@3,programme number:1-2-3...@@.'],
+  [
+    EnTextos.textSolapePuntoXProgramaYProgramaZDosificadores,
+    'Dispensers point @@1,point number:1-2-3...@@, programme @@2,programme number:1-2-3...@@ overlaps with the @@3,programme number:1-2-3...@@.'
+  ],
   [EnTextos.textIniciadoProgramaX, 'Started programme @@1,programme number:1-2-3...@@'],
   [EnTextos.textFinalizadoProgramaX, 'End of programme @@1,programme number:1-2-3...@@'],
   [EnTextos.textIniciadoProgramaXPuntoY, 'Initiated programme @@1,programme number:1-2-3...@@, item @@2,item number:1-2-3...@@'],
@@ -4432,8 +4603,14 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textFinalizadoProgramaXDosificadoresD2, 'End of programme @@1,programme number:1-2-3...@@ dosing units D2'],
   [EnTextos.textSolapeProgramaXProgramaYDosificadoresD1, 'Dosing units D1, programme @@1,programme number:1-2-3...@@ overlap with @@2,programme number:1-2-3...@@'],
   [EnTextos.textSolapeProgramaXProgramaYDosificadoresD2, 'Dosing units D2, programme @@1,programme number:1-2-3...@@ overlap with @@2,programme number:1-2-3...@@'],
-  [EnTextos.textSolapePuntoXProgramaYProgramaZDosificadoresD1, 'Dosing units D1 point @@1,point number:1-2-3...@@, programme @@2,programme number:1-2-3...@@ overlaps with @@3,programme number:1-2-3...@@.'],
-  [EnTextos.textSolapePuntoXProgramaYProgramaZDosificadoresD2, 'Dosing units D2 point @@1,point number:1-2-3...@@, programme @@2,programme number:1-2-3...@@ overlaps with @@3,programme number:1-2-3...@@.'],
+  [
+    EnTextos.textSolapePuntoXProgramaYProgramaZDosificadoresD1,
+    'Dosing units D1 point @@1,point number:1-2-3...@@, programme @@2,programme number:1-2-3...@@ overlaps with @@3,programme number:1-2-3...@@.'
+  ],
+  [
+    EnTextos.textSolapePuntoXProgramaYProgramaZDosificadoresD2,
+    'Dosing units D2 point @@1,point number:1-2-3...@@, programme @@2,programme number:1-2-3...@@ overlaps with @@3,programme number:1-2-3...@@.'
+  ],
   [EnTextos.textDosificadoresD1, 'Dispensers D1'],
   [EnTextos.textDosificadoresD2, 'Dispensers D2'],
   [EnTextos.textIniciadoProgramaXPuntoYDosificadoresD1, 'Started programme @@1,programme number:1-2-3...@@, point @@2,point number:1-2-3...@@ metering units D1'],
@@ -4450,7 +4627,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textReleVibrador, 'Vibrator relay'],
   [EnTextos.textReleParoSilo, 'Silo stop relay'],
   [EnTextos.textEntradaMotorSiloConectado, 'Connected silo motor input'],
-  [EnTextos.textMsjInfoVibradores, 'When the digital input of the silo motor is activated, the \'Monitoring time\' starts counting, if the \'Weight change\' has not occurred during this time, the \'Vibrator relay\' is activated for the \'Vibrator time\'.  When this time has elapsed, the process will be repeated. When all repetitions are completed, the \'Silo Stop Relay\' will be activated and the vibrator warning will be displayed. To resume operation, the warnings must be cleared.'],
+  [
+    EnTextos.textMsjInfoVibradores,
+    "When the digital input of the silo motor is activated, the 'Monitoring time' starts counting, if the 'Weight change' has not occurred during this time, the 'Vibrator relay' is activated for the 'Vibrator time'.  When this time has elapsed, the process will be repeated. When all repetitions are completed, the 'Silo Stop Relay' will be activated and the vibrator warning will be displayed. To resume operation, the warnings must be cleared."
+  ],
   [EnTextos.textMovimientosYHora, 'Movements and time'],
   [EnTextos.textActivaVibrador, 'Turn on vibrator'],
   [EnTextos.textCrotal, 'Ear tag'],
@@ -4619,7 +4799,10 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textInfluenciaRefrigeracionTemperaturaAlta, 'High temperature cooling influence'],
   [EnTextos.textEntradaAireInfluenciaRefrigeracion, 'Air inlet cooling influence'],
   [EnTextos.textDesconexionPorTemperaturaAlta, 'High temperature disconnection'],
-  [EnTextos.textMensDesconexionPorTemperaturaAlta, 'If the refrigeration temperature exceeds (desired refrigeration temperature + high temperature offset), it does not perform the influence of refrigeration. We can also place the window in a position when this condition is fulfilled.'],
+  [
+    EnTextos.textMensDesconexionPorTemperaturaAlta,
+    'If the refrigeration temperature exceeds (desired refrigeration temperature + high temperature offset), it does not perform the influence of refrigeration. We can also place the window in a position when this condition is fulfilled.'
+  ],
   [EnTextos.textEquipoNoRegistrado, 'Device not registered'],
   [EnTextos.textMotorSinConsumo, 'Motor without consumption'],
   [EnTextos.textAnimalNoAlimentado, 'Unfed animal'],
@@ -4994,5 +5177,5 @@ export const textMapEN = new Map<number | EnTextos, string>([
   [EnTextos.textAlarmaCrPrincipalSinSondas, 'Main cooling without probes'],
   [EnTextos.textAlarmaCrAux1SinSondas, 'No probes assigned to AUX 1 cooling'],
   [EnTextos.textAlarmaCrAux2SinSondas, 'Aux cooling 2 without probes'],
-  [EnTextos.textSinAnemometroInterior, 'No indoor anemometer'],
+  [EnTextos.textSinAnemometroInterior, 'No indoor anemometer']
 ]);
