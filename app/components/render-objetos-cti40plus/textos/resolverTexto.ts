@@ -23,6 +23,8 @@ import {
 } from './map/index';
 
 export function resolveText(numText: number | EnTextos, lang?: string): string {
+  if (lang === undefined) return textMapES.get(numText) || '';
+
   switch (lang) {
     case 'es':
       return textMapES.get(numText) || '';
