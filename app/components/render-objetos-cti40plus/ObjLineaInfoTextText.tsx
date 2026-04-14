@@ -1,7 +1,7 @@
 'use client';
 
 import type { JSX } from 'react';
-import { resolverTexto } from './pantalla-utils';
+import { resolveText } from './textos/resolverTexto';
 import { COLORES, resolverColor } from './colors';
 
 interface ObjLineaInfoTextTextProps {
@@ -14,8 +14,8 @@ export default function ObjLineaInfoTextText({ obj }: ObjLineaInfoTextTextProps)
   const textoVarId = (obj.textoVar as number | undefined) ?? 0;
   const esVacio = textoVarId === TEXTO_VACIO_ID;
 
-  const texto = resolverTexto((obj.texto as number | undefined) ?? 0);
-  const textoVar = esVacio ? '--' : resolverTexto(textoVarId);
+  const texto = resolveText((obj.texto as number | undefined) ?? 0);
+  const textoVar = esVacio ? '--' : resolveText(textoVarId);
 
   const coloresLineaEdit = (obj.coloresLineaEdit as number | undefined) ?? 0;
   const color = esVacio ? COLORES.light_gray : resolverColor(coloresLineaEdit);

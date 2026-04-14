@@ -6,7 +6,7 @@ import type { JSX } from 'react';
 import type { IconType } from 'react-icons/lib';
 import { COLORES } from './colors';
 import { resolverIcono } from './iconos-menu';
-import { resolverTexto } from './pantalla-utils';
+import { resolveText } from '../render-objetos-cti40plus/textos/resolverTexto';
 import { navegarSimple, ChevronRight } from './RenderHelpers';
 
 type OnNavegar = (d: { idPantalla: number; indicePantalla: number; esPrincipal: boolean; idUnicoEdicion?: number }) => void;
@@ -18,8 +18,8 @@ interface ObjLineaTextTextProps {
 
 export default function ObjLineaTextText({ obj, onNavegar }: ObjLineaTextTextProps): JSX.Element {
   const nav = obj.valorEditableONav as number;
-  const texto = resolverTexto(obj.texto as number);
-  const textoVar = resolverTexto(obj.textoVar as number);
+  const texto = resolveText(obj.texto as number);
+  const textoVar = resolveText(obj.textoVar as number);
   const Icono = useMemo<IconType | null>(() => resolverIcono(obj.iconoLinea as number), [obj.iconoLinea]);
 
   return (

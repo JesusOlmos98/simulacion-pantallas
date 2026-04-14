@@ -10,7 +10,8 @@ import ObjEncabezadoEditIcono from '../components/render-objetos-cti40plus/ObjEn
 import ObjEditVariables from '../components/render-objetos-cti40plus/ObjEditVariables';
 import ObjEditVariablesString from '../components/render-objetos-cti40plus/ObjEditVariablesString';
 import ObjCamposMultiseleccion from '../components/render-objetos-cti40plus/ObjCamposMultiseleccion';
-import { resolverTexto, parseConcatenado, COLORES, BarraBotonesCti40Plus, decodificarVariable, decodificarStringVariable } from '../components/render-objetos-cti40plus';
+import { resolveText } from '../components/render-objetos-cti40plus/textos/resolverTexto';
+import { parseConcatenado, COLORES, BarraBotonesCti40Plus, decodificarVariable, decodificarStringVariable } from '../components/render-objetos-cti40plus';
 import type { DescriptorPantalla, ObjBase } from '../components/pantalla-types';
 import { getColorHex } from '../components/render-objetos-cti40plus/colors';
 import PantallaLibre from './PantallaLibre';
@@ -424,7 +425,7 @@ export default function PantallaCti40Plus(): JSX.Element {
       }
     | undefined;
   const tituloTextId = encabezado?.tituloText ?? 0;
-  const titulo = encabezado ? (textoConcatenadoMap.get(tituloTextId) ?? resolverTexto(tituloTextId)) : '';
+  const titulo = encabezado ? (textoConcatenadoMap.get(tituloTextId) ?? resolveText(tituloTextId)) : '';
   const colorHeader = getColorHex(encabezado?.colorTitulo ?? 0);
 
   // objEncabezadoEditIcono (tipoObjeto: 31) — botón de acción a la derecha del header
@@ -517,7 +518,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                     <LuX size={60} />
                   </button>
                   <span className="text-5xl font-normal text-white truncate px-2">
-                    {objEditVariablesString ? resolverTexto(objEditVariablesString.textoVar as number) : objEditVariables ? resolverTexto(objEditVariables.textoVar as number) : ''}
+                    {objEditVariablesString ? resolveText(objEditVariablesString.textoVar as number) : objEditVariables ? resolveText(objEditVariables.textoVar as number) : ''}
                   </span>
                   <button
                     onClick={() => {

@@ -1,4 +1,4 @@
-import { EnTextos } from '../../../src/utils/common-lib-commac-generador/enumTextos';
+import { resolveText } from './textos/resolverTexto';
 import { EnUnidades, EnTipoVariable } from '../../../src/utils/common-lib-commac-generador/NXP_BE/globals/enumOld';
 
 // Re-exportar para acceso fácil
@@ -6,37 +6,37 @@ export { resolverColor, getColorHex } from './colors';
 
 // ─── Texto ────────────────────────────────────────────────────────────────────
 
-/** Devuelve el nombre legible de un ID de texto (EnTextos). */
-const EnTextosReverse = EnTextos as unknown as Record<number, string | undefined>;
+// /** Devuelve el nombre legible de un ID de texto (EnTextos). */
+// const EnTextosReverse = EnTextos as unknown as Record<number, string | undefined>;
 
-export function resolverTexto(id: number | EnTextos): string {
-  // Caso especial: textVacio (ID 151) debe mostrar "--"
-  if (id === 151) return '--';
+// export function resolverTexto(id: number | EnTextos): string {
+//   // Caso especial: textVacio (ID 151) debe mostrar "--"
+//   if (id === 151) return '--';
 
-  // Excepción para G0-G31 (IDs 254-285) deben mostrar "S1", "S2", etc.
-  if (id >= 254 && id <= 285) {
-    return `S${id - 254}`; // G0 (254) -> S1, G1 (255) -> S2, ..., G31 (285) -> S32
-  }
+//   // Excepción para G0-G31 (IDs 254-285) deben mostrar "S1", "S2", etc.
+//   if (id >= 254 && id <= 285) {
+//     return `S${id - 254}`; // G0 (254) -> S1, G1 (255) -> S2, ..., G31 (285) -> S32
+//   }
 
-  const nombre = EnTextosReverse[id];
-  if (nombre === undefined) return `[txt:${id}]`;
+//   const nombre = EnTextosReverse[id];
+//   if (nombre === undefined) return `[txt:${id}]`;
 
-  // Convierte camelCase a "palabras separadas" y quita el prefijo "text"
-  let resultado = nombre.replace(/^text/, '').replace(/([A-Z])/g, ' $1');
+//   // Convierte camelCase a "palabras separadas" y quita el prefijo "text"
+//   let resultado = nombre.replace(/^text/, '').replace(/([A-Z])/g, ' $1');
 
-  // Separar letras-números pero preservando fórmulas químicas conocidas
-  // Usamos negative lookahead para evitar separar CO2, NH3, H2O, etc.
-  resultado = resultado.replace(/([a-zA-Z])(\d)(?!(?:2|3|H|O|N))/g, '$1 $2');
+//   // Separar letras-números pero preservando fórmulas químicas conocidas
+//   // Usamos negative lookahead para evitar separar CO2, NH3, H2O, etc.
+//   resultado = resultado.replace(/([a-zA-Z])(\d)(?!(?:2|3|H|O|N))/g, '$1 $2');
 
-  // Casos especiales: manejar CO2, NH3, H2O que sí deben mantenerse juntos
-  resultado = resultado.replace(/\bCo\s2\b/gi, 'CO2');
-  resultado = resultado.replace(/\bNh\s3\b/gi, 'NH3');
-  resultado = resultado.replace(/\bH\s2\sO\b/gi, 'H2O');
-  resultado = resultado.replace(/\bO\s2\b/gi, 'O2');
-  resultado = resultado.replace(/\bN\s2\b/gi, 'N2');
+//   // Casos especiales: manejar CO2, NH3, H2O que sí deben mantenerse juntos
+//   resultado = resultado.replace(/\bCo\s2\b/gi, 'CO2');
+//   resultado = resultado.replace(/\bNh\s3\b/gi, 'NH3');
+//   resultado = resultado.replace(/\bH\s2\sO\b/gi, 'H2O');
+//   resultado = resultado.replace(/\bO\s2\b/gi, 'O2');
+//   resultado = resultado.replace(/\bN\s2\b/gi, 'N2');
 
-  return resultado.trim().replace(/\s([A-Z])(?![A-Z]*\d)/g, (_, c: string) => ' ' + c.toLowerCase());
-}
+//   return resultado.trim().replace(/\s([A-Z])(?![A-Z]*\d)/g, (_, c: string) => ' ' + c.toLowerCase());
+// }
 
 // ─── Textos concatenados (objTextoConcatenadoPlantilla, tipo 67) ──────────────
 
@@ -67,7 +67,7 @@ export function parseConcatenado(raw: BufferLike | number[]): string {
     if (w === 0xfffd) {
       if (j >= u16s.length) break;
       const id = u16s[j++]!;
-      partes.push(resolverTexto(id));
+      partes.push(resolveText(id));
       continue;
     }
     // Texto personalizado UTF-16LE
@@ -211,7 +211,7 @@ export function decodificarVariable(raw: number, tipoVar: number): string {
     case EnTipoVariable.string4:
     case EnTipoVariable.texto:
     case EnTipoVariable.textoTexto:
-      return resolverTexto(raw);
+      return resolveText(raw);
 
     default:
       return String(raw);

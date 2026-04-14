@@ -4,7 +4,7 @@ import type { JSX } from 'react';
 import { useMemo } from 'react';
 import type { IconType } from 'react-icons/lib';
 import { LuChevronRight } from 'react-icons/lu';
-import { resolverTexto } from './pantalla-utils';
+import { resolveText } from './textos/resolverTexto';
 import { resolverIconoCTI40Plus } from './iconos-cti40plus';
 import { COLORES, resolverColor } from './colors';
 import type { DescriptorPantalla } from '../pantalla-types';
@@ -30,8 +30,8 @@ export default function ObjLineaTextText({ obj, onNavegar, idPantallaActual }: O
     }
   };
 
-  const texto = resolverTexto((obj.texto as number | undefined) ?? 0);
-  const textoVar = resolverTexto((obj.textoVar as number | undefined) ?? 0);
+  const texto = resolveText((obj.texto as number | undefined) ?? 0);
+  const textoVar = resolveText((obj.textoVar as number | undefined) ?? 0);
 
   const coloresLineaEdit = (obj.coloresLineaEdit as number | undefined) ?? 0;
   const colorTexto = resolverColor(coloresLineaEdit);

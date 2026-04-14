@@ -24,7 +24,7 @@ export default function ObjEditVariablesString({ value, onChange }: Props): JSX.
           maxLength={MAX_CHARS}
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="bg-transparent text-6xl text-center outline-none w-72"
+          className="bg-transparent text-6xl text-center outline-none w-120"
           style={{ color: COLORES.primary }}
           autoFocus
         />

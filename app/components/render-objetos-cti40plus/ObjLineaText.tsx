@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import type { JSX } from 'react';
 import type { IconType } from 'react-icons/lib';
 import { LuChevronRight } from 'react-icons/lu';
-import { resolverTexto } from './pantalla-utils';
+import { resolveText } from './textos/resolverTexto';
 import { resolverIconoCTI40Plus } from './iconos-cti40plus';
 import { resolverColor } from './colors';
 import type { DescriptorPantalla } from '../pantalla-types';
@@ -26,7 +26,7 @@ export default function ObjLineaText({ obj, onNavegar, textoConcatenados }: ObjL
   };
 
   const textoId = (obj.texto as number | undefined) ?? 0;
-  const texto = textoConcatenados?.get(textoId) ?? resolverTexto(textoId);
+  const texto = textoConcatenados?.get(textoId) ?? resolveText(textoId);
   const coloresLineaEdit = (obj.coloresLineaEdit as number | undefined) ?? 0;
   const colorTexto = resolverColor(coloresLineaEdit);
   const IconoLinea = useMemo<IconType | null>(() => (obj.iconoLinea != null ? resolverIconoCTI40Plus(obj.iconoLinea as number) : null), [obj.iconoLinea]);

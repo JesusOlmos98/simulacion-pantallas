@@ -2,7 +2,8 @@
 
 import type { JSX } from 'react';
 import { LuChevronRight } from 'react-icons/lu';
-import { resolverTexto, resolverUnidad, decodificarVariable } from './pantalla-utils';
+import { resolveText } from './textos/resolverTexto';
+import { resolverUnidad, decodificarVariable } from './pantalla-utils';
 import { COLORES, resolverColor } from './colors';
 import type { DescriptorPantalla } from '../pantalla-types';
 
@@ -27,7 +28,7 @@ export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual }:
     }
   };
 
-  const texto = resolverTexto((obj.texto as number | undefined) ?? 0);
+  const texto = resolveText((obj.texto as number | undefined) ?? 0);
 
   const valorCentral = decodificarVariable((obj.variableCentral as number | undefined) ?? 0, (obj.tipoVarCentral as number | undefined) ?? 0);
   const unidadCentral = resolverUnidad((obj.unidadCentral as number | undefined) ?? 0);

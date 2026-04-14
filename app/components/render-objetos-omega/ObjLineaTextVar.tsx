@@ -6,7 +6,8 @@ import type { JSX } from 'react';
 import type { IconType } from 'react-icons/lib';
 import { COLORES } from './colors';
 import { resolverIcono } from './iconos-menu';
-import { decodificarVariable, resolverTexto, resolverUnidad } from './pantalla-utils';
+import { resolveText } from '../render-objetos-cti40plus/textos/resolverTexto';
+import { decodificarVariable, resolverUnidad } from './pantalla-utils';
 import { navegarSimple, ChevronRight } from './RenderHelpers';
 
 type OnNavegar = (d: { idPantalla: number; indicePantalla: number; esPrincipal: boolean; idUnicoEdicion?: number }) => void;
@@ -18,7 +19,7 @@ interface ObjLineaTextVarProps {
 
 export default function ObjLineaTextVar({ obj, onNavegar }: ObjLineaTextVarProps): JSX.Element {
   const nav = obj.valorEditableONav as number;
-  const texto = resolverTexto(obj.texto as number);
+  const texto = resolveText(obj.texto as number);
   const valor = decodificarVariable(obj.variable as number, obj.tipoVar as number);
   const unidad = resolverUnidad(obj.unidad as number);
   const Icono = useMemo<IconType | null>(() => resolverIcono(obj.iconoLinea as number), [obj.iconoLinea]);

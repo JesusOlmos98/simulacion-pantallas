@@ -3,7 +3,8 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import type { JSX } from 'react';
 import { useRouter } from 'next/navigation';
-import { resolverTexto, COLORES, RenderObjeto, Divider } from '../components/render-objetos-omega';
+import { resolveText } from '../components/render-objetos-cti40plus/textos/resolverTexto';
+import { COLORES, RenderObjeto, Divider } from '../components/render-objetos-omega';
 import type { DescriptorPantalla, ObjBase } from '../components/pantalla-types';
 
 const MAC_OMEGA = '14000208';
@@ -108,7 +109,7 @@ export default function PantallaOmega(): JSX.Element {
 
   // Título: viene en objEncabezado (tipoObjeto=2) si la pantalla lo tiene
   const encabezado = objetos?.find((o) => o.tipoObjeto === 2) as { tituloText?: number } | undefined;
-  const titulo = encabezado ? resolverTexto(encabezado.tituloText ?? 0) : '';
+  const titulo = encabezado ? resolveText(encabezado.tituloText ?? 0) : '';
 
   // tipoPlantilla: 4 = lista de filas, otros = grid de iconos
   const tipoPlantilla = (objetos?.find((o) => o.tipoObjeto === 1)?.tipoPlantilla as number) ?? 0;

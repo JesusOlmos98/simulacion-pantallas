@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import type { JSX } from 'react';
-import { resolverTexto } from './pantalla-utils';
+import { resolveText } from './textos/resolverTexto';
 import { COLORES } from './colors';
 
 interface ObjPopupProps {
@@ -16,9 +16,9 @@ export default function ObjPopup({ obj }: ObjPopupProps): JSX.Element {
   const mensajeId = (obj.mensaje as number | undefined) ?? 0;
   const botonId = (obj.boton as number | undefined) ?? 0;
 
-  const titulo = resolverTexto(tituloId);
-  const mensaje = resolverTexto(mensajeId);
-  const boton = resolverTexto(botonId);
+  const titulo = resolveText(tituloId);
+  const mensaje = resolveText(mensajeId);
+  const boton = resolveText(botonId);
 
   const handleAceptar = (): void => {
     setIsVisible(false);
@@ -30,16 +30,16 @@ export default function ObjPopup({ obj }: ObjPopupProps): JSX.Element {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div 
+      <div
         className="rounded-lg overflow-hidden max-w-md w-full mx-4 transition-colors"
         style={{ backgroundColor: '#1E1E1E' }}
       >
         {/* Header con título */}
-        <div 
+        <div
           className="px-6 py-4"
           style={{ backgroundColor: COLORES.primary }}
         >
-          <h2 
+          <h2
             className="text-xl font-bold text-center"
             style={{ color: COLORES.light }}
           >
@@ -49,7 +49,7 @@ export default function ObjPopup({ obj }: ObjPopupProps): JSX.Element {
 
         {/* Contenido del mensaje */}
         <div className="px-6 py-6">
-          <p 
+          <p
             className="text-left text-lg leading-relaxed"
             style={{ color: COLORES.light }}
           >
@@ -62,10 +62,7 @@ export default function ObjPopup({ obj }: ObjPopupProps): JSX.Element {
           <button
             onClick={handleAceptar}
             className="w-full font-medium py-3 px-8 rounded-lg transition-colors text-lg"
-            style={{ 
-              color: COLORES.light,
-              backgroundColor: COLORES.tertiary
-            }}
+            style={{ color: COLORES.light, backgroundColor: COLORES.tertiary }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = COLORES.quaternary;
             }}

@@ -2,7 +2,8 @@
 
 import type { JSX } from 'react';
 import { LuChevronRight } from 'react-icons/lu';
-import { resolverTexto, decodificarStringVariable } from './pantalla-utils';
+import { resolveText } from './textos/resolverTexto';
+import { decodificarStringVariable } from './pantalla-utils';
 import { COLORES, resolverColor } from './colors';
 import type { DescriptorPantalla } from '../pantalla-types';
 
@@ -29,7 +30,7 @@ export default function ObjLineaTextString({ obj, onNavegar, idPantallaActual }:
     }
   };
 
-  const texto = resolverTexto((obj.texto as number | undefined) ?? 0);
+  const texto = resolveText((obj.texto as number | undefined) ?? 0);
   const valor = decodificarStringVariable(obj.variable);
 
   // Aplicar la misma lógica de colores que ObjLineaTextVar

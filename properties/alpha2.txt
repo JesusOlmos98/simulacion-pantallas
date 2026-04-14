@@ -5104,4 +5104,4 @@ alpha2.texto.10204=Motor D10 sentido invertido
 alpha2.texto.10205=Refrigeraci\u00f3n principal sin sondas
 alpha2.texto.10206=Refrigeraci\u00f3n AUX 1 sin sondas
 alpha2.texto.10207=Refrigeraci\u00f3n AUX 2 sin sondas
-alpha2.texto.10208=Sin anemometro interior
+alpha2.texto.10208=Sin anem\u00f3metro interior

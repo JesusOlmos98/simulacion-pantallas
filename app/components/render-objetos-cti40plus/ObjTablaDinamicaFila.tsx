@@ -2,7 +2,8 @@
 
 import type { JSX } from 'react';
 import type { ObjBase, DescriptorPantalla } from '../pantalla-types';
-import { resolverTexto, decodificarVariable } from './pantalla-utils';
+import { resolveText } from './textos/resolverTexto';
+import { decodificarVariable } from './pantalla-utils';
 import { COLORES } from './colors';
 
 // ─── Tipos ────────────────────────────────────────────────────────────────────
@@ -34,7 +35,7 @@ const TIPO_VAR_TEXTO = 31;
 
 /** El valor suele venir en uint32, en ese caso se suele tener que coger los 2 bytes menos significativos y de ahí se obtiene el texto (miembro del EnTextos) correcto. */
 function renderCelda(celda: Celda): string {
-  if (celda.tipoVar === TIPO_VAR_TEXTO) return resolverTexto((celda.valor & 0xffff) >>> 0);
+  if (celda.tipoVar === TIPO_VAR_TEXTO) return resolveText((celda.valor & 0xffff) >>> 0);
   return decodificarVariable(celda.valor, celda.tipoVar);
 }
 

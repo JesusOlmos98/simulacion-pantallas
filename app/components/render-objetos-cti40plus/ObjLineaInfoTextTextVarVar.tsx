@@ -1,7 +1,8 @@
 'use client';
 
 import type { JSX } from 'react';
-import { resolverTexto, resolverUnidad, decodificarVariable } from './pantalla-utils';
+import { resolveText } from './textos/resolverTexto';
+import { resolverUnidad, decodificarVariable } from './pantalla-utils';
 import { COLORES, resolverColor } from './colors';
 
 interface ObjLineaInfoTextTextVarVarProps {
@@ -9,10 +10,10 @@ interface ObjLineaInfoTextTextVarVarProps {
 }
 
 export default function ObjLineaInfoTextTextVarVar({ obj }: ObjLineaInfoTextTextVarVarProps): JSX.Element {
-  const texto = resolverTexto((obj.texto as number | undefined) ?? 0);
+  const texto = resolveText((obj.texto as number | undefined) ?? 0);
 
   const tipoVar1 = (obj.tipoVar1 as number | undefined) ?? 0;
-  const var1Raw = tipoVar1 === 31 ? resolverTexto(((obj.variable1 as number | undefined) ?? 0) & 0xffff) : decodificarVariable((obj.variable1 as number | undefined) ?? 0, tipoVar1);
+  const var1Raw = tipoVar1 === 31 ? resolveText(((obj.variable1 as number | undefined) ?? 0) & 0xffff) : decodificarVariable((obj.variable1 as number | undefined) ?? 0, tipoVar1);
   // En el firmware CTI40+ las etiquetas textG0…textGN (IDs 254…) son sondas S0…SN
   const var1 = var1Raw.replace(/^G (\d+)$/, 'S$1');
 

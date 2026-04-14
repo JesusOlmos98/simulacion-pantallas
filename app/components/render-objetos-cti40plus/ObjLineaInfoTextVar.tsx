@@ -1,7 +1,8 @@
 'use client';
 
 import type { JSX } from 'react';
-import { resolverTexto, resolverUnidad, decodificarVariable } from './pantalla-utils';
+import { resolveText } from './textos/resolverTexto';
+import { decodificarVariable, resolverUnidad } from './pantalla-utils';
 import { COLORES, resolverColor } from './colors';
 
 interface ObjLineaInfoTextVarProps {
@@ -9,7 +10,7 @@ interface ObjLineaInfoTextVarProps {
 }
 
 export default function ObjLineaInfoTextVar({ obj }: ObjLineaInfoTextVarProps): JSX.Element {
-  const texto = resolverTexto((obj.texto as number | undefined) ?? 0);
+  const texto = resolveText((obj.texto as number | undefined) ?? 0);
   const valor = decodificarVariable((obj.variable as number | undefined) ?? 0, (obj.tipoVar as number | undefined) ?? 0);
   const unidad = resolverUnidad((obj.unidad as number | undefined) ?? 0);
 

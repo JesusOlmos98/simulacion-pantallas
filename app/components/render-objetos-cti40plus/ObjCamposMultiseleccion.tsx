@@ -2,7 +2,7 @@
 
 import type { JSX } from 'react';
 import type { ObjBase } from '../pantalla-types';
-import { resolverTexto } from './pantalla-utils';
+import { resolveText } from './textos/resolverTexto';
 import { COLORES } from './colors';
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
 /** Fila de selección única (radio button) o múltiple (checkbox) — tipoObjeto: 10 (objCamposMultiseleccion). */
 export default function ObjCamposMultiseleccion({ obj, isSelected, onSelect, isDisabled = false }: Props): JSX.Element {
   const textoId = obj.textoVar as number;
-  const texto = resolverTexto(textoId);
+  const texto = resolveText(textoId);
 
   return (
     <div
