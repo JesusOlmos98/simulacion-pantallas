@@ -14,6 +14,7 @@ import ObjLineaInfoTextTextVarVar from './ObjLineaInfoTextTextVarVar';
 import ObjPosXyLibreIcon from './ObjPosXyLibreIcon';
 import ObjPosXyLibreVariable from './ObjPosXyLibreVariable';
 import ObjPosXyLibreLineas from './ObjPosXyLibreLineas';
+import ObjPopup from './ObjPopup';
 import type { ObjBase, DescriptorPantalla } from '../pantalla-types';
 
 export interface RenderObjetoProps {
@@ -167,6 +168,10 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, esLista
         );
       }
       return <div className="col-span-7 px-4 py-2 text-5xl text-white">{JSON.stringify(obj)}</div>;
+
+    // objPopup - diálogo modal que se muestra automáticamente
+    case 40:
+      return <ObjPopup obj={obj} />;
 
     default:
       return <div className="col-span-7 px-4 py-2 text-2xl text-zinc-400 italic">[Tipo {obj.tipoObjeto} sin renderizador]</div>;

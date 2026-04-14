@@ -17,6 +17,9 @@ export { default as BarraBotonesCti40Plus } from './BarraBotonesCti40Plus';
 export { default as ObjPosXyLibreIcon } from './ObjPosXyLibreIcon';
 export { default as ObjPosXyLibreVariable } from './ObjPosXyLibreVariable';
 export { default as ObjPosXyLibreLineas } from './ObjPosXyLibreLineas';
+export { default as ObjPopup } from './ObjPopup';
 export { COLORES, resolverColor, getColorHex } from './colors';
 export { resolverIconoCTI40Plus } from './iconos-cti40plus';
 export { resolverTexto, resolverUnidad, decodificarVariable, decodificarStringVariable, parseConcatenado } from './pantalla-utils';
+
+//! {"tipoObjeto":"objPopup","titulo":17,"numTextosConcatenar":1,"mensaje":1140,"boton":1155}
