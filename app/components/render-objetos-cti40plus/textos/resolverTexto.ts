@@ -20,10 +20,12 @@ import {
   textMapTR,
   textMapVI,
   textMapZH
-} from './index';
+} from './map/index';
 
 export function resolveText(numText: number | EnTextos, lang?: string): string {
   switch (lang) {
+    case 'es':
+      return textMapES.get(numText) || '';
     case 'en':
       return textMapEN.get(numText) || '';
     case 'ar':
