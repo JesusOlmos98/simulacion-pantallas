@@ -45,6 +45,11 @@ interface BufferLike {
   data: number[];
 }
 
+interface JsonBufferLike {
+  type: 'Buffer';
+  data: number[];
+}
+
 /**
  * Parsea una `cadenaConcatenadaRaw` según el protocolo NXP de textos concatenados.
  * Soporta marcadores 0xFFFD (texto fijo), 0xFFFC (fin de sección) y 0xFFFB (fin total).
@@ -218,12 +223,23 @@ export function decodificarVariable(raw: number, tipoVar: number): string {
   }
 }
 
+/** Decodifica un rango float NXP serializado como Buffer JSON de 8 bytes BE y lo formatea como "inicio-fin". */
+export function decodificarRangoFloat(raw: unknown): string {
+  if (!isJsonBufferLike(raw) || raw.data.length < 8) return '—';
+
+  const inicio = bytesBigEndianToFloat(raw.data.slice(0, 4));
+  const fin = bytesBigEndianToFloat(raw.data.slice(4, 8));
+
+  if (!Number.isFinite(inicio) || !Number.isFinite(fin)) return '—';
+  return `${inicio.toFixed(1)}-${fin.toFixed(1)}`;
+}
+
 /**
  * Decodifica un buffer UTF-16LE (enviado como {type:"Buffer",data:number[]}) a string.
  * Para en el primer carácter nulo (0x0000). Se usa en objLineaTextString (tipo 35).
  */
 export function decodificarStringVariable(raw: unknown): string {
-  if (!raw) return '';
+  if (raw == null) return '';
   const bytes = Array.isArray(raw) ? (raw as number[]) : ((raw as { data?: number[] })?.data ?? []);
   if (bytes.length === 0) return '';
 
@@ -243,6 +259,18 @@ function rawToFloat(raw: number): number {
   const buf = new ArrayBuffer(4);
   new DataView(buf).setUint32(0, raw >>> 0, false);
   return new DataView(buf).getFloat32(0, false);
+}
+
+function bytesBigEndianToFloat(bytes: number[]): number {
+  if (bytes.length < 4) return Number.NaN;
+  const raw = (((bytes[0] ?? 0) << 24) | ((bytes[1] ?? 0) << 16) | ((bytes[2] ?? 0) << 8) | (bytes[3] ?? 0)) >>> 0;
+  return rawToFloat(raw);
+}
+
+function isJsonBufferLike(value: unknown): value is JsonBufferLike {
+  if (typeof value !== 'object' || value === null) return false;
+  const maybeBuffer = value as Partial<JsonBufferLike>;
+  return maybeBuffer.type === 'Buffer' && Array.isArray(maybeBuffer.data);
 }
 
 function formatFloat(v: number, decimales: number): string {
@@ -268,10 +296,11 @@ function formatTiempoHm(raw: number): string {
   return `${pad2(hora)}h${pad2(min)}m`;
 }
 
-function formatTiempoMs(seg: number): string {
-  const m = Math.floor(seg / 60);
-  const s = seg % 60;
-  return `${pad2(m)}:${pad2(s)}`;
+function formatTiempoMs(raw: number): string {
+  const packed = (raw >>> 0) & 0xffff; // 0xMMSS en NXP
+  const minutos = (packed >>> 8) & 0xff;
+  const segundos = packed & 0xff;
+  return `${pad2(minutos)}m${pad2(segundos)}s`;
 }
 
 /** El campo `fecha` es un u32 = AAAAMMDD (BCD o entero plano, según firmware). */

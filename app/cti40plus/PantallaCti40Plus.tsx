@@ -57,6 +57,7 @@ export default function PantallaCti40Plus(): JSX.Element {
 
   // Ref para poder cancelar el fetch en vuelo al desmontar o al lanzar uno nuevo
   const controllerRef = useRef<AbortController | null>(null);
+  const escribirSeleccionRef = useRef<() => Promise<void>>(async () => {});
 
   // Botones de barra de acceso directo (tipoObjeto: 66) — solo llegan en pantallaId=0,
   // se guardan aquí la primera vez y persisten durante toda la sesión CTI40 Plus.
@@ -336,6 +337,8 @@ export default function PantallaCti40Plus(): JSX.Element {
     }
   }
 
+  escribirSeleccionRef.current = escribirSeleccion;
+
   // ── Derivados ─────────────────────────────────────────────────────────────
 
   // Objetos de barra de acceso directo (tipoObjeto: 66) — se usan los persistentes (capturados en pantallaId=0)
@@ -476,6 +479,36 @@ export default function PantallaCti40Plus(): JSX.Element {
     return val >= minVal && val <= maxVal;
   }, [editValue, objEditVariables, objEditVariablesString]);
 
+  const seleccionConfirmable = useMemo<boolean>(() => {
+    if (!esSeleccion) return false;
+    if (esRadioButton) {
+      const esConfirmacionEdicion = tipoPlantilla === 5;
+      return esConfirmacionEdicion || selectedIdSeleccion !== null;
+    }
+    if (esCheckbox) return true;
+    return false;
+  }, [esCheckbox, esRadioButton, esSeleccion, selectedIdSeleccion, tipoPlantilla]);
+
+  useEffect(() => {
+    if (esSeleccion && seleccionConfirmable && !loading && error === null) {
+      const handleKeyDown = (event: KeyboardEvent): void => {
+        if (event.key !== 'Enter' || event.repeat) return;
+
+        const target = event.target;
+        if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement) {
+          return;
+        }
+
+        event.preventDefault();
+        void escribirSeleccionRef.current();
+      };
+
+      window.addEventListener('keydown', handleKeyDown);
+      return (): void => window.removeEventListener('keydown', handleKeyDown);
+    }
+    return undefined;
+  }, [error, esSeleccion, loading, seleccionConfirmable]);
+
   // ── Loading / Error ───────────────────────────────────────────────────────
 
   // ── Render ────────────────────────────────────────────────────────────────
@@ -558,16 +591,10 @@ export default function PantallaCti40Plus(): JSX.Element {
                   </button>
                   <span className="text-5xl font-normal text-white truncate px-2">{titulo}</span>
                   <button
-                    onClick={() => void escribirSeleccion()}
-                    className={`p-1 transition-colors ${
-                      esRadioButton
-                        ? selectedIdSeleccion !== null
-                          ? 'text-white hover:text-gray-200'
-                          : 'text-white/30 cursor-not-allowed'
-                        : esCheckbox
-                          ? 'text-white hover:text-gray-200'
-                          : 'text-white/30 cursor-not-allowed'
-                    }`}
+                    onClick={() => {
+                      if (seleccionConfirmable) void escribirSeleccion();
+                    }}
+                    className={`p-1 transition-colors ${seleccionConfirmable ? 'text-white hover:text-gray-200' : 'text-white/30 cursor-not-allowed'}`}
                     aria-label="Confirmar"
                   >
                     <LuCheck size={60} />
