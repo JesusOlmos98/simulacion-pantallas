@@ -34,7 +34,7 @@ async function fetchPantalla(d: DescriptorPantalla, signal: AbortSignal): Promis
       params.set('idUnicoEdicion', String(d.idUnicoEdicion));
     }
   }
-  const res = await fetch(`http://localhost:8020/api/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST', signal });
+  const res = await fetch(`${process.env.COMMAC_BASE_URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST', signal });
   if (!res.ok) throw new Error(`Error ${res.status}`);
   return res.json();
 }
@@ -183,7 +183,7 @@ export default function PantallaCti40Plus(): JSX.Element {
     setError(null);
 
     try {
-      const res = await fetch(`http://localhost:8020/api/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+      const res = await fetch(`${process.env.COMMAC_BASE_URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
       if (!res.ok) throw new Error(`Error ${res.status}`);
       volver();
     } catch (err: unknown) {
@@ -225,7 +225,7 @@ export default function PantallaCti40Plus(): JSX.Element {
     setError(null);
 
     try {
-      const res = await fetch(`http://localhost:8020/api/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+      const res = await fetch(`${process.env.COMMAC_BASE_URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
       if (!res.ok) throw new Error(`Error ${res.status}`);
       volver();
     } catch (err: unknown) {
@@ -270,7 +270,7 @@ export default function PantallaCti40Plus(): JSX.Element {
       setError(null);
 
       try {
-        const res = await fetch(`http://localhost:8020/api/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+        const res = await fetch(`${process.env.COMMAC_BASE_URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
         if (!res.ok) throw new Error(`Error ${res.status}`);
         volver();
       } catch (err: unknown) {
@@ -318,7 +318,7 @@ export default function PantallaCti40Plus(): JSX.Element {
             textoNombreVariable: String(objSeleccionado.textoVar as number)
           });
 
-          const res = await fetch(`http://localhost:8020/api/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+          const res = await fetch(`${process.env.COMMAC_BASE_URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
           if (!res.ok) throw new Error(`Error ${res.status} en petición ${idx + 1}`);
         }
         volver();
