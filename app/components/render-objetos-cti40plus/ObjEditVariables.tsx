@@ -10,11 +10,12 @@ interface Props {
   value: string;
   onChange: (v: string) => void;
   isValid: boolean;
+  onEnter?: () => void;
 }
 
 /** Input de edición de variable (tipoObjeto: 8 — objEditVariables).
  *  Muestra el campo numérico con hint de rango. El valor y la validación se gestionan desde el padre. */
-export default function ObjEditVariables({ obj, value, onChange, isValid }: Props): JSX.Element {
+export default function ObjEditVariables({ obj, value, onChange, isValid, onEnter }: Props): JSX.Element {
   const tipoVar = obj.tipoVar as number;
   const maximo = obj.maximo as number;
   const minimo = obj.minimo as number;
@@ -37,6 +38,11 @@ export default function ObjEditVariables({ obj, value, onChange, isValid }: Prop
           step={step}
           value={value}
           onChange={(e) => onChange(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && onEnter) {
+              onEnter();
+            }
+          }}
           className="bg-transparent text-6xl text-center outline-none w-48 [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden"
           style={{ color: COLORES.primary }}
           autoFocus

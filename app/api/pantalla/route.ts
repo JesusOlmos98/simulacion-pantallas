@@ -1,6 +1,6 @@
 import { type NextRequest } from 'next/server';
 
-const COMMAC_BASE_URL = process.env.COMMAC_BASE_URL ?? 'http://localhost:3000';
+const COMMAC_BASE_URL = process.env.COMMAC_BASE_URL || 'http://localhost:8020/api';
 
 export async function POST(request: NextRequest): Promise<Response> {
   const incoming = request.nextUrl.searchParams;

@@ -15,6 +15,7 @@ import ObjPosXyLibreIcon from './ObjPosXyLibreIcon';
 import ObjPosXyLibreVariable from './ObjPosXyLibreVariable';
 import ObjPosXyLibreLineas from './ObjPosXyLibreLineas';
 import ObjPopup from './ObjPopup';
+import ObjVineta from './ObjVineta';
 import type { ObjBase, DescriptorPantalla } from '../pantalla-types';
 
 export interface RenderObjetoProps {
@@ -172,6 +173,10 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, esLista
     // objPopup - diálogo modal que se muestra automáticamente
     case 40:
       return <ObjPopup obj={obj} />;
+
+    // objVineta - objeto inútil que no se renderiza
+    case 41:
+      return <ObjVineta obj={obj} />;
 
     default:
       return <div className="col-span-7 px-4 py-2 text-2xl text-zinc-400 italic">[Tipo {obj.tipoObjeto} sin renderizador]</div>;
