@@ -246,10 +246,14 @@ export default function PantallaCti40Plus(): JSX.Element {
 
     // RADIO BUTTON: una selección
     if (esRadioButton) {
-      if (selectedIdSeleccion === null) return;
       const objEditVar = objetos.find((o) => o.tipoObjeto === 8);
       const objSeleccionado = objetos.find((o) => o.tipoObjeto === 10 && (o.idSeleccion as number) === selectedIdSeleccion);
-      if (!objEditVar || !objSeleccionado) return;
+      const esConfirmacionEdicion = ((objPlantilla.tipoPlantilla as number | undefined) ?? 0) === 5;
+      if (!objEditVar) return;
+      if (!esConfirmacionEdicion && (selectedIdSeleccion === null || !objSeleccionado)) return;
+
+      const valorVariableSeleccion = esConfirmacionEdicion ? String((objetos.find((o) => o.tipoObjeto === 10)?.opcionSeleccionada as number | undefined) ?? 0) : String(selectedIdSeleccion);
+      const textoNombreVariable = esConfirmacionEdicion ? String((objEditVar.textoVar as number | undefined) ?? 0) : String(objSeleccionado?.textoVar as number);
 
       const params = new URLSearchParams({
         eventId: '255',
@@ -257,14 +261,16 @@ export default function PantallaCti40Plus(): JSX.Element {
         mac: MAC_CTI40PLUS,
         readWrite: '1',
         esPantallaPrincipal: '0',
+        idNav: String(idPantalla),
         idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
         indicePantalla: String(objPlantilla.indicePantalla as number),
         navIdPantallaRespuestaTrama: String(idPantalla),
         tipoVariableEdicion: String(objEditVar.tipoVarEdicion as number),
-        valorVariable: String(selectedIdSeleccion),
+        valorVariable: valorVariableSeleccion,
         punteroVariableEdicion: String(objEditVar.ptrVariableEdicion as number),
+        punteroFuncionSaltoTrasEdit: String(objEditVar.ptrFuncionSaltoTrasEdit as number),
         textoTituloVariable: String((encabezadoObj?.tituloText as number | undefined) ?? 0),
-        textoNombreVariable: String(objSeleccionado.textoVar as number)
+        textoNombreVariable
       });
 
       setLoading(true);
@@ -613,7 +619,14 @@ export default function PantallaCti40Plus(): JSX.Element {
                         </button>
                       );
                     })}
-                    {encabezadoEditIcono && <ObjEncabezadoEditIcono obj={encabezadoEditIcono} />}
+                    {encabezadoEditIcono && (
+                      <ObjEncabezadoEditIcono
+                        obj={encabezadoEditIcono}
+                        idPantallaActual={(objetos?.find((o) => o.tipoObjeto === 1)?.idPantalla as number | undefined) ?? actual.idPantalla}
+                        indicePantallaActual={(objetos?.find((o) => o.tipoObjeto === 1)?.indicePantalla as number | undefined) ?? actual.indicePantalla}
+                        onNavegar={navegarA}
+                      />
+                    )}
                     {tareas.length === 0 && !encabezadoEditIcono && <div className="w-12" />}
                   </div>
                 </div>
