@@ -19,12 +19,14 @@ import {
   LuEllipsisVertical, // 322 – Más opciones (tres puntos verticales)
   LuPlus, // 35  – Modo/estado de operación
   LuDroplet, // 72  – Gota de agua
+  LuTrash, // 57  - Papelera
   LuWind, // 1   - Termómetro de mercurio (Sondas)
   LuSlidersHorizontal, // 55  - Barritas horizontales con sliders (Ajustes)
   LuWrench, // 123 - Llave inglesa (Mantenimiento)
   LuUnplug,
   LuChevronsRightLeft, // 146 - tally-2 (icono extraño de rayo tachado)
   LuCloud, // 145 - WiFi mínimo (sin cobertura)
+  LuCloudSun, // Icono de sol con nube
   LuWifi, // 146 - WiFi con 1 raya de cobertura
   LuWifiLow, // 147 - WiFi con 2 rayas de cobertura
   LuWifiHigh, // 148 - WiFi máximo (full cobertura)
@@ -46,7 +48,8 @@ const IconoInfluencias: IconType = ({ size = 24, color, className }) => {
 };
 
 // Icono compuesto: casita y termómetro superpuestos y centrados (id 69 – Clima recinto)
-const IconoClimaRecinto: IconType = ({ size = 24, color, className }) => {
+/** @deprecated */
+const IconoClimaRecintoDeprecated: IconType = ({ size = 24, color, className }) => {
   const s = typeof size === 'number' ? size : 24;
   const iconStyle = { position: 'absolute' as const, top: 0, left: 0 };
   return React.createElement(
@@ -138,6 +141,19 @@ const IconoEllipsisVertical: IconType = ({ size = 24, color, className }) => {
   );
 };
 
+// Icono compuesto: cloud-sun en esquina superior izquierda y house en esquina inferior derecha
+const IconoClimaRecinto: IconType = ({ size = 24, color, className }) => {
+  const s = typeof size === 'number' ? size : 24;
+  const cloudSunSize = Math.round(s * 0.4); // cloud-sun más pequeño
+  const houseSize = Math.round(s * 0.85); // house más pequeño
+  return React.createElement(
+    'span',
+    { className, style: { position: 'relative', display: 'inline-flex', width: s, height: s, flexShrink: 0 } },
+    React.createElement(LuCloudSun, { size: cloudSunSize, color, style: { position: 'absolute', top: 0, left: 0 } }),
+    React.createElement(LuHouse, { size: houseSize, color, style: { position: 'absolute', bottom: 0, right: 0 } })
+  );
+};
+
 const ICONO_CTI40PLUS_MAP: Record<number, IconType> = {
   1: LuThermometer, // Termómetro de mercurio (Sondas)
   2: LuFan, // Ventilación
@@ -158,8 +174,9 @@ const ICONO_CTI40PLUS_MAP: Record<number, IconType> = {
   47: IconoNubeCO2, // Nube CO2
   48: IconoNubeNH3, // Nube NH3
   55: LuSlidersHorizontal, // Barritas horizontales con sliders (Ajustes)
+  57: LuTrash, // Papelera
   59: LuLightbulb, // Iluminación
-  69: IconoClimaRecinto, // Clima recinto
+  69: IconoClimaRecinto, //IconoClimaRecinto, // Clima recinto
   71: LuBell, // Alarmas
   72: LuDroplet, // Gota de agua
   123: LuWrench, // Llave inglesa (Mantenimiento)

@@ -24,6 +24,11 @@ const URL = process.env.COMMAC_BASE_URL || 'http://localhost:8020/api';
 
 const PRINCIPAL: DescriptorPantalla = { idPantalla: 0, indicePantalla: 0, esPrincipal: true };
 
+interface DestinoTrasEdicion {
+  destino: DescriptorPantalla;
+  nuevaPila: DescriptorPantalla[];
+}
+
 // ─── Fetch ────────────────────────────────────────────────────────────────────
 
 async function fetchPantalla(d: DescriptorPantalla, signal: AbortSignal): Promise<ObjBase[]> {
@@ -154,13 +159,33 @@ export default function PantallaCti40Plus(): JSX.Element {
     cargarPantalla(anterior);
   }
 
+  function resolverDestinoTrasEdicion(): DestinoTrasEdicion {
+    const objTrasEditPantallaAtras = objetos?.find((o) => typeof o.numeroPantallasRetroceso === 'number');
+    const numeroPantallasRetroceso = Math.max(0, (objTrasEditPantallaAtras?.numeroPantallasRetroceso as number | undefined) ?? 0);
+    const nivelesARetroceder = Math.min(pila.length, numeroPantallasRetroceso + 1);
+
+    if (nivelesARetroceder <= 0) {
+      return { destino: PRINCIPAL, nuevaPila: [] };
+    }
+
+    const indiceDestino = pila.length - nivelesARetroceder;
+    const destino = pila[indiceDestino] ?? PRINCIPAL;
+    return { destino, nuevaPila: pila.slice(0, indiceDestino) };
+  }
+
+  function navegarTrasEscritura(destinoTrasEdicion: DestinoTrasEdicion): void {
+    setPila(destinoTrasEdicion.nuevaPila);
+    cargarPantalla(destinoTrasEdicion.destino);
+  }
+
   async function escribirVariable(valor: string): Promise<void> {
     if (!objEditVariables || !objetos) return;
-    const objPlantilla = objetos.find((o) => o.tipoObjeto === 1);
     const objIdUnicoEdicion = objetos.find((o) => o.tipoObjeto === 12);
-    if (!objPlantilla || !objIdUnicoEdicion) return;
+    if (!objIdUnicoEdicion) return;
 
-    const idPantalla = objPlantilla.idPantalla as number;
+    const destinoTrasEdicion = resolverDestinoTrasEdicion();
+    const idPantallaRespuesta = destinoTrasEdicion.destino.idPantalla;
+    const indicePantallaRespuesta = destinoTrasEdicion.destino.indicePantalla;
     const ptrSalto = objEditVariables.ptrFuncionSaltoTrasEdit as number;
 
     const params = new URLSearchParams({
@@ -168,15 +193,16 @@ export default function PantallaCti40Plus(): JSX.Element {
       idEnvio: String(idEnvioCounter++),
       mac: MAC_CTI40PLUS,
       readWrite: '1',
-      esPantallaPrincipal: '0',
+      esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
+      idNav: String(idPantallaRespuesta),
       idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
-      indicePantalla: String(objPlantilla.indicePantalla as number),
-      navIdPantallaRespuestaTrama: String(idPantalla),
+      indicePantalla: String(indicePantallaRespuesta),
+      navIdPantallaRespuestaTrama: String(idPantallaRespuesta),
       tipoVariableEdicion: String(objEditVariables.tipoVarEdicion as number),
       valorVariable: valor,
       punteroVariableEdicion: String(objEditVariables.ptrVariableEdicion as number),
-      // Si ptrFuncionSaltoTrasEdit es 0 el servidor espera el idPantalla actual como destino de salto
-      punteroFuncionSaltoTrasEdit: String(ptrSalto !== 0 ? ptrSalto : idPantalla),
+      // Si ptrFuncionSaltoTrasEdit es 0 el servidor espera la pantalla de respuesta como destino de salto
+      punteroFuncionSaltoTrasEdit: String(ptrSalto !== 0 ? ptrSalto : idPantallaRespuesta),
       textoTituloVariable: String(objEditVariables.textoVar as number),
       textoNombreVariable: String(objEditVariables.textoVar as number)
     });
@@ -187,7 +213,7 @@ export default function PantallaCti40Plus(): JSX.Element {
     try {
       const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
       if (!res.ok) throw new Error(`Error ${res.status}`);
-      volver();
+      navegarTrasEscritura(destinoTrasEdicion);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Error al escribir variable');
       setLoading(false);
@@ -196,11 +222,12 @@ export default function PantallaCti40Plus(): JSX.Element {
 
   async function escribirVariableString(valor: string): Promise<void> {
     if (!objEditVariablesString || !objetos) return;
-    const objPlantilla = objetos.find((o) => o.tipoObjeto === 1);
     const objIdUnicoEdicion = objetos.find((o) => o.tipoObjeto === 12);
-    if (!objPlantilla || !objIdUnicoEdicion) return;
+    if (!objIdUnicoEdicion) return;
 
-    const idPantalla = objPlantilla.idPantalla as number;
+    const destinoTrasEdicion = resolverDestinoTrasEdicion();
+    const idPantallaRespuesta = destinoTrasEdicion.destino.idPantalla;
+    const indicePantallaRespuesta = destinoTrasEdicion.destino.indicePantalla;
     const ptrSalto = objEditVariablesString.ptrFuncionSaltoTrasEdit as number;
 
     const params = new URLSearchParams({
@@ -208,16 +235,16 @@ export default function PantallaCti40Plus(): JSX.Element {
       idEnvio: String(idEnvioCounter++),
       mac: MAC_CTI40PLUS,
       readWrite: '1',
-      esPantallaPrincipal: '0',
-      idNav: String(idPantalla),
-      indicePantalla: String(objPlantilla.indicePantalla as number),
+      esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
+      idNav: String(idPantallaRespuesta),
+      indicePantalla: String(indicePantallaRespuesta),
       idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
-      navIdPantallaRespuestaTrama: String(idPantalla),
+      navIdPantallaRespuestaTrama: String(idPantallaRespuesta),
       navegacion: '0',
       tipoVariableEdicion: String(objEditVariablesString.tipoVarEdicion as number),
       valorVariableTexto: valor,
       punteroVariableEdicion: String(objEditVariablesString.ptrVariableEdicion as number),
-      punteroFuncionSaltoTrasEdit: String(ptrSalto !== 0 ? ptrSalto : idPantalla),
+      punteroFuncionSaltoTrasEdit: String(ptrSalto !== 0 ? ptrSalto : idPantallaRespuesta),
       textoTituloVariable: String(objEditVariablesString.textoVar as number),
       textoNombreVariable: String(objEditVariablesString.textoVar as number),
       textoOpcionCambioParametro: '0'
@@ -229,7 +256,7 @@ export default function PantallaCti40Plus(): JSX.Element {
     try {
       const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
       if (!res.ok) throw new Error(`Error ${res.status}`);
-      volver();
+      navegarTrasEscritura(destinoTrasEdicion);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Error al escribir variable');
       setLoading(false);
@@ -242,7 +269,9 @@ export default function PantallaCti40Plus(): JSX.Element {
     const objIdUnicoEdicion = objetos.find((o) => o.tipoObjeto === 12);
     if (!objPlantilla || !objIdUnicoEdicion) return;
 
-    const idPantalla = objPlantilla.idPantalla as number;
+    const destinoTrasEdicion = resolverDestinoTrasEdicion();
+    const idPantallaRespuesta = destinoTrasEdicion.destino.idPantalla;
+    const indicePantallaRespuesta = destinoTrasEdicion.destino.indicePantalla;
     const encabezadoObj = objetos.find((o) => o.tipoObjeto === 2);
 
     // RADIO BUTTON: una selección
@@ -261,11 +290,11 @@ export default function PantallaCti40Plus(): JSX.Element {
         idEnvio: String(idEnvioCounter++),
         mac: MAC_CTI40PLUS,
         readWrite: '1',
-        esPantallaPrincipal: '0',
-        idNav: String(idPantalla),
+        esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
+        idNav: String(idPantallaRespuesta),
         idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
-        indicePantalla: String(objPlantilla.indicePantalla as number),
-        navIdPantallaRespuestaTrama: String(idPantalla),
+        indicePantalla: String(indicePantallaRespuesta),
+        navIdPantallaRespuestaTrama: String(idPantallaRespuesta),
         tipoVariableEdicion: String(objEditVar.tipoVarEdicion as number),
         valorVariable: valorVariableSeleccion,
         punteroVariableEdicion: String(objEditVar.ptrVariableEdicion as number),
@@ -280,7 +309,7 @@ export default function PantallaCti40Plus(): JSX.Element {
       try {
         const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
         if (!res.ok) throw new Error(`Error ${res.status}`);
-        volver();
+        navegarTrasEscritura(destinoTrasEdicion);
       } catch (err: unknown) {
         setError(err instanceof Error ? err.message : 'Error al escribir selección');
         setLoading(false);
@@ -295,7 +324,7 @@ export default function PantallaCti40Plus(): JSX.Element {
       try {
         // Si no hay selecciones, simplemente volver
         if (selectedIdSelecciones.size === 0) {
-          volver();
+          navegarTrasEscritura(destinoTrasEdicion);
           return;
         }
 
@@ -315,10 +344,11 @@ export default function PantallaCti40Plus(): JSX.Element {
             idEnvio: String(idEnvioCounter++),
             mac: MAC_CTI40PLUS,
             readWrite: '1',
-            esPantallaPrincipal: '0',
+            esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
+            idNav: String(idPantallaRespuesta),
             idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
-            indicePantalla: String(objPlantilla.indicePantalla as number),
-            navIdPantallaRespuestaTrama: String(idPantalla),
+            indicePantalla: String(indicePantallaRespuesta),
+            navIdPantallaRespuestaTrama: String(idPantallaRespuesta),
             tipoVariableEdicion: String(objEditVar.tipoVarEdicion as number),
             valorVariable: String(idSeleccionParaEsteVar),
             punteroVariableEdicion: String(objEditVar.ptrVariableEdicion as number),
@@ -329,7 +359,7 @@ export default function PantallaCti40Plus(): JSX.Element {
           const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
           if (!res.ok) throw new Error(`Error ${res.status} en petición ${idx + 1}`);
         }
-        volver();
+        navegarTrasEscritura(destinoTrasEdicion);
       } catch (err: unknown) {
         setError(err instanceof Error ? err.message : 'Error al escribir selecciones');
         setLoading(false);
