@@ -274,7 +274,128 @@ export default function PantallaCti40Plus(): JSX.Element {
     const indicePantallaRespuesta = destinoTrasEdicion.destino.indicePantalla;
     const encabezadoObj = objetos.find((o) => o.tipoObjeto === 2);
 
-    // RADIO BUTTON: una selección
+    // tipoVarEdicion=9, selección única (1 objEditVariables — ej. relés): valorVariable singular
+    const objEditVarsV9 = objetos.filter((o) => o.tipoObjeto === 8 && (o.tipoVarEdicion as number) === 9);
+    if (objEditVarsV9.length === 1) {
+      const objEditVar = objEditVarsV9[0]!;
+      if (selectedIdSeleccion === null) return;
+
+      const params = new URLSearchParams({
+        eventId: '1',
+        idEnvio: String(idEnvioCounter++),
+        mac: MAC_CTI40PLUS,
+        readWrite: '1',
+        esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
+        idNav: String(idPantallaRespuesta),
+        idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
+        indicePantalla: String(indicePantallaRespuesta),
+        navIdPantallaRespuestaTrama: String(idPantallaRespuesta),
+        navegacion: '0',
+        tipoVariableEdicion: String(objEditVar.tipoVarEdicion as number),
+        punteroVariableEdicion: String(objEditVar.ptrVariableEdicion as number),
+        valorVariable: String(selectedIdSeleccion),
+        punteroFuncionSaltoTrasEdit: String(objEditVar.ptrFuncionSaltoTrasEdit as number),
+        textoTituloVariable: String((encabezadoObj?.tituloText as number | undefined) ?? 0),
+        textoNombreVariable: String((objEditVar.textoVar as number | undefined) ?? 0),
+        textoOpcionCambioParametro: '0'
+      });
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+        if (!res.ok) throw new Error(`Error ${res.status}`);
+        navegarTrasEscritura(destinoTrasEdicion);
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Error al escribir selección');
+        setLoading(false);
+      }
+      return;
+    }
+
+    // tipoVarEdicion=9, multiselección (N objEditVariables — ej. sondas): arrays valores/punteros/textos
+    if (objEditVarsV9.length > 1) {
+      const primeraV9 = objEditVarsV9[0]!;
+
+      const valores = camposMultiseleccion.map((opt) => {
+        const idSel = opt.idSeleccion as number;
+        return selectedIdSelecciones.has(idSel) ? idSel : 0;
+      });
+
+      const params = new URLSearchParams({
+        eventId: '1',
+        idEnvio: String(idEnvioCounter++),
+        mac: MAC_CTI40PLUS,
+        readWrite: '1',
+        esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
+        idNav: String(idPantallaRespuesta),
+        idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
+        indicePantalla: String(indicePantallaRespuesta),
+        navIdPantallaRespuestaTrama: String(idPantallaRespuesta),
+        navegacion: '0',
+        tipoVariableEdicion: String(primeraV9.tipoVarEdicion as number),
+        punteroVariableEdicion: String(primeraV9.ptrVariableEdicion as number),
+        punteroFuncionSaltoTrasEdit: String(primeraV9.ptrFuncionSaltoTrasEdit as number),
+        textoTituloVariable: String((encabezadoObj?.tituloText as number | undefined) ?? 0)
+      });
+      for (const v of valores) params.append('valores', String(v));
+      for (const obj of objEditVarsV9) params.append('punterosVariablesEdicion', String(obj.ptrVariableEdicion as number));
+      for (const opt of camposMultiseleccion) params.append('textosNombreVariable', String(opt.textoVar as number));
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+        if (!res.ok) throw new Error(`Error ${res.status}`);
+        navegarTrasEscritura(destinoTrasEdicion);
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Error al escribir selección');
+        setLoading(false);
+      }
+      return;
+    }
+
+    // tipoVarEdicion=1 (ej. eliminar punto de curva): valorVariable = indicePantalla actual
+    const objEditVarV1 = objetos.find((o) => o.tipoObjeto === 8 && (o.tipoVarEdicion as number) === 1);
+    if (objEditVarV1) {
+      const indicePantallaActual = objPlantilla.indicePantalla as number;
+      const idPantallaActual = objPlantilla.idPantalla as number;
+
+      const params = new URLSearchParams({
+        esPantallaPrincipal: '0',
+        readWrite: '1',
+        eventId: '255',
+        idEnvio: String(idEnvioCounter++),
+        mac: MAC_CTI40PLUS,
+        idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
+        navIdPantallaRespuestaTrama: String(idPantallaActual),
+        indicePantalla: String(indicePantallaActual),
+        navegacion: '0',
+        tipoVariableEdicion: String(objEditVarV1.tipoVarEdicion as number),
+        valorVariable: String(indicePantallaActual),
+        punteroVariableEdicion: String(objEditVarV1.ptrVariableEdicion as number),
+        punteroFuncionSaltoTrasEdit: String(objEditVarV1.ptrFuncionSaltoTrasEdit as number),
+        textoTituloVariable: String((encabezadoObj?.tituloText as number | undefined) ?? 0),
+        textoNombreVariable: String((objEditVarV1.textoVar as number | undefined) ?? 0)
+      });
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+        if (!res.ok) throw new Error(`Error ${res.status}`);
+        navegarTrasEscritura(destinoTrasEdicion);
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Error al eliminar punto');
+        setLoading(false);
+      }
+      return;
+    }
+
+    // RADIO BUTTON: una selección (tipoVarEdicion !== 9)
     if (esRadioButton) {
       const objEditVar = objetos.find((o) => o.tipoObjeto === 8);
       const objSeleccionado = objetos.find((o) => o.tipoObjeto === 10 && (o.idSeleccion as number) === selectedIdSeleccion);
@@ -315,7 +436,7 @@ export default function PantallaCti40Plus(): JSX.Element {
         setLoading(false);
       }
     }
-    // CHECKBOX: múltiples selecciones (puede haber cero selecciones)
+    // CHECKBOX: múltiples selecciones (tipoVarEdicion !== 9)
     else if (esCheckbox) {
       const objEditVars = objetos.filter((o) => o.tipoObjeto === 8);
       setLoading(true);
