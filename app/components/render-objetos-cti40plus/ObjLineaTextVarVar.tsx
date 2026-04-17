@@ -73,7 +73,7 @@ export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual }:
 
         <span
           className="text-5xl"
-          style={{ color: inhabilitada ? COLORES.light_gray : COLORES.primary }}
+          style={{ color: inhabilitada ? COLORES.light_gray : COLORES.success }}
         >
           {valor}
           {unidad ?? ''}
@@ -82,7 +82,7 @@ export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual }:
         {nav > 0 && (
           <LuChevronRight
             size={50}
-            color="#ffffff"
+            color={COLORES.light}
           />
         )}
       </div>

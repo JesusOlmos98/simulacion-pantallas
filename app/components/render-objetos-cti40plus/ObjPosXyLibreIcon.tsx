@@ -4,6 +4,7 @@ import type { JSX } from 'react';
 import { LuCircle } from 'react-icons/lu';
 import type { ObjBase } from '../pantalla-types';
 import { resolverIconoCTI40Plus } from './iconos-cti40plus';
+import { COLORES } from './colors';
 
 interface Props {
   obj: ObjBase;
@@ -38,7 +39,7 @@ export default function ObjPosXyLibreIcon({ obj }: Props): JSX.Element {
       {Icono ? (
         <Icono
           size={iconSize}
-          color="#ffffff"
+          color={COLORES.light}
           style={shouldBlink ? { animation: 'blink 1s infinite' } : {}}
         />
       ) : (

@@ -6,7 +6,7 @@ import type { IconType } from 'react-icons/lib';
 import { LuChevronRight } from 'react-icons/lu';
 import { resolveText } from './textos/resolverTexto';
 import { resolverIconoCTI40Plus } from './iconos-cti40plus';
-import { resolverColor } from './colors';
+import { COLORES, resolverColor } from './colors';
 import type { DescriptorPantalla } from '../pantalla-types';
 
 interface ObjLineaProps {
@@ -51,7 +51,7 @@ export default function ObjLineaText({ obj, onNavegar, textoConcatenados }: ObjL
         {/* Texto */}
         <span
           className="text-5xl font-light"
-          style={{ color: colorTexto }}
+          style={{ color: colorTexto ?? COLORES.light }}
         >
           {texto}
         </span>
@@ -61,7 +61,7 @@ export default function ObjLineaText({ obj, onNavegar, textoConcatenados }: ObjL
       {nav > 0 && (
         <LuChevronRight
           size={50}
-          color="#ffffff"
+          color={COLORES.light}
         />
       )}
     </div>

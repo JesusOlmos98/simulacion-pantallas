@@ -1,13 +1,13 @@
 // Paleta de colores global para CTI40 PLUS
 export const COLORES = {
-  primary: '#97dd69ff', //'#60D619', // Verde (índice 1)
+  primary: '#82be5aff', //'#60D619', // Verde (índice 1) ORIGINAL: 97dd69ff
   secondary: '#196BD6', // Azul (índice 2)
   tertiary: '#929292', // Gris (índice 3)
   quaternary: '#777777ff', // Opcion inhabiltiada (índice 4)
-  error: '#f84340ff', // Rojo (índice 5)
+  error: '#dd3a38ff', // Rojo (índice 5) ORIGINAL: f84340ff
   warning: '#f59e0b', // Ámbar (índice 6)
   info: '#3b82f6', // Azul (índice 7)
-  success: '#10b981', // Esmeralda (índice 8)
+  success: '#6be61fff', // Esmeralda (índice 8)
   light: '#f5f5f5', // Gris muy claro (fallback para 0 u otros)
   light_gray: '#c4c4c4ff', // Gris claro (índice 15)
   menuWords: '#FFA505', // Naranja para textos del menú de Omega

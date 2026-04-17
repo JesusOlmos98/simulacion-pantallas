@@ -4,7 +4,7 @@ import type { JSX } from 'react';
 import type { ObjBase, DescriptorPantalla } from '../pantalla-types';
 import { resolveText } from './textos/resolverTexto';
 import { decodificarRangoFloat, decodificarVariable } from './pantalla-utils';
-import { COLORES } from './colors';
+import { COLORES, getColorHex } from './colors';
 import { EnTipoVariable } from '../../../src/utils/common-lib-commac-generador/NXP_BE/globals/enumOld';
 
 // ─── Tipos ────────────────────────────────────────────────────────────────────
@@ -67,7 +67,10 @@ export default function ObjTablaDinamicaFila({ fila, rowIdx, onNavegar }: ObjTab
         <div
           key={colIdx}
           className={`flex-1 flex items-center justify-center text-center px-2 ${textSizeClass}`}
-          style={{ backgroundColor: bg, color: COLORES.light }}
+          style={{
+            backgroundColor: bg,
+            color: colIdx === 0 ? (fila.colorColumna1 === 1 ? COLORES.light : getColorHex(fila.colorColumna1)) : fila.colorFila === 1 ? COLORES.light : getColorHex(fila.colorFila)
+          }}
         >
           {renderCelda(celda)}
         </div>
