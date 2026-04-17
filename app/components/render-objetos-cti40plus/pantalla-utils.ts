@@ -1,5 +1,6 @@
 import { resolveText } from './textos/resolverTexto';
 import { EnUnidades, EnTipoVariable } from '../../../src/utils/common-lib-commac-generador/NXP_BE/globals/enumOld';
+import { formatTiempoHm, formatTiempoMs, formatFecha } from '../../../src/utils/common-lib-commac-generador/fnTiempo';
 
 // Re-exportar para acceso fácil
 export { resolverColor, getColorHex } from './colors';
@@ -287,26 +288,4 @@ function formatTiempoHms(seg: number): string {
   const m = Math.floor((seg % 3600) / 60);
   const s = seg % 60;
   return `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
-}
-
-// tiempoHm viene empaquetado en bytes [seg, min, hora] del uint32 (protocolo ST)
-function formatTiempoHm(raw: number): string {
-  const hora = (raw >>> 16) & 0xff;
-  const min = (raw >>> 8) & 0xff;
-  return `${pad2(hora)}h${pad2(min)}m`;
-}
-
-function formatTiempoMs(raw: number): string {
-  const packed = (raw >>> 0) & 0xffff; // 0xMMSS en NXP
-  const minutos = (packed >>> 8) & 0xff;
-  const segundos = packed & 0xff;
-  return `${pad2(minutos)}m${pad2(segundos)}s`;
-}
-
-/** El campo `fecha` es un u32 = AAAAMMDD (BCD o entero plano, según firmware). */
-function formatFecha(raw: number): string {
-  const dia = raw & 0xff;
-  const mes = (raw >> 8) & 0xff;
-  const anio = (raw >> 16) & 0xffff;
-  return `${pad2(dia)}/${pad2(mes)}/${anio}`;
 }

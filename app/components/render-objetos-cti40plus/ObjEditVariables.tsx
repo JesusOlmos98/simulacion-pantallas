@@ -44,7 +44,7 @@ export default function ObjEditVariables({ obj, value, onChange, isValid, onEnte
             }
           }}
           className="bg-transparent text-6xl text-center outline-none w-48 [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden"
-          style={{ color: COLORES.primary }}
+          style={{ color: COLORES.success }}
           autoFocus
         />
         {unidadStr && <span className="text-white text-5xl">{unidadStr}</span>}
