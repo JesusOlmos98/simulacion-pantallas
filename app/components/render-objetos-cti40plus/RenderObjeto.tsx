@@ -16,6 +16,7 @@ import ObjPosXyLibreVariable from './ObjPosXyLibreVariable';
 import ObjPosXyLibreLineas from './ObjPosXyLibreLineas';
 import ObjPopup from './ObjPopup';
 import ObjVineta from './ObjVineta';
+import ObjVarIndividual from './ObjVarIndividual';
 import ObjDescripcionPantallaCambioParametro from './ObjDescripcionPantallaCambioParametro';
 import type { ObjBase, DescriptorPantalla } from '../pantalla-types';
 
@@ -28,7 +29,7 @@ export interface RenderObjetoProps {
 }
 
 export default function RenderObjeto({ obj, onNavegar, idPantallaActual, esLista, textoConcatenados }: RenderObjetoProps): JSX.Element | null {
-  // NOTA: Los objetos ObjDescripcionPantallaCambioParametro (56) y ObjVineta (41) NO renderizan nada
+  // NOTA: Los objetos ObjDescripcionPantallaCambioParametro (56), ObjVineta (41) y ObjVarIndividual (36) NO renderizan nada
   switch (obj.tipoObjeto) {
     // objPlantilla — metadatos, no se pinta
     case 1:
@@ -161,9 +162,9 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, esLista
     case 19:
       return <ObjLineaInfoTextTextVarVar obj={obj} />;
 
-    // objVarIndividual — variable sin navegación
+    // objVarIndividual — no se renderiza en CTI40 PLUS
     case 36:
-      return <div className="col-span-7 px-4 py-2 text-5xl text-white">{JSON.stringify(obj)}</div>;
+      return <ObjVarIndividual obj={obj} />;
 
     // objVarIndividualNavegacionOEdit — variable con navegación
     case 37:
