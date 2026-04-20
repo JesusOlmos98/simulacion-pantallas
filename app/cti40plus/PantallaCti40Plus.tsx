@@ -7,6 +7,8 @@ import { LuCheck, LuChevronLeft, LuInfo, LuMenu, LuX } from 'react-icons/lu';
 import { RenderObjeto, resolverIconoCTI40Plus, ObjTablaDinamica, ObjLineaInfoTextVar, ObjLineaInfoTextTextVarVar } from '../components/render-objetos-cti40plus';
 import ObjLineaInfoTextText from '../components/render-objetos-cti40plus/ObjLineaInfoTextText';
 import ObjEncabezadoEditIcono from '../components/render-objetos-cti40plus/ObjEncabezadoEditIcono';
+import ObjTablaDatosSinEdicion from '../components/render-objetos-cti40plus/ObjTablaDatosSinEdicion';
+import { parseConfigTabla } from '../components/render-objetos-cti40plus/ObjTablaConfig';
 import ObjEditVariables from '../components/render-objetos-cti40plus/ObjEditVariables';
 import ObjEditVariablesString from '../components/render-objetos-cti40plus/ObjEditVariablesString';
 import ObjCamposMultiseleccion from '../components/render-objetos-cti40plus/ObjCamposMultiseleccion';
@@ -511,6 +513,16 @@ export default function PantallaCti40Plus(): JSX.Element {
     }
     if (grupoActual.length > 0) gruposLineas.push(grupoActual);
   }
+  // Agrupar tabla estática: objTablaConfig (14) + objTablaDatosSinEdicion (28) consecutivos
+  const tablasEstaticas: { config: ObjBase; datos: ObjBase }[] = [];
+  if (objetos) {
+    for (let i = 0; i < objetos.length - 1; i++) {
+      if (objetos[i]!.tipoObjeto === 14 && objetos[i + 1]!.tipoObjeto === 28) {
+        tablasEstaticas.push({ config: objetos[i]!, datos: objetos[i + 1]! });
+      }
+    }
+  }
+
   // Agrupar bloques de tabla: objTablaDinamicaInit (70) + filas objTablaDinamicaFila (71) consecutivas
   const tablasGrupos: { init: ObjBase; filas: ObjBase[] }[] = [];
   if (objetos) {
@@ -542,6 +554,8 @@ export default function PantallaCti40Plus(): JSX.Element {
         o.tipoObjeto !== 19 &&
         o.tipoObjeto !== 20 &&
         o.tipoObjeto !== 67 &&
+        o.tipoObjeto !== 14 &&
+        o.tipoObjeto !== 28 &&
         o.tipoObjeto !== 70 &&
         o.tipoObjeto !== 71 &&
         !TIPOS_LINEA.has(o.tipoObjeto)
@@ -925,6 +939,19 @@ export default function PantallaCti40Plus(): JSX.Element {
                             </div>
                           ))}
                         </>
+                      )}
+
+                      {/* Tablas estáticas (objTablaConfig+objTablaDatosSinEdicion) — edge-to-edge */}
+                      {tablasEstaticas.length > 0 && (
+                        <div className="-mx-4 -mt-4">
+                          {tablasEstaticas.map((tabla, ti) => (
+                            <ObjTablaDatosSinEdicion
+                              key={ti}
+                              config={parseConfigTabla(tabla.config)}
+                              datos={tabla.datos}
+                            />
+                          ))}
+                        </div>
                       )}
 
                       {/* Tablas dinámicas — edge-to-edge, sin esquinas ni margen lateral */}

@@ -113,6 +113,14 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, esLista
     case 66:
       return null; // Se manejan en BarraBotonesCti40Plus
 
+    // objTablaConfig — metadatos de tabla estática, se maneja agrupado en PantallaCti40Plus
+    case 14:
+      return null;
+
+    // objTablaDatosSinEdicion — datos de tabla estática, se manejan agrupados en PantallaCti40Plus
+    case 28:
+      return null;
+
     // objTablaDinamicaInit — metadatos de tabla, se maneja agrupado en PantallaCti40Plus
     case 70:
       return <ObjTablaDinamicaInit />;
