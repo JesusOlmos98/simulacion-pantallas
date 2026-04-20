@@ -16,6 +16,7 @@ import ObjPosXyLibreVariable from './ObjPosXyLibreVariable';
 import ObjPosXyLibreLineas from './ObjPosXyLibreLineas';
 import ObjPopup from './ObjPopup';
 import ObjVineta from './ObjVineta';
+import ObjDescripcionPantallaCambioParametro from './ObjDescripcionPantallaCambioParametro';
 import type { ObjBase, DescriptorPantalla } from '../pantalla-types';
 
 export interface RenderObjetoProps {
@@ -27,6 +28,7 @@ export interface RenderObjetoProps {
 }
 
 export default function RenderObjeto({ obj, onNavegar, idPantallaActual, esLista, textoConcatenados }: RenderObjetoProps): JSX.Element | null {
+  // NOTA: Los objetos ObjDescripcionPantallaCambioParametro (56) y ObjVineta (41) NO renderizan nada
   switch (obj.tipoObjeto) {
     // objPlantilla — metadatos, no se pinta
     case 1:
@@ -173,6 +175,11 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, esLista
     // objPopup - diálogo modal que se muestra automáticamente
     case 40:
       return <ObjPopup obj={obj} />;
+
+    // objDescripcionPantallaCambioParametro — no se renderiza; su descripcionText se usa como
+    // textoTituloVariable al enviar cambiaParametro en lugar del título de la pantalla
+    case 56:
+      return <ObjDescripcionPantallaCambioParametro obj={obj} />;
 
     // objVineta - objeto inútil que no se renderiza
     case 41:
