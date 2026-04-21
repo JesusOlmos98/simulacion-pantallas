@@ -376,9 +376,9 @@ export default function PantallaCti40Plus(): JSX.Element {
       return;
     }
 
-    // tipoVarEdicion=1 (ej. eliminar punto de curva): valorVariable = indicePantalla actual
+    // tipoVarEdicion=1 con una única opción (ej. confirmar eliminar punto de curva): valorVariable = indicePantalla actual
     const objEditVarV1 = objetos.find((o) => o.tipoObjeto === 8 && (o.tipoVarEdicion as number) === 1);
-    if (objEditVarV1) {
+    if (objEditVarV1 && camposMultiseleccion.length <= 1) {
       const indicePantallaActual = objPlantilla.indicePantalla as number;
       const idPantallaActual = objPlantilla.idPantalla as number;
 
