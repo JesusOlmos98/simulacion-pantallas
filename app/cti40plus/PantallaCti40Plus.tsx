@@ -19,10 +19,11 @@ import type { DescriptorPantalla, ObjBase } from '../components/pantalla-types';
 import { getColorHex } from '../components/render-objetos-cti40plus/colors';
 import PantallaLibre from './PantallaLibre';
 import { esTipoVarTiempoFecha, parseTiempoFechaString, maskMinMaxTiempoFecha } from '@/src/utils/common-lib-commac-generador/fnTiempo';
+import { apiFetch } from '../api/apiFetch';
 
 const MAC_CTI40PLUS = '202000029'; // MAC address para CTI40 PLUS
 let idEnvioCounter = 1;
-const URL = process.env.COMMAC_BASE_URL || 'http://localhost:8020/api';
+// const URL = process.env.COMMAC_BASE_URL || 'http://localhost:8020/api'; // Centralizado en apiFetch
 
 // ─── Descriptor de pantalla ───────────────────────────────────────────────────
 
@@ -44,7 +45,8 @@ async function fetchPantalla(d: DescriptorPantalla, signal: AbortSignal): Promis
       params.set('idUnicoEdicion', String(d.idUnicoEdicion));
     }
   }
-  const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST', signal });
+  // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST', signal });
+  const res = await apiFetch(params, signal);
   if (!res.ok) throw new Error(`Error ${res.status}`);
   return res.json();
 }
@@ -224,7 +226,8 @@ export default function PantallaCti40Plus(): JSX.Element {
     setError(null);
 
     try {
-      const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+      // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+      const res = await apiFetch(params);
       if (!res.ok) throw new Error(`Error ${res.status}`);
       navegarTrasEscritura(destinoTrasEdicion);
     } catch (err: unknown) {
@@ -267,7 +270,8 @@ export default function PantallaCti40Plus(): JSX.Element {
     setError(null);
 
     try {
-      const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+      // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+      const res = await apiFetch(params);
       if (!res.ok) throw new Error(`Error ${res.status}`);
       navegarTrasEscritura(destinoTrasEdicion);
     } catch (err: unknown) {
@@ -317,7 +321,8 @@ export default function PantallaCti40Plus(): JSX.Element {
       setError(null);
 
       try {
-        const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+        // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+        const res = await apiFetch(params);
         if (!res.ok) throw new Error(`Error ${res.status}`);
         navegarTrasEscritura(destinoTrasEdicion);
       } catch (err: unknown) {
@@ -360,7 +365,8 @@ export default function PantallaCti40Plus(): JSX.Element {
       setError(null);
 
       try {
-        const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+        // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+        const res = await apiFetch(params);
         if (!res.ok) throw new Error(`Error ${res.status}`);
         navegarTrasEscritura(destinoTrasEdicion);
       } catch (err: unknown) {
@@ -398,7 +404,8 @@ export default function PantallaCti40Plus(): JSX.Element {
       setError(null);
 
       try {
-        const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+        // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+        const res = await apiFetch(params);
         if (!res.ok) throw new Error(`Error ${res.status}`);
         navegarTrasEscritura(destinoTrasEdicion);
       } catch (err: unknown) {
@@ -441,7 +448,8 @@ export default function PantallaCti40Plus(): JSX.Element {
       setError(null);
 
       try {
-        const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+        // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+        const res = await apiFetch(params);
         if (!res.ok) throw new Error(`Error ${res.status}`);
         navegarTrasEscritura(destinoTrasEdicion);
       } catch (err: unknown) {
@@ -490,7 +498,8 @@ export default function PantallaCti40Plus(): JSX.Element {
             textoNombreVariable: String(objSeleccionado.textoVar as number)
           });
 
-          const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+          // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+          const res = await apiFetch(params);
           if (!res.ok) throw new Error(`Error ${res.status} en petición ${idx + 1}`);
         }
         navegarTrasEscritura(destinoTrasEdicion);
