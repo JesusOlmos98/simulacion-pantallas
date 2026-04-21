@@ -19,6 +19,7 @@ import ObjPopup from './ObjPopup';
 import ObjVineta from './ObjVineta';
 import ObjVarIndividual from './ObjVarIndividual';
 import ObjDescripcionPantallaCambioParametro from './ObjDescripcionPantallaCambioParametro';
+import ObjVentilacionGrupoGrafico from './ObjVentilacionGrupoGrafico';
 import type { ObjBase, DescriptorPantalla } from '../pantalla-types';
 
 export interface RenderObjetoProps {
@@ -151,6 +152,17 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, indiceP
     // objPosXyLibreLineas — rectángulo posicionado en coordenadas absolutas
     case EnObjPintaPantallasOmega.objPosXyLibreLineas: // 76
       return <ObjPosXyLibreLineas obj={obj} />;
+
+    // objVentilacionGrupoGrafico — fila con iconos de ventiladores (estado, km3, orden)
+    case EnObjPintaPantallasOmega.objVentilacionGrupoGrafico: // 21
+      return (
+        <ObjVentilacionGrupoGrafico
+          obj={obj}
+          onNavegar={onNavegar}
+          idPantallaActual={idPantallaActual}
+          indicePantallaActual={indicePantallaActual}
+        />
+      );
 
     // objLineaGrafica — separador lógico entre bloques, no pinta nada
     case EnObjPintaPantallasOmega.objLineaGrafica: // 20

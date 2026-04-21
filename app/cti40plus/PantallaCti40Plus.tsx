@@ -518,7 +518,7 @@ export default function PantallaCti40Plus(): JSX.Element {
   const barraAccesoDirecto = barraAccesoDirectoPersistente.current;
 
   // Separar objetos: header (tipoObjeto: 2), líneas (tipoObjeto: 4, 5, 16), info (tipoObjeto: 7) y otros
-  const TIPOS_LINEA = new Set([3, 4, 5, 16, 35]);
+  const TIPOS_LINEA = new Set([3, 4, 5, 16, 21, 35]);
   // Agrupar líneas en bloques separados por objLineaGrafica (tipoObjeto: 20)
   const gruposLineas: ObjBase[][] = [];
   if (objetos) {
