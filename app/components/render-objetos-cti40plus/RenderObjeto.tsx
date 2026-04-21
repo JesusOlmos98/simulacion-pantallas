@@ -1,6 +1,7 @@
 'use client';
 
 import type { JSX } from 'react';
+import { EnObjPintaPantallasOmega } from '../../../src/utils/common-lib-commac-generador/NXP_BE/globals/enumOld';
 import ObjLineaGrafica from './ObjLineaGrafica';
 import ObjTablaDinamicaInit from './ObjTablaDinamicaInit';
 import ObjLineaText from './ObjLineaText';
@@ -33,31 +34,31 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, indiceP
   // NOTA: Los objetos ObjDescripcionPantallaCambioParametro (56), ObjVineta (41) y ObjVarIndividual (36) NO renderizan nada
   switch (obj.tipoObjeto) {
     // objPlantilla — metadatos, no se pinta
-    case 1:
+    case EnObjPintaPantallasOmega.objPlantilla: // 1
       return null;
 
     // objEncabezado — se muestra en la barra superior, no aquí
-    case 2:
+    case EnObjPintaPantallasOmega.objEncabezado: // 2
       return null;
 
     // objEncabezadoEditIcono — se muestra en la barra superior, no aquí
-    case 31:
+    case EnObjPintaPantallasOmega.objEncabezadoEditIcono: // 31
       return null;
 
     // objIdUnicoEdicion — metadatos de edición, se gestiona a nivel de pantalla
-    case 12:
+    case EnObjPintaPantallasOmega.objIdUnicoEdicion: // 12
       return null;
 
     // objEditVariables — se renderiza como pantalla completa de edición, no aquí
-    case 8:
+    case EnObjPintaPantallasOmega.objEditVariables: // 8
       return null;
 
     // objEditVariablesString — se renderiza como pantalla completa de edición, no aquí
-    case 33:
+    case EnObjPintaPantallasOmega.objEditVariablesString: // 33
       return null;
 
     // objLineaTextText — fila con texto principal + texto secundario (en primary) + flecha
-    case 16:
+    case EnObjPintaPantallasOmega.objLineaTextText: // 16
       return (
         <ObjLineaTextText
           obj={obj}
@@ -68,7 +69,7 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, indiceP
       );
 
     // objLineaTextVarVar — fila con texto principal + variable central + variable secundaria + flecha
-    case 3:
+    case EnObjPintaPantallasOmega.objLineaTextVarVar: // 3
       return (
         <ObjLineaTextVarVar
           obj={obj}
@@ -79,7 +80,7 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, indiceP
       );
 
     // objLineaTextVar — fila con texto principal + variable decodificada + flecha
-    case 4:
+    case EnObjPintaPantallasOmega.objLineaTextVar: // 4
       return (
         <ObjLineaTextVar
           obj={obj}
@@ -90,7 +91,7 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, indiceP
       );
 
     // objLineaText — lista de filas (tipoPlantilla 4) o grid de iconos (menú)
-    case 5:
+    case EnObjPintaPantallasOmega.objLineaText: // 5
       return (
         <ObjLineaText
           obj={obj}
@@ -101,7 +102,7 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, indiceP
       );
 
     // objLineaTextString — fila con texto principal + variable string editable + flecha
-    case 35:
+    case EnObjPintaPantallasOmega.objLineaTextString: // 35
       return (
         <ObjLineaTextString
           obj={obj}
@@ -112,67 +113,67 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, indiceP
       );
 
     // objTextoConcatenadoPlantilla — define el texto de un objLineaText, no pinta nada por sí solo
-    case 67:
+    case EnObjPintaPantallasOmega.objTextoConcatenadoPlantilla: // 67
       return null;
 
     // objBotonAccesoDirecto — botones de acceso directo (tipoObjeto: 66)
-    case 66:
+    case EnObjPintaPantallasOmega.objBarraAccesoDirectoIcon: // 66
       return null; // Se manejan en BarraBotonesCti40Plus
 
     // objTablaConfig — metadatos de tabla estática, se maneja agrupado en PantallaCti40Plus
-    case 14:
+    case EnObjPintaPantallasOmega.objTablaConfig: // 14
       return null;
 
     // objTablaDatosSinEdicion — datos de tabla estática, se manejan agrupados en PantallaCti40Plus
-    case 28:
+    case EnObjPintaPantallasOmega.objTablaDatosSinEdicion: // 28
       return null;
 
     // objTablaDinamicaInit — metadatos de tabla, se maneja agrupado en PantallaCti40Plus
-    case 70:
+    case EnObjPintaPantallasOmega.objTablaDinamicaInit: // 70
       return <ObjTablaDinamicaInit />;
 
     // objTablaDinamicaFila — filas de tabla, se manejan agrupadas en PantallaCti40Plus
-    case 71:
+    case EnObjPintaPantallasOmega.objTablaDinamicaFila: // 71
       return null;
 
     // objPosXyLibreResolucion — metadatos del canvas libre, no pinta nada
-    case 72:
+    case EnObjPintaPantallasOmega.objPosXyLibreResolucion: // 72
       return null;
 
     // objPosXyLibreIcon — icono posicionado en coordenadas absolutas
-    case 73:
+    case EnObjPintaPantallasOmega.objPosXyLibreIcon: // 73
       return <ObjPosXyLibreIcon obj={obj} />;
 
     // objPosXyLibreVariable — variable posicionada en coordenadas absolutas
-    case 75:
+    case EnObjPintaPantallasOmega.objPosXyLibreVariable: // 75
       return <ObjPosXyLibreVariable obj={obj} />;
 
     // objPosXyLibreLineas — rectángulo posicionado en coordenadas absolutas
-    case 76:
+    case EnObjPintaPantallasOmega.objPosXyLibreLineas: // 76
       return <ObjPosXyLibreLineas obj={obj} />;
 
     // objLineaGrafica — separador lógico entre bloques, no pinta nada
-    case 20:
+    case EnObjPintaPantallasOmega.objLineaGrafica: // 20
       return <ObjLineaGrafica />;
 
     // objLineaInfoTextText — fila info con texto principal + texto secundario
-    case 15:
+    case EnObjPintaPantallasOmega.objLineaInfoTextText: // 15
       return <ObjLineaInfoTextText obj={obj} />;
 
     // objLineaInfoTextVar — fila info con texto principal + variable numérica
-    case 6:
+    case EnObjPintaPantallasOmega.objLineaInfoTextVar: // 6
       return <ObjLineaInfoTextVar obj={obj} />;
 
     // objLineaInfoTextTextVarVar — fila info con texto principal + dos variables
-    case 19:
+    case EnObjPintaPantallasOmega.objLineaInfoTextTextVarVar: // 19
       return <ObjLineaInfoTextTextVarVar obj={obj} />;
 
     // objVarIndividual — no se renderiza en CTI40 PLUS
-    case 36:
+    case EnObjPintaPantallasOmega.objVarIndividual: // 36
       return <ObjVarIndividual obj={obj} />;
 
     // objVarIndividualNavegacionOEdit — variable con navegación
-    case 37:
+    case EnObjPintaPantallasOmega.objVarIndividualNavegacionOEdit: // 37
       const nav = (obj.valorEditableONav as number | undefined) ?? 0;
       if (nav > 0) {
         return (
@@ -187,16 +188,16 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, indiceP
       return <div className="col-span-7 px-4 py-2 text-5xl text-white">{JSON.stringify(obj)}</div>;
 
     // objPopup - diálogo modal que se muestra automáticamente
-    case 40:
+    case EnObjPintaPantallasOmega.objPopup: // 40
       return <ObjPopup obj={obj} />;
 
     // objDescripcionPantallaCambioParametro — no se renderiza; su descripcionText se usa como
     // textoTituloVariable al enviar cambiaParametro en lugar del título de la pantalla
-    case 56:
+    case EnObjPintaPantallasOmega.objDescripcionPantallaCambioParametro: // 56
       return <ObjDescripcionPantallaCambioParametro obj={obj} />;
 
     // objVineta - objeto inútil que no se renderiza
-    case 41:
+    case EnObjPintaPantallasOmega.objVineta: // 41
       return <ObjVineta obj={obj} />;
 
     default:

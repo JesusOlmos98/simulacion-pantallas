@@ -147,7 +147,6 @@ export default function PantallaCti40Plus(): JSX.Element {
     }
   }, [objetos]);
 
-
   function navegarA(descriptor: DescriptorPantalla): void {
     setPila((prev) => [...prev, actual]);
     cargarPantalla(descriptor);
