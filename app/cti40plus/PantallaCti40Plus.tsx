@@ -11,12 +11,14 @@ import ObjTablaDatosSinEdicion from '../components/render-objetos-cti40plus/ObjT
 import { parseConfigTabla } from '../components/render-objetos-cti40plus/ObjTablaConfig';
 import ObjEditVariables from '../components/render-objetos-cti40plus/ObjEditVariables';
 import ObjEditVariablesString from '../components/render-objetos-cti40plus/ObjEditVariablesString';
+import ObjEditVariablesTiempoFecha from '../components/render-objetos-cti40plus/ObjEditVariablesTiempoFecha';
 import ObjCamposMultiseleccion from '../components/render-objetos-cti40plus/ObjCamposMultiseleccion';
 import { resolveText } from '../components/render-objetos-cti40plus/textos/resolverTexto';
 import { parseConcatenado, COLORES, BarraBotonesCti40Plus, decodificarVariable, decodificarStringVariable } from '../components/render-objetos-cti40plus';
 import type { DescriptorPantalla, ObjBase } from '../components/pantalla-types';
 import { getColorHex } from '../components/render-objetos-cti40plus/colors';
 import PantallaLibre from './PantallaLibre';
+import { esTipoVarTiempoFecha, parseTiempoFechaString, maskMinMaxTiempoFecha } from '@/src/utils/common-lib-commac-generador/fnTiempo';
 
 const MAC_CTI40PLUS = '202000029'; // MAC address para CTI40 PLUS
 let idEnvioCounter = 1;
@@ -190,6 +192,9 @@ export default function PantallaCti40Plus(): JSX.Element {
     const indicePantallaRespuesta = destinoTrasEdicion.destino.indicePantalla;
     const ptrSalto = objEditVariables.ptrFuncionSaltoTrasEdit as number;
 
+    const tipoVarEdicion = objEditVariables.tipoVarEdicion as number;
+    const esTF = esTipoVarTiempoFecha(tipoVarEdicion);
+
     const params = new URLSearchParams({
       eventId: '255',
       idEnvio: String(idEnvioCounter++),
@@ -200,14 +205,21 @@ export default function PantallaCti40Plus(): JSX.Element {
       idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
       indicePantalla: String(indicePantallaRespuesta),
       navIdPantallaRespuestaTrama: String(idPantallaRespuesta),
-      tipoVariableEdicion: String(objEditVariables.tipoVarEdicion as number),
-      valorVariable: valor,
+      tipoVariableEdicion: String(tipoVarEdicion),
       punteroVariableEdicion: String(objEditVariables.ptrVariableEdicion as number),
       // Si ptrFuncionSaltoTrasEdit es 0 el servidor espera la pantalla de respuesta como destino de salto
       punteroFuncionSaltoTrasEdit: String(ptrSalto !== 0 ? ptrSalto : idPantallaRespuesta),
       textoTituloVariable: String(objEditVariables.textoVar as number),
       textoNombreVariable: String(objEditVariables.textoVar as number)
     });
+
+    if (esTF) {
+      const u32 = parseTiempoFechaString(valor, tipoVarEdicion);
+      if (u32 === null) return;
+      params.set('valorVariableHex', u32.toString(16).padStart(8, '0'));
+    } else {
+      params.set('valorVariable', valor);
+    }
 
     setLoading(true);
     setError(null);
@@ -632,17 +644,28 @@ export default function PantallaCti40Plus(): JSX.Element {
   const esRadioButton = esSeleccion && objEditVariablesMultiples.length === 1;
   const esCheckbox = esSeleccion && objEditVariablesMultiples.length > 1;
 
+  // Detectar si la pantalla de edición es de Tiempo o Fecha
+  const esTiempoFecha = objEditVariables ? esTipoVarTiempoFecha(objEditVariables.tipoVarEdicion as number) : false;
+
   // Validez del valor introducido: siempre válido para strings, rango numérico para el resto
   const editValido = useMemo<boolean>(() => {
     if (objEditVariablesString) return true;
     if (!objEditVariables) return false;
+    const tipoVarEdicion = objEditVariables.tipoVarEdicion as number;
+    if (esTiempoFecha) {
+      const encoded = parseTiempoFechaString(editValue, tipoVarEdicion);
+      if (encoded === null) return false;
+      const maskedMin = maskMinMaxTiempoFecha(objEditVariables.minimo as number, tipoVarEdicion);
+      const maskedMax = maskMinMaxTiempoFecha(objEditVariables.maximo as number, tipoVarEdicion);
+      return encoded >= maskedMin && encoded <= maskedMax;
+    }
     const tipoVar = objEditVariables.tipoVar as number;
     const val = parseFloat(editValue);
     if (!isFinite(val)) return false;
     const minVal = parseFloat(decodificarVariable(objEditVariables.minimo as number, tipoVar));
     const maxVal = parseFloat(decodificarVariable(objEditVariables.maximo as number, tipoVar));
     return val >= minVal && val <= maxVal;
-  }, [editValue, objEditVariables, objEditVariablesString]);
+  }, [editValue, esTiempoFecha, objEditVariables, objEditVariablesString]);
 
   const seleccionConfirmable = useMemo<boolean>(() => {
     if (!esSeleccion) return false;
@@ -832,8 +855,23 @@ export default function PantallaCti40Plus(): JSX.Element {
                 />
               )}
 
+              {/* Pantalla de edición de Tiempo/Fecha (tipoPlantilla 2 + tipoVarEdicion tiempo/fecha) */}
+              {esTeclado && objEditVariables && esTiempoFecha && (
+                <div className="flex-1 flex items-center justify-center">
+                  <ObjEditVariablesTiempoFecha
+                    obj={objEditVariables}
+                    value={editValue}
+                    onChange={setEditValue}
+                    isValid={editValido}
+                    onEnter={() => {
+                      if (editValido) void escribirVariable(editValue);
+                    }}
+                  />
+                </div>
+              )}
+
               {/* Pantalla de edición numérica (tipoPlantilla 2) — input centrado */}
-              {esTeclado && objEditVariables && (
+              {esTeclado && objEditVariables && !esTiempoFecha && (
                 <div className="flex-1 flex items-center justify-center">
                   <ObjEditVariables
                     obj={objEditVariables}
@@ -933,6 +971,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                                   obj={obj}
                                   onNavegar={navegarA}
                                   idPantallaActual={actual.idPantalla}
+                                  indicePantallaActual={actual.indicePantalla}
                                   textoConcatenados={textoConcatenadoMap}
                                 />
                               ))}
@@ -979,6 +1018,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                                   obj={obj}
                                   onNavegar={navegarA}
                                   idPantallaActual={actual.idPantalla}
+                                  indicePantallaActual={actual.indicePantalla}
                                   esLista
                                 />
                               ))}
@@ -991,6 +1031,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                                   obj={obj}
                                   onNavegar={navegarA}
                                   idPantallaActual={actual.idPantalla}
+                                  indicePantallaActual={actual.indicePantalla}
                                   textoConcatenados={textoConcatenadoMap}
                                 />
                               ))}

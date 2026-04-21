@@ -31,7 +31,7 @@ export default function ObjEditVariablesString({ value, onChange, onEnter }: Pro
             }
           }}
           className="bg-transparent text-6xl text-center outline-none w-120"
-          style={{ color: COLORES.primary }}
+          style={{ color: COLORES.success }}
           autoFocus
         />
       </div>

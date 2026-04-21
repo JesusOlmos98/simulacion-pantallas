@@ -24,11 +24,12 @@ export interface RenderObjetoProps {
   obj: ObjBase;
   onNavegar: (d: DescriptorPantalla) => void;
   idPantallaActual: number;
+  indicePantallaActual: number;
   esLista?: boolean;
   textoConcatenados?: Map<number, string>;
 }
 
-export default function RenderObjeto({ obj, onNavegar, idPantallaActual, esLista, textoConcatenados }: RenderObjetoProps): JSX.Element | null {
+export default function RenderObjeto({ obj, onNavegar, idPantallaActual, indicePantallaActual, esLista, textoConcatenados }: RenderObjetoProps): JSX.Element | null {
   // NOTA: Los objetos ObjDescripcionPantallaCambioParametro (56), ObjVineta (41) y ObjVarIndividual (36) NO renderizan nada
   switch (obj.tipoObjeto) {
     // objPlantilla — metadatos, no se pinta
@@ -62,6 +63,7 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, esLista
           obj={obj}
           onNavegar={onNavegar}
           idPantallaActual={idPantallaActual}
+          indicePantallaActual={indicePantallaActual}
         />
       );
 
@@ -72,6 +74,7 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, esLista
           obj={obj}
           onNavegar={onNavegar}
           idPantallaActual={idPantallaActual}
+          indicePantallaActual={indicePantallaActual}
         />
       );
 
@@ -82,6 +85,7 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, esLista
           obj={obj}
           onNavegar={onNavegar}
           idPantallaActual={idPantallaActual}
+          indicePantallaActual={indicePantallaActual}
         />
       );
 
@@ -103,6 +107,7 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, esLista
           obj={obj}
           onNavegar={onNavegar}
           idPantallaActual={idPantallaActual}
+          indicePantallaActual={indicePantallaActual}
         />
       );
 

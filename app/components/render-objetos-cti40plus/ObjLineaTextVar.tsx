@@ -14,19 +14,20 @@ interface ObjLineaTextVarProps {
   obj: Record<string, unknown>;
   onNavegar: (descriptor: DescriptorPantalla) => void;
   idPantallaActual: number;
+  indicePantallaActual: number;
 }
 
-export default function ObjLineaTextVar({ obj, onNavegar, idPantallaActual }: ObjLineaTextVarProps): JSX.Element {
+export default function ObjLineaTextVar({ obj, onNavegar, idPantallaActual, indicePantallaActual }: ObjLineaTextVarProps): JSX.Element {
   const nav = (obj.valorEditableONav as number | undefined) ?? 0;
 
   const handleClick = (): void => {
     if (nav <= 0) return;
     if (nav >= SCREEN_PTR_MIN) {
-      // Puntero a otra pantalla
+      // Puntero a otra pantalla — indicePantalla lo fija COMMAC en el objeto
       onNavegar({ idPantalla: nav, indicePantalla: (obj.indicePantalla as number | undefined) ?? 0, esPrincipal: false });
     } else {
-      // Índice de edición — misma pantalla con idUnicoEdicion
-      onNavegar({ idPantalla: idPantallaActual, indicePantalla: (obj.indicePantalla as number | undefined) ?? 0, esPrincipal: false, idUnicoEdicion: nav });
+      // Índice de edición — conservar el indicePantalla de la pantalla actual
+      onNavegar({ idPantalla: idPantallaActual, indicePantalla: indicePantallaActual, esPrincipal: false, idUnicoEdicion: nav });
     }
   };
 

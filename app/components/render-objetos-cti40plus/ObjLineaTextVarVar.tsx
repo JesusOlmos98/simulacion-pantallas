@@ -14,9 +14,10 @@ interface ObjLineaTextVarVarProps {
   obj: Record<string, unknown>;
   onNavegar: (descriptor: DescriptorPantalla) => void;
   idPantallaActual: number;
+  indicePantallaActual: number;
 }
 
-export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual }: ObjLineaTextVarVarProps): JSX.Element {
+export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual, indicePantallaActual }: ObjLineaTextVarVarProps): JSX.Element {
   const nav = (obj.valorEditableONav as number | undefined) ?? 0;
 
   const handleClick = (): void => {
@@ -24,7 +25,7 @@ export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual }:
     if (nav >= SCREEN_PTR_MIN) {
       onNavegar({ idPantalla: nav, indicePantalla: (obj.indicePantalla as number | undefined) ?? 0, esPrincipal: false });
     } else {
-      onNavegar({ idPantalla: idPantallaActual, indicePantalla: (obj.indicePantalla as number | undefined) ?? 0, esPrincipal: false, idUnicoEdicion: nav });
+      onNavegar({ idPantalla: idPantallaActual, indicePantalla: indicePantallaActual, esPrincipal: false, idUnicoEdicion: nav });
     }
   };
 
