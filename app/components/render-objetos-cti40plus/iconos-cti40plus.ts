@@ -23,6 +23,7 @@ import {
   LuWind, // 1   - Termómetro de mercurio (Sondas)
   LuSlidersHorizontal, // 55  - Barritas horizontales con sliders (Ajustes)
   LuWrench, // 123 - Llave inglesa (Mantenimiento)
+  LuCheck, // 63 - Check
   LuUnplug,
   LuChevronsRightLeft, // 146 - tally-2 (icono extraño de rayo tachado)
   LuCloud, // 145 - WiFi mínimo (sin cobertura)
@@ -176,6 +177,7 @@ const ICONO_CTI40PLUS_MAP: Record<number, IconType> = {
   55: LuSlidersHorizontal, // Barritas horizontales con sliders (Ajustes)
   57: LuTrash, // Papelera
   59: LuLightbulb, // Iluminación
+  63: LuCheck, // Check
   69: IconoClimaRecinto, //IconoClimaRecinto, // Clima recinto
   71: LuBell, // Alarmas
   72: LuDroplet, // Gota de agua

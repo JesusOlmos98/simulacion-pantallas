@@ -97,6 +97,19 @@ export default function PantallaCti40Plus(): JSX.Element {
           const botones = data.filter((o) => o.tipoObjeto === 66);
           if (botones.length > 0) barraAccesoDirectoPersistente.current = botones;
         }
+        // Inicializar editValue en el mismo batch que setObjetos para evitar el flash de valor incorrecto
+        const editObjString = data.find((o) => o.tipoObjeto === 33);
+        if (editObjString) {
+          setEditValue(decodificarStringVariable(editObjString.valorVariable));
+        } else {
+          const editObj = data.find((o) => o.tipoObjeto === 8);
+          if (editObj) {
+            const tipoVarEdicion = (editObj.tipoVarEdicion ?? editObj.tipoVar) as number;
+            setEditValue(decodificarVariable(editObj.valorVariable as number, tipoVarEdicion));
+          } else {
+            setEditValue('');
+          }
+        }
         setObjetos(data);
         setLoading(false);
       })
@@ -134,19 +147,6 @@ export default function PantallaCti40Plus(): JSX.Element {
     }
   }, [objetos]);
 
-  // Inicializa el valor del input cuando carga una pantalla de edición (tipoPlantilla: 2)
-  useEffect(() => {
-    const editObjString = objetos?.find((o) => o.tipoObjeto === 33);
-    if (editObjString) {
-      setEditValue(decodificarStringVariable(editObjString.valorVariable));
-      return;
-    }
-    const editObj = objetos?.find((o) => o.tipoObjeto === 8);
-    if (!editObj) return;
-    const tipoVar = editObj.tipoVar as number;
-    const valorVariable = editObj.valorVariable as number;
-    setEditValue(decodificarVariable(valorVariable, tipoVar));
-  }, [objetos]);
 
   function navegarA(descriptor: DescriptorPantalla): void {
     setPila((prev) => [...prev, actual]);
