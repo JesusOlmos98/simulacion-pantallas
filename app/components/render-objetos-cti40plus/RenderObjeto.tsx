@@ -100,6 +100,7 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, indiceP
           onNavegar={onNavegar}
           esLista={esLista}
           textoConcatenados={textoConcatenados}
+          idPantallaActual={idPantallaActual}
         />
       );
 

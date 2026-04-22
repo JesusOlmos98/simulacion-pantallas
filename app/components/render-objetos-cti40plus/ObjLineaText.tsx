@@ -14,14 +14,20 @@ interface ObjLineaProps {
   onNavegar: (descriptor: DescriptorPantalla) => void;
   esLista?: boolean;
   textoConcatenados?: Map<number, string>;
+  idPantallaActual?: number;
 }
 
-export default function ObjLineaText({ obj, onNavegar, textoConcatenados }: ObjLineaProps): JSX.Element {
+export default function ObjLineaText({ obj, onNavegar, textoConcatenados, idPantallaActual }: ObjLineaProps): JSX.Element {
   const nav = (obj.valorEditableONav as number | undefined) ?? 0;
 
   const handleClick = (): void => {
     if (nav > 0) {
-      onNavegar({ idPantalla: nav, indicePantalla: (obj.indicePantalla as number | undefined) ?? 0, esPrincipal: false });
+      const indicePantalla = (obj.indicePantalla as number | undefined) ?? 0;
+      if (nav > 1000) {
+        onNavegar({ idPantalla: nav, indicePantalla, esPrincipal: false });
+      } else {
+        onNavegar({ idPantalla: idPantallaActual ?? 0, indicePantalla, esPrincipal: false, idUnicoEdicion: nav });
+      }
     }
   };
 
