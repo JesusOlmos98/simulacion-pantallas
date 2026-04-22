@@ -3,7 +3,9 @@
 import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import type { JSX } from 'react';
 import { useRouter } from 'next/navigation';
-import { LuCheck, LuChevronLeft, LuInfo, LuMenu, LuX } from 'react-icons/lu';
+import { LuCheck, LuChevronLeft, LuFan, LuInfo, LuMenu, LuX } from 'react-icons/lu';
+import ObjVentilacionGrupoGrafico from '../components/render-objetos-cti40plus/ObjVentilacionGrupoGrafico';
+import ObjVentilacionGrupoGraficoEdit from '../components/render-objetos-cti40plus/ObjVentilacionGrupoGraficoEdit';
 import { RenderObjeto, resolverIconoCTI40Plus, ObjTablaDinamica, ObjLineaInfoTextVar, ObjLineaInfoTextTextVarVar } from '../components/render-objetos-cti40plus';
 import ObjLineaInfoTextText from '../components/render-objetos-cti40plus/ObjLineaInfoTextText';
 import ObjEncabezadoEditIcono from '../components/render-objetos-cti40plus/ObjEncabezadoEditIcono';
@@ -65,6 +67,8 @@ export default function PantallaCti40Plus(): JSX.Element {
   const [editValue, setEditValue] = useState('');
   const [selectedIdSeleccion, setSelectedIdSeleccion] = useState<number | null>(null);
   const [selectedIdSelecciones, setSelectedIdSelecciones] = useState<Set<number>>(new Set());
+  const [estadosVentiladores, setEstadosVentiladores] = useState<number[]>([]);
+  const [pestanaActivaVentilacion, setPestanaActivaVentilacion] = useState<0 | 1>(0);
 
   // Ref para poder cancelar el fetch en vuelo al desmontar o al lanzar uno nuevo
   const controllerRef = useRef<AbortController | null>(null);
@@ -130,6 +134,17 @@ export default function PantallaCti40Plus(): JSX.Element {
     };
   }, [cargarPantalla]);
 
+  // Inicializa los estados de ventiladores cuando carga una pantalla de edición de ventiladores (tipoPlantilla: 10)
+  useEffect(() => {
+    if (!objetos) return;
+    const plantilla = objetos.find((o) => o.tipoObjeto === 1);
+    if ((plantilla?.tipoPlantilla as number | undefined) !== 10) return;
+    const grafico = objetos.find((o) => o.tipoObjeto === 21);
+    const datos = (grafico?.datos as { estadoVentilador: number }[] | undefined) ?? [];
+    setEstadosVentiladores(datos.map((d) => d.estadoVentilador));
+    setPestanaActivaVentilacion(0);
+  }, [objetos]);
+
   // Inicializa las opciones seleccionadas cuando carga una pantalla de selección (tipoObjeto: 10)
   useEffect(() => {
     if (!objetos) return;
@@ -148,6 +163,88 @@ export default function PantallaCti40Plus(): JSX.Element {
       setSelectedIdSelecciones(new Set(selecciones));
     }
   }, [objetos]);
+
+  async function guardarVentiladores(): Promise<void> {
+    if (!objVentilacionEdit || !objetos) return;
+    const objIdUnicoEdicion = objetos.find((o) => o.tipoObjeto === 12);
+    const objPlantilla = objetos.find((o) => o.tipoObjeto === 1);
+    if (!objIdUnicoEdicion || !objPlantilla) return;
+
+    const destinoTrasEdicion = resolverDestinoTrasEdicion();
+    const idPantallaActual = objPlantilla.idPantalla as number;
+    const indicePantallaActual = objPlantilla.indicePantalla as number;
+    const numDatos = (objVentilacionGrafico?.numDatos as number | undefined) ?? estadosVentiladores.length;
+
+    const params = new URLSearchParams({
+      eventId: '255',
+      idEnvio: String(idEnvioCounter++),
+      mac: MAC_CTI40PLUS,
+      readWrite: '1',
+      esPantallaPrincipal: '0',
+      idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
+      indicePantalla: String(indicePantallaActual),
+      navIdPantallaRespuestaTrama: String(idPantallaActual),
+      navegacion: '0',
+      tipoVariableEdicion: String(objVentilacionEdit.tipoVarEdicion as number),
+      textoTituloVariable: String(objVentilacionEdit.textoCabecera as number),
+      textoNombreVariable: String(objVentilacionEdit.textoCabecera as number),
+      punteroVariableEdicion: String(objVentilacionEdit.ptrVarEditBase as number),
+      punteroFuncionSaltoTrasEdit: String(objVentilacionEdit.ptrFuncionSaltoTrasEdit as number),
+      numDatosEditar: String(numDatos)
+    });
+
+    for (const estado of estadosVentiladores.slice(0, numDatos)) {
+      params.append('valores', String(estado));
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await apiFetch(params);
+      if (!res.ok) throw new Error(`Error ${res.status}`);
+      navegarTrasEscritura(destinoTrasEdicion);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Error al guardar ventiladores');
+      setLoading(false);
+    }
+  }
+
+  function handleClickVentilador(idx: number): void {
+    setEstadosVentiladores((prev) => {
+      const estado = prev[idx] ?? 0;
+      const next = [...prev];
+
+      if (pestanaActivaVentilacion === 0) {
+        // Estáticos: toggle entre 0 y 255
+        if (estado === 0) {
+          next[idx] = 255;
+        } else if (estado === 255) {
+          next[idx] = 0;
+        }
+        // Si es temporizado (1,2,3...) no hacer nada
+      } else {
+        // Temporizados
+        if (estado === 0) {
+          // Asignar siguiente número de temporizado
+          const numTemporizados = next.filter((e) => e !== 0 && e !== 255).length;
+          next[idx] = numTemporizados + 1;
+        } else if (estado !== 255) {
+          // Solo deshacer si es el máximo valor temporizado
+          const maxTemporizados = Math.max(...next.filter((e) => e !== 0 && e !== 255));
+          if (estado === maxTemporizados) {
+            next[idx] = 0;
+          }
+        }
+        // Si es estático (255) no hacer nada
+      }
+      return next;
+    });
+  }
+
+  function handleTrashVentiladores(): void {
+    setEstadosVentiladores((prev) => prev.map(() => 0));
+  }
 
   function navegarA(descriptor: DescriptorPantalla): void {
     setPila((prev) => [...prev, actual]);
@@ -635,7 +732,11 @@ export default function PantallaCti40Plus(): JSX.Element {
   // tipoPlantilla: 2 = teclado (edición), 4 = lista de filas, 21 = canvas libre (objPosXyLibre*), otros = grid de iconos
   const tipoPlantilla = (objetos?.find((o) => o.tipoObjeto === 1)?.tipoPlantilla as number) ?? 0;
   const esLista = tipoPlantilla === 4;
+  const esVentilacionGrupoEdit = tipoPlantilla === 10;
   const esLibre = tipoPlantilla === 21;
+  const objVentilacionGrafico = esVentilacionGrupoEdit ? (objetos?.find((o) => o.tipoObjeto === 21) ?? null) : null;
+  const objVentilacionEdit = esVentilacionGrupoEdit ? (objetos?.find((o) => o.tipoObjeto === 22) ?? null) : null;
+  const tituloVentilacionEdit = objVentilacionEdit ? resolveText(objVentilacionEdit.textoCabecera as number) : null;
   const esTeclado = tipoPlantilla === 2;
 
   // Campos de selección única (tipoObjeto: 10 — objCamposMultiseleccion)
@@ -802,7 +903,7 @@ export default function PantallaCti40Plus(): JSX.Element {
               {!esPantallaPrincipal && !esTeclado && !esSeleccion && (
                 <div
                   className="flex items-center justify-between px-3 py-6 shrink-0"
-                  style={{ backgroundColor: colorHeader }}
+                  style={{ backgroundColor: esVentilacionGrupoEdit ? COLORES.tertiary : colorHeader }}
                 >
                   {/* Izquierda: flecha + hamburguesa */}
                   <div className="flex items-center gap-1">
@@ -826,31 +927,43 @@ export default function PantallaCti40Plus(): JSX.Element {
                   </div>
 
                   {/* Título */}
-                  <span className="text-5xl font-normal text-white truncate px-2">{titulo}</span>
+                  <span className="text-5xl font-normal text-white truncate px-2">{tituloVentilacionEdit ?? titulo}</span>
 
-                  {/* Derecha: botones de tarea (iconoTarea2/3 con pantallaSalto > 0) + objEncabezadoEditIcono */}
+                  {/* Derecha: check (ventilación) / botones de tarea / espaciador */}
                   <div className="flex items-center gap-1">
-                    {tareas.map((tarea, i) => {
-                      const IconoTarea = resolverIconoCTI40Plus(tarea.icono);
-                      return (
-                        <button
-                          key={i}
-                          onClick={() => navegarA({ idPantalla: tarea.pantalla, indicePantalla: tarea.indice, esPrincipal: false })}
-                          className="p-1 text-white hover:text-gray-200 transition-colors"
-                        >
-                          {IconoTarea ? <IconoTarea size={60} /> : null}
-                        </button>
-                      );
-                    })}
-                    {encabezadoEditIcono && (
-                      <ObjEncabezadoEditIcono
-                        obj={encabezadoEditIcono}
-                        idPantallaActual={(objetos?.find((o) => o.tipoObjeto === 1)?.idPantalla as number | undefined) ?? actual.idPantalla}
-                        indicePantallaActual={(objetos?.find((o) => o.tipoObjeto === 1)?.indicePantalla as number | undefined) ?? actual.indicePantalla}
-                        onNavegar={navegarA}
-                      />
+                    {esVentilacionGrupoEdit ? (
+                      <button
+                        onClick={() => void guardarVentiladores()}
+                        className="p-1 text-white hover:text-gray-200 transition-colors"
+                        aria-label="Guardar"
+                      >
+                        <LuCheck size={60} />
+                      </button>
+                    ) : (
+                      <>
+                        {tareas.map((tarea, i) => {
+                          const IconoTarea = resolverIconoCTI40Plus(tarea.icono);
+                          return (
+                            <button
+                              key={i}
+                              onClick={() => navegarA({ idPantalla: tarea.pantalla, indicePantalla: tarea.indice, esPrincipal: false })}
+                              className="p-1 text-white hover:text-gray-200 transition-colors"
+                            >
+                              {IconoTarea ? <IconoTarea size={60} /> : null}
+                            </button>
+                          );
+                        })}
+                        {encabezadoEditIcono && (
+                          <ObjEncabezadoEditIcono
+                            obj={encabezadoEditIcono}
+                            idPantallaActual={(objetos?.find((o) => o.tipoObjeto === 1)?.idPantalla as number | undefined) ?? actual.idPantalla}
+                            indicePantallaActual={(objetos?.find((o) => o.tipoObjeto === 1)?.indicePantalla as number | undefined) ?? actual.indicePantalla}
+                            onNavegar={navegarA}
+                          />
+                        )}
+                        {tareas.length === 0 && !encabezadoEditIcono && <div className="w-12" />}
+                      </>
                     )}
-                    {tareas.length === 0 && !encabezadoEditIcono && <div className="w-12" />}
                   </div>
                 </div>
               )}
@@ -952,8 +1065,84 @@ export default function PantallaCti40Plus(): JSX.Element {
                 </div>
               )}
 
+              {/* Pantalla de edición de ventiladores (tipoPlantilla 10) */}
+              {esVentilacionGrupoEdit && objVentilacionEdit && (
+                <div
+                  className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#1E1E1E] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]"
+                  style={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}
+                >
+                  {/* Pestañas */}
+                  <ObjVentilacionGrupoGraficoEdit
+                    obj={objVentilacionEdit}
+                    pestanaActiva={pestanaActivaVentilacion}
+                    onPestanaChange={setPestanaActivaVentilacion}
+                    onTrash={handleTrashVentiladores}
+                  />
+
+                  {/* Gráfico de ventiladores */}
+                  {objVentilacionGrafico && (
+                    <ObjVentilacionGrupoGrafico
+                      obj={objVentilacionGrafico}
+                      onNavegar={navegarA}
+                      idPantallaActual={actual.idPantalla}
+                      indicePantallaActual={actual.indicePantalla}
+                      estadosOverride={estadosVentiladores}
+                      onClickVentilador={handleClickVentilador}
+                    />
+                  )}
+
+                  {/* Leyenda */}
+                  <div className="flex flex-col gap-8 px-8 py-8">
+                    <div className="flex items-center gap-6">
+                      <LuFan
+                        size={75}
+                        color={COLORES.success}
+                      />
+                      <span
+                        className="text-5xl"
+                        style={{ color: COLORES.light }}
+                      >
+                        {resolveText(objVentilacionEdit.textoPestana2 as number)}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-6">
+                      <span style={{ position: 'relative', display: 'inline-flex', width: 75, height: 75 }}>
+                        <LuFan
+                          size={75}
+                          color={COLORES.success}
+                          style={{ position: 'absolute', clipPath: 'inset(0 50% 0 0)' }}
+                        />
+                        <LuFan
+                          size={75}
+                          color={COLORES.light}
+                          style={{ position: 'absolute', clipPath: 'inset(0 0 0 50%)' }}
+                        />
+                      </span>
+                      <span
+                        className="text-5xl"
+                        style={{ color: COLORES.light }}
+                      >
+                        {resolveText(objVentilacionEdit.textoPestana2 as number)}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-6">
+                      <LuFan
+                        size={75}
+                        color={COLORES.menuWords}
+                      />
+                      <span
+                        className="text-5xl"
+                        style={{ color: COLORES.light }}
+                      >
+                        {resolveText(objVentilacionEdit.textoPestana1 as number)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Objetos — scrollable si hay muchos */}
-              {!esLibre && !esTeclado && !esSeleccion && (
+              {!esLibre && !esTeclado && !esSeleccion && !esVentilacionGrupoEdit && (
                 <div
                   className="flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-[#1E1E1E] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]"
                   style={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}
@@ -1018,7 +1207,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                       {/* Otros objetos (grid o lista) */}
                       {otrosObjetos.length > 0 && (
                         <>
-                          {esLista ? (
+                          {esLista || esVentilacionGrupoEdit ? (
                             <div className="flex flex-col">
                               {otrosObjetos.map((obj, i) => (
                                 <RenderObjeto

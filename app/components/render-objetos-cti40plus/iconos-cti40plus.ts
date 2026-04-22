@@ -120,6 +120,23 @@ const IconoWifiHigh: IconType = ({ size = 24, color, className }) =>
     React.createElement(LuWifiHigh, { size, color, style: iconStyle })
   );
 
+// Icono de ventilador fijo (rotatorio al 100%) — color success — ID 86
+const IconoVentiladorFijo: IconType = ({ size = 24, className }) => React.createElement(LuFan, { size, color: COLORES.success, className });
+
+// Icono de ventilador temporizado — mitad izquierda success, mitad derecha light — ID 85
+const IconoVentiladorTemporizado: IconType = ({ size = 24, className }) => {
+  const s = typeof size === 'number' ? size : 24;
+  return React.createElement(
+    'span',
+    { className, style: { position: 'relative', display: 'inline-flex', width: s, height: s, flexShrink: 0 } },
+    React.createElement(LuFan, { size: s, color: COLORES.success, style: { position: 'absolute', clipPath: 'inset(0 50% 0 0)' } }),
+    React.createElement(LuFan, { size: s, color: COLORES.light, style: { position: 'absolute', clipPath: 'inset(0 0 0 50%)' } })
+  );
+};
+
+// Icono de ventilador estático — color menuWords — ID 84
+const IconoVentiladorEstatico: IconType = ({ size = 24, className }) => React.createElement(LuFan, { size, color: COLORES.menuWords, className });
+
 // Icono de ventilador girando en color naranja para el ID 346
 const IconoVentiladorGirando: IconType = ({ size = 24, className }) => {
   return React.createElement(
@@ -181,6 +198,9 @@ const ICONO_CTI40PLUS_MAP: Record<number, IconType> = {
   69: IconoClimaRecinto, //IconoClimaRecinto, // Clima recinto
   71: LuBell, // Alarmas
   72: LuDroplet, // Gota de agua
+  84: IconoVentiladorEstatico, // 0x54 — ventilador estático (menuWords)
+  85: IconoVentiladorTemporizado, // 0x55 — ventilador temporizado (mitad success/light)
+  86: IconoVentiladorFijo, // 0x56 — ventilador rotatorio al 100% (success)
   123: LuWrench, // Llave inglesa (Mantenimiento)
   145: IconoWifiZero,
   146: IconoWifiLow,

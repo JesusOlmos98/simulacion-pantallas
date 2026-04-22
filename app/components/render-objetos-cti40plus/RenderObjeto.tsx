@@ -20,6 +20,7 @@ import ObjVineta from './ObjVineta';
 import ObjVarIndividual from './ObjVarIndividual';
 import ObjDescripcionPantallaCambioParametro from './ObjDescripcionPantallaCambioParametro';
 import ObjVentilacionGrupoGrafico from './ObjVentilacionGrupoGrafico';
+import ObjVentilacionGrupoGraficoEdit from './ObjVentilacionGrupoGraficoEdit';
 import type { ObjBase, DescriptorPantalla } from '../pantalla-types';
 
 export interface RenderObjetoProps {
@@ -152,6 +153,10 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, indiceP
     // objPosXyLibreLineas — rectángulo posicionado en coordenadas absolutas
     case EnObjPintaPantallasOmega.objPosXyLibreLineas: // 76
       return <ObjPosXyLibreLineas obj={obj} />;
+
+    // objVentilacionGrupoGraficoEdit — cabecera + pestañas de edición de ventiladores
+    case EnObjPintaPantallasOmega.objVentilacionGrupoGraficoEdit: // 22
+      return <ObjVentilacionGrupoGraficoEdit obj={obj} />;
 
     // objVentilacionGrupoGrafico — fila con iconos de ventiladores (estado, km3, orden)
     case EnObjPintaPantallasOmega.objVentilacionGrupoGrafico: // 21
