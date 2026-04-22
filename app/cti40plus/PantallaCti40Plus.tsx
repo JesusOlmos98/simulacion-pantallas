@@ -520,8 +520,8 @@ export default function PantallaCti40Plus(): JSX.Element {
       if (!objEditVar) return;
       if (!esConfirmacionEdicion && (selectedIdSeleccion === null || !objSeleccionado)) return;
 
-      const valorVariableSeleccion = esConfirmacionEdicion ? String((objetos.find((o) => o.tipoObjeto === 10)?.opcionSeleccionada as number | undefined) ?? 0) : String(selectedIdSeleccion);
-      const textoNombreVariable = esConfirmacionEdicion ? String((objEditVar.textoVar as number | undefined) ?? 0) : String(objSeleccionado?.textoVar as number);
+      const valorVariableSeleccion = selectedIdSeleccion !== null ? String(selectedIdSeleccion) : String((objetos.find((o) => o.tipoObjeto === 10)?.opcionSeleccionada as number | undefined) ?? 0);
+      const textoNombreVariable = objSeleccionado ? String(objSeleccionado.textoVar as number) : String((objEditVar.textoVar as number | undefined) ?? 0);
 
       const params = new URLSearchParams({
         eventId: '255',
