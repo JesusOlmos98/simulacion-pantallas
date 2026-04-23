@@ -259,23 +259,14 @@ export default function PantallaCti40Plus(): JSX.Element {
 
     // Skip same-screen entries (device can re-send same screen with extra objs e.g. objPopup)
     let idx = pila.length - 1;
-    while (
-      idx > 0 &&
-      pila[idx]!.idPantalla === actual.idPantalla &&
-      pila[idx]!.indicePantalla === actual.indicePantalla &&
-      !!pila[idx]!.esPrincipal === !!actual.esPrincipal
-    ) {
+    while (idx > 0 && pila[idx]!.idPantalla === actual.idPantalla && pila[idx]!.indicePantalla === actual.indicePantalla && !!pila[idx]!.esPrincipal === !!actual.esPrincipal) {
       idx--;
     }
 
     const anterior = pila[idx]!;
 
     // If even the bottom of the stack is the same screen, go to root
-    if (
-      anterior.idPantalla === actual.idPantalla &&
-      anterior.indicePantalla === actual.indicePantalla &&
-      !!anterior.esPrincipal === !!actual.esPrincipal
-    ) {
+    if (anterior.idPantalla === actual.idPantalla && anterior.indicePantalla === actual.indicePantalla && !!anterior.esPrincipal === !!actual.esPrincipal) {
       setPila([]);
       router.push('/');
       return;
