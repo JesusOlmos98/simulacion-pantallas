@@ -12,7 +12,7 @@ export const COLORES = {
   light_gray: '#c4c4c4ff', // Gris claro (índice 15)
   menuWords: '#FFA505', // Naranja para textos del menú de Omega
   wifi: '#555555ff', // Lineas de wifi inactivas
-  influences: '#ffef13ff' // Verde para influencias
+  influences: '#ffe600ff' // Verde para influencias
 } as const;
 
 /** Obtiene el color HEX correspondiente a un número (1-indexed) */

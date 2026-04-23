@@ -640,24 +640,21 @@ export default function PantallaCti40Plus(): JSX.Element {
     }
   }
 
-  // Agrupar bloques de tabla: objTablaDinamicaInit (70) + filas objTablaDinamicaFila (71) consecutivas
+  // Agrupar bloques de tabla: objTablaDinamicaInit (70) + filas objTablaDinamicaFila (71)
+  // Las filas pueden no ser inmediatamente consecutivas (puede haber otros objetos entre init y filas)
   const tablasGrupos: { init: ObjBase; filas: ObjBase[] }[] = [];
   if (objetos) {
-    let i = 0;
-    while (i < objetos.length) {
-      const obj = objetos[i]!;
-      if (obj.tipoObjeto === 70) {
-        const filas: ObjBase[] = [];
-        let j = i + 1;
-        while (j < objetos.length && objetos[j]!.tipoObjeto === 71) {
-          filas.push(objetos[j]!);
-          j++;
-        }
-        tablasGrupos.push({ init: obj, filas });
-        i = j;
-      } else {
-        i++;
-      }
+    const inits = objetos.map((o, i) => (o.tipoObjeto === 70 ? i : -1)).filter((i) => i !== -1);
+    const filasIndices = objetos.map((o, i) => (o.tipoObjeto === 71 ? i : -1)).filter((i) => i !== -1);
+
+    for (const initIdx of inits) {
+      const init = objetos[initIdx]!;
+      // Recolectar todas las filas (71) que vienen después de este init,
+      // hasta el siguiente init o fin del array
+      const nextInitIdx = inits.find((i) => i > initIdx) ?? objetos.length;
+      const filasParaEsteInit = filasIndices.filter((fIdx) => fIdx > initIdx && fIdx < nextInitIdx).map((fIdx) => objetos[fIdx]!);
+
+      tablasGrupos.push({ init, filas: filasParaEsteInit });
     }
   }
   const infoObjetos = objetos?.filter((o) => o.tipoObjeto === 7 || o.tipoObjeto === 6 || o.tipoObjeto === 19) ?? [];

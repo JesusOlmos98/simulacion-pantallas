@@ -34,7 +34,7 @@ export default function ObjLineaText({ obj, onNavegar, textoConcatenados, idPant
   const textoId = (obj.texto as number | undefined) ?? 0;
   const texto = textoConcatenados?.get(textoId) ?? resolveText(textoId);
   const coloresLineaEdit = (obj.coloresLineaEdit as number | undefined) ?? 0;
-  const colorTexto = resolverColor(coloresLineaEdit);
+  const colorTexto = coloresLineaEdit === 4 ? COLORES.influences : resolverColor(coloresLineaEdit);
   const IconoLinea = useMemo<IconType | null>(() => (obj.iconoLinea != null ? resolverIconoCTI40Plus(obj.iconoLinea as number) : null), [obj.iconoLinea]);
 
   return (
