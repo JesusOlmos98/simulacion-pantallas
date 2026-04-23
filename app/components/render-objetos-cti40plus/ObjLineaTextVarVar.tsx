@@ -45,33 +45,33 @@ export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual, i
       className="flex items-center justify-between px-3 py-7 cursor-pointer hover:bg-white/5 transition-colors"
       onClick={handleClick}
     >
-      {/* Texto etiqueta */}
+      {/* Texto etiqueta - 60% */}
       <span
         className="text-5xl font-light"
-        style={{ color: colorTexto }}
+        style={{ color: colorTexto, width: '60%' }}
       >
         {texto}
       </span>
 
-      {/* Variables + chevron */}
-      <div className="flex items-center gap-2">
-        {/* Columna central — ancho fijo, alineada a la derecha */}
-        <div
-          className="flex justify-end"
-          style={{ minWidth: '160px' }}
+      {/* Primera variable - 20% columna central */}
+      <div
+        className="flex justify-end"
+        style={{ width: '10%' }}
+      >
+        <span
+          className="text-5xl"
+          style={{ color: inhabilitada ? COLORES.light_gray : COLORES.light }}
         >
-          <span
-            className="text-5xl"
-            style={{ color: inhabilitada ? COLORES.light_gray : COLORES.light }}
-          >
-            {valorCentral}
-            {unidadCentral ?? ''}
-          </span>
-        </div>
+          {valorCentral}
+          {unidadCentral ?? ''}
+        </span>
+      </div>
 
-        {/* Separador visual */}
-        <div style={{ minWidth: '48px' }} />
-
+      {/* Segunda variable + chevron - 20% pegada a la derecha */}
+      <div
+        className="flex items-center gap-2 justify-end"
+        style={{ width: '20%' }}
+      >
         <span
           className="text-5xl"
           style={{ color: inhabilitada ? COLORES.light_gray : COLORES.success }}

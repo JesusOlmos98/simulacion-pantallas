@@ -11,7 +11,8 @@ export const COLORES = {
   light: '#f5f5f5', // Gris muy claro (fallback para 0 u otros)
   light_gray: '#c4c4c4ff', // Gris claro (índice 15)
   menuWords: '#FFA505', // Naranja para textos del menú de Omega
-  wifi: '#555555ff' // Lineas de wifi inactivas
+  wifi: '#555555ff', // Lineas de wifi inactivas
+  influences: '#ffef13ff' // Verde para influencias
 } as const;
 
 /** Obtiene el color HEX correspondiente a un número (1-indexed) */

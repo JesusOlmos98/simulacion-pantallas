@@ -854,7 +854,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                   >
                     <LuX size={60} />
                   </button>
-                  <span className="text-5xl font-normal text-white truncate px-2">
+                  <span className="text-5xl font-normal text-white line-clamp-2 text-center px-2">
                     {objEditVariablesString ? resolveText(objEditVariablesString.textoVar as number) : objEditVariables ? resolveText(objEditVariables.textoVar as number) : ''}
                   </span>
                   <button
@@ -886,7 +886,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                   >
                     <LuX size={60} />
                   </button>
-                  <span className="text-5xl font-normal text-white truncate px-2">{titulo}</span>
+                  <span className="text-5xl font-normal text-white line-clamp-2 text-center px-2">{titulo}</span>
                   <button
                     onClick={() => {
                       if (seleccionConfirmable) void escribirSeleccion();
@@ -927,7 +927,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                   </div>
 
                   {/* Título */}
-                  <span className="text-5xl font-normal text-white truncate px-2">{tituloVentilacionEdit ?? titulo}</span>
+                  <span className="text-5xl font-normal text-white line-clamp-2 text-center px-2">{tituloVentilacionEdit ?? titulo}</span>
 
                   {/* Derecha: check (ventilación) / botones de tarea / espaciador */}
                   <div className="flex items-center gap-1">
@@ -1280,7 +1280,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                 >
                   <LuX size={60} />
                 </button>
-                <span className="flex-1 text-center text-5xl font-normal text-white truncate px-2">{titulo}</span>
+                <span className="flex-1 text-center text-5xl font-normal text-white line-clamp-2 px-2">{titulo}</span>
                 {/* Espaciador simétrico para centrar el título */}
                 <div style={{ width: 56 }} />
               </div>

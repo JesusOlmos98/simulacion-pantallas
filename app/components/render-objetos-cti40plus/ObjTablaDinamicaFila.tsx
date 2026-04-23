@@ -3,7 +3,7 @@
 import type { JSX } from 'react';
 import type { ObjBase, DescriptorPantalla } from '../pantalla-types';
 import { resolveText } from './textos/resolverTexto';
-import { decodificarRangoFloat, decodificarVariable } from './pantalla-utils';
+import { decodificarRangoFloat, decodificarVariable, resolverUnidad } from './pantalla-utils';
 import { COLORES, getColorHex } from './colors';
 import { EnTipoVariable } from '../../../src/utils/common-lib-commac-generador/NXP_BE/globals/enumOld';
 
@@ -12,6 +12,7 @@ import { EnTipoVariable } from '../../../src/utils/common-lib-commac-generador/N
 export interface Celda {
   tipoVar: number;
   valor: number | { type: 'Buffer'; data: number[] };
+  unidad?: number;
 }
 
 export interface FilaObj extends ObjBase {
@@ -42,7 +43,13 @@ function renderCelda(celda: Celda): string {
   }
   if (celda.tipoVar === EnTipoVariable.rangoFloat) return decodificarRangoFloat(celda.valor);
   if (typeof celda.valor !== 'number') return '—';
-  return decodificarVariable(celda.valor, celda.tipoVar);
+
+  const valor = decodificarVariable(celda.valor, celda.tipoVar);
+  if (celda.unidad !== undefined && celda.unidad !== 0) {
+    const unidadStr = resolverUnidad(celda.unidad);
+    return unidadStr ? `${valor}${unidadStr}` : valor;
+  }
+  return valor;
 }
 
 // ─── Componente ───────────────────────────────────────────────────────────────
@@ -55,8 +62,16 @@ function bgFila(rowIdx: number): string {
 export default function ObjTablaDinamicaFila({ fila, rowIdx, onNavegar }: ObjTablaDinamicaFilaProps): JSX.Element {
   const esNavegable = fila.navPtr > 0;
   const bg = bgFila(rowIdx);
-  const textSizeClass = rowIdx === 0 ? 'text-3xl' : 'text-3xl';
   const handleClick = esNavegable ? (): void => onNavegar({ idPantalla: fila.navPtr, indicePantalla: fila.navIndice, esPrincipal: false }) : undefined;
+
+  // Determina tamaño de fuente: si encabezado con texto largo, reduce font-size
+  const getTextSizeClass = (celda: Celda): string => {
+    if (rowIdx !== 0) return 'text-3xl';
+    const texto = renderCelda(celda);
+    if (texto.length > 24) return 'text-xl';
+    if (texto.length > 18) return 'text-2xl';
+    return 'text-3xl';
+  };
 
   return (
     <div
@@ -66,7 +81,7 @@ export default function ObjTablaDinamicaFila({ fila, rowIdx, onNavegar }: ObjTab
       {fila.celdas.map((celda, colIdx) => (
         <div
           key={colIdx}
-          className={`flex-1 flex items-center justify-center text-center px-2 ${textSizeClass}`}
+          className={`flex-1 flex items-center justify-center text-center px-2 ${getTextSizeClass(celda)}`}
           style={{
             backgroundColor: bg,
             color: colIdx === 0 ? (fila.colorColumna1 === 1 ? COLORES.light : getColorHex(fila.colorColumna1)) : fila.colorFila === 1 ? COLORES.light : getColorHex(fila.colorFila)

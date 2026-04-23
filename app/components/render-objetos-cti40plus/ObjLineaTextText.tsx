@@ -45,7 +45,7 @@ export default function ObjLineaTextText({ obj, onNavegar, idPantallaActual, ind
       className="flex items-center justify-between px-3 py-7 cursor-pointer hover:bg-white/5 transition-colors"
       onClick={handleClick}
     >
-      <div className="flex items-center gap-3 min-w-0 max-w-[70%]">
+      <div className="flex items-center gap-3 min-w-0 max-w-[55%]">
         {IconoLinea && (
           <div className="w-14 h-14 flex-shrink-0 flex items-center justify-center">
             {/* eslint-disable-next-line react-hooks/static-components */}
@@ -65,7 +65,7 @@ export default function ObjLineaTextText({ obj, onNavegar, idPantallaActual, ind
 
       <div className={`flex items-center gap-2 min-w-[30%] justify-end ${nav === 0 ? 'pr-4' : ''}`}>
         <span
-          className="text-5xl"
+          className="text-5xl truncate"
           style={{ color: inhabilitada ? COLORES.light_gray : COLORES.success }}
         >
           {textoVar}
@@ -74,6 +74,7 @@ export default function ObjLineaTextText({ obj, onNavegar, idPantallaActual, ind
           <LuChevronRight
             size={50}
             color={COLORES.light}
+            className="flex-shrink-0"
           />
         )}
       </div>

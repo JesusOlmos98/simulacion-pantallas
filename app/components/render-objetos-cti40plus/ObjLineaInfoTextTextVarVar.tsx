@@ -21,7 +21,7 @@ export default function ObjLineaInfoTextTextVarVar({ obj }: ObjLineaInfoTextText
   const unidad2 = resolverUnidad((obj.unidad2 as number | undefined) ?? 0);
 
   const coloresLineaEdit = (obj.coloresLineaEdit as number | undefined) ?? 0;
-  const color = resolverColor(coloresLineaEdit);
+  const color = coloresLineaEdit === 4 ? COLORES.influences : resolverColor(coloresLineaEdit);
 
   return (
     <div className="flex items-center justify-between pl-3 pr-6 py-7 rounded-2xl">
@@ -35,13 +35,13 @@ export default function ObjLineaInfoTextTextVarVar({ obj }: ObjLineaInfoTextText
       <div className="flex items-center gap-6">
         <span
           className="text-5xl leading-[50px]"
-          style={{ color: COLORES.light }}
+          style={{ color: color }}
         >
           {var1}
         </span>
         <span
           className="text-5xl leading-[50px]"
-          style={{ color: COLORES.light }}
+          style={{ color: color }}
         >
           {var2}
           {unidad2}

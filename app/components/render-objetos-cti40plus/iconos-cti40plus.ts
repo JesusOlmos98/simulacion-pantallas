@@ -16,7 +16,6 @@ import {
   LuClock, // 41  – Relojes
   LuInfo, // 17  – Información
   LuSettings, // 13  – Configuración
-  LuEllipsisVertical, // 322 – Más opciones (tres puntos verticales)
   LuPlus, // 35  – Modo/estado de operación
   LuDroplet, // 72  – Gota de agua
   LuTrash, // 57  - Papelera
@@ -32,7 +31,8 @@ import {
   LuWifiLow, // 147 - WiFi con 2 rayas de cobertura
   LuWifiHigh, // 148 - WiFi máximo (full cobertura)
   LuWifiZero,
-  LuSmartphone
+  LuSmartphone,
+  LuEllipsisVertical
 } from 'react-icons/lu';
 import { COLORES } from './colors';
 
@@ -159,6 +159,23 @@ const IconoEllipsisVertical: IconType = ({ size = 24, color, className }) => {
   );
 };
 
+// Icono compuesto: círculo influences con LuChevronsRightLeft y LuInfo en color primary (ID 322)
+const IconoInfluenciasActivas: IconType = ({ size = 24, className }) => {
+  const s = typeof size === 'number' ? size : 24;
+  const iconSize = Math.round(s * 1.2);
+  const iconStyle = { position: 'absolute' as const, top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
+  return React.createElement(
+    'span',
+    { className, style: { position: 'relative', display: 'inline-flex', width: s, height: s, flexShrink: 0 } },
+    // Círculo de fondo con color influences
+    React.createElement('div', { style: { position: 'absolute', width: s, height: s, borderRadius: '50%', backgroundColor: COLORES.influences, top: 0, left: 0 } }),
+    // LuChevronsRightLeft en color primary
+    React.createElement(LuChevronsRightLeft, { size: iconSize, color: COLORES.primary, style: iconStyle }),
+    // LuInfo en color primary superpuesto
+    React.createElement(LuInfo, { size: iconSize, color: COLORES.primary, style: iconStyle })
+  );
+};
+
 // Icono compuesto: cloud-sun en esquina superior izquierda y house en esquina inferior derecha
 const IconoClimaRecinto: IconType = ({ size = 24, color, className }) => {
   const s = typeof size === 'number' ? size : 24;
@@ -185,6 +202,7 @@ const ICONO_CTI40PLUS_MAP: Record<number, IconType> = {
   24: LuPlus, // Añadir / editar
   30: LuBaby, // Crianza
   35: IconoInfluencias, // Modo/estado de operación
+  36: IconoInfluenciasActivas,
   37: LuSnowflake, // Refrigeración
   38: LuFlame, // Calefacción
   41: LuClock, // Relojes

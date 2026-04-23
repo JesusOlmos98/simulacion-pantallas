@@ -18,7 +18,7 @@ export default function ObjLineaInfoTextText({ obj }: ObjLineaInfoTextTextProps)
   const textoVar = esVacio ? '--' : resolveText(textoVarId);
 
   const coloresLineaEdit = (obj.coloresLineaEdit as number | undefined) ?? 0;
-  const color = esVacio ? COLORES.light_gray : resolverColor(coloresLineaEdit);
+  const color = coloresLineaEdit === 1 ? COLORES.light : esVacio ? COLORES.light_gray : resolverColor(coloresLineaEdit);
 
   return (
     <div className="flex items-center justify-between pl-3 pr-6 py-7 rounded-2xl">

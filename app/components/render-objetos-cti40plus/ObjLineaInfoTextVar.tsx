@@ -19,7 +19,7 @@ export default function ObjLineaInfoTextVar({ obj }: ObjLineaInfoTextVarProps): 
   const unidad = resolverUnidad((obj.unidad as number | undefined) ?? 0);
 
   const coloresLineaEdit = (obj.coloresLineaEdit as number | undefined) ?? 0;
-  const color = resolverColor(coloresLineaEdit);
+  const color = coloresLineaEdit === 4 ? COLORES.influences : resolverColor(coloresLineaEdit);
 
   const Icono = tipoVar === 40 ? resolverIconoCTI40Plus(variable & 0xff) : null;
 
@@ -36,7 +36,7 @@ export default function ObjLineaInfoTextVar({ obj }: ObjLineaInfoTextVarProps): 
       ) : (
         <span
           className="text-5xl leading-[50px]"
-          style={{ color: COLORES.light }}
+          style={{ color: color }}
         >
           {decodificarVariable(variable, tipoVar)}
           {unidad}
