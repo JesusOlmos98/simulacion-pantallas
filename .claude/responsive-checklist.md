@@ -17,7 +17,7 @@ Methodology: see `.claude/commands/responsive-obj.md` or invoke `/responsive-obj
 - [x] `ObjLineaTextVarVar.tsx` — `responsive` prop
 - [x] `ObjLineaTextText.tsx` — `responsive` prop
 - [x] `ObjLineaTextString.tsx` — `responsive` prop
-- [ ] `ObjLineaGrafica.tsx` — visual separator; check if height needs adjustment
+- [x] `ObjLineaGrafica.tsx` — visual separator; check if height needs adjustment
 
 ## Info row components (ObjLineaInfo*)
 
@@ -27,15 +27,15 @@ Methodology: see `.claude/commands/responsive-obj.md` or invoke `/responsive-obj
 
 ## Edit controls
 
-- [ ] `ObjEditVariables.tsx` — numeric input; `text-6xl` → `text-2xl`, `w-48` → `w-36`
-- [ ] `ObjEditVariablesString.tsx` — text input; same pattern
-- [ ] `ObjEditVariablesTiempoFecha.tsx` — time/date picker; complex layout (★★★)
-- [ ] `ObjCamposMultiseleccion.tsx` — radio/checkbox rows; `text-5xl` → `text-lg`
-- [ ] `ObjEncabezadoEditIcono.tsx` — header action button; already rendered inside responsive navbar
+- [x] `ObjEditVariables.tsx` — `responsive` prop; `text-6xl`→`text-2xl`, `w-48`→`w-32`, padding/gap scaled
+- [x] `ObjEditVariablesString.tsx` — `responsive` prop; `text-6xl`→`text-2xl`, `w-120`→`w-48`
+- [x] `ObjEditVariablesTiempoFecha.tsx` — `responsive` prop cascaded to `FieldsWrapper` + `TimeField`
+- [x] `ObjCamposMultiseleccion.tsx` — `responsive` prop; circle 52→24px, dot 26→12px, `text-5xl`→`text-lg`
+- [x] `ObjEncabezadoEditIcono.tsx` — `responsive` prop; icon `size={60}`→`size={28}`
 
 ## Ventilation
 
-- [x] `ObjVentilacionGrupoGraficoEdit.tsx` — tabs + trash; `responsive` prop, `py-[15.5px]`
+- [ ] `ObjVentilacionGrupoGraficoEdit.tsx` — tabs + trash; `responsive` prop, `py-[15.5px]`
 - [ ] `ObjVentilacionGrupoGrafico.tsx` — fan SVG grid; hardcoded dimensions (★★★)
 
 ## Free canvas (PosXyLibre*)

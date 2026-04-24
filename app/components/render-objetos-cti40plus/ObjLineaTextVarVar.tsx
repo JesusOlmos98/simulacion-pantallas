@@ -45,38 +45,30 @@ export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual, i
 
   return (
     <div
-      className={`flex items-center justify-between cursor-pointer hover:bg-white/5 transition-colors ${responsive ? 'px-4 py-3' : 'px-3 py-7'}`}
+      className={`flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-colors ${responsive ? 'px-4 py-3' : 'px-3 py-7'}`}
       onClick={handleClick}
     >
-      {/* Texto etiqueta - 60% */}
+      {/* Texto etiqueta — crece y cede espacio si hace falta */}
       <span
-        className={`${textSize} font-light`}
-        style={{ color: colorTexto, width: '60%' }}
+        className={`${textSize} font-light flex-1 min-w-0`}
+        style={{ color: colorTexto }}
       >
         {texto}
       </span>
 
-      {/* Primera variable - 10% columna central */}
-      <div
-        className="flex justify-end"
-        style={{ width: '10%' }}
+      {/* Primera variable — tamaño natural, no encoge */}
+      <span
+        className={`${textSize} shrink-0 text-right`}
+        style={{ color: inhabilitada ? COLORES.light_gray : COLORES.light }}
       >
-        <span
-          className={textSize}
-          style={{ color: inhabilitada ? COLORES.light_gray : COLORES.light }}
-        >
-          {valorCentral}
-          {unidadCentral ?? ''}
-        </span>
-      </div>
+        {valorCentral}
+        {unidadCentral ?? ''}
+      </span>
 
-      {/* Segunda variable + chevron - 20% pegada a la derecha */}
-      <div
-        className="flex items-center gap-2 justify-end"
-        style={{ width: '20%' }}
-      >
+      {/* Segunda variable + chevron — tamaño natural, no encoge */}
+      <div className="shrink-0 flex items-center gap-1">
         <span
-          className={textSize}
+          className={`${textSize} text-right`}
           style={{ color: inhabilitada ? COLORES.light_gray : COLORES.success }}
         >
           {valor}

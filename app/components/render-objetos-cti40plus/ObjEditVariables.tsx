@@ -11,11 +11,12 @@ interface Props {
   onChange: (v: string) => void;
   isValid: boolean;
   onEnter?: () => void;
+  responsive?: boolean;
 }
 
 /** Input de edición de variable (tipoObjeto: 8 — objEditVariables).
  *  Muestra el campo numérico con hint de rango. El valor y la validación se gestionan desde el padre. */
-export default function ObjEditVariables({ obj, value, onChange, isValid, onEnter }: Props): JSX.Element {
+export default function ObjEditVariables({ obj, value, onChange, isValid, onEnter, responsive }: Props): JSX.Element {
   const tipoVar = obj.tipoVar as number;
   const maximo = obj.maximo as number;
   const minimo = obj.minimo as number;
@@ -27,10 +28,10 @@ export default function ObjEditVariables({ obj, value, onChange, isValid, onEnte
   const step = getStepForTipoVar(tipoVar);
 
   return (
-    <div className="flex flex-col items-center gap-8">
+    <div className={`flex flex-col items-center ${responsive ? 'gap-4' : 'gap-8'}`}>
       {/* Input numérico */}
       <div
-        className="flex items-center gap-3 px-8 py-5 rounded-2xl"
+        className={`flex items-center gap-3 rounded-2xl ${responsive ? 'px-4 py-3' : 'px-8 py-5'}`}
         style={{ backgroundColor: COLORES.tertiary }}
       >
         <input
@@ -43,14 +44,14 @@ export default function ObjEditVariables({ obj, value, onChange, isValid, onEnte
               onEnter();
             }
           }}
-          className="bg-transparent text-6xl text-center outline-none w-48 [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden"
+          className={`bg-transparent text-center outline-none [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden ${responsive ? 'text-2xl w-32' : 'text-6xl w-48'}`}
           style={{ color: COLORES.success }}
           autoFocus
         />
-        {unidadStr && <span className="text-white text-5xl">{unidadStr}</span>}
+        {unidadStr && <span className={`text-white ${responsive ? 'text-lg' : 'text-5xl'}`}>{unidadStr}</span>}
       </div>
       {/* Rango permitido */}
-      <span className={`text-2xl ${isValid ? 'text-white/60' : 'text-red-500'}`}>
+      <span className={`${responsive ? 'text-sm' : 'text-2xl'} ${isValid ? 'text-white/60' : 'text-red-500'}`}>
         {minStr} - {maxStr}
         {unidadStr ? ` ${unidadStr}` : ''}
       </span>

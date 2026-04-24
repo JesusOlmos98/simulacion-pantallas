@@ -263,15 +263,19 @@ export default function PantallaCti40Plus(): JSX.Element {
     }
 
     // Skip same-screen entries (device can re-send same screen with extra objs e.g. objPopup)
+    // All four fields must match to consider it the same screen
+    const mismaPantalla = (d: DescriptorPantalla): boolean =>
+      d.idPantalla === actual.idPantalla && d.indicePantalla === actual.indicePantalla && !!d.esPrincipal === !!actual.esPrincipal && d.idUnicoEdicion === actual.idUnicoEdicion;
+
     let idx = pila.length - 1;
-    while (idx > 0 && pila[idx]!.idPantalla === actual.idPantalla && pila[idx]!.indicePantalla === actual.indicePantalla && !!pila[idx]!.esPrincipal === !!actual.esPrincipal) {
+    while (idx > 0 && mismaPantalla(pila[idx]!)) {
       idx--;
     }
 
     const anterior = pila[idx]!;
 
     // If even the bottom of the stack is the same screen, go to root
-    if (anterior.idPantalla === actual.idPantalla && anterior.indicePantalla === actual.indicePantalla && !!anterior.esPrincipal === !!actual.esPrincipal) {
+    if (mismaPantalla(anterior)) {
       setPila([]);
       router.push('/');
       return;
@@ -911,6 +915,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                       idPantallaActual={(objetos?.find((o) => o.tipoObjeto === 1)?.idPantalla as number | undefined) ?? actual.idPantalla}
                       indicePantallaActual={(objetos?.find((o) => o.tipoObjeto === 1)?.indicePantalla as number | undefined) ?? actual.indicePantalla}
                       onNavegar={navegarA}
+                      responsive
                     />
                   )}
                 </>
@@ -1011,6 +1016,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                   onEnter={() => {
                     if (editValido) void escribirVariable(editValue);
                   }}
+                  responsive
                 />
               </div>
             )}
@@ -1026,6 +1032,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                   onEnter={() => {
                     if (editValido) void escribirVariable(editValue);
                   }}
+                  responsive
                 />
               </div>
             )}
@@ -1037,6 +1044,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                   value={editValue}
                   onChange={setEditValue}
                   onEnter={() => void escribirVariableString(editValue)}
+                  responsive
                 />
               </div>
             )}
@@ -1075,6 +1083,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                       isSelected={isSelected}
                       onSelect={handleSelect}
                       isDisabled={isDisabled}
+                      responsive
                     />
                   );
                 })}

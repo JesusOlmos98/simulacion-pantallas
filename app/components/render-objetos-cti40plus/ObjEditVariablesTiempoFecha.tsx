@@ -12,6 +12,7 @@ interface Props {
   onChange: (v: string) => void;
   isValid: boolean;
   onEnter?: () => void;
+  responsive?: boolean;
 }
 
 // ─── Parse initial display strings ───────────────────────────────────────────
@@ -59,6 +60,7 @@ interface FieldProps {
   nextRef?: React.RefObject<HTMLInputElement | null>;
   autoFocus?: boolean;
   label: string;
+  responsive?: boolean;
 }
 
 function toEditableValue(value: string): string {
@@ -66,7 +68,7 @@ function toEditableValue(value: string): string {
   return normalized === '' ? '0' : normalized;
 }
 
-function TimeField({ value, max, onChange, onEnter, nextRef, autoFocus, label }: FieldProps): JSX.Element {
+function TimeField({ value, max, onChange, onEnter, nextRef, autoFocus, label, responsive }: FieldProps): JSX.Element {
   const maxLen = String(max).length;
   const [draft, setDraft] = useState<string | null>(null);
 
@@ -98,18 +100,18 @@ function TimeField({ value, max, onChange, onEnter, nextRef, autoFocus, label }:
         }}
         onClick={(e) => e.currentTarget.select()}
         onBlur={() => setDraft(null)}
-        className="bg-transparent text-6xl text-center outline-none w-24 [-moz-appearance:textfield]"
+        className={`bg-transparent text-center outline-none [-moz-appearance:textfield] ${responsive ? 'text-2xl w-14' : 'text-6xl w-24'}`}
         style={{ color: COLORES.success }}
         autoFocus={autoFocus}
       />
-      <span className="text-white text-4xl">{label}</span>
+      <span className={`text-white ${responsive ? 'text-lg' : 'text-4xl'}`}>{label}</span>
     </div>
   );
 }
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isValid, onEnter }: Props): JSX.Element {
+export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isValid, onEnter, responsive }: Props): JSX.Element {
   const tipoVar = obj.tipoVar as number;
   const tipoVarEdicion = (obj.tipoVarEdicion ?? obj.tipoVar) as number;
   const maximo = obj.maximo as number;
@@ -140,6 +142,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
         isValid={isValid}
         minStr={minStr}
         maxStr={maxStr}
+        responsive={responsive}
       >
         <TimeField
           value={minStr2}
@@ -149,6 +152,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
           onEnter={onEnter}
           nextRef={ref2}
           autoFocus
+          responsive={responsive}
         />
         <TimeField
           value={segStr}
@@ -157,6 +161,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
           onChange={(v) => emitMmSs(minStr2, v)}
           onEnter={onEnter}
           autoFocus={false}
+          responsive={responsive}
         />
       </FieldsWrapper>
     );
@@ -180,6 +185,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
         isValid={isValid}
         minStr={minStr}
         maxStr={maxStr}
+        responsive={responsive}
       >
         <TimeField
           value={horaStr}
@@ -189,6 +195,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
           onEnter={onEnter}
           nextRef={ref2}
           autoFocus
+          responsive={responsive}
         />
         <TimeField
           value={minStr2}
@@ -197,6 +204,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
           onChange={(v) => emitHhMm(horaStr, v)}
           onEnter={onEnter}
           autoFocus={false}
+          responsive={responsive}
         />
       </FieldsWrapper>
     );
@@ -222,6 +230,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
         isValid={isValid}
         minStr={minStr}
         maxStr={maxStr}
+        responsive={responsive}
       >
         <TimeField
           value={diaStr}
@@ -231,6 +240,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
           onEnter={onEnter}
           nextRef={ref2}
           autoFocus
+          responsive={responsive}
         />
         <TimeField
           value={mesStr}
@@ -240,6 +250,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
           onEnter={onEnter}
           nextRef={ref3}
           autoFocus={false}
+          responsive={responsive}
         />
         <TimeField
           value={yyStr}
@@ -248,6 +259,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
           onChange={(v) => emitFecha(diaStr, mesStr, v)}
           onEnter={onEnter}
           autoFocus={false}
+          responsive={responsive}
         />
       </FieldsWrapper>
     );
@@ -277,6 +289,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
         isValid={isValid}
         minStr={minStr}
         maxStr={maxStr}
+        responsive={responsive}
       >
         <TimeField
           value={horaStr}
@@ -286,6 +299,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
           onEnter={onEnter}
           nextRef={ref2}
           autoFocus
+          responsive={responsive}
         />
         <TimeField
           value={minStr2}
@@ -295,6 +309,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
           onEnter={onEnter}
           nextRef={ref3}
           autoFocus={false}
+          responsive={responsive}
         />
         <TimeField
           value={segStr}
@@ -303,6 +318,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
           onChange={(v) => emitHhMmSs(horaStr, minStr2, v)}
           onEnter={onEnter}
           autoFocus={false}
+          responsive={responsive}
         />
       </FieldsWrapper>
     );
@@ -311,16 +327,16 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
 
 // ─── Layout wrapper ───────────────────────────────────────────────────────────
 
-function FieldsWrapper({ isValid, minStr, maxStr, children }: { isValid: boolean; minStr: string; maxStr: string; children: React.ReactNode }): JSX.Element {
+function FieldsWrapper({ isValid, minStr, maxStr, children, responsive }: { isValid: boolean; minStr: string; maxStr: string; children: React.ReactNode; responsive?: boolean }): JSX.Element {
   return (
-    <div className="flex flex-col items-center gap-8">
+    <div className={`flex flex-col items-center ${responsive ? 'gap-4' : 'gap-8'}`}>
       <div
-        className="flex items-center gap-1 px-8 py-5 rounded-2xl"
+        className={`flex items-center gap-1 rounded-2xl ${responsive ? 'px-4 py-3' : 'px-8 py-5'}`}
         style={{ backgroundColor: COLORES.tertiary, outline: isValid ? 'none' : `2px solid ${COLORES.error ?? '#ef4444'}` }}
       >
         {children}
       </div>
-      <span className={`text-2xl ${isValid ? 'text-white/60' : 'text-red-500'}`}>
+      <span className={`${responsive ? 'text-sm' : 'text-2xl'} ${isValid ? 'text-white/60' : 'text-red-500'}`}>
         {minStr} - {maxStr}
       </span>
     </div>
