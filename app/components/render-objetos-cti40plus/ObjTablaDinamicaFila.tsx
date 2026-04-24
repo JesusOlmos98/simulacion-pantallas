@@ -27,6 +27,7 @@ export interface ObjTablaDinamicaFilaProps {
   fila: FilaObj;
   rowIdx: number;
   onNavegar: (d: DescriptorPantalla) => void;
+  responsive?: boolean;
 }
 
 // ─── Helper ───────────────────────────────────────────────────────────────────
@@ -59,13 +60,14 @@ function bgFila(rowIdx: number): string {
   return rowIdx % 2 === 1 ? COLORES.tertiary : COLORES.quaternary;
 }
 
-export default function ObjTablaDinamicaFila({ fila, rowIdx, onNavegar }: ObjTablaDinamicaFilaProps): JSX.Element {
+export default function ObjTablaDinamicaFila({ fila, rowIdx, onNavegar, responsive }: ObjTablaDinamicaFilaProps): JSX.Element {
   const esNavegable = fila.navPtr > 0;
   const bg = bgFila(rowIdx);
   const handleClick = esNavegable ? (): void => onNavegar({ idPantalla: fila.navPtr, indicePantalla: fila.navIndice, esPrincipal: false }) : undefined;
 
   // Determina tamaño de fuente: si encabezado con texto largo, reduce font-size
   const getTextSizeClass = (celda: Celda): string => {
+    if (responsive) return 'text-sm';
     if (rowIdx !== 0) return 'text-3xl';
     const texto = renderCelda(celda);
     if (texto.length > 24) return 'text-xl';
@@ -75,7 +77,7 @@ export default function ObjTablaDinamicaFila({ fila, rowIdx, onNavegar }: ObjTab
 
   return (
     <div
-      className={`flex h-20 border-b border-black/15 ${esNavegable ? 'cursor-pointer hover:brightness-90 active:brightness-75' : ''}`}
+      className={`flex ${responsive ? 'h-10' : 'h-20'} border-b border-black/15 ${esNavegable ? 'cursor-pointer hover:brightness-90 active:brightness-75' : ''}`}
       onClick={handleClick}
     >
       {fila.celdas.map((celda, colIdx) => (

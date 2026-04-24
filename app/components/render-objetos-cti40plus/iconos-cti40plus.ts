@@ -189,6 +189,12 @@ const IconoClimaRecinto: IconType = ({ size = 24, color, className }) => {
   );
 };
 
+// Icono Plus más grande (20% más grande que el tamaño normal)
+const IconoPlusGrande: IconType = ({ size = 24, color, className }) => {
+  const actualSize = typeof size === 'number' ? Math.round(size * 1.25) : size;
+  return React.createElement(LuPlus, { size: actualSize, color, className });
+};
+
 const ICONO_CTI40PLUS_MAP: Record<number, IconType> = {
   1: LuThermometer, // Termómetro de mercurio (Sondas)
   2: LuFan, // Ventilación
@@ -199,7 +205,7 @@ const ICONO_CTI40PLUS_MAP: Record<number, IconType> = {
   21: LuDroplets, // Gotas de agua
   22: LuAirVent, // Entrada de aire
   23: LuUnplug, // Contacto térmico
-  24: LuPlus, // Añadir / editar
+  24: IconoPlusGrande, // Añadir / editar
   30: LuBaby, // Crianza
   35: IconoInfluencias, // Modo/estado de operación
   36: IconoInfluenciasActivas,

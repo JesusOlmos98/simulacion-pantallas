@@ -16,6 +16,7 @@ interface Item {
 export interface ObjTablaDatosSinEdicionProps {
   config: ConfigTabla;
   datos: ObjBase;
+  responsive?: boolean;
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -33,7 +34,7 @@ function getCellColor(rowIdx: number, colIdx: number, config: ConfigTabla): stri
 
 // ─── Componente ───────────────────────────────────────────────────────────────
 
-export default function ObjTablaDatosSinEdicion({ config, datos }: ObjTablaDatosSinEdicionProps): JSX.Element {
+export default function ObjTablaDatosSinEdicion({ config, datos, responsive }: ObjTablaDatosSinEdicionProps): JSX.Element {
   const { numColumnas, numFilas } = config;
   const items = (datos.items as Item[] | undefined) ?? [];
 
@@ -47,18 +48,23 @@ export default function ObjTablaDatosSinEdicion({ config, datos }: ObjTablaDatos
       {filas.map((fila, rowIdx) => (
         <div
           key={rowIdx}
-          className="flex h-20 border-b border-black/15"
+          className={`flex ${responsive ? 'h-10' : 'h-20'} border-b border-black/15`}
           style={{ backgroundColor: bgFila(rowIdx) }}
         >
-          {fila.map((celda, colIdx) => (
-            <div
-              key={colIdx}
-              className="flex-1 flex items-center justify-center text-center px-2 text-3xl"
-              style={{ color: getCellColor(rowIdx, colIdx, config) }}
-            >
-              {decodificarVariable(celda.variable, celda.tipoDato)}
-            </div>
-          ))}
+          {fila.map((celda, colIdx) => {
+            const valor = decodificarVariable(celda.variable, celda.tipoDato);
+            const esLargo = typeof valor === 'string' && valor.length > 20;
+            const textSize = responsive ? (esLargo ? 'text-[10px]' : 'text-sm') : esLargo ? 'text-2xl' : 'text-3xl';
+            return (
+              <div
+                key={colIdx}
+                className={`flex-1 flex items-center justify-center text-center px-2 ${textSize}`}
+                style={{ color: getCellColor(rowIdx, colIdx, config) }}
+              >
+                {valor}
+              </div>
+            );
+          })}
         </div>
       ))}
     </div>

@@ -46,10 +46,10 @@ Methodology: see `.claude/commands/responsive-obj.md` or invoke `/responsive-obj
 
 ## Tables
 
-- [ ] `ObjTablaDatosSinEdicion.tsx` — static table; `overflow-x-auto`, `text-5xl` → `text-sm`
-- [ ] `ObjTablaDinamica.tsx` — dynamic table; same
-- [ ] `ObjTablaDinamicaFila.tsx` — dynamic table row; scale text
-- [ ] `ObjTablaDinamicaInit.tsx` — dynamic table header; scale text
+- [x] `ObjTablaDatosSinEdicion.tsx` — `responsive` prop; `h-20`→`h-10`, `text-3xl`→`text-sm`
+- [x] `ObjTablaDinamica.tsx` — `responsive` prop cascaded to `ObjTablaDinamicaFila`
+- [x] `ObjTablaDinamicaFila.tsx` — `responsive` prop; `h-20`→`h-10`, text `text-3xl`→`text-sm` (skips length-based shrink)
+- [x] `ObjTablaDinamicaInit.tsx` — returns null, no UI, no changes needed
 
 ## Direct access bar
 

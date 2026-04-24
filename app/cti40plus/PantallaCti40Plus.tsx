@@ -17,6 +17,7 @@ import ObjEditVariablesString from '../components/render-objetos-cti40plus/ObjEd
 import ObjEditVariablesTiempoFecha from '../components/render-objetos-cti40plus/ObjEditVariablesTiempoFecha';
 import ObjCamposMultiseleccion from '../components/render-objetos-cti40plus/ObjCamposMultiseleccion';
 import { resolveText } from '../components/render-objetos-cti40plus/textos/resolverTexto';
+import { EnTextos } from '@/src/utils/common-lib-commac-generador/enumTextos';
 import { parseConcatenado, COLORES, BarraBotonesCti40Plus, decodificarVariable, decodificarStringVariable } from '../components/render-objetos-cti40plus';
 import type { DescriptorPantalla, ObjBase } from '../components/pantalla-types';
 import { getColorHex } from '../components/render-objetos-cti40plus/colors';
@@ -884,7 +885,9 @@ export default function PantallaCti40Plus(): JSX.Element {
             </div>
 
             {/* Título */}
-            <span className="flex-1 text-lg font-medium text-white text-center px-2 line-clamp-1">{tituloVentilacionEdit ?? titulo}</span>
+            <span className="flex-1 text-lg font-medium text-white text-center px-2 line-clamp-1">
+              {!loading && (tituloVentilacionEdit ?? (esPantallaPrincipal ? resolveText(EnTextos.textPrincipal) : titulo))}
+            </span>
 
             {/* Derecha: tareas + botones toggle */}
             <div className="flex items-center gap-1">
@@ -1204,6 +1207,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                             key={ti}
                             config={parseConfigTabla(tabla.config)}
                             datos={tabla.datos}
+                            responsive
                           />
                         ))}
                       </div>
@@ -1217,6 +1221,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                             init={tabla.init}
                             filas={tabla.filas}
                             onNavegar={navegarA}
+                            responsive
                           />
                         ))}
                       </div>

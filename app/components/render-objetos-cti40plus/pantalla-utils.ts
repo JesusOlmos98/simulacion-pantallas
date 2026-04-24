@@ -217,7 +217,7 @@ export function decodificarVariable(raw: number, tipoVar: number): string {
     case EnTipoVariable.string4:
     case EnTipoVariable.texto:
     case EnTipoVariable.textoTexto:
-      return resolveText(raw & 0xff);
+      return resolveText(raw >>> 0);
 
     default:
       return String(raw);
