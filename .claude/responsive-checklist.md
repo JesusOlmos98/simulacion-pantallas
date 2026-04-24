@@ -35,8 +35,8 @@ Methodology: see `.claude/commands/responsive-obj.md` or invoke `/responsive-obj
 
 ## Ventilation
 
-- [ ] `ObjVentilacionGrupoGraficoEdit.tsx` — tabs + trash; `responsive` prop, `py-[15.5px]`
-- [ ] `ObjVentilacionGrupoGrafico.tsx` — fan SVG grid; hardcoded dimensions (★★★)
+- [x] `ObjVentilacionGrupoGraficoEdit.tsx` — tabs + trash; `responsive` prop, `py-[15.5px]`
+- [x] `ObjVentilacionGrupoGrafico.tsx` — fan SVG grid; `responsive` prop, fan `size={28}`, text `text-lg`, chevron `size={20}`
 
 ## Free canvas (PosXyLibre*)
 

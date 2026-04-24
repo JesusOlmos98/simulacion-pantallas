@@ -20,9 +20,10 @@ interface Props {
   indicePantallaActual: number;
   estadosOverride?: number[];
   onClickVentilador?: (idx: number) => void;
+  responsive?: boolean;
 }
 
-export default function ObjVentilacionGrupoGrafico({ obj, onNavegar, idPantallaActual, indicePantallaActual, estadosOverride, onClickVentilador }: Props): JSX.Element {
+export default function ObjVentilacionGrupoGrafico({ obj, onNavegar, idPantallaActual, indicePantallaActual, estadosOverride, onClickVentilador, responsive }: Props): JSX.Element {
   const navegacionPtr = (obj.navegacionPtr as number | undefined) ?? 0;
   const indiceNavegacion = (obj.indiceNavegacion as number | undefined) ?? 0;
   const numFijos = (obj.numFijos as number | undefined) ?? 0;
@@ -50,12 +51,14 @@ export default function ObjVentilacionGrupoGrafico({ obj, onNavegar, idPantallaA
   const rangoMap = new Map<number, number>();
   estadosActivos.forEach((e, i) => rangoMap.set(e, i + 1));
 
+  const fanSize = responsive ? 28 : 75;
+
   return (
     <div
-      className={`flex items-center justify-between px-3 py-6 ${!modoEdicion ? 'cursor-pointer hover:bg-white/5 transition-colors' : ''}`}
+      className={`flex items-center justify-between ${responsive ? 'px-4 py-3' : 'px-3 py-6'} ${!modoEdicion ? 'cursor-pointer hover:bg-white/5 transition-colors' : ''}`}
       onClick={handleClick}
     >
-      <div className="flex gap-10 items-center flex-1">
+      <div className={`flex ${responsive ? 'gap-4' : 'gap-10'} items-center flex-1`}>
         {datos.slice(0, 5).map((dato, idx) => {
           const km3 = dato.km3;
           const estadoVentilador = estadosOverride ? (estadosOverride[idx] ?? 0) : dato.estadoVentilador;
@@ -87,7 +90,7 @@ export default function ObjVentilacionGrupoGrafico({ obj, onNavegar, idPantallaA
           return (
             <div
               key={idx}
-              className={`flex flex-col items-center gap-2 mx-2 ${esClickable ? 'cursor-pointer' : ''}`}
+              className={`flex flex-col items-center gap-2 ${responsive ? 'mx-1' : 'mx-2'} ${esClickable ? 'cursor-pointer' : ''}`}
               onClick={
                 esClickable
                   ? (e) => {
@@ -99,41 +102,41 @@ export default function ObjVentilacionGrupoGrafico({ obj, onNavegar, idPantallaA
             >
               {/* Número de ventilador (1-based) */}
               <span
-                className="text-4xl font-light"
+                className={`${responsive ? 'text-lg' : 'text-4xl'} font-light`}
                 style={{ color: COLORES.light }}
               >
                 {idx + 1}
               </span>
               {/* Icono ventilador */}
               {esMitad ? (
-                <span style={{ position: 'relative', display: 'inline-flex', width: 75, height: 75 }}>
+                <span style={{ position: 'relative', display: 'inline-flex', width: fanSize, height: fanSize }}>
                   <LuFan
-                    size={75}
+                    size={fanSize}
                     color={COLORES.success}
                     style={{ position: 'absolute', clipPath: 'inset(0 50% 0 0)' }}
                   />
                   <LuFan
-                    size={75}
+                    size={fanSize}
                     color={COLORES.light}
                     style={{ position: 'absolute', clipPath: 'inset(0 0 0 50%)' }}
                   />
                 </span>
               ) : (
                 <LuFan
-                  size={75}
+                  size={fanSize}
                   color={colorIcono}
                 />
               )}
               {/* km3 */}
               <span
-                className="text-5xl font-light"
+                className={`${responsive ? 'text-lg' : 'text-5xl'} font-light`}
                 style={{ color: colorKm3 }}
               >
                 {km3.toFixed(1)}
               </span>
               {/* Estado (rojo siempre) */}
               <span
-                className="text-5xl font-light"
+                className={`${responsive ? 'text-lg' : 'text-5xl'} font-light`}
                 style={{ color: COLORES.error }}
               >
                 {textoEstado}
@@ -145,7 +148,7 @@ export default function ObjVentilacionGrupoGrafico({ obj, onNavegar, idPantallaA
 
       {navegacionPtr > 0 && (
         <LuChevronRight
-          size={50}
+          size={responsive ? 20 : 50}
           color={COLORES.light}
         />
       )}

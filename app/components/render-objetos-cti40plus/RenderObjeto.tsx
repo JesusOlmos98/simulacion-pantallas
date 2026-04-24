@@ -163,7 +163,12 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, indiceP
 
     // objVentilacionGrupoGraficoEdit — cabecera + pestañas de edición de ventiladores
     case EnObjPintaPantallasOmega.objVentilacionGrupoGraficoEdit: // 22
-      return <ObjVentilacionGrupoGraficoEdit obj={obj} />;
+      return (
+        <ObjVentilacionGrupoGraficoEdit
+          obj={obj}
+          responsive={responsive}
+        />
+      );
 
     // objVentilacionGrupoGrafico — fila con iconos de ventiladores (estado, km3, orden)
     case EnObjPintaPantallasOmega.objVentilacionGrupoGrafico: // 21
@@ -173,6 +178,7 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, indiceP
           onNavegar={onNavegar}
           idPantallaActual={idPantallaActual}
           indicePantallaActual={indicePantallaActual}
+          responsive={responsive}
         />
       );
 

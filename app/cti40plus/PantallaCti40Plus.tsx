@@ -833,7 +833,8 @@ export default function PantallaCti40Plus(): JSX.Element {
 
   if (isSmallScreen) {
     const navBg = encabezado !== undefined ? colorHeader || COLORES.tertiary : COLORES.primary;
-    const navPadding = !encabezado || (tareas.length === 0 && !encabezadoEditIcono && !esVentilacionGrupoEdit) ? 'py-[15.5px]' : 'py-3';
+    const sinTareasIcono = (encabezado?.iconoTarea2 ?? 0) === 0 && (encabezado?.iconoTarea3 ?? 0) === 0;
+    const navPadding = !encabezado || (sinTareasIcono && !esVentilacionGrupoEdit) ? 'py-[15.5px]' : 'py-3';
     const scrollbarStyle = { '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties;
     const scrollbarClass =
       'flex-1 overflow-y-auto p-4 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-[#1E1E1E] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)]';
@@ -1111,6 +1112,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                     indicePantallaActual={actual.indicePantalla}
                     estadosOverride={estadosVentiladores}
                     onClickVentilador={handleClickVentilador}
+                    responsive
                   />
                 )}
                 <div className="flex flex-col gap-4 px-4 py-4">
