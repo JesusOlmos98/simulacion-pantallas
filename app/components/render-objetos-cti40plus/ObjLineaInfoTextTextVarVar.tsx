@@ -7,9 +7,10 @@ import { COLORES, resolverColor } from './colors';
 
 interface ObjLineaInfoTextTextVarVarProps {
   obj: Record<string, unknown>;
+  responsive?: boolean;
 }
 
-export default function ObjLineaInfoTextTextVarVar({ obj }: ObjLineaInfoTextTextVarVarProps): JSX.Element {
+export default function ObjLineaInfoTextTextVarVar({ obj, responsive }: ObjLineaInfoTextTextVarVarProps): JSX.Element {
   const texto = resolveText((obj.texto as number | undefined) ?? 0);
 
   const tipoVar1 = (obj.tipoVar1 as number | undefined) ?? 0;
@@ -23,24 +24,27 @@ export default function ObjLineaInfoTextTextVarVar({ obj }: ObjLineaInfoTextText
   const coloresLineaEdit = (obj.coloresLineaEdit as number | undefined) ?? 0;
   const color = coloresLineaEdit === 4 ? COLORES.influences : resolverColor(coloresLineaEdit);
 
+  const textSize = responsive ? 'text-lg' : 'text-5xl';
+  const leading = responsive ? '' : 'leading-[50px]';
+
   return (
-    <div className="flex items-center justify-between pl-3 pr-6 py-7 rounded-2xl">
+    <div className={`flex items-center justify-between pl-3 pr-6 rounded-2xl ${responsive ? 'py-3' : 'py-7'}`}>
       <span
-        className="text-5xl font-light leading-[50px]"
+        className={`${textSize} font-light ${leading}`}
         style={{ color }}
       >
         {texto}
       </span>
 
-      <div className="flex items-center gap-6">
+      <div className={`flex items-center ${responsive ? 'gap-3' : 'gap-6'}`}>
         <span
-          className="text-5xl leading-[50px]"
+          className={`${textSize} ${leading}`}
           style={{ color: color }}
         >
           {var1}
         </span>
         <span
-          className="text-5xl leading-[50px]"
+          className={`${textSize} ${leading}`}
           style={{ color: color }}
         >
           {var2}

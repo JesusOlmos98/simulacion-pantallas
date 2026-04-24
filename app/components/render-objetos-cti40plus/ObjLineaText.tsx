@@ -15,9 +15,10 @@ interface ObjLineaProps {
   esLista?: boolean;
   textoConcatenados?: Map<number, string>;
   idPantallaActual?: number;
+  responsive?: boolean;
 }
 
-export default function ObjLineaText({ obj, onNavegar, textoConcatenados, idPantallaActual }: ObjLineaProps): JSX.Element {
+export default function ObjLineaText({ obj, onNavegar, textoConcatenados, idPantallaActual, responsive }: ObjLineaProps): JSX.Element {
   const nav = (obj.valorEditableONav as number | undefined) ?? 0;
 
   const handleClick = (): void => {
@@ -39,16 +40,16 @@ export default function ObjLineaText({ obj, onNavegar, textoConcatenados, idPant
 
   return (
     <div
-      className="flex items-center justify-between px-3 py-7 cursor-pointer hover:bg-white/5 transition-colors"
+      className={`flex items-center justify-between cursor-pointer hover:bg-white/5 transition-colors ${responsive ? 'px-4 py-3' : 'px-3 py-7'}`}
       onClick={handleClick}
     >
-      <div className="flex items-center gap-3">
+      <div className={`flex items-center ${responsive ? 'gap-2' : 'gap-3'}`}>
         {/* Icono de la línea */}
         {IconoLinea && (
-          <div className="w-14 h-14 flex items-center justify-center">
+          <div className={`flex items-center justify-center ${responsive ? 'w-8 h-8' : 'w-14 h-14'}`}>
             {/* eslint-disable-next-line react-hooks/static-components */}
             <IconoLinea
-              size={56}
+              size={responsive ? 24 : 56}
               color="white"
             />
           </div>
@@ -56,7 +57,7 @@ export default function ObjLineaText({ obj, onNavegar, textoConcatenados, idPant
 
         {/* Texto */}
         <span
-          className="text-5xl font-light"
+          className={`font-light ${responsive ? 'text-lg' : 'text-5xl'}`}
           style={{ color: colorTexto ?? COLORES.light }}
         >
           {texto}
@@ -66,7 +67,7 @@ export default function ObjLineaText({ obj, onNavegar, textoConcatenados, idPant
       {/* Chevron de navegación */}
       {nav > 0 && (
         <LuChevronRight
-          size={50}
+          size={responsive ? 20 : 50}
           color={COLORES.light}
         />
       )}

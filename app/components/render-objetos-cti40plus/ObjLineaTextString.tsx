@@ -15,9 +15,10 @@ interface ObjLineaTextStringProps {
   onNavegar: (descriptor: DescriptorPantalla) => void;
   idPantallaActual: number;
   indicePantallaActual: number;
+  responsive?: boolean;
 }
 
-export default function ObjLineaTextString({ obj, onNavegar, idPantallaActual, indicePantallaActual }: ObjLineaTextStringProps): JSX.Element {
+export default function ObjLineaTextString({ obj, onNavegar, idPantallaActual, indicePantallaActual, responsive }: ObjLineaTextStringProps): JSX.Element {
   const nav = (obj.valorEditableONav as number | undefined) ?? 0;
 
   const handleClick = (): void => {
@@ -39,14 +40,16 @@ export default function ObjLineaTextString({ obj, onNavegar, idPantallaActual, i
   const colorTexto = resolverColor(coloresLineaEdit);
   const inhabilitada = coloresLineaEdit === 15;
 
+  const textSize = responsive ? 'text-lg' : 'text-5xl';
+
   return (
     <div
-      className="flex items-center justify-between px-3 py-7 cursor-pointer hover:bg-white/5 transition-colors"
+      className={`flex items-center justify-between cursor-pointer hover:bg-white/5 transition-colors ${responsive ? 'px-4 py-3' : 'px-3 py-7'}`}
       onClick={handleClick}
     >
       {/* Texto etiqueta */}
       <span
-        className="text-5xl font-light"
+        className={`${textSize} font-light`}
         style={{ color: inhabilitada ? COLORES.light_gray : colorTexto }}
       >
         {texto}
@@ -55,7 +58,7 @@ export default function ObjLineaTextString({ obj, onNavegar, idPantallaActual, i
       {/* Valor + chevron */}
       <div className={`flex items-center gap-2 ${nav === 0 ? 'pr-4' : ''}`}>
         <span
-          className="text-5xl break-words"
+          className={`${textSize} break-words`}
           style={{ color: inhabilitada ? COLORES.light_gray : COLORES.success }}
         >
           {valor}
@@ -63,7 +66,7 @@ export default function ObjLineaTextString({ obj, onNavegar, idPantallaActual, i
 
         {nav > 0 && (
           <LuChevronRight
-            size={50}
+            size={responsive ? 20 : 50}
             color={COLORES.light}
           />
         )}

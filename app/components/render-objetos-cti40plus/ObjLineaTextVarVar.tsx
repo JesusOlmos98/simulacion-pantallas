@@ -15,9 +15,10 @@ interface ObjLineaTextVarVarProps {
   onNavegar: (descriptor: DescriptorPantalla) => void;
   idPantallaActual: number;
   indicePantallaActual: number;
+  responsive?: boolean;
 }
 
-export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual, indicePantallaActual }: ObjLineaTextVarVarProps): JSX.Element {
+export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual, indicePantallaActual, responsive }: ObjLineaTextVarVarProps): JSX.Element {
   const nav = (obj.valorEditableONav as number | undefined) ?? 0;
 
   const handleClick = (): void => {
@@ -40,26 +41,28 @@ export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual, i
   const colorTexto = resolverColor((obj.coloresLinea as number | undefined) ?? 0);
   const inhabilitada = (obj.coloresLinea as number | undefined) === 15;
 
+  const textSize = responsive ? 'text-lg' : 'text-5xl';
+
   return (
     <div
-      className="flex items-center justify-between px-3 py-7 cursor-pointer hover:bg-white/5 transition-colors"
+      className={`flex items-center justify-between cursor-pointer hover:bg-white/5 transition-colors ${responsive ? 'px-4 py-3' : 'px-3 py-7'}`}
       onClick={handleClick}
     >
       {/* Texto etiqueta - 60% */}
       <span
-        className="text-5xl font-light"
+        className={`${textSize} font-light`}
         style={{ color: colorTexto, width: '60%' }}
       >
         {texto}
       </span>
 
-      {/* Primera variable - 20% columna central */}
+      {/* Primera variable - 10% columna central */}
       <div
         className="flex justify-end"
         style={{ width: '10%' }}
       >
         <span
-          className="text-5xl"
+          className={textSize}
           style={{ color: inhabilitada ? COLORES.light_gray : COLORES.light }}
         >
           {valorCentral}
@@ -73,7 +76,7 @@ export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual, i
         style={{ width: '20%' }}
       >
         <span
-          className="text-5xl"
+          className={textSize}
           style={{ color: inhabilitada ? COLORES.light_gray : COLORES.success }}
         >
           {valor}
@@ -82,7 +85,7 @@ export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual, i
 
         {nav > 0 && (
           <LuChevronRight
-            size={50}
+            size={responsive ? 20 : 50}
             color={COLORES.light}
           />
         )}

@@ -30,9 +30,10 @@ export interface RenderObjetoProps {
   indicePantallaActual: number;
   esLista?: boolean;
   textoConcatenados?: Map<number, string>;
+  responsive?: boolean;
 }
 
-export default function RenderObjeto({ obj, onNavegar, idPantallaActual, indicePantallaActual, esLista, textoConcatenados }: RenderObjetoProps): JSX.Element | null {
+export default function RenderObjeto({ obj, onNavegar, idPantallaActual, indicePantallaActual, esLista, textoConcatenados, responsive }: RenderObjetoProps): JSX.Element | null {
   // NOTA: Los objetos ObjDescripcionPantallaCambioParametro (56), ObjVineta (41) y ObjVarIndividual (36) NO renderizan nada
   switch (obj.tipoObjeto) {
     // objPlantilla — metadatos, no se pinta
@@ -67,6 +68,7 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, indiceP
           onNavegar={onNavegar}
           idPantallaActual={idPantallaActual}
           indicePantallaActual={indicePantallaActual}
+          responsive={responsive}
         />
       );
 
@@ -78,6 +80,7 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, indiceP
           onNavegar={onNavegar}
           idPantallaActual={idPantallaActual}
           indicePantallaActual={indicePantallaActual}
+          responsive={responsive}
         />
       );
 
@@ -89,6 +92,7 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, indiceP
           onNavegar={onNavegar}
           idPantallaActual={idPantallaActual}
           indicePantallaActual={indicePantallaActual}
+          responsive={responsive}
         />
       );
 
@@ -101,6 +105,7 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, indiceP
           esLista={esLista}
           textoConcatenados={textoConcatenados}
           idPantallaActual={idPantallaActual}
+          responsive={responsive}
         />
       );
 
@@ -112,6 +117,7 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, indiceP
           onNavegar={onNavegar}
           idPantallaActual={idPantallaActual}
           indicePantallaActual={indicePantallaActual}
+          responsive={responsive}
         />
       );
 

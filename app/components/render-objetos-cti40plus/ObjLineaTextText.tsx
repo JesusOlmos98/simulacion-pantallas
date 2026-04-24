@@ -17,9 +17,10 @@ interface ObjLineaTextTextProps {
   onNavegar: (descriptor: DescriptorPantalla) => void;
   idPantallaActual: number;
   indicePantallaActual: number;
+  responsive?: boolean;
 }
 
-export default function ObjLineaTextText({ obj, onNavegar, idPantallaActual, indicePantallaActual }: ObjLineaTextTextProps): JSX.Element {
+export default function ObjLineaTextText({ obj, onNavegar, idPantallaActual, indicePantallaActual, responsive }: ObjLineaTextTextProps): JSX.Element {
   const nav = (obj.valorEditableONav as number | undefined) ?? 0;
 
   const handleClick = (): void => {
@@ -40,23 +41,25 @@ export default function ObjLineaTextText({ obj, onNavegar, idPantallaActual, ind
 
   const IconoLinea = useMemo<IconType | null>(() => (obj.iconoLinea != null ? resolverIconoCTI40Plus(obj.iconoLinea as number) : null), [obj.iconoLinea]);
 
+  const textSize = responsive ? 'text-lg' : 'text-5xl';
+
   return (
     <div
-      className="flex items-center justify-between px-3 py-7 cursor-pointer hover:bg-white/5 transition-colors"
+      className={`flex items-center justify-between cursor-pointer hover:bg-white/5 transition-colors ${responsive ? 'px-4 py-3' : 'px-3 py-7'}`}
       onClick={handleClick}
     >
-      <div className="flex items-center gap-3 min-w-0 max-w-[55%]">
+      <div className={`flex items-center min-w-0 max-w-[55%] ${responsive ? 'gap-2' : 'gap-3'}`}>
         {IconoLinea && (
-          <div className="w-14 h-14 flex-shrink-0 flex items-center justify-center">
+          <div className={`flex-shrink-0 flex items-center justify-center ${responsive ? 'w-8 h-8' : 'w-14 h-14'}`}>
             {/* eslint-disable-next-line react-hooks/static-components */}
             <IconoLinea
-              size={56}
+              size={responsive ? 24 : 56}
               color="white"
             />
           </div>
         )}
         <span
-          className="text-5xl font-light"
+          className={`${textSize} font-light`}
           style={{ color: colorTexto }}
         >
           {texto}
@@ -65,14 +68,14 @@ export default function ObjLineaTextText({ obj, onNavegar, idPantallaActual, ind
 
       <div className={`flex items-center gap-2 min-w-[30%] justify-end ${nav === 0 ? 'pr-4' : ''}`}>
         <span
-          className="text-5xl truncate"
+          className={`${textSize} truncate`}
           style={{ color: inhabilitada ? COLORES.light_gray : COLORES.success }}
         >
           {textoVar}
         </span>
         {nav > 0 && (
           <LuChevronRight
-            size={50}
+            size={responsive ? 20 : 50}
             color={COLORES.light}
             className="flex-shrink-0"
           />

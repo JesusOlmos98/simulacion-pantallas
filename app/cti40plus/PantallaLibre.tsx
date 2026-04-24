@@ -9,22 +9,24 @@ import ObjPosXyLibreLineas from '../components/render-objetos-cti40plus/ObjPosXy
 interface Props {
   objetos: ObjBase[];
   onNavegar: (descriptor: DescriptorPantalla) => void;
+  /** Ancho del contenedor en px. Si se omite, usa la escala fija 3x (960px). */
+  containerWidth?: number;
 }
 
-// La pantalla nativa es 320×240. El contenedor de la pantalla es 960×720 → escala 3x exacta.
-const ESCALA = 3;
-
-export default function PantallaLibre({ objetos, onNavegar: _onNavegar }: Props): JSX.Element {
+export default function PantallaLibre({ objetos, onNavegar: _onNavegar, containerWidth }: Props): JSX.Element {
   const resObj = objetos.find((o) => o.tipoObjeto === 72);
   const sizeX = (resObj?.sizeX as number) ?? 320;
   const sizeY = (resObj?.sizeY as number) ?? 240;
 
+  // Escala dinámica: si se pasa containerWidth, ajustamos al contenedor; si no, 3x fijo (desktop).
+  const ESCALA = containerWidth !== undefined ? containerWidth / sizeX : 3;
+
   const objetosLibres = objetos.filter((o) => o.tipoObjeto === 73 || o.tipoObjeto === 75 || o.tipoObjeto === 76);
 
   return (
-    // Contenedor externo con las dimensiones ya escaladas (960×720)
+    // Contenedor externo con las dimensiones ya escaladas
     <div style={{ width: sizeX * ESCALA, height: sizeY * ESCALA, position: 'relative', overflow: 'hidden', backgroundColor: '#1E1E1E' }}>
-      {/* Canvas nativo 320×240 escalado 3x desde la esquina superior izquierda */}
+      {/* Canvas nativo escalado desde la esquina superior izquierda */}
       <div style={{ position: 'absolute', top: 0, left: 0, width: sizeX, height: sizeY, transform: `scale(${ESCALA})`, transformOrigin: 'top left' }}>
         {objetosLibres.map((obj, i) => {
           switch (obj.tipoObjeto) {

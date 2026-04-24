@@ -8,11 +8,10 @@ import { resolverIconoCTI40Plus } from './iconos-cti40plus';
 
 interface ObjLineaInfoTextVarProps {
   obj: Record<string, unknown>;
+  responsive?: boolean;
 }
 
-const ICON_SIZE = 75;
-
-export default function ObjLineaInfoTextVar({ obj }: ObjLineaInfoTextVarProps): JSX.Element {
+export default function ObjLineaInfoTextVar({ obj, responsive }: ObjLineaInfoTextVarProps): JSX.Element {
   const tipoVar = (obj.tipoVar as number | undefined) ?? 0;
   const variable = (obj.variable as number | undefined) ?? 0;
   const texto = resolveText((obj.texto as number | undefined) ?? 0);
@@ -22,20 +21,23 @@ export default function ObjLineaInfoTextVar({ obj }: ObjLineaInfoTextVarProps): 
   const color = coloresLineaEdit === 4 ? COLORES.influences : resolverColor(coloresLineaEdit);
 
   const Icono = tipoVar === 40 ? resolverIconoCTI40Plus(variable & 0xff) : null;
+  const iconSize = responsive ? 28 : 75;
+  const textSize = responsive ? 'text-lg' : 'text-5xl';
+  const leading = responsive ? '' : 'leading-[50px]';
 
   return (
-    <div className="flex items-center justify-between pl-3 pr-6 py-7 rounded-2xl">
+    <div className={`flex items-center justify-between pl-3 pr-6 rounded-2xl ${responsive ? 'py-3' : 'py-7'}`}>
       <span
-        className="text-5xl font-light leading-[50px]"
+        className={`${textSize} font-light ${leading}`}
         style={{ color }}
       >
         {texto}
       </span>
       {Icono ? (
-        <Icono size={ICON_SIZE} />
+        <Icono size={iconSize} />
       ) : (
         <span
-          className="text-5xl leading-[50px]"
+          className={`${textSize} ${leading}`}
           style={{ color: color }}
         >
           {decodificarVariable(variable, tipoVar)}

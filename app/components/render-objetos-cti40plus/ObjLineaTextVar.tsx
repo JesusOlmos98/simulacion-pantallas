@@ -15,9 +15,10 @@ interface ObjLineaTextVarProps {
   onNavegar: (descriptor: DescriptorPantalla) => void;
   idPantallaActual: number;
   indicePantallaActual: number;
+  responsive?: boolean;
 }
 
-export default function ObjLineaTextVar({ obj, onNavegar, idPantallaActual, indicePantallaActual }: ObjLineaTextVarProps): JSX.Element {
+export default function ObjLineaTextVar({ obj, onNavegar, idPantallaActual, indicePantallaActual, responsive }: ObjLineaTextVarProps): JSX.Element {
   const nav = (obj.valorEditableONav as number | undefined) ?? 0;
 
   const handleClick = (): void => {
@@ -42,12 +43,12 @@ export default function ObjLineaTextVar({ obj, onNavegar, idPantallaActual, indi
 
   return (
     <div
-      className="flex items-center justify-between px-3 py-7 cursor-pointer hover:bg-white/5 transition-colors"
+      className={`flex items-center justify-between cursor-pointer hover:bg-white/5 transition-colors ${responsive ? 'px-4 py-3' : 'px-3 py-7'}`}
       onClick={handleClick}
     >
       {/* Texto etiqueta */}
       <span
-        className="text-5xl font-light"
+        className={`font-light ${responsive ? 'text-lg' : 'text-5xl'}`}
         style={{ color: inhabilitada ? COLORES.light_gray : colorTexto }}
       >
         {texto}
@@ -56,7 +57,7 @@ export default function ObjLineaTextVar({ obj, onNavegar, idPantallaActual, indi
       {/* Valor + unidad + chevron */}
       <div className={`flex items-center gap-2 ${nav === 0 ? 'pr-4' : ''}`}>
         <span
-          className="text-5xl "
+          className={responsive ? 'text-lg' : 'text-5xl'}
           style={{ color: inhabilitada ? COLORES.light_gray : COLORES.success }}
         >
           {valor}
@@ -65,7 +66,7 @@ export default function ObjLineaTextVar({ obj, onNavegar, idPantallaActual, indi
 
         {nav > 0 && (
           <LuChevronRight
-            size={50}
+            size={responsive ? 20 : 50}
             color={COLORES.light}
           />
         )}

@@ -11,9 +11,10 @@ interface Props {
   pestanaActiva?: 0 | 1;
   onPestanaChange?: (p: 0 | 1) => void;
   onTrash?: () => void;
+  responsive?: boolean;
 }
 
-export default function ObjVentilacionGrupoGraficoEdit({ obj, pestanaActiva, onPestanaChange, onTrash }: Props): JSX.Element {
+export default function ObjVentilacionGrupoGraficoEdit({ obj, pestanaActiva, onPestanaChange, onTrash, responsive }: Props): JSX.Element {
   const textoPestana1 = resolveText(obj.textoPestana1 as number);
   const textoPestana2 = resolveText(obj.textoPestana2 as number);
 
@@ -25,22 +26,22 @@ export default function ObjVentilacionGrupoGraficoEdit({ obj, pestanaActiva, onP
         style={{ backgroundColor: COLORES.tertiary }}
       >
         <button
-          className={`flex-1 py-5 text-5xl font-normal transition-colors border-b-4 ${pestanaActiva === 0 ? 'text-white border-white' : 'text-white/50 border-transparent'}`}
+          className={`flex-1 ${responsive ? 'py-[15.5px] text-lg' : 'py-5 text-5xl'} font-normal transition-colors border-b-4 ${pestanaActiva === 0 ? 'text-white border-white' : 'text-white/50 border-transparent'}`}
           onClick={() => onPestanaChange!(0)}
         >
           {textoPestana1}
         </button>
         <div
-          className="flex items-center justify-center px-6 py-5 cursor-pointer"
+          className={`flex items-center justify-center ${responsive ? 'px-4 py-[15.5px]' : 'px-6 py-5'} cursor-pointer`}
           onClick={onTrash}
         >
           <LuTrash
-            size={75}
+            size={responsive ? 28 : 75}
             color={COLORES.light}
           />
         </div>
         <button
-          className={`flex-1 py-5 text-5xl font-normal transition-colors border-b-4 ${pestanaActiva === 1 ? 'text-white border-white' : 'text-white/50 border-transparent'}`}
+          className={`flex-1 ${responsive ? 'py-[15.5px] text-lg' : 'py-5 text-5xl'} font-normal transition-colors border-b-4 ${pestanaActiva === 1 ? 'text-white border-white' : 'text-white/50 border-transparent'}`}
           onClick={() => onPestanaChange!(1)}
         >
           {textoPestana2}
