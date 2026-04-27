@@ -57,7 +57,7 @@ function renderCelda(celda: Celda): string {
 
 function bgFila(rowIdx: number): string {
   if (rowIdx === 0) return 'transparent';
-  return rowIdx % 2 === 1 ? COLORES.tertiary : COLORES.quaternary;
+  return rowIdx % 2 === 1 ? COLORES.tertiary : COLORES.grey_table;
 }
 
 export default function ObjTablaDinamicaFila({ fila, rowIdx, onNavegar, responsive }: ObjTablaDinamicaFilaProps): JSX.Element {

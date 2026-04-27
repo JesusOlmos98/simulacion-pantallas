@@ -305,6 +305,10 @@ export default function PantallaCti40Plus(): JSX.Element {
     cargarPantalla(destinoTrasEdicion.destino);
   }
 
+  const refrescarPantallaActual = useCallback((): void => {
+    cargarPantalla(actual);
+  }, [actual, cargarPantalla]);
+
   async function escribirVariable(valor: string): Promise<void> {
     if (!objEditVariables || !objetos) return;
     const objIdUnicoEdicion = objetos.find((o) => o.tipoObjeto === 12);
@@ -1191,6 +1195,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                               key={i}
                               obj={obj}
                               onNavegar={navegarA}
+                              onRefrescarPantalla={refrescarPantallaActual}
                               idPantallaActual={actual.idPantalla}
                               indicePantallaActual={actual.indicePantalla}
                               textoConcatenados={textoConcatenadoMap}
@@ -1235,6 +1240,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                               key={i}
                               obj={obj}
                               onNavegar={navegarA}
+                              onRefrescarPantalla={refrescarPantallaActual}
                               idPantallaActual={actual.idPantalla}
                               indicePantallaActual={actual.indicePantalla}
                               esLista
@@ -1249,6 +1255,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                               key={i}
                               obj={obj}
                               onNavegar={navegarA}
+                              onRefrescarPantalla={refrescarPantallaActual}
                               idPantallaActual={actual.idPantalla}
                               indicePantallaActual={actual.indicePantalla}
                               textoConcatenados={textoConcatenadoMap}
@@ -1706,6 +1713,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                                   key={i}
                                   obj={obj}
                                   onNavegar={navegarA}
+                                  onRefrescarPantalla={refrescarPantallaActual}
                                   idPantallaActual={actual.idPantalla}
                                   indicePantallaActual={actual.indicePantalla}
                                   textoConcatenados={textoConcatenadoMap}
@@ -1753,6 +1761,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                                   key={i}
                                   obj={obj}
                                   onNavegar={navegarA}
+                                  onRefrescarPantalla={refrescarPantallaActual}
                                   idPantallaActual={actual.idPantalla}
                                   indicePantallaActual={actual.indicePantalla}
                                   esLista
@@ -1766,6 +1775,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                                   key={i}
                                   obj={obj}
                                   onNavegar={navegarA}
+                                  onRefrescarPantalla={refrescarPantallaActual}
                                   idPantallaActual={actual.idPantalla}
                                   indicePantallaActual={actual.indicePantalla}
                                   textoConcatenados={textoConcatenadoMap}

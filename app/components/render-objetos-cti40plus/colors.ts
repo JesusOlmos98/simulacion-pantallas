@@ -3,7 +3,7 @@ export const COLORES = {
   primary: '#82be5aff', //'#60D619', // Verde (índice 1) ORIGINAL: 97dd69ff
   secondary: '#196BD6', // Azul (índice 2)
   tertiary: '#929292', // Gris (índice 3)
-  quaternary: '#777777ff', // Opcion inhabiltiada (índice 4)
+  quaternary: '#ffe600ff', //'#777777ff', // Opcion inhabiltiada (índice 4)
   error: '#dd3a38ff', // Rojo (índice 5) ORIGINAL: f84340ff
   warning: '#f59e0b', // Ámbar (índice 6)
   info: '#3b82f6', // Azul (índice 7)
@@ -12,7 +12,8 @@ export const COLORES = {
   light_gray: '#c4c4c4ff', // Gris claro (índice 15)
   menuWords: '#FFA505', // Naranja para textos del menú de Omega
   wifi: '#555555ff', // Lineas de wifi inactivas
-  influences: '#ffe600ff' // Verde para influencias
+  influences: '#ffe600ff', // Verde para influencias
+  grey_table: '#777777ff'
 } as const;
 
 /** Obtiene el color HEX correspondiente a un número (1-indexed) */
@@ -27,7 +28,8 @@ export function getColorHex(colorId: number): string {
     7: COLORES.info, // Azul
     8: COLORES.success, // Esmeralda
     13: COLORES.error, // Rojo
-    15: COLORES.light_gray // Gris claro
+    15: COLORES.light_gray, // Gris claro
+    16: COLORES.success
   };
   return colorMap[colorId] ?? COLORES.light;
 }

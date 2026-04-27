@@ -16,6 +16,7 @@ import ObjPosXyLibreIcon from './ObjPosXyLibreIcon';
 import ObjPosXyLibreVariable from './ObjPosXyLibreVariable';
 import ObjPosXyLibreLineas from './ObjPosXyLibreLineas';
 import ObjPopup from './ObjPopup';
+import ObjRefrescoPantalla from './ObjRefrescoPantalla';
 import ObjVineta from './ObjVineta';
 import ObjVarIndividual from './ObjVarIndividual';
 import ObjDescripcionPantallaCambioParametro from './ObjDescripcionPantallaCambioParametro';
@@ -26,6 +27,7 @@ import type { ObjBase, DescriptorPantalla } from '../pantalla-types';
 export interface RenderObjetoProps {
   obj: ObjBase;
   onNavegar: (d: DescriptorPantalla) => void;
+  onRefrescarPantalla?: () => void;
   idPantallaActual: number;
   indicePantallaActual: number;
   esLista?: boolean;
@@ -33,7 +35,7 @@ export interface RenderObjetoProps {
   responsive?: boolean;
 }
 
-export default function RenderObjeto({ obj, onNavegar, idPantallaActual, indicePantallaActual, esLista, textoConcatenados, responsive }: RenderObjetoProps): JSX.Element | null {
+export default function RenderObjeto({ obj, onNavegar, onRefrescarPantalla, idPantallaActual, indicePantallaActual, esLista, textoConcatenados, responsive }: RenderObjetoProps): JSX.Element | null {
   // NOTA: Los objetos ObjDescripcionPantallaCambioParametro (56), ObjVineta (41) y ObjVarIndividual (36) NO renderizan nada
   switch (obj.tipoObjeto) {
     // objPlantilla — metadatos, no se pinta
@@ -220,6 +222,16 @@ export default function RenderObjeto({ obj, onNavegar, idPantallaActual, indiceP
     // objPopup - diálogo modal que se muestra automáticamente
     case EnObjPintaPantallasOmega.objPopup: // 40
       return <ObjPopup obj={obj} />;
+
+    case EnObjPintaPantallasOmega.objRefrescoPantalla: {
+      const segundos = (obj.tiempoRefrescoSegundo as number | undefined) ?? 0;
+      return onRefrescarPantalla !== undefined ? (
+        <ObjRefrescoPantalla
+          segundos={segundos}
+          onRefresh={onRefrescarPantalla}
+        />
+      ) : null;
+    }
 
     // objDescripcionPantallaCambioParametro — no se renderiza; su descripcionText se usa como
     // textoTituloVariable al enviar cambiaParametro en lugar del título de la pantalla
