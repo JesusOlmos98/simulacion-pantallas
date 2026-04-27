@@ -57,33 +57,37 @@ export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual, i
       className={`flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-colors ${responsive ? 'px-4 py-3' : 'px-3 py-7'}`}
       onClick={handleClick}
     >
-      {/* Texto etiqueta — crece y cede espacio si hace falta */}
-      <span
-        className={`${textSize} font-light flex-1 min-w-0`}
-        style={{ color: colorTexto }}
-      >
-        {texto}
-      </span>
-
-      {/* Primera variable — tamaño natural, no encoge */}
-      {IconoCentral ? (
-        // eslint-disable-next-line react-hooks/static-components
-        <IconoCentral
-          size={responsive ? 24 : 56}
-          color={COLORES.light}
-        />
-      ) : (
+      {/* Columna 1: Texto etiqueta */}
+      <div className="w-[40%] shrink-0 overflow-visible">
         <span
-          className={`${textSize} shrink-0 text-right`}
-          style={{ color: inhabilitada ? COLORES.disabled : COLORES.light }}
+          className={`${textSize} font-light block whitespace-normal`}
+          style={{ color: colorTexto }}
         >
-          {valorCentral}
-          {unidadCentral ?? ''}
+          {texto}
         </span>
-      )}
+      </div>
 
-      {/* Segunda variable + chevron — tamaño natural, no encoge */}
-      <div className="shrink-0 flex items-center gap-1">
+      {/* Columna 2: Variable central - más a la izquierda */}
+      <div className="w-[30%] shrink-0">
+        {IconoCentral ? (
+          // eslint-disable-next-line react-hooks/static-components
+          <IconoCentral
+            size={responsive ? 24 : 56}
+            color={COLORES.light}
+          />
+        ) : (
+          <span
+            className={`${textSize} text-right block`}
+            style={{ color: inhabilitada ? COLORES.disabled : COLORES.light }}
+          >
+            {valorCentral}
+            {unidadCentral ?? ''}
+          </span>
+        )}
+      </div>
+
+      {/* Columna 3: Segunda variable + chevron — pegada a la derecha */}
+      <div className="flex-1 flex items-center justify-end gap-1">
         {IconoValor ? (
           // eslint-disable-next-line react-hooks/static-components
           <IconoValor

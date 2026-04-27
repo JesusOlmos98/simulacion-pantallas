@@ -69,6 +69,8 @@ export default function ObjTablaDinamicaFila({ fila, rowIdx, onNavegar, responsi
   const getTextSizeClass = (celda: Celda): string => {
     const texto = renderCelda(celda);
     if (responsive) {
+      // ventilación máxima
+      if (texto.length > 14) return 'text-[8px]';
       if (texto.length > 6) return 'text-[10px]';
       return 'text-sm';
     }

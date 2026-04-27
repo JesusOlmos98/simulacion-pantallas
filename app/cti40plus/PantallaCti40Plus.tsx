@@ -844,7 +844,6 @@ export default function PantallaCti40Plus(): JSX.Element {
     const scrollbarClass =
       'flex-1 overflow-y-auto p-4 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-[#1E1E1E] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)]';
     const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 320;
-
     return (
       <div
         className="min-h-dvh bg-zinc-950 flex flex-col"
@@ -889,7 +888,7 @@ export default function PantallaCti40Plus(): JSX.Element {
             </div>
 
             {/* Título */}
-            <span className="flex-1 text-lg font-medium text-white text-center px-2 line-clamp-1">
+            <span className="min-w-0 flex-1 text-lg font-medium leading-tight text-white text-center px-2 line-clamp-2">
               {!loading && (tituloVentilacionEdit ?? (esPantallaPrincipal ? resolveText(EnTextos.textPrincipal) : titulo))}
             </span>
 
@@ -946,7 +945,7 @@ export default function PantallaCti40Plus(): JSX.Element {
             >
               <LuX size={28} />
             </button>
-            <span className="text-lg font-normal text-white line-clamp-1 text-center px-2">
+            <span className="min-w-0 text-lg font-normal leading-tight text-white line-clamp-2 text-center px-2">
               {esTeclado ? (objEditVariablesString ? resolveText(objEditVariablesString.textoVar as number) : objEditVariables ? resolveText(objEditVariables.textoVar as number) : '') : titulo}
             </span>
             <button
@@ -1307,7 +1306,7 @@ export default function PantallaCti40Plus(): JSX.Element {
               >
                 <LuX size={28} />
               </button>
-              <span className="flex-1 text-center text-lg font-normal text-white line-clamp-1 px-2">{titulo}</span>
+              <span className="min-w-0 flex-1 text-center text-lg font-normal leading-tight text-white line-clamp-2 px-2">{titulo}</span>
               <div style={{ width: 36 }} />
             </div>
             <div
