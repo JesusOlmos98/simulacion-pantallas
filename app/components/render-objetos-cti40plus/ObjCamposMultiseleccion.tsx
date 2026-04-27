@@ -29,7 +29,7 @@ export default function ObjCamposMultiseleccion({ obj, isSelected, onSelect, isD
       {/* Radio circle / Checkbox */}
       <div
         className={`shrink-0 flex items-center justify-center rounded-full ${responsive ? 'border-2' : 'border-4'}`}
-        style={{ width: circleSize, height: circleSize, borderColor: isDisabled ? COLORES.quaternary : isSelected ? COLORES.primary : COLORES.light }}
+        style={{ width: circleSize, height: circleSize, borderColor: isDisabled ? COLORES.disabled : isSelected ? COLORES.primary : COLORES.light }}
       >
         {isSelected && !isDisabled && (
           <div
@@ -42,7 +42,7 @@ export default function ObjCamposMultiseleccion({ obj, isSelected, onSelect, isD
       {/* Texto */}
       <span
         className={`${responsive ? 'text-lg' : 'text-5xl'} font-light ${isDisabled ? '' : 'text-white'}`}
-        style={{ color: isDisabled ? COLORES.quaternary : undefined }}
+        style={{ color: isDisabled ? COLORES.disabled : undefined }}
       >
         {texto}
       </span>

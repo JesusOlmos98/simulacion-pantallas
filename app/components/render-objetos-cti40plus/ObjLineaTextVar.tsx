@@ -2,9 +2,9 @@
 
 import type { JSX } from 'react';
 import { LuChevronRight } from 'react-icons/lu';
-import { resolveText } from './textos/resolverTexto';
-import { decodificarVariable, resolverUnidad } from './pantalla-utils';
+import { decodificarVariable, resolverTextoPantalla, resolverUnidad } from './pantalla-utils';
 import { COLORES, resolverColor } from './colors';
+import { resolverIconoCTI40Plus } from './iconos-cti40plus';
 import type { DescriptorPantalla } from '../pantalla-types';
 
 // Umbral para distinguir punteros de pantalla (>65535) de índices idUnicoEdicion (<=65535)
@@ -15,10 +15,13 @@ interface ObjLineaTextVarProps {
   onNavegar: (descriptor: DescriptorPantalla) => void;
   idPantallaActual: number;
   indicePantallaActual: number;
+  textoConcatenados?: Map<number, string>;
   responsive?: boolean;
 }
 
-export default function ObjLineaTextVar({ obj, onNavegar, idPantallaActual, indicePantallaActual, responsive }: ObjLineaTextVarProps): JSX.Element {
+const TIPOS_TEXTO = new Set([30, 31, 43]);
+
+export default function ObjLineaTextVar({ obj, onNavegar, idPantallaActual, indicePantallaActual, textoConcatenados, responsive }: ObjLineaTextVarProps): JSX.Element {
   const nav = (obj.valorEditableONav as number | undefined) ?? 0;
 
   const handleClick = (): void => {
@@ -32,8 +35,11 @@ export default function ObjLineaTextVar({ obj, onNavegar, idPantallaActual, indi
     }
   };
 
-  const texto = resolveText((obj.texto as number | undefined) ?? 0);
-  const valor = decodificarVariable((obj.variable as number | undefined) ?? 0, (obj.tipoVar as number | undefined) ?? 0);
+  const tipoVar = (obj.tipoVar as number | undefined) ?? 0;
+  const variable = (obj.variable as number | undefined) ?? 0;
+  const texto = resolverTextoPantalla((obj.texto as number | undefined) ?? 0, textoConcatenados);
+  const IconoValor = tipoVar === 40 ? resolverIconoCTI40Plus(variable & 0xff) : null;
+  const valor = TIPOS_TEXTO.has(tipoVar) ? resolverTextoPantalla(variable & 0xffff, textoConcatenados) : decodificarVariable(variable, tipoVar);
   const unidad = resolverUnidad((obj.unidad as number | undefined) ?? 0);
 
   // Aplicar la misma lógica de colores que ObjLineaText
@@ -49,20 +55,28 @@ export default function ObjLineaTextVar({ obj, onNavegar, idPantallaActual, indi
       {/* Texto etiqueta */}
       <span
         className={`font-light ${responsive ? 'text-lg' : 'text-5xl'}`}
-        style={{ color: inhabilitada ? COLORES.light_gray : colorTexto }}
+        style={{ color: inhabilitada ? COLORES.disabled : colorTexto }}
       >
         {texto}
       </span>
 
       {/* Valor + unidad + chevron */}
       <div className={`flex items-center gap-2 ${nav === 0 ? 'pr-4' : ''}`}>
-        <span
-          className={responsive ? 'text-lg' : 'text-5xl'}
-          style={{ color: inhabilitada ? COLORES.light_gray : COLORES.success }}
-        >
-          {valor}
-          {unidad ?? ''}
-        </span>
+        {IconoValor ? (
+          // eslint-disable-next-line react-hooks/static-components
+          <IconoValor
+            size={responsive ? 24 : 56}
+            color={COLORES.light}
+          />
+        ) : (
+          <span
+            className={responsive ? 'text-lg' : 'text-5xl'}
+            style={{ color: inhabilitada ? COLORES.disabled : coloresLineaEdit === 1 ? COLORES.success : colorTexto }}
+          >
+            {valor}
+            {unidad ?? ''}
+          </span>
+        )}
 
         {nav > 0 && (
           <LuChevronRight

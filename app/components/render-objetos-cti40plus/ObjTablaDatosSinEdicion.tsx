@@ -23,7 +23,7 @@ export interface ObjTablaDatosSinEdicionProps {
 
 function bgFila(rowIdx: number): string {
   if (rowIdx === 0) return 'transparent';
-  return rowIdx % 2 === 1 ? COLORES.tertiary : COLORES.quaternary;
+  return rowIdx % 2 === 1 ? COLORES.tertiary : COLORES.disabled;
 }
 
 function getCellColor(rowIdx: number, colIdx: number, config: ConfigTabla): string {

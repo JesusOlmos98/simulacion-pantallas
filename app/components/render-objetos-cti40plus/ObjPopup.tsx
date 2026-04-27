@@ -78,7 +78,7 @@ export default function ObjPopup({ obj }: ObjPopupProps): JSX.Element {
               className="w-full rounded-lg px-8 py-3 text-lg font-medium transition-colors"
               style={{ color: COLORES.light, backgroundColor: COLORES.tertiary }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = COLORES.quaternary;
+                e.currentTarget.style.backgroundColor = COLORES.disabled;
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = COLORES.tertiary;

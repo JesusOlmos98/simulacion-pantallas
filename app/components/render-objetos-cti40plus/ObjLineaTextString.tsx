@@ -50,7 +50,7 @@ export default function ObjLineaTextString({ obj, onNavegar, idPantallaActual, i
       {/* Texto etiqueta */}
       <span
         className={`${textSize} font-light`}
-        style={{ color: inhabilitada ? COLORES.light_gray : colorTexto }}
+        style={{ color: inhabilitada ? COLORES.disabled : colorTexto }}
       >
         {texto}
       </span>
@@ -59,7 +59,7 @@ export default function ObjLineaTextString({ obj, onNavegar, idPantallaActual, i
       <div className={`flex items-center gap-2 ${nav === 0 ? 'pr-4' : ''}`}>
         <span
           className={`${textSize} break-words`}
-          style={{ color: inhabilitada ? COLORES.light_gray : COLORES.success }}
+          style={{ color: inhabilitada ? COLORES.disabled : COLORES.success }}
         >
           {valor}
         </span>

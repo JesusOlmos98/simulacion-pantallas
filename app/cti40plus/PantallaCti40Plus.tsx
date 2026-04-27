@@ -744,7 +744,7 @@ export default function PantallaCti40Plus(): JSX.Element {
     | undefined;
   const tituloTextId = encabezado?.tituloText ?? 0;
   const titulo = encabezado ? (textoConcatenadoMap.get(tituloTextId) ?? resolveText(tituloTextId)) : '';
-  const colorHeader = getColorHex(encabezado?.colorTitulo ?? 0);
+  const colorHeader = encabezado ? getColorHex(encabezado.colorTitulo ?? 0) : COLORES.primary;
 
   // objEncabezadoEditIcono (tipoObjeto: 31) — botón de acción a la derecha del header
   const encabezadoEditIcono = objetos?.find((o) => o.tipoObjeto === 31);
@@ -1325,6 +1325,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                         <ObjLineaInfoTextVar
                           key={i}
                           obj={obj}
+                          textoConcatenados={textoConcatenadoMap}
                           responsive
                         />
                       );
@@ -1333,6 +1334,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                         <ObjLineaInfoTextTextVarVar
                           key={i}
                           obj={obj}
+                          textoConcatenados={textoConcatenadoMap}
                           responsive
                         />
                       );
@@ -1341,6 +1343,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                         <ObjLineaInfoTextText
                           key={i}
                           obj={obj}
+                          textoConcatenados={textoConcatenadoMap}
                           responsive
                         />
                       );
@@ -1850,6 +1853,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                           <ObjLineaInfoTextVar
                             key={i}
                             obj={obj}
+                            textoConcatenados={textoConcatenadoMap}
                           />
                         );
                       case 19:
@@ -1857,6 +1861,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                           <ObjLineaInfoTextTextVarVar
                             key={i}
                             obj={obj}
+                            textoConcatenados={textoConcatenadoMap}
                           />
                         );
                       case 7:
@@ -1865,6 +1870,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                           <ObjLineaInfoTextText
                             key={i}
                             obj={obj}
+                            textoConcatenados={textoConcatenadoMap}
                           />
                         );
                     }

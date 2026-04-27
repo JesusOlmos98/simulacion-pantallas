@@ -70,6 +70,7 @@ export default function RenderObjeto({ obj, onNavegar, onRefrescarPantalla, idPa
           onNavegar={onNavegar}
           idPantallaActual={idPantallaActual}
           indicePantallaActual={indicePantallaActual}
+          textoConcatenados={textoConcatenados}
           responsive={responsive}
         />
       );
@@ -82,6 +83,7 @@ export default function RenderObjeto({ obj, onNavegar, onRefrescarPantalla, idPa
           onNavegar={onNavegar}
           idPantallaActual={idPantallaActual}
           indicePantallaActual={indicePantallaActual}
+          textoConcatenados={textoConcatenados}
           responsive={responsive}
         />
       );
@@ -94,6 +96,7 @@ export default function RenderObjeto({ obj, onNavegar, onRefrescarPantalla, idPa
           onNavegar={onNavegar}
           idPantallaActual={idPantallaActual}
           indicePantallaActual={indicePantallaActual}
+          textoConcatenados={textoConcatenados}
           responsive={responsive}
         />
       );
@@ -190,15 +193,30 @@ export default function RenderObjeto({ obj, onNavegar, onRefrescarPantalla, idPa
 
     // objLineaInfoTextText — fila info con texto principal + texto secundario
     case EnObjPintaPantallasOmega.objLineaInfoTextText: // 15
-      return <ObjLineaInfoTextText obj={obj} />;
+      return (
+        <ObjLineaInfoTextText
+          obj={obj}
+          textoConcatenados={textoConcatenados}
+        />
+      );
 
     // objLineaInfoTextVar — fila info con texto principal + variable numérica
     case EnObjPintaPantallasOmega.objLineaInfoTextVar: // 6
-      return <ObjLineaInfoTextVar obj={obj} />;
+      return (
+        <ObjLineaInfoTextVar
+          obj={obj}
+          textoConcatenados={textoConcatenados}
+        />
+      );
 
     // objLineaInfoTextTextVarVar — fila info con texto principal + dos variables
     case EnObjPintaPantallasOmega.objLineaInfoTextTextVarVar: // 19
-      return <ObjLineaInfoTextTextVarVar obj={obj} />;
+      return (
+        <ObjLineaInfoTextTextVarVar
+          obj={obj}
+          textoConcatenados={textoConcatenados}
+        />
+      );
 
     // objVarIndividual — no se renderiza en CTI40 PLUS
     case EnObjPintaPantallasOmega.objVarIndividual: // 36

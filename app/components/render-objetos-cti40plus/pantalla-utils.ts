@@ -51,6 +51,8 @@ interface JsonBufferLike {
   data: number[];
 }
 
+const TEXTO_CONCATENADO_MIN_ID = 65000;
+
 /**
  * Parsea una `cadenaConcatenadaRaw` según el protocolo NXP de textos concatenados.
  * Soporta marcadores 0xFFFD (texto fijo), 0xFFFC (fin de sección) y 0xFFFB (fin total).
@@ -88,6 +90,16 @@ export function parseConcatenado(raw: BufferLike | number[]): string {
   }
 
   return partes.join('');
+}
+
+/** Resuelve un ID de texto normal o, si pertenece al rango de concatenados, lo toma del mapa recibido. */
+export function resolverTextoPantalla(id: number, textoConcatenados?: Map<number, string>): string {
+  if (id >= TEXTO_CONCATENADO_MIN_ID) {
+    const concatenado = textoConcatenados?.get(id);
+    if (concatenado !== undefined) return concatenado;
+  }
+
+  return resolveText(id);
 }
 
 // ─── Unidad ───────────────────────────────────────────────────────────────────

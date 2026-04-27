@@ -71,7 +71,7 @@ export default function ObjVentilacionGrupoGrafico({ obj, onNavegar, idPantallaA
           if (esAlarma) {
             colorIcono = COLORES.menuWords;
           } else if (esApagado) {
-            colorIcono = COLORES.light_gray;
+            colorIcono = COLORES.disabled;
           } else if (rango <= numFijos) {
             colorIcono = COLORES.success;
           } else if (rango <= numFijos + numTemporizados) {
@@ -80,7 +80,7 @@ export default function ObjVentilacionGrupoGrafico({ obj, onNavegar, idPantallaA
             colorIcono = COLORES.light;
           }
 
-          const colorKm3 = esApagado ? COLORES.light_gray : COLORES.light;
+          const colorKm3 = esApagado ? COLORES.disabled : COLORES.light;
           const textoEstado = esAlarma || esApagado ? '-' : String(estadoVentilador);
 
           const esMitad = rango > numFijos && rango <= numFijos + numTemporizados;

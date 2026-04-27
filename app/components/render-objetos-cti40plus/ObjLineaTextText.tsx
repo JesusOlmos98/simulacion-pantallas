@@ -4,7 +4,7 @@ import type { JSX } from 'react';
 import { useMemo } from 'react';
 import type { IconType } from 'react-icons/lib';
 import { LuChevronRight } from 'react-icons/lu';
-import { resolveText } from './textos/resolverTexto';
+import { resolverTextoPantalla } from './pantalla-utils';
 import { resolverIconoCTI40Plus } from './iconos-cti40plus';
 import { COLORES, resolverColor } from './colors';
 import type { DescriptorPantalla } from '../pantalla-types';
@@ -17,10 +17,11 @@ interface ObjLineaTextTextProps {
   onNavegar: (descriptor: DescriptorPantalla) => void;
   idPantallaActual: number;
   indicePantallaActual: number;
+  textoConcatenados?: Map<number, string>;
   responsive?: boolean;
 }
 
-export default function ObjLineaTextText({ obj, onNavegar, idPantallaActual, indicePantallaActual, responsive }: ObjLineaTextTextProps): JSX.Element {
+export default function ObjLineaTextText({ obj, onNavegar, idPantallaActual, indicePantallaActual, textoConcatenados, responsive }: ObjLineaTextTextProps): JSX.Element {
   const nav = (obj.valorEditableONav as number | undefined) ?? 0;
 
   const handleClick = (): void => {
@@ -32,8 +33,8 @@ export default function ObjLineaTextText({ obj, onNavegar, idPantallaActual, ind
     }
   };
 
-  const texto = resolveText((obj.texto as number | undefined) ?? 0);
-  const textoVar = resolveText((obj.textoVar as number | undefined) ?? 0);
+  const texto = resolverTextoPantalla((obj.texto as number | undefined) ?? 0, textoConcatenados);
+  const textoVar = resolverTextoPantalla((obj.textoVar as number | undefined) ?? 0, textoConcatenados);
 
   const coloresLineaEdit = (obj.coloresLineaEdit as number | undefined) ?? 0;
   const colorTexto = resolverColor(coloresLineaEdit);
@@ -69,7 +70,7 @@ export default function ObjLineaTextText({ obj, onNavegar, idPantallaActual, ind
       <div className={`flex items-center gap-2 min-w-[30%] justify-end ${nav === 0 ? 'pr-4' : ''}`}>
         <span
           className={`${textSize} truncate`}
-          style={{ color: inhabilitada ? COLORES.light_gray : coloresLineaEdit === 1 ? COLORES.success : colorTexto }}
+          style={{ color: inhabilitada ? COLORES.disabled : coloresLineaEdit === 1 ? COLORES.success : colorTexto }}
         >
           {textoVar}
         </span>

@@ -67,9 +67,12 @@ export default function ObjTablaDinamicaFila({ fila, rowIdx, onNavegar, responsi
 
   // Determina tamaño de fuente: si encabezado con texto largo, reduce font-size
   const getTextSizeClass = (celda: Celda): string => {
-    if (responsive) return 'text-sm';
-    if (rowIdx !== 0) return 'text-3xl';
     const texto = renderCelda(celda);
+    if (responsive) {
+      if (texto.length > 6) return 'text-[10px]';
+      return 'text-sm';
+    }
+    if (rowIdx !== 0) return 'text-3xl';
     if (texto.length > 24) return 'text-xl';
     if (texto.length > 18) return 'text-2xl';
     return 'text-3xl';
@@ -77,7 +80,7 @@ export default function ObjTablaDinamicaFila({ fila, rowIdx, onNavegar, responsi
 
   return (
     <div
-      className={`flex ${responsive ? 'h-10' : 'h-20'} border-b border-black/15 ${esNavegable ? 'cursor-pointer hover:brightness-90 active:brightness-75' : ''}`}
+      className={`flex ${responsive ? 'h-10' : 'h-20'} ${esNavegable ? 'cursor-pointer hover:brightness-80 active:brightness-75' : ''}`}
       onClick={handleClick}
     >
       {fila.celdas.map((celda, colIdx) => (
