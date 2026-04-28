@@ -1,6 +1,6 @@
 'use client';
 
-import type { JSX } from 'react';
+import { useEffect, useRef, type JSX } from 'react';
 import type { ObjBase } from '../pantalla-types';
 import { resolverUnidad, decodificarVariable } from './pantalla-utils';
 import { COLORES } from './colors';
@@ -17,6 +17,7 @@ interface Props {
 /** Input de edición de variable (tipoObjeto: 8 — objEditVariables).
  *  Muestra el campo numérico con hint de rango. El valor y la validación se gestionan desde el padre. */
 export default function ObjEditVariables({ obj, value, onChange, isValid, onEnter, responsive }: Props): JSX.Element {
+  const inputRef = useRef<HTMLInputElement>(null);
   const tipoVar = obj.tipoVar as number;
   const maximo = obj.maximo as number;
   const minimo = obj.minimo as number;
@@ -27,6 +28,14 @@ export default function ObjEditVariables({ obj, value, onChange, isValid, onEnte
   const minStr = decodificarVariable(minimo, tipoVar);
   const step = getStepForTipoVar(tipoVar);
 
+  useEffect(() => {
+    const input = inputRef.current;
+    if (!input) return;
+
+    input.focus();
+    input.select();
+  }, []);
+
   return (
     <div className={`flex flex-col items-center ${responsive === true ? 'gap-4' : 'gap-8'}`}>
       {/* Input numérico */}
@@ -35,6 +44,7 @@ export default function ObjEditVariables({ obj, value, onChange, isValid, onEnte
         style={{ backgroundColor: COLORES.tertiary }}
       >
         <input
+          ref={inputRef}
           type="number"
           step={step}
           value={value}
@@ -44,6 +54,8 @@ export default function ObjEditVariables({ obj, value, onChange, isValid, onEnte
               onEnter();
             }
           }}
+          onFocus={(e) => e.target.select()}
+          onClick={(e) => e.currentTarget.select()}
           className={`bg-transparent text-center outline-none [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden ${responsive === true ? 'text-2xl w-32' : 'text-6xl w-48'}`}
           style={{ color: COLORES.success }}
           autoFocus

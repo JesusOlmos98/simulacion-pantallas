@@ -1,6 +1,6 @@
 'use client';
 
-import type { JSX } from 'react';
+import React, { type JSX } from 'react';
 import { LuCircle } from 'react-icons/lu';
 import type { ObjBase } from '../pantalla-types';
 import { resolverIconoCTI40Plus } from './iconos-cti40plus';
@@ -37,11 +37,7 @@ export default function ObjPosXyLibreIcon({ obj }: Props): JSX.Element {
       }}
     >
       {Icono ? (
-        <Icono
-          size={iconSize}
-          color={COLORES.light}
-          style={shouldBlink ? { animation: 'blink 1s infinite' } : {}}
-        />
+        React.createElement(Icono, { size: iconSize, color: COLORES.light, style: shouldBlink ? { animation: 'blink 1s infinite' } : {} })
       ) : (
         <LuCircle
           size={iconSize}

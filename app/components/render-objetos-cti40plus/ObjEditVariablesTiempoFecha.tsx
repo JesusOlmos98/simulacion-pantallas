@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, type JSX } from 'react';
+import { useEffect, useRef, useState, type JSX } from 'react';
 import type { ObjBase } from '../pantalla-types';
 import { decodificarVariable } from './pantalla-utils';
 import { COLORES } from './colors';
@@ -57,6 +57,7 @@ interface FieldProps {
   max: number;
   onChange: (v: string) => void;
   onEnter?: () => void;
+  inputRef?: React.RefObject<HTMLInputElement | null>;
   nextRef?: React.RefObject<HTMLInputElement | null>;
   autoFocus?: boolean;
   label: string;
@@ -68,9 +69,21 @@ function toEditableValue(value: string): string {
   return normalized === '' ? '0' : normalized;
 }
 
-function TimeField({ value, max, onChange, onEnter, nextRef, autoFocus, label, responsive }: FieldProps): JSX.Element {
+function TimeField({ value, max, onChange, onEnter, inputRef, nextRef, autoFocus, label, responsive }: FieldProps): JSX.Element {
   const maxLen = String(max).length;
   const [draft, setDraft] = useState<string | null>(null);
+  const localInputRef = useRef<HTMLInputElement>(null);
+  const resolvedInputRef = inputRef ?? localInputRef;
+
+  useEffect(() => {
+    if (autoFocus !== true) return;
+
+    const input = resolvedInputRef.current;
+    if (!input) return;
+
+    input.focus();
+    input.select();
+  }, [autoFocus, resolvedInputRef]);
 
   function handleChange(raw: string): void {
     const digits = raw.replace(/\D/g, '').slice(0, maxLen);
@@ -87,6 +100,7 @@ function TimeField({ value, max, onChange, onEnter, nextRef, autoFocus, label, r
   return (
     <div className="flex items-center gap-1">
       <input
+        ref={resolvedInputRef}
         type="text"
         inputMode="numeric"
         value={draft ?? value}
@@ -145,6 +159,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
         responsive={responsive}
       >
         <TimeField
+          inputRef={ref1}
           value={minStr2}
           max={99}
           label="m"
@@ -155,6 +170,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
           responsive={responsive}
         />
         <TimeField
+          inputRef={ref2}
           value={segStr}
           max={59}
           label="s"
@@ -188,6 +204,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
         responsive={responsive}
       >
         <TimeField
+          inputRef={ref1}
           value={horaStr}
           max={23}
           label="h"
@@ -198,6 +215,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
           responsive={responsive}
         />
         <TimeField
+          inputRef={ref2}
           value={minStr2}
           max={59}
           label="m"
@@ -233,6 +251,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
         responsive={responsive}
       >
         <TimeField
+          inputRef={ref1}
           value={diaStr}
           max={31}
           label="/"
@@ -243,6 +262,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
           responsive={responsive}
         />
         <TimeField
+          inputRef={ref2}
           value={mesStr}
           max={12}
           label="/"
@@ -253,6 +273,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
           responsive={responsive}
         />
         <TimeField
+          inputRef={ref3}
           value={yyStr}
           max={99}
           label=""
@@ -292,6 +313,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
         responsive={responsive}
       >
         <TimeField
+          inputRef={ref1}
           value={horaStr}
           max={23}
           label="h"
@@ -302,6 +324,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
           responsive={responsive}
         />
         <TimeField
+          inputRef={ref2}
           value={minStr2}
           max={59}
           label="m"
@@ -312,6 +335,7 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
           responsive={responsive}
         />
         <TimeField
+          inputRef={ref3}
           value={segStr}
           max={59}
           label="s"

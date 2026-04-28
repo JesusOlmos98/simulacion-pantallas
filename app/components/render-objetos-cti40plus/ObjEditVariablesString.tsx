@@ -1,6 +1,6 @@
 'use client';
 
-import type { JSX } from 'react';
+import { useEffect, useRef, type JSX } from 'react';
 import { COLORES } from './colors';
 
 const MAX_CHARS = 15;
@@ -15,6 +15,16 @@ interface Props {
 /** Input de edición de variable tipo string (tipoObjeto: 33 — objEditVariablesString).
  *  Muestra un campo de texto centrado con máximo de 15 caracteres. */
 export default function ObjEditVariablesString({ value, onChange, onEnter, responsive }: Props): JSX.Element {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const input = inputRef.current;
+    if (!input) return;
+
+    input.focus();
+    input.select();
+  }, []);
+
   return (
     <div className={`flex flex-col items-center ${responsive === true ? 'gap-4' : 'gap-8'}`}>
       <div
@@ -22,6 +32,7 @@ export default function ObjEditVariablesString({ value, onChange, onEnter, respo
         style={{ backgroundColor: COLORES.tertiary }}
       >
         <input
+          ref={inputRef}
           type="text"
           maxLength={MAX_CHARS}
           value={value}
@@ -31,6 +42,8 @@ export default function ObjEditVariablesString({ value, onChange, onEnter, respo
               onEnter();
             }
           }}
+          onFocus={(e) => e.target.select()}
+          onClick={(e) => e.currentTarget.select()}
           className={`bg-transparent text-center outline-none ${responsive === true ? 'text-2xl w-48' : 'text-6xl w-120'}`}
           style={{ color: COLORES.success }}
           autoFocus
