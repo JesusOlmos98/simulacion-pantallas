@@ -151,7 +151,7 @@ const IconoVentiladorGirando: IconType = ({ size = 24, className }) => {
 
 // Icono de 3 puntitos verticales con tamaño reducido al 80%
 const IconoEllipsisVertical: IconType = ({ size = 24, color, className }) => {
-  const actualSize = typeof size === 'number' ? Math.round(size * 1) : size;
+  const actualSize = typeof size === 'number' ? Math.round(size * 0.95) : size;
   return React.createElement(
     'span',
     { className, style: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: size, height: size } },
@@ -191,7 +191,7 @@ const IconoClimaRecinto: IconType = ({ size = 24, color, className }) => {
 
 // Icono Plus más grande (20% más grande que el tamaño normal)
 const IconoPlusGrande: IconType = ({ size = 24, color, className }) => {
-  const actualSize = typeof size === 'number' ? Math.round(size * 1.25) : size;
+  const actualSize = typeof size === 'number' ? Math.round(size * 1) : size;
   return React.createElement(LuPlus, { size: actualSize, color, className });
 };
 

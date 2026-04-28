@@ -746,6 +746,9 @@ export default function PantallaCti40Plus(): JSX.Element {
   const titulo = encabezado ? (textoConcatenadoMap.get(tituloTextId) ?? resolveText(tituloTextId)) : '';
   const colorHeader = encabezado ? getColorHex(encabezado.colorTitulo ?? 0) : COLORES.primary;
 
+  // Detectar si es la pantalla de curva de ventilación para aplicar smallFontSize
+  const esTablaCompleja = tituloTextId === EnTextos.textCurvaVentilacion || tituloTextId === EnTextos.textIluminacion; //4904 1311; // EnTextos.textCurvaVentilacion
+
   // objEncabezadoEditIcono (tipoObjeto: 31) — botón de acción a la derecha del header
   const encabezadoEditIcono = objetos?.find((o) => o.tipoObjeto === 31);
 
@@ -1226,6 +1229,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                             filas={tabla.filas}
                             onNavegar={navegarA}
                             responsive
+                            smallFontSize={esTablaCompleja}
                           />
                         ))}
                       </div>
@@ -1748,6 +1752,7 @@ export default function PantallaCti40Plus(): JSX.Element {
                               init={tabla.init}
                               filas={tabla.filas}
                               onNavegar={navegarA}
+                              smallFontSize={esTablaCompleja}
                             />
                           ))}
                         </div>

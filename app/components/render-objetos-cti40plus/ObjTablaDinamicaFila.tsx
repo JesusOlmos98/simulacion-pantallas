@@ -28,6 +28,7 @@ export interface ObjTablaDinamicaFilaProps {
   rowIdx: number;
   onNavegar: (d: DescriptorPantalla) => void;
   responsive?: boolean;
+  smallFontSize?: boolean;
 }
 
 // ─── Helper ───────────────────────────────────────────────────────────────────
@@ -60,23 +61,21 @@ function bgFila(rowIdx: number): string {
   return rowIdx % 2 === 1 ? COLORES.tertiary : COLORES.grey_table;
 }
 
-export default function ObjTablaDinamicaFila({ fila, rowIdx, onNavegar, responsive }: ObjTablaDinamicaFilaProps): JSX.Element {
+export default function ObjTablaDinamicaFila({ fila, rowIdx, onNavegar, responsive, smallFontSize }: ObjTablaDinamicaFilaProps): JSX.Element {
   const esNavegable = fila.navPtr > 0;
   const bg = bgFila(rowIdx);
   const handleClick = esNavegable ? (): void => onNavegar({ idPantalla: fila.navPtr, indicePantalla: fila.navIndice, esPrincipal: false }) : undefined;
 
-  // Determina tamaño de fuente: si encabezado con texto largo, reduce font-size
+  // Determina tamaño de fuente: si encabezado con texto largo, reduce font-size Salida (0-10) A
   const getTextSizeClass = (celda: Celda): string => {
     const texto = renderCelda(celda);
     if (responsive) {
-      // ventilación máxima
-      if (texto.length > 14) return 'text-[8px]';
-      if (texto.length > 6) return 'text-[10px]';
+      if (texto.length > 14) return 'text-[10px]';
+      if (smallFontSize) return 'text-[11px]';
       return 'text-sm';
     }
     if (rowIdx !== 0) return 'text-3xl';
     if (texto.length > 24) return 'text-xl';
-    if (texto.length > 18) return 'text-2xl';
     return 'text-3xl';
   };
 
@@ -88,7 +87,7 @@ export default function ObjTablaDinamicaFila({ fila, rowIdx, onNavegar, responsi
       {fila.celdas.map((celda, colIdx) => (
         <div
           key={colIdx}
-          className={`flex-1 flex items-center justify-center text-center px-2 ${getTextSizeClass(celda)}`}
+          className={`flex-1 flex items-center justify-center text-center  ${getTextSizeClass(celda)}`}
           style={{
             backgroundColor: bg,
             color: colIdx === 0 ? (fila.colorColumna1 === 1 ? COLORES.light : getColorHex(fila.colorColumna1)) : fila.colorFila === 1 ? COLORES.light : getColorHex(fila.colorFila)

@@ -11,11 +11,12 @@ interface ObjTablaDinamicaProps {
   filas: ObjBase[];
   onNavegar: (d: DescriptorPantalla) => void;
   responsive?: boolean;
+  smallFontSize?: boolean;
 }
 
 // ─── Componente ───────────────────────────────────────────────────────────────
 
-export default function ObjTablaDinamica({ init: _init, filas, onNavegar, responsive }: ObjTablaDinamicaProps): JSX.Element {
+export default function ObjTablaDinamica({ init: _init, filas, onNavegar, responsive, smallFontSize }: ObjTablaDinamicaProps): JSX.Element {
   return (
     <div className="w-full">
       {filas.map((filaBase, rowIdx) => (
@@ -25,6 +26,7 @@ export default function ObjTablaDinamica({ init: _init, filas, onNavegar, respon
           rowIdx={rowIdx}
           onNavegar={onNavegar}
           responsive={responsive}
+          smallFontSize={smallFontSize}
         />
       ))}
     </div>
