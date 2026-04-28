@@ -50,11 +50,11 @@ export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual, i
   const colorTexto = resolverColor((obj.coloresLinea as number | undefined) ?? 0);
   const inhabilitada = (obj.coloresLinea as number | undefined) === 15;
 
-  const textSize = responsive ? 'text-lg' : 'text-5xl';
+  const textSize = responsive === true ? 'text-lg' : 'text-5xl';
 
   return (
     <div
-      className={`flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-colors ${responsive ? 'px-4 py-3' : 'px-3 py-7'}`}
+      className={`flex items-center gap-2 cursor-pointer hover:bg-white/5 transition-colors ${responsive === true ? 'px-4 py-3' : 'px-3 py-7'}`}
       onClick={handleClick}
     >
       {/* Columna 1: Texto etiqueta */}
@@ -72,7 +72,7 @@ export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual, i
         {IconoCentral ? (
           // eslint-disable-next-line react-hooks/static-components
           <IconoCentral
-            size={responsive ? 24 : 56}
+            size={responsive === true ? 24 : 56}
             color={COLORES.light}
           />
         ) : (
@@ -91,7 +91,7 @@ export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual, i
         {IconoValor ? (
           // eslint-disable-next-line react-hooks/static-components
           <IconoValor
-            size={responsive ? 24 : 56}
+            size={responsive === true ? 24 : 56}
             color={COLORES.light}
           />
         ) : (
@@ -106,7 +106,7 @@ export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual, i
 
         {nav > 0 && (
           <LuChevronRight
-            size={responsive ? 20 : 50}
+            size={responsive === true ? 20 : 50}
             color={COLORES.light}
           />
         )}

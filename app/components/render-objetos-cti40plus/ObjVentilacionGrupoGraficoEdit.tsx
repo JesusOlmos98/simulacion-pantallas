@@ -26,22 +26,22 @@ export default function ObjVentilacionGrupoGraficoEdit({ obj, pestanaActiva, onP
         style={{ backgroundColor: COLORES.tertiary }}
       >
         <button
-          className={`flex-1 ${responsive ? 'py-[15.5px] text-lg' : 'py-5 text-5xl'} font-normal transition-colors border-b-4 ${pestanaActiva === 0 ? 'text-white border-white' : 'text-white/50 border-transparent'}`}
+          className={`flex-1 ${responsive === true ? 'py-[15.5px] text-lg' : 'py-5 text-5xl'} font-normal transition-colors border-b-4 ${pestanaActiva === 0 ? 'text-white border-white' : 'text-white/50 border-transparent'}`}
           onClick={() => onPestanaChange!(0)}
         >
           {textoPestana1}
         </button>
         <div
-          className={`flex items-center justify-center ${responsive ? 'px-4 py-[15.5px]' : 'px-6 py-5'} cursor-pointer`}
+          className={`flex items-center justify-center ${responsive === true ? 'px-4 py-[15.5px]' : 'px-6 py-5'} cursor-pointer`}
           onClick={onTrash}
         >
           <LuTrash
-            size={responsive ? 28 : 75}
+            size={responsive === true ? 28 : 75}
             color={COLORES.light}
           />
         </div>
         <button
-          className={`flex-1 ${responsive ? 'py-[15.5px] text-lg' : 'py-5 text-5xl'} font-normal transition-colors border-b-4 ${pestanaActiva === 1 ? 'text-white border-white' : 'text-white/50 border-transparent'}`}
+          className={`flex-1 ${responsive === true ? 'py-[15.5px] text-lg' : 'py-5 text-5xl'} font-normal transition-colors border-b-4 ${pestanaActiva === 1 ? 'text-white border-white' : 'text-white/50 border-transparent'}`}
           onClick={() => onPestanaChange!(1)}
         >
           {textoPestana2}

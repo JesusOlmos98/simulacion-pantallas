@@ -48,13 +48,13 @@ export default function ObjTablaDatosSinEdicion({ config, datos, responsive }: O
       {filas.map((fila, rowIdx) => (
         <div
           key={rowIdx}
-          className={`flex ${responsive ? 'h-10' : 'h-20'} border-b border-black/15`}
+          className={`flex ${responsive === true ? 'h-10' : 'h-20'} border-b border-black/15`}
           style={{ backgroundColor: bgFila(rowIdx) }}
         >
           {fila.map((celda, colIdx) => {
             const valor = decodificarVariable(celda.variable, celda.tipoDato);
             const esLargo = typeof valor === 'string' && valor.length > 20;
-            const textSize = responsive ? (esLargo ? 'text-[10px]' : 'text-sm') : esLargo ? 'text-2xl' : 'text-3xl';
+            const textSize = responsive === true ? (esLargo ? 'text-[10px]' : 'text-sm') : esLargo ? 'text-2xl' : 'text-3xl';
             return (
               <div
                 key={colIdx}

@@ -42,7 +42,7 @@ export default function ObjEncabezadoEditIcono({ obj, idPantallaActual, indicePa
       aria-label="Acción de edición"
     >
       {/* eslint-disable-next-line react-hooks/static-components */}
-      <Icono size={responsive ? 28 : 60} />
+      <Icono size={responsive === true ? 28 : 60} />
     </button>
   );
 }

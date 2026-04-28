@@ -18,15 +18,16 @@ interface Props {
 export default function BarraBotonesCti40Plus({ botones, idPantallaActual, onNavegar, compact }: Props): JSX.Element | null {
   if (botones.length === 0) return null;
 
-  const btnClass = compact
-    ? 'w-14 h-14 rounded-full bg-[#bddc28] flex items-center justify-center hover:bg-[#a8c023] active:scale-95 transition-all shadow-md'
-    : 'w-25 h-25 rounded-full bg-[#bddc28] flex items-center justify-center hover:bg-[#a8c023] active:scale-95 transition-all shadow-md';
-  const iconSize = compact ? 32 : 65;
+  const btnClass =
+    compact === true
+      ? 'w-14 h-14 rounded-full bg-[#bddc28] flex items-center justify-center hover:bg-[#a8c023] active:scale-95 transition-all shadow-md'
+      : 'w-25 h-25 rounded-full bg-[#bddc28] flex items-center justify-center hover:bg-[#a8c023] active:scale-95 transition-all shadow-md';
+  const iconSize = compact === true ? 32 : 65;
 
   return (
     <div
-      className={compact ? 'grid grid-cols-4 gap-3 px-12 py-2 place-items-center' : 'flex items-center justify-center gap-4 px-4 py-3'}
-      style={compact ? { backgroundColor: COLORES.lastBackground } : {}}
+      className={compact === true ? 'grid grid-cols-4 gap-3 px-12 py-2 place-items-center' : 'flex items-center justify-center gap-4 px-4 py-3'}
+      style={compact === true ? { backgroundColor: COLORES.lastBackground } : {}}
     >
       {botones.map((obj, index) => {
         const icono = obj.icono as number | undefined;

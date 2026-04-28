@@ -22,11 +22,11 @@ export default function ObjLineaInfoTextText({ obj, textoConcatenados, responsiv
   const coloresLineaEdit = (obj.coloresLineaEdit as number | undefined) ?? 0;
   const color = coloresLineaEdit === 1 ? COLORES.light : esVacio ? COLORES.disabled : resolverColor(coloresLineaEdit);
 
-  const textSize = responsive ? 'text-lg' : 'text-5xl';
-  const leading = responsive ? '' : 'leading-[50px]';
+  const textSize = responsive === true ? 'text-lg' : 'text-5xl';
+  const leading = responsive === true ? '' : 'leading-[50px]';
 
   return (
-    <div className={`flex items-center justify-between pl-3 pr-6 rounded-2xl ${responsive ? 'py-3' : 'py-7'}`}>
+    <div className={`flex items-center justify-between pl-3 pr-6 rounded-2xl ${responsive === true ? 'py-3' : 'py-7'}`}>
       <span
         className={`${textSize} font-light ${leading}`}
         style={{ color }}

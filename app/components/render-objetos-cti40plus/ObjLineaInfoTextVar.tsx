@@ -24,12 +24,12 @@ export default function ObjLineaInfoTextVar({ obj, textoConcatenados, responsive
 
   const Icono = tipoVar === 40 ? resolverIconoCTI40Plus(variable & 0xff) : null;
   const valor = TIPOS_TEXTO.has(tipoVar) ? resolverTextoPantalla(variable & 0xffff, textoConcatenados) : decodificarVariable(variable, tipoVar);
-  const iconSize = responsive ? 28 : 75;
-  const textSize = responsive ? 'text-lg' : 'text-5xl';
-  const leading = responsive ? '' : 'leading-[50px]';
+  const iconSize = responsive === true ? 28 : 75;
+  const textSize = responsive === true ? 'text-lg' : 'text-5xl';
+  const leading = responsive === true ? '' : 'leading-[50px]';
 
   return (
-    <div className={`flex items-center justify-between pl-3 pr-6 rounded-2xl ${responsive ? 'py-3' : 'py-7'}`}>
+    <div className={`flex items-center justify-between pl-3 pr-6 rounded-2xl ${responsive === true ? 'py-3' : 'py-7'}`}>
       <span
         className={`${textSize} font-light ${leading}`}
         style={{ color }}

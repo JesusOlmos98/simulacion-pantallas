@@ -51,14 +51,14 @@ export default function ObjVentilacionGrupoGrafico({ obj, onNavegar, idPantallaA
   const rangoMap = new Map<number, number>();
   estadosActivos.forEach((e, i) => rangoMap.set(e, i + 1));
 
-  const fanSize = responsive ? 28 : 75;
+  const fanSize = responsive === true ? 28 : 75;
 
   return (
     <div
-      className={`flex items-center justify-between ${responsive ? 'px-4 py-3' : 'px-3 py-6'} ${!modoEdicion ? 'cursor-pointer hover:bg-white/5 transition-colors' : ''}`}
+      className={`flex items-center justify-between ${responsive === true ? 'px-4 py-3' : 'px-3 py-6'} ${!modoEdicion ? 'cursor-pointer hover:bg-white/5 transition-colors' : ''}`}
       onClick={handleClick}
     >
-      <div className={`flex ${responsive ? 'gap-4' : 'gap-10'} items-center flex-1`}>
+      <div className={`flex ${responsive === true ? 'gap-4' : 'gap-10'} items-center flex-1`}>
         {datos.slice(0, 5).map((dato, idx) => {
           const km3 = dato.km3;
           const estadoVentilador = estadosOverride ? (estadosOverride[idx] ?? 0) : dato.estadoVentilador;
@@ -90,10 +90,10 @@ export default function ObjVentilacionGrupoGrafico({ obj, onNavegar, idPantallaA
           return (
             <div
               key={idx}
-              className={`flex flex-col items-center gap-2 ${responsive ? 'mx-1' : 'mx-2'} ${esClickable ? 'cursor-pointer' : ''}`}
+              className={`flex flex-col items-center gap-2 ${responsive === true ? 'mx-1' : 'mx-2'} ${esClickable ? 'cursor-pointer' : ''}`}
               onClick={
                 esClickable
-                  ? (e) => {
+                  ? (e): void => {
                       e.stopPropagation();
                       onClickVentilador!(idx);
                     }
@@ -102,7 +102,7 @@ export default function ObjVentilacionGrupoGrafico({ obj, onNavegar, idPantallaA
             >
               {/* Número de ventilador (1-based) */}
               <span
-                className={`${responsive ? 'text-lg' : 'text-4xl'} font-light`}
+                className={`${responsive === true ? 'text-lg' : 'text-4xl'} font-light`}
                 style={{ color: COLORES.light }}
               >
                 {idx + 1}
@@ -129,14 +129,14 @@ export default function ObjVentilacionGrupoGrafico({ obj, onNavegar, idPantallaA
               )}
               {/* km3 */}
               <span
-                className={`${responsive ? 'text-lg' : 'text-5xl'} font-light`}
+                className={`${responsive === true ? 'text-lg' : 'text-5xl'} font-light`}
                 style={{ color: colorKm3 }}
               >
                 {km3.toFixed(1)}
               </span>
               {/* Estado (rojo siempre) */}
               <span
-                className={`${responsive ? 'text-lg' : 'text-5xl'} font-light`}
+                className={`${responsive === true ? 'text-lg' : 'text-5xl'} font-light`}
                 style={{ color: COLORES.error }}
               >
                 {textoEstado}
@@ -148,7 +148,7 @@ export default function ObjVentilacionGrupoGrafico({ obj, onNavegar, idPantallaA
 
       {navegacionPtr > 0 && (
         <LuChevronRight
-          size={responsive ? 20 : 50}
+          size={responsive === true ? 20 : 50}
           color={COLORES.light}
         />
       )}

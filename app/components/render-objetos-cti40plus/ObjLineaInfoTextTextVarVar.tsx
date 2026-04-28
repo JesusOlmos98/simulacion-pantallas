@@ -32,12 +32,12 @@ export default function ObjLineaInfoTextTextVarVar({ obj, textoConcatenados, res
   const coloresLineaEdit = (obj.coloresLineaEdit as number | undefined) ?? 0;
   const color = coloresLineaEdit === 4 ? COLORES.influences : resolverColor(coloresLineaEdit);
 
-  const textSize = responsive ? 'text-lg' : 'text-5xl';
-  const leading = responsive ? '' : 'leading-[50px]';
-  const iconSize = responsive ? 28 : 75;
+  const textSize = responsive === true ? 'text-lg' : 'text-5xl';
+  const leading = responsive === true ? '' : 'leading-[50px]';
+  const iconSize = responsive === true ? 28 : 75;
 
   return (
-    <div className={`flex items-center justify-between pl-3 pr-6 rounded-2xl ${responsive ? 'py-3' : 'py-7'}`}>
+    <div className={`flex items-center justify-between pl-3 pr-6 rounded-2xl ${responsive === true ? 'py-3' : 'py-7'}`}>
       <span
         className={`${textSize} font-light ${leading}`}
         style={{ color }}
@@ -45,7 +45,7 @@ export default function ObjLineaInfoTextTextVarVar({ obj, textoConcatenados, res
         {texto}
       </span>
 
-      <div className={`flex items-center ${responsive ? 'gap-3' : 'gap-6'}`}>
+      <div className={`flex items-center ${responsive === true ? 'gap-3' : 'gap-6'}`}>
         {IconoVar1 ? (
           // eslint-disable-next-line react-hooks/static-components
           <IconoVar1

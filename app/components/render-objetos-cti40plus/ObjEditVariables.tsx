@@ -28,10 +28,10 @@ export default function ObjEditVariables({ obj, value, onChange, isValid, onEnte
   const step = getStepForTipoVar(tipoVar);
 
   return (
-    <div className={`flex flex-col items-center ${responsive ? 'gap-4' : 'gap-8'}`}>
+    <div className={`flex flex-col items-center ${responsive === true ? 'gap-4' : 'gap-8'}`}>
       {/* Input numérico */}
       <div
-        className={`flex items-center gap-3 rounded-2xl ${responsive ? 'px-4 py-3' : 'px-8 py-5'}`}
+        className={`flex items-center gap-3 rounded-2xl ${responsive === true ? 'px-4 py-3' : 'px-8 py-5'}`}
         style={{ backgroundColor: COLORES.tertiary }}
       >
         <input
@@ -44,14 +44,14 @@ export default function ObjEditVariables({ obj, value, onChange, isValid, onEnte
               onEnter();
             }
           }}
-          className={`bg-transparent text-center outline-none [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden ${responsive ? 'text-2xl w-32' : 'text-6xl w-48'}`}
+          className={`bg-transparent text-center outline-none [-moz-appearance:textfield] [&::-webkit-inner-spin-button]:hidden [&::-webkit-outer-spin-button]:hidden ${responsive === true ? 'text-2xl w-32' : 'text-6xl w-48'}`}
           style={{ color: COLORES.success }}
           autoFocus
         />
-        {unidadStr && <span className={`text-white ${responsive ? 'text-lg' : 'text-5xl'}`}>{unidadStr}</span>}
+        {unidadStr && <span className={`text-white ${responsive === true ? 'text-lg' : 'text-5xl'}`}>{unidadStr}</span>}
       </div>
       {/* Rango permitido */}
-      <span className={`${responsive ? 'text-sm' : 'text-2xl'} ${isValid ? 'text-white/60' : 'text-red-500'}`}>
+      <span className={`${responsive === true ? 'text-sm' : 'text-2xl'} ${isValid ? 'text-white/60' : 'text-red-500'}`}>
         {minStr} - {maxStr}
         {unidadStr ? ` ${unidadStr}` : ''}
       </span>

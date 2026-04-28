@@ -31,7 +31,6 @@ import {
   LuWifiLow, // 147 - WiFi con 2 rayas de cobertura
   LuWifiHigh, // 148 - WiFi máximo (full cobertura)
   LuWifiZero,
-  LuSmartphone,
   LuEllipsisVertical
 } from 'react-icons/lu';
 import { COLORES } from './colors';
@@ -50,16 +49,16 @@ const IconoInfluencias: IconType = ({ size = 24, color, className }) => {
 
 // Icono compuesto: casita y termómetro superpuestos y centrados (id 69 – Clima recinto)
 /** @deprecated */
-const IconoClimaRecintoDeprecated: IconType = ({ size = 24, color, className }) => {
-  const s = typeof size === 'number' ? size : 24;
-  const iconStyle = { position: 'absolute' as const, top: 0, left: 0 };
-  return React.createElement(
-    'span',
-    { className, style: { position: 'relative', display: 'inline-flex', width: s, height: s, flexShrink: 0 } },
-    React.createElement(LuSmartphone, { size: s, color, style: iconStyle }),
-    React.createElement(LuThermometer, { size: s, color, style: iconStyle })
-  );
-};
+// const IconoClimaRecintoDeprecated: IconType = ({ size = 24, color, className }) => {
+//   const s = typeof size === 'number' ? size : 24;
+//   const iconStyle = { position: 'absolute' as const, top: 0, left: 0 };
+//   return React.createElement(
+//     'span',
+//     { className, style: { position: 'relative', display: 'inline-flex', width: s, height: s, flexShrink: 0 } },
+//     React.createElement(LuSmartphone, { size: s, color, style: iconStyle }),
+//     React.createElement(LuThermometer, { size: s, color, style: iconStyle })
+//   );
+// };
 
 // Icono compuesto: nube con texto CO₂ superpuesto (id 47)
 const IconoNubeCO2: IconType = ({ size = 24, color, className }) => {

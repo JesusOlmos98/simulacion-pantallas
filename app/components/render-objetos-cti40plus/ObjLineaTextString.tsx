@@ -40,11 +40,11 @@ export default function ObjLineaTextString({ obj, onNavegar, idPantallaActual, i
   const colorTexto = resolverColor(coloresLineaEdit);
   const inhabilitada = coloresLineaEdit === 15;
 
-  const textSize = responsive ? 'text-lg' : 'text-5xl';
+  const textSize = responsive === true ? 'text-lg' : 'text-5xl';
 
   return (
     <div
-      className={`flex items-center justify-between cursor-pointer hover:bg-white/5 transition-colors ${responsive ? 'px-4 py-3' : 'px-3 py-7'}`}
+      className={`flex items-center justify-between cursor-pointer hover:bg-white/5 transition-colors ${responsive === true ? 'px-4 py-3' : 'px-3 py-7'}`}
       onClick={handleClick}
     >
       {/* Texto etiqueta */}
@@ -66,7 +66,7 @@ export default function ObjLineaTextString({ obj, onNavegar, idPantallaActual, i
 
         {nav > 0 && (
           <LuChevronRight
-            size={responsive ? 20 : 50}
+            size={responsive === true ? 20 : 50}
             color={COLORES.light}
           />
         )}

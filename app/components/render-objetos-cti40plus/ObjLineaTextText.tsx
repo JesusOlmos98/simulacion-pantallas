@@ -42,19 +42,19 @@ export default function ObjLineaTextText({ obj, onNavegar, idPantallaActual, ind
 
   const IconoLinea = useMemo<IconType | null>(() => (obj.iconoLinea != null ? resolverIconoCTI40Plus(obj.iconoLinea as number) : null), [obj.iconoLinea]);
 
-  const textSize = responsive ? 'text-lg' : 'text-5xl';
+  const textSize = responsive === true ? 'text-lg' : 'text-5xl';
 
   return (
     <div
-      className={`flex items-center justify-between cursor-pointer hover:bg-white/5 transition-colors ${responsive ? 'px-4 py-3' : 'px-3 py-7'}`}
+      className={`flex items-center justify-between cursor-pointer hover:bg-white/5 transition-colors ${responsive === true ? 'px-4 py-3' : 'px-3 py-7'}`}
       onClick={handleClick}
     >
-      <div className={`flex items-center min-w-0 max-w-[55%] ${responsive ? 'gap-2' : 'gap-3'}`}>
+      <div className={`flex items-center min-w-0 max-w-[55%] ${responsive === true ? 'gap-2' : 'gap-3'}`}>
         {IconoLinea && (
-          <div className={`flex-shrink-0 flex items-center justify-center ${responsive ? 'w-8 h-8' : 'w-14 h-14'}`}>
+          <div className={`flex-shrink-0 flex items-center justify-center ${responsive === true ? 'w-8 h-8' : 'w-14 h-14'}`}>
             {/* eslint-disable-next-line react-hooks/static-components */}
             <IconoLinea
-              size={responsive ? 24 : 56}
+              size={responsive === true ? 24 : 56}
               color="white"
             />
           </div>
@@ -76,7 +76,7 @@ export default function ObjLineaTextText({ obj, onNavegar, idPantallaActual, ind
         </span>
         {nav > 0 && (
           <LuChevronRight
-            size={responsive ? 20 : 50}
+            size={responsive === true ? 20 : 50}
             color={COLORES.light}
             className="flex-shrink-0"
           />

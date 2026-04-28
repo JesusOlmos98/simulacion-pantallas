@@ -100,11 +100,11 @@ function TimeField({ value, max, onChange, onEnter, nextRef, autoFocus, label, r
         }}
         onClick={(e) => e.currentTarget.select()}
         onBlur={() => setDraft(null)}
-        className={`bg-transparent text-center outline-none [-moz-appearance:textfield] ${responsive ? 'text-2xl w-14' : 'text-6xl w-24'}`}
+        className={`bg-transparent text-center outline-none [-moz-appearance:textfield] ${responsive === true ? 'text-2xl w-14' : 'text-6xl w-24'}`}
         style={{ color: COLORES.success }}
         autoFocus={autoFocus}
       />
-      <span className={`text-white ${responsive ? 'text-lg' : 'text-4xl'}`}>{label}</span>
+      <span className={`text-white ${responsive === true ? 'text-lg' : 'text-4xl'}`}>{label}</span>
     </div>
   );
 }
@@ -329,14 +329,14 @@ export default function ObjEditVariablesTiempoFecha({ obj, value, onChange, isVa
 
 function FieldsWrapper({ isValid, minStr, maxStr, children, responsive }: { isValid: boolean; minStr: string; maxStr: string; children: React.ReactNode; responsive?: boolean }): JSX.Element {
   return (
-    <div className={`flex flex-col items-center ${responsive ? 'gap-4' : 'gap-8'}`}>
+    <div className={`flex flex-col items-center ${responsive === true ? 'gap-4' : 'gap-8'}`}>
       <div
-        className={`flex items-center gap-1 rounded-2xl ${responsive ? 'px-4 py-3' : 'px-8 py-5'}`}
+        className={`flex items-center gap-1 rounded-2xl ${responsive === true ? 'px-4 py-3' : 'px-8 py-5'}`}
         style={{ backgroundColor: COLORES.tertiary, outline: isValid ? 'none' : `2px solid ${COLORES.error ?? '#ef4444'}` }}
       >
         {children}
       </div>
-      <span className={`${responsive ? 'text-sm' : 'text-2xl'} ${isValid ? 'text-white/60' : 'text-red-500'}`}>
+      <span className={`${responsive === true ? 'text-sm' : 'text-2xl'} ${isValid ? 'text-white/60' : 'text-red-500'}`}>
         {minStr} - {maxStr}
       </span>
     </div>
