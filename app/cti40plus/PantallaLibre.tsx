@@ -5,6 +5,7 @@ import type { ObjBase, DescriptorPantalla } from '../components/pantalla-types';
 import ObjPosXyLibreIcon from '../components/render-objetos-cti40plus/ObjPosXyLibreIcon';
 import ObjPosXyLibreVariable from '../components/render-objetos-cti40plus/ObjPosXyLibreVariable';
 import ObjPosXyLibreLineas from '../components/render-objetos-cti40plus/ObjPosXyLibreLineas';
+import { COLORES } from '../components/render-objetos-cti40plus';
 
 interface Props {
   objetos: ObjBase[];
@@ -25,7 +26,7 @@ export default function PantallaLibre({ objetos, onNavegar: _onNavegar, containe
 
   return (
     // Contenedor externo con las dimensiones ya escaladas
-    <div style={{ width: sizeX * ESCALA, height: sizeY * ESCALA, position: 'relative', overflow: 'hidden', backgroundColor: '#1E1E1E' }}>
+    <div style={{ width: sizeX * ESCALA, height: sizeY * ESCALA, position: 'relative', overflow: 'hidden', backgroundColor: COLORES.lastBackground }}>
       {/* Canvas nativo escalado desde la esquina superior izquierda */}
       <div style={{ position: 'absolute', top: 0, left: 0, width: sizeX, height: sizeY, transform: `scale(${ESCALA})`, transformOrigin: 'top left' }}>
         {objetosLibres.map((obj, i) => {

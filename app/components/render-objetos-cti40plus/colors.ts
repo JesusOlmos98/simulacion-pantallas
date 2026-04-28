@@ -14,7 +14,8 @@ export const COLORES = {
   wifi: '#555555ff', // Lineas de wifi inactivas
   influences: '#ffe600ff', // Verde para influencias
   grey_table: '#5a5a5aff',
-  disabled: '#8b8b8bff' // 777777ff Gris para elementos deshabilitados
+  disabled: '#8b8b8bff', // 777777ff Gris para elementos deshabilitados
+  lastBackground: '#1E1E1E'
 } as const;
 
 /** Obtiene el color HEX correspondiente a un número (1-indexed) */

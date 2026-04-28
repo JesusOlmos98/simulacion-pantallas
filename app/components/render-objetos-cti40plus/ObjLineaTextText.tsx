@@ -69,7 +69,7 @@ export default function ObjLineaTextText({ obj, onNavegar, idPantallaActual, ind
 
       <div className={`flex items-center gap-2 min-w-[30%] justify-end ${nav === 0 ? 'pr-4' : ''}`}>
         <span
-          className={`${textSize} truncate`}
+          className={`${textSize} text-right`}
           style={{ color: inhabilitada ? COLORES.disabled : coloresLineaEdit === 1 ? COLORES.success : colorTexto }}
         >
           {textoVar}

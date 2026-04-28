@@ -844,13 +844,12 @@ export default function PantallaCti40Plus(): JSX.Element {
     const sinTareasIcono = (encabezado?.iconoTarea2 ?? 0) === 0 && (encabezado?.iconoTarea3 ?? 0) === 0;
     const navPadding = !encabezado || (sinTareasIcono && !esVentilacionGrupoEdit) ? 'py-[15.5px]' : 'py-3';
     const scrollbarStyle = { '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties;
-    const scrollbarClass =
-      'flex-1 overflow-y-auto p-4 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-[#1E1E1E] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)]';
+    const scrollbarClass = `flex-1 overflow-y-auto p-4 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-[${COLORES.lastBackground}] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)]`;
     const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 320;
     return (
       <div
         className="min-h-dvh bg-zinc-950 flex flex-col"
-        style={{ backgroundColor: '#1E1E1E' }}
+        style={{ backgroundColor: COLORES.lastBackground }}
       >
         {/* ── Navbar ── */}
         {!esTeclado && !esSeleccion && (
@@ -1276,7 +1275,7 @@ export default function PantallaCti40Plus(): JSX.Element {
             {infoObjetos.length > 0 && (
               <div
                 className="flex justify-center shrink-0 py-2"
-                style={{ backgroundColor: '#1E1E1E' }}
+                style={{ backgroundColor: COLORES.lastBackground }}
               >
                 <button
                   className="flex items-center gap-2 px-6 rounded-xl"
@@ -1297,7 +1296,7 @@ export default function PantallaCti40Plus(): JSX.Element {
         {infoDialogAbierto && infoObjetos.length > 0 && (
           <div
             className="fixed inset-0 z-50 flex flex-col"
-            style={{ backgroundColor: '#1E1E1E' }}
+            style={{ backgroundColor: COLORES.lastBackground }}
           >
             <div
               className="flex items-center px-3 py-[15.5px] shrink-0"
@@ -1368,7 +1367,7 @@ export default function PantallaCti40Plus(): JSX.Element {
         {/* ── Pantalla 4:3 ── */}
         <div
           className="relative flex flex-col bg-black overflow-hidden rounded-lg border border-zinc-800 shadow-2xl"
-          style={{ width: '960px', height: '720px', minWidth: '960px', maxWidth: '960px', minHeight: '720px', maxHeight: '720px', backgroundColor: '#1E1E1E' }}
+          style={{ width: '960px', height: '720px', minWidth: '960px', maxWidth: '960px', minHeight: '720px', maxHeight: '720px', backgroundColor: COLORES.lastBackground }}
         >
           {/* ── Loading ── */}
           {loading && (
@@ -1572,7 +1571,7 @@ export default function PantallaCti40Plus(): JSX.Element {
               {/* Pantalla de selección — lista de radio buttons o checkboxes */}
               {esSeleccion && (
                 <div
-                  className="flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-[#1E1E1E] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]"
+                  className={`flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-[${COLORES.lastBackground}] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]`}
                   style={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}
                 >
                   <div>
@@ -1620,7 +1619,7 @@ export default function PantallaCti40Plus(): JSX.Element {
               {/* Pantalla de edición de ventiladores (tipoPlantilla 10) */}
               {esVentilacionGrupoEdit && objVentilacionEdit && (
                 <div
-                  className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[#1E1E1E] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]"
+                  className={`flex-1 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[${COLORES.lastBackground}] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]`}
                   style={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}
                 >
                   {/* Pestañas */}
@@ -1696,7 +1695,7 @@ export default function PantallaCti40Plus(): JSX.Element {
               {/* Objetos — scrollable si hay muchos */}
               {!esLibre && !esTeclado && !esSeleccion && !esVentilacionGrupoEdit && (
                 <div
-                  className="flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-[#1E1E1E] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]"
+                  className={`flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-[${COLORES.lastBackground}] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]`}
                   style={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}
                 >
                   {esPantallaPrincipal ? (
@@ -1801,7 +1800,7 @@ export default function PantallaCti40Plus(): JSX.Element {
               {infoObjetos.length > 0 && (
                 <div
                   className="flex justify-center shrink-0 py-2"
-                  style={{ backgroundColor: '#1E1E1E' }}
+                  style={{ backgroundColor: COLORES.lastBackground }}
                 >
                   <button
                     className="flex items-center gap-2 px-8 rounded-xl font-medium"
@@ -1822,7 +1821,7 @@ export default function PantallaCti40Plus(): JSX.Element {
           {infoDialogAbierto && infoObjetos.length > 0 && (
             <div
               className="absolute inset-0 flex flex-col"
-              style={{ backgroundColor: '#1E1E1E' }}
+              style={{ backgroundColor: COLORES.lastBackground }}
             >
               {/* Header del dialog */}
               <div
@@ -1843,7 +1842,7 @@ export default function PantallaCti40Plus(): JSX.Element {
 
               {/* Filas info */}
               <div
-                className="flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-[#1E1E1E] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]"
+                className={`flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-[${COLORES.lastBackground}] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]`}
                 style={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}
               >
                 <div

@@ -7,8 +7,6 @@ import { decodificarRangoFloat, decodificarVariable, resolverUnidad } from './pa
 import { COLORES, getColorHex } from './colors';
 import { EnTipoVariable } from '../../../src/utils/common-lib-commac-generador/NXP_BE/globals/enumOld';
 
-// ─── Tipos ────────────────────────────────────────────────────────────────────
-
 export interface Celda {
   tipoVar: number;
   valor: number | { type: 'Buffer'; data: number[] };
@@ -29,15 +27,12 @@ export interface ObjTablaDinamicaFilaProps {
   onNavegar: (d: DescriptorPantalla) => void;
   responsive?: boolean;
   smallFontSize?: boolean;
+  gridTemplateColumns?: string;
+  minWidth?: number;
 }
 
-// ─── Helper ───────────────────────────────────────────────────────────────────
-
-// tipoVar 31 = EnTipoVariable.texto
-// El valor viene codificado como uint32; los 16 bits bajos contienen el ID de texto.
 const TIPO_VAR_TEXTO = 31;
 
-/** El valor suele venir en uint32, en ese caso se suele tener que coger los 2 bytes menos significativos y de ahí se obtiene el texto (miembro del EnTextos) correcto. */
 function renderCelda(celda: Celda): string {
   if (celda.tipoVar === TIPO_VAR_TEXTO) {
     if (typeof celda.valor !== 'number') return '—';
@@ -54,24 +49,22 @@ function renderCelda(celda: Celda): string {
   return valor;
 }
 
-// ─── Componente ───────────────────────────────────────────────────────────────
-
 function bgFila(rowIdx: number): string {
-  if (rowIdx === 0) return 'transparent';
+  if (rowIdx === 0) return COLORES.lastBackground;
   return rowIdx % 2 === 1 ? COLORES.tertiary : COLORES.grey_table;
 }
 
-export default function ObjTablaDinamicaFila({ fila, rowIdx, onNavegar, responsive, smallFontSize }: ObjTablaDinamicaFilaProps): JSX.Element {
+export default function ObjTablaDinamicaFila({ fila, rowIdx, onNavegar, responsive, smallFontSize, gridTemplateColumns, minWidth }: ObjTablaDinamicaFilaProps): JSX.Element {
+  const isResponsive = responsive === true;
+  const useSmallFont = smallFontSize === true;
   const esNavegable = fila.navPtr > 0;
   const bg = bgFila(rowIdx);
   const handleClick = esNavegable ? (): void => onNavegar({ idPantalla: fila.navPtr, indicePantalla: fila.navIndice, esPrincipal: false }) : undefined;
 
-  // Determina tamaño de fuente: si encabezado con texto largo, reduce font-size Salida (0-10) A
   const getTextSizeClass = (celda: Celda): string => {
     const texto = renderCelda(celda);
-    if (responsive) {
-      if (texto.length > 14) return 'text-[10px]';
-      if (smallFontSize) return 'text-[11px]';
+    if (isResponsive) {
+      if (useSmallFont || texto.length > 24) return 'text-xs';
       return 'text-sm';
     }
     if (rowIdx !== 0) return 'text-3xl';
@@ -79,19 +72,22 @@ export default function ObjTablaDinamicaFila({ fila, rowIdx, onNavegar, responsi
     return 'text-3xl';
   };
 
+  const getCellTextColor = (colIdx: number): string =>
+    colIdx === 0 ? (fila.colorColumna1 === 1 ? COLORES.light : getColorHex(fila.colorColumna1)) : fila.colorFila === 1 ? COLORES.light : getColorHex(fila.colorFila);
+
   return (
     <div
-      className={`flex ${responsive ? 'h-10' : 'h-20'} ${esNavegable ? 'cursor-pointer hover:brightness-80 active:brightness-75' : ''}`}
+      className={`${isResponsive ? 'grid min-h-10' : 'flex h-20'} ${esNavegable ? 'cursor-pointer hover:brightness-80 active:brightness-75' : ''}`}
       onClick={handleClick}
+      style={isResponsive ? { gridTemplateColumns, minWidth } : undefined}
     >
       {fila.celdas.map((celda, colIdx) => (
         <div
           key={colIdx}
-          className={`flex-1 flex items-center justify-center text-center  ${getTextSizeClass(celda)}`}
-          style={{
-            backgroundColor: bg,
-            color: colIdx === 0 ? (fila.colorColumna1 === 1 ? COLORES.light : getColorHex(fila.colorColumna1)) : fila.colorFila === 1 ? COLORES.light : getColorHex(fila.colorFila)
-          }}
+          className={`${isResponsive ? 'flex min-w-0 items-center justify-center px-1 py-2 text-center whitespace-normal break-words leading-tight' : 'flex-1 flex items-center justify-center px-1 text-center'} ${
+            isResponsive && colIdx === 0 ? 'sticky left-0 z-10 border-r border-white/10 shadow-[6px_0_10px_rgba(0,0,0,0.2)]' : ''
+          } ${getTextSizeClass(celda)}`}
+          style={{ backgroundColor: bg, color: getCellTextColor(colIdx) }}
         >
           {renderCelda(celda)}
         </div>

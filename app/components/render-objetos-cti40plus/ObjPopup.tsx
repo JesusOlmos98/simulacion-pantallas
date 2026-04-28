@@ -34,7 +34,7 @@ export default function ObjPopup({ obj }: ObjPopupProps): JSX.Element {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div
         className="mx-4 w-full max-w-md overflow-hidden rounded-lg transition-colors"
-        style={{ backgroundColor: '#1E1E1E' }}
+        style={{ backgroundColor: COLORES.lastBackground }}
       >
         {/* Header con título */}
         <div

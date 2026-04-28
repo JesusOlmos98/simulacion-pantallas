@@ -4,6 +4,7 @@ import type { JSX } from 'react';
 import { LuCircle } from 'react-icons/lu';
 import type { ObjBase, DescriptorPantalla } from '../pantalla-types';
 import { resolverIconoCTI40Plus } from './iconos-cti40plus';
+import { COLORES } from './colors';
 
 const PRINCIPAL: DescriptorPantalla = { idPantalla: 0, indicePantalla: 0, esPrincipal: true };
 
@@ -23,7 +24,10 @@ export default function BarraBotonesCti40Plus({ botones, idPantallaActual, onNav
   const iconSize = compact ? 32 : 65;
 
   return (
-    <div className={compact ? 'grid grid-cols-4 gap-3 px-12 py-2 place-items-center bg-[#1E1E1E]' : 'flex items-center justify-center gap-4 px-4 py-3'}>
+    <div
+      className={compact ? 'grid grid-cols-4 gap-3 px-12 py-2 place-items-center' : 'flex items-center justify-center gap-4 px-4 py-3'}
+      style={compact ? { backgroundColor: COLORES.lastBackground } : {}}
+    >
       {botones.map((obj, index) => {
         const icono = obj.icono as number | undefined;
         const navPtr = obj.navegacionPtr as number | undefined;
@@ -46,12 +50,12 @@ export default function BarraBotonesCti40Plus({ botones, idPantallaActual, onNav
             {Icono ? (
               <Icono
                 size={iconSize}
-                color="#1a1a1a"
+                color={COLORES.lastBackground}
               />
             ) : (
               <LuCircle
                 size={iconSize}
-                color="#1a1a1a"
+                color={COLORES.lastBackground}
               />
             )}
           </button>

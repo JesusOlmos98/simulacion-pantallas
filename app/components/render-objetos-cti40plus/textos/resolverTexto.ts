@@ -23,50 +23,50 @@ import {
 } from './map/index';
 
 export function resolveText(numText: number | EnTextos, lang?: string): string {
-  if (lang === undefined) return textMapES.get(numText) || '';
+  if (lang === undefined) return textMapES.get(numText) ?? '';
 
   switch (lang) {
     case 'es':
-      return textMapES.get(numText) || '';
+      return textMapES.get(numText) ?? '';
     case 'en':
-      return textMapEN.get(numText) || '';
+      return textMapEN.get(numText) ?? '';
     case 'ar':
-      return textMapAR.get(numText) || '';
+      return textMapAR.get(numText) ?? '';
     case 'ca':
-      return textMapCA.get(numText) || '';
+      return textMapCA.get(numText) ?? '';
     case 'de':
-      return textMapDE.get(numText) || '';
+      return textMapDE.get(numText) ?? '';
     case 'el':
-      return textMapEL.get(numText) || '';
+      return textMapEL.get(numText) ?? '';
     case 'fr':
-      return textMapFR.get(numText) || '';
+      return textMapFR.get(numText) ?? '';
     case 'hi':
-      return textMapHI.get(numText) || '';
+      return textMapHI.get(numText) ?? '';
     case 'hu':
-      return textMapHU.get(numText) || '';
+      return textMapHU.get(numText) ?? '';
     case 'id':
-      return textMapID.get(numText) || '';
+      return textMapID.get(numText) ?? '';
     case 'jp':
-      return textMapJP.get(numText) || '';
+      return textMapJP.get(numText) ?? '';
     case 'ko':
-      return textMapKO.get(numText) || '';
+      return textMapKO.get(numText) ?? '';
     case 'pl':
-      return textMapPL.get(numText) || '';
+      return textMapPL.get(numText) ?? '';
     case 'pt':
-      return textMapPT.get(numText) || '';
+      return textMapPT.get(numText) ?? '';
     case 'ro':
-      return textMapRO.get(numText) || '';
+      return textMapRO.get(numText) ?? '';
     case 'ru':
-      return textMapRU.get(numText) || '';
+      return textMapRU.get(numText) ?? '';
     case 'sk':
-      return textMapSK.get(numText) || '';
+      return textMapSK.get(numText) ?? '';
     case 'tr':
-      return textMapTR.get(numText) || '';
+      return textMapTR.get(numText) ?? '';
     case 'vi':
-      return textMapVI.get(numText) || '';
+      return textMapVI.get(numText) ?? '';
     case 'zh':
-      return textMapZH.get(numText) || '';
+      return textMapZH.get(numText) ?? '';
     default: // es
-      return textMapES.get(numText) || '';
+      return textMapES.get(numText) ?? '';
   }
 }
