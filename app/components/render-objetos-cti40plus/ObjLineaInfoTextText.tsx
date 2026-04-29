@@ -8,16 +8,17 @@ interface ObjLineaInfoTextTextProps {
   obj: Record<string, unknown>;
   textoConcatenados?: Map<number, string>;
   responsive?: boolean;
+  lang?: string;
 }
 
 const TEXTO_VACIO_ID = 151;
 
-export default function ObjLineaInfoTextText({ obj, textoConcatenados, responsive }: ObjLineaInfoTextTextProps): JSX.Element {
+export default function ObjLineaInfoTextText({ obj, textoConcatenados, responsive, lang }: ObjLineaInfoTextTextProps): JSX.Element {
   const textoVarId = (obj.textoVar as number | undefined) ?? 0;
   const esVacio = textoVarId === TEXTO_VACIO_ID;
 
-  const texto = resolverTextoPantalla((obj.texto as number | undefined) ?? 0, textoConcatenados);
-  const textoVar = esVacio ? '--' : resolverTextoPantalla(textoVarId, textoConcatenados);
+  const texto = resolverTextoPantalla((obj.texto as number | undefined) ?? 0, textoConcatenados, lang);
+  const textoVar = esVacio ? '--' : resolverTextoPantalla(textoVarId, textoConcatenados, lang);
 
   const coloresLineaEdit = (obj.coloresLineaEdit as number | undefined) ?? 0;
   const color = coloresLineaEdit === 1 ? COLORES.light : esVacio ? COLORES.disabled : resolverColor(coloresLineaEdit);

@@ -19,9 +19,10 @@ interface ObjLineaTextTextProps {
   indicePantallaActual: number;
   textoConcatenados?: Map<number, string>;
   responsive?: boolean;
+  lang?: string;
 }
 
-export default function ObjLineaTextText({ obj, onNavegar, idPantallaActual, indicePantallaActual, textoConcatenados, responsive }: ObjLineaTextTextProps): JSX.Element {
+export default function ObjLineaTextText({ obj, onNavegar, idPantallaActual, indicePantallaActual, textoConcatenados, responsive, lang }: ObjLineaTextTextProps): JSX.Element {
   const nav = (obj.valorEditableONav as number | undefined) ?? 0;
 
   const handleClick = (): void => {
@@ -33,8 +34,8 @@ export default function ObjLineaTextText({ obj, onNavegar, idPantallaActual, ind
     }
   };
 
-  const texto = resolverTextoPantalla((obj.texto as number | undefined) ?? 0, textoConcatenados);
-  const textoVar = resolverTextoPantalla((obj.textoVar as number | undefined) ?? 0, textoConcatenados);
+  const texto = resolverTextoPantalla((obj.texto as number | undefined) ?? 0, textoConcatenados, lang);
+  const textoVar = resolverTextoPantalla((obj.textoVar as number | undefined) ?? 0, textoConcatenados, lang);
 
   const coloresLineaEdit = (obj.coloresLineaEdit as number | undefined) ?? 0;
   const colorTexto = resolverColor(coloresLineaEdit);

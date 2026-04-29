@@ -17,11 +17,12 @@ interface ObjLineaTextVarProps {
   indicePantallaActual: number;
   textoConcatenados?: Map<number, string>;
   responsive?: boolean;
+  lang?: string;
 }
 
 const TIPOS_TEXTO = new Set([30, 31, 43]);
 
-export default function ObjLineaTextVar({ obj, onNavegar, idPantallaActual, indicePantallaActual, textoConcatenados, responsive }: ObjLineaTextVarProps): JSX.Element {
+export default function ObjLineaTextVar({ obj, onNavegar, idPantallaActual, indicePantallaActual, textoConcatenados, responsive, lang }: ObjLineaTextVarProps): JSX.Element {
   const nav = (obj.valorEditableONav as number | undefined) ?? 0;
 
   const handleClick = (): void => {
@@ -37,9 +38,9 @@ export default function ObjLineaTextVar({ obj, onNavegar, idPantallaActual, indi
 
   const tipoVar = (obj.tipoVar as number | undefined) ?? 0;
   const variable = (obj.variable as number | undefined) ?? 0;
-  const texto = resolverTextoPantalla((obj.texto as number | undefined) ?? 0, textoConcatenados);
+  const texto = resolverTextoPantalla((obj.texto as number | undefined) ?? 0, textoConcatenados, lang);
   const IconoValor = tipoVar === 40 ? resolverIconoCTI40Plus(variable & 0xff) : null;
-  const valor = TIPOS_TEXTO.has(tipoVar) ? resolverTextoPantalla(variable & 0xffff, textoConcatenados) : decodificarVariable(variable, tipoVar);
+  const valor = TIPOS_TEXTO.has(tipoVar) ? resolverTextoPantalla(variable & 0xffff, textoConcatenados, lang) : decodificarVariable(variable, tipoVar);
   const unidad = resolverUnidad((obj.unidad as number | undefined) ?? 0);
 
   // Aplicar la misma lógica de colores que ObjLineaText

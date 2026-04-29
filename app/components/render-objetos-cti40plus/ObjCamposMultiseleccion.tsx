@@ -11,12 +11,13 @@ interface Props {
   onSelect: () => void;
   isDisabled?: boolean;
   responsive?: boolean;
+  lang?: string;
 }
 
 /** Fila de selección única (radio button) o múltiple (checkbox) — tipoObjeto: 10 (objCamposMultiseleccion). */
-export default function ObjCamposMultiseleccion({ obj, isSelected, onSelect, isDisabled = false, responsive }: Props): JSX.Element {
+export default function ObjCamposMultiseleccion({ obj, isSelected, onSelect, isDisabled = false, responsive, lang }: Props): JSX.Element {
   const textoId = obj.textoVar as number;
-  const texto = resolveText(textoId);
+  const texto = resolveText(textoId, lang);
 
   const circleSize = responsive === true ? 24 : 52;
   const dotSize = responsive === true ? 12 : 26;

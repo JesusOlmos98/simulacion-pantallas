@@ -16,9 +16,10 @@ interface ObjLineaTextStringProps {
   idPantallaActual: number;
   indicePantallaActual: number;
   responsive?: boolean;
+  lang?: string;
 }
 
-export default function ObjLineaTextString({ obj, onNavegar, idPantallaActual, indicePantallaActual, responsive }: ObjLineaTextStringProps): JSX.Element {
+export default function ObjLineaTextString({ obj, onNavegar, idPantallaActual, indicePantallaActual, responsive, lang }: ObjLineaTextStringProps): JSX.Element {
   const nav = (obj.valorEditableONav as number | undefined) ?? 0;
 
   const handleClick = (): void => {
@@ -32,7 +33,7 @@ export default function ObjLineaTextString({ obj, onNavegar, idPantallaActual, i
     }
   };
 
-  const texto = resolveText((obj.texto as number | undefined) ?? 0);
+  const texto = resolveText((obj.texto as number | undefined) ?? 0, lang);
   const valor = decodificarStringVariable(obj.variable);
 
   // Aplicar la misma lógica de colores que ObjLineaTextVar

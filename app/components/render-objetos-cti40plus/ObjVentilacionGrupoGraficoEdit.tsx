@@ -12,11 +12,12 @@ interface Props {
   onPestanaChange?: (p: 0 | 1) => void;
   onTrash?: () => void;
   responsive?: boolean;
+  lang?: string;
 }
 
-export default function ObjVentilacionGrupoGraficoEdit({ obj, pestanaActiva, onPestanaChange, onTrash, responsive }: Props): JSX.Element {
-  const textoPestana1 = resolveText(obj.textoPestana1 as number);
-  const textoPestana2 = resolveText(obj.textoPestana2 as number);
+export default function ObjVentilacionGrupoGraficoEdit({ obj, pestanaActiva, onPestanaChange, onTrash, responsive, lang }: Props): JSX.Element {
+  const textoPestana1 = resolveText(obj.textoPestana1 as number, lang);
+  const textoPestana2 = resolveText(obj.textoPestana2 as number, lang);
 
   return (
     <div className="flex flex-col mt-2">

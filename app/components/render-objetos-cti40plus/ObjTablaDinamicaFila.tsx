@@ -29,14 +29,15 @@ export interface ObjTablaDinamicaFilaProps {
   smallFontSize?: boolean;
   gridTemplateColumns?: string;
   minWidth?: number;
+  lang?: string;
 }
 
 const TIPO_VAR_TEXTO = 31;
 
-function renderCelda(celda: Celda): string {
+function renderCelda(celda: Celda, lang?: string): string {
   if (celda.tipoVar === TIPO_VAR_TEXTO) {
     if (typeof celda.valor !== 'number') return '—';
-    return resolveText((celda.valor & 0xffff) >>> 0);
+    return resolveText((celda.valor & 0xffff) >>> 0, lang);
   }
   if (celda.tipoVar === EnTipoVariable.rangoFloat) return decodificarRangoFloat(celda.valor);
   if (typeof celda.valor !== 'number') return '—';
@@ -54,7 +55,7 @@ function bgFila(rowIdx: number): string {
   return rowIdx % 2 === 1 ? COLORES.tertiary : COLORES.grey_table;
 }
 
-export default function ObjTablaDinamicaFila({ fila, rowIdx, onNavegar, responsive, smallFontSize, gridTemplateColumns, minWidth }: ObjTablaDinamicaFilaProps): JSX.Element {
+export default function ObjTablaDinamicaFila({ fila, rowIdx, onNavegar, responsive, smallFontSize, gridTemplateColumns, minWidth, lang }: ObjTablaDinamicaFilaProps): JSX.Element {
   const isResponsive = responsive === true;
   const useSmallFont = smallFontSize === true;
   const esNavegable = fila.navPtr > 0;
@@ -62,13 +63,15 @@ export default function ObjTablaDinamicaFila({ fila, rowIdx, onNavegar, responsi
   const handleClick = esNavegable ? (): void => onNavegar({ idPantalla: fila.navPtr, indicePantalla: fila.navIndice, esPrincipal: false }) : undefined;
 
   const getTextSizeClass = (celda: Celda): string => {
-    const texto = renderCelda(celda);
+    const texto = renderCelda(celda, lang);
     if (isResponsive) {
       if (useSmallFont || texto.length > 24) return 'text-xs';
       return 'text-sm';
     }
     if (rowIdx !== 0) return 'text-3xl';
-    if (texto.length > 24) return 'text-xl';
+    if (texto.length > 30) return 'text-sm';
+    if (texto.length > 20) return 'text-xl';
+
     return 'text-3xl';
   };
 
@@ -89,7 +92,7 @@ export default function ObjTablaDinamicaFila({ fila, rowIdx, onNavegar, responsi
           } ${getTextSizeClass(celda)}`}
           style={{ backgroundColor: bg, color: getCellTextColor(colIdx) }}
         >
-          {renderCelda(celda)}
+          {renderCelda(celda, lang)}
         </div>
       ))}
     </div>

@@ -8,36 +8,6 @@ export { resolverColor, getColorHex } from './colors';
 // ─── Texto ────────────────────────────────────────────────────────────────────
 
 // /** Devuelve el nombre legible de un ID de texto (EnTextos). */
-// const EnTextosReverse = EnTextos as unknown as Record<number, string | undefined>;
-
-// export function resolverTexto(id: number | EnTextos): string {
-//   // Caso especial: textVacio (ID 151) debe mostrar "--"
-//   if (id === 151) return '--';
-
-//   // Excepción para G0-G31 (IDs 254-285) deben mostrar "S1", "S2", etc.
-//   if (id >= 254 && id <= 285) {
-//     return `S${id - 254}`; // G0 (254) -> S1, G1 (255) -> S2, ..., G31 (285) -> S32
-//   }
-
-//   const nombre = EnTextosReverse[id];
-//   if (nombre === undefined) return `[txt:${id}]`;
-
-//   // Convierte camelCase a "palabras separadas" y quita el prefijo "text"
-//   let resultado = nombre.replace(/^text/, '').replace(/([A-Z])/g, ' $1');
-
-//   // Separar letras-números pero preservando fórmulas químicas conocidas
-//   // Usamos negative lookahead para evitar separar CO2, NH3, H2O, etc.
-//   resultado = resultado.replace(/([a-zA-Z])(\d)(?!(?:2|3|H|O|N))/g, '$1 $2');
-
-//   // Casos especiales: manejar CO2, NH3, H2O que sí deben mantenerse juntos
-//   resultado = resultado.replace(/\bCo\s2\b/gi, 'CO2');
-//   resultado = resultado.replace(/\bNh\s3\b/gi, 'NH3');
-//   resultado = resultado.replace(/\bH\s2\sO\b/gi, 'H2O');
-//   resultado = resultado.replace(/\bO\s2\b/gi, 'O2');
-//   resultado = resultado.replace(/\bN\s2\b/gi, 'N2');
-
-//   return resultado.trim().replace(/\s([A-Z])(?![A-Z]*\d)/g, (_, c: string) => ' ' + c.toLowerCase());
-// }
 
 // ─── Textos concatenados (objTextoConcatenadoPlantilla, tipo 67) ──────────────
 
@@ -59,7 +29,7 @@ const TEXTO_CONCATENADO_MIN_ID = 65000;
  * Los textos personalizados se decodifican como UTF-16LE.
  * Devuelve el texto completo resultante de concatenar todas las secciones.
  */
-export function parseConcatenado(raw: BufferLike | number[]): string {
+export function parseConcatenado(raw: BufferLike | number[], lang?: string): string {
   const bytes: number[] = Array.isArray(raw) ? raw : raw.data;
   const u16s: number[] = [];
   for (let i = 0; i + 1 < bytes.length; i += 2) {
@@ -75,7 +45,7 @@ export function parseConcatenado(raw: BufferLike | number[]): string {
     if (w === 0xfffd) {
       if (j >= u16s.length) break;
       const id = u16s[j++]!;
-      partes.push(resolveText(id));
+      partes.push(resolveText(id, lang));
       continue;
     }
     // Texto personalizado UTF-16LE
@@ -93,13 +63,13 @@ export function parseConcatenado(raw: BufferLike | number[]): string {
 }
 
 /** Resuelve un ID de texto normal o, si pertenece al rango de concatenados, lo toma del mapa recibido. */
-export function resolverTextoPantalla(id: number, textoConcatenados?: Map<number, string>): string {
+export function resolverTextoPantalla(id: number, textoConcatenados?: Map<number, string>, lang?: string): string {
   if (id >= TEXTO_CONCATENADO_MIN_ID) {
     const concatenado = textoConcatenados?.get(id);
     if (concatenado !== undefined) return concatenado;
   }
 
-  return resolveText(id);
+  return resolveText(id, lang);
 }
 
 // ─── Unidad ───────────────────────────────────────────────────────────────────

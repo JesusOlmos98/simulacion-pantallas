@@ -8,18 +8,19 @@ import { COLORES } from './colors';
 
 interface ObjPopupProps {
   obj: Record<string, unknown>;
+  lang?: string;
 }
 
-export default function ObjPopup({ obj }: ObjPopupProps): JSX.Element {
+export default function ObjPopup({ obj, lang }: ObjPopupProps): JSX.Element {
   const [isVisible, setIsVisible] = useState(true);
 
   const tituloId = (obj.titulo as number | undefined) ?? 0;
   const mensajeId = (obj.mensaje as number | undefined) ?? 0;
   const botonId = (obj.boton as number | undefined) ?? 0;
 
-  const titulo = resolveText(tituloId);
-  const mensaje = resolveText(mensajeId);
-  const boton = resolveText(botonId);
+  const titulo = resolveText(tituloId, lang);
+  const mensaje = resolveText(mensajeId, lang);
+  const boton = resolveText(botonId, lang);
   const mostrarBoton = botonId !== 0;
 
   const handleCerrar = (): void => {

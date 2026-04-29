@@ -25,7 +25,7 @@ import PantallaLibre from './PantallaLibre';
 import { esTipoVarTiempoFecha, parseTiempoFechaString, maskMinMaxTiempoFecha } from '@/src/utils/common-lib-commac-generador/fnTiempo';
 import { apiFetch } from '../api/apiFetch';
 
-const MAC_CTI40PLUS = '202000029'; // MAC address para CTI40 PLUS
+const MAC_TC5 = '206000003'; // MAC address para TC5
 let idEnvioCounter = 1;
 // const URL = process.env.COMMAC_BASE_URL || 'http://localhost:8020/api'; // Centralizado en apiFetch
 
@@ -41,7 +41,7 @@ interface DestinoTrasEdicion {
 // ─── Fetch ────────────────────────────────────────────────────────────────────
 
 async function fetchPantalla(d: DescriptorPantalla, signal: AbortSignal): Promise<ObjBase[]> {
-  const params = new URLSearchParams({ mac: MAC_CTI40PLUS, eventId: '1', idEnvio: String(idEnvioCounter++), readWrite: '0', esPantallaPrincipal: d.esPrincipal ? '1' : '0' });
+  const params = new URLSearchParams({ mac: MAC_TC5, eventId: '1', idEnvio: String(idEnvioCounter++), readWrite: '0', esPantallaPrincipal: d.esPrincipal ? '1' : '0' });
   if (!d.esPrincipal) {
     params.set('idNav', String(d.idPantalla));
     params.set('indicePantalla', String(d.indicePantalla));
@@ -57,11 +57,7 @@ async function fetchPantalla(d: DescriptorPantalla, signal: AbortSignal): Promis
 
 // ─── Componente principal ─────────────────────────────────────────────────────
 
-interface PantallaCti40PlusProps {
-  lang?: string;
-}
-
-export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX.Element {
+export default function PantallaTc5(): JSX.Element {
   const router = useRouter();
 
   const [pila, setPila] = useState<DescriptorPantalla[]>([]);
@@ -84,7 +80,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
   const escribirSeleccionRef = useRef<() => Promise<void>>(async () => {});
 
   // Botones de barra de acceso directo (tipoObjeto: 66) — solo llegan en pantallaId=0,
-  // se guardan aquí la primera vez y persisten durante toda la sesión CTI40 Plus.
+  // se guardan aquí la primera vez y persisten durante toda la sesión TC5.
   const barraAccesoDirectoPersistente = useRef<ObjBase[]>([]);
 
   const cargarPantalla = useCallback((descriptor: DescriptorPantalla) => {
@@ -153,7 +149,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
     const datos = (grafico?.datos as { estadoVentilador: number }[] | undefined) ?? [];
     setEstadosVentiladores(datos.map((d) => d.estadoVentilador));
     setPestanaActivaVentilacion(0);
-  }, [lang, objetos]);
+  }, [objetos]);
 
   // Inicializa las opciones seleccionadas cuando carga una pantalla de selección (tipoObjeto: 10)
   useEffect(() => {
@@ -172,7 +168,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
       const selecciones = objetos.filter((o) => o.tipoObjeto === 10 && (o.opcionSeleccionada as number) === 2).map((o) => o.idSeleccion as number);
       setSelectedIdSelecciones(new Set(selecciones));
     }
-  }, [lang, objetos]);
+  }, [objetos]);
 
   async function guardarVentiladores(): Promise<void> {
     if (!objVentilacionEdit || !objetos) return;
@@ -188,7 +184,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
     const params = new URLSearchParams({
       eventId: '255',
       idEnvio: String(idEnvioCounter++),
-      mac: MAC_CTI40PLUS,
+      mac: MAC_TC5,
       readWrite: '1',
       esPantallaPrincipal: '0',
       idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
@@ -329,7 +325,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
     const params = new URLSearchParams({
       eventId: '255',
       idEnvio: String(idEnvioCounter++),
-      mac: MAC_CTI40PLUS,
+      mac: MAC_TC5,
       readWrite: '1',
       esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
       idNav: String(idPantallaRespuesta),
@@ -379,7 +375,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
     const params = new URLSearchParams({
       eventId: '1',
       idEnvio: String(idEnvioCounter++),
-      mac: MAC_CTI40PLUS,
+      mac: MAC_TC5,
       readWrite: '1',
       esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
       idNav: String(idPantallaRespuesta),
@@ -430,7 +426,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
       const params = new URLSearchParams({
         eventId: '1',
         idEnvio: String(idEnvioCounter++),
-        mac: MAC_CTI40PLUS,
+        mac: MAC_TC5,
         readWrite: '1',
         esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
         idNav: String(idPantallaRespuesta),
@@ -474,7 +470,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
       const params = new URLSearchParams({
         eventId: '1',
         idEnvio: String(idEnvioCounter++),
-        mac: MAC_CTI40PLUS,
+        mac: MAC_TC5,
         readWrite: '1',
         esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
         idNav: String(idPantallaRespuesta),
@@ -517,7 +513,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
         readWrite: '1',
         eventId: '255',
         idEnvio: String(idEnvioCounter++),
-        mac: MAC_CTI40PLUS,
+        mac: MAC_TC5,
         idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
         navIdPantallaRespuestaTrama: String(idPantallaActual),
         indicePantalla: String(indicePantallaActual),
@@ -559,7 +555,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
       const params = new URLSearchParams({
         eventId: '255',
         idEnvio: String(idEnvioCounter++),
-        mac: MAC_CTI40PLUS,
+        mac: MAC_TC5,
         readWrite: '1',
         esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
         idNav: String(idPantallaRespuesta),
@@ -614,7 +610,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
           const params = new URLSearchParams({
             eventId: '255',
             idEnvio: String(idEnvioCounter++),
-            mac: MAC_CTI40PLUS,
+            mac: MAC_TC5,
             readWrite: '1',
             esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
             idNav: String(idPantallaRespuesta),
@@ -717,12 +713,12 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
         const id = obj.idTextoConcatenado as number | undefined;
         const raw = obj.cadenaConcatenadaRaw as { type: string; data: number[] } | number[] | undefined;
         if (id !== undefined && raw !== undefined) {
-          map.set(id, parseConcatenado(raw, lang));
+          map.set(id, parseConcatenado(raw));
         }
       }
     }
     return map;
-  }, [lang, objetos]);
+  }, [objetos]);
 
   // Verificar si estamos en pantalla principal (idPantalla: 0)
   const esPantallaPrincipal = (objetos?.find((o) => o.tipoObjeto === 1)?.idPantalla ?? 0) === 0;
@@ -747,7 +743,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
       }
     | undefined;
   const tituloTextId = encabezado?.tituloText ?? 0;
-  const titulo = encabezado ? (textoConcatenadoMap.get(tituloTextId) ?? resolveText(tituloTextId, lang)) : '';
+  const titulo = encabezado ? (textoConcatenadoMap.get(tituloTextId) ?? resolveText(tituloTextId)) : '';
   const colorHeader = encabezado ? getColorHex(encabezado.colorTitulo ?? 0) : COLORES.primary;
 
   // Detectar si es la pantalla de curva de ventilación para aplicar smallFontSize
@@ -769,7 +765,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
   const esLibre = tipoPlantilla === 21;
   const objVentilacionGrafico = esVentilacionGrupoEdit ? (objetos?.find((o) => o.tipoObjeto === 21) ?? null) : null;
   const objVentilacionEdit = esVentilacionGrupoEdit ? (objetos?.find((o) => o.tipoObjeto === 22) ?? null) : null;
-  const tituloVentilacionEdit = objVentilacionEdit ? resolveText(objVentilacionEdit.textoCabecera as number, lang) : null;
+  const tituloVentilacionEdit = objVentilacionEdit ? resolveText(objVentilacionEdit.textoCabecera as number) : null;
   const esTeclado = tipoPlantilla === 2;
 
   // Campos de selección única (tipoObjeto: 10 — objCamposMultiseleccion)
@@ -895,7 +891,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
 
             {/* Título */}
             <span className="min-w-0 flex-1 text-lg font-medium leading-tight text-white text-center px-2 line-clamp-2">
-              {!loading && (tituloVentilacionEdit ?? (esPantallaPrincipal ? resolveText(EnTextos.textPrincipal, lang) : titulo))}
+              {!loading && (tituloVentilacionEdit ?? (esPantallaPrincipal ? resolveText(EnTextos.textPrincipal) : titulo))}
             </span>
 
             {/* Derecha: tareas + botones toggle */}
@@ -952,13 +948,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
               <LuX size={28} />
             </button>
             <span className="min-w-0 text-lg font-normal leading-tight text-white line-clamp-2 text-center px-2">
-              {esTeclado
-                ? objEditVariablesString
-                  ? resolveText(objEditVariablesString.textoVar as number, lang)
-                  : objEditVariables
-                    ? resolveText(objEditVariables.textoVar as number, lang)
-                    : ''
-                : titulo}
+              {esTeclado ? (objEditVariablesString ? resolveText(objEditVariablesString.textoVar as number) : objEditVariables ? resolveText(objEditVariables.textoVar as number) : '') : titulo}
             </span>
             <button
               onClick={() => {
@@ -1103,7 +1093,6 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                       onSelect={handleSelect}
                       isDisabled={isDisabled}
                       responsive
-                      lang={lang}
                     />
                   );
                 })}
@@ -1122,7 +1111,6 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                   onPestanaChange={setPestanaActivaVentilacion}
                   onTrash={handleTrashVentiladores}
                   responsive
-                  lang={lang}
                 />
                 {objVentilacionGrafico && (
                   <ObjVentilacionGrupoGrafico
@@ -1145,7 +1133,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                       className="text-lg"
                       style={{ color: COLORES.light }}
                     >
-                      {resolveText(objVentilacionEdit.textoPestana2 as number, lang)}
+                      {resolveText(objVentilacionEdit.textoPestana2 as number)}
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
@@ -1165,7 +1153,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                       className="text-lg"
                       style={{ color: COLORES.light }}
                     >
-                      {resolveText(objVentilacionEdit.textoPestana2 as number, lang)}
+                      {resolveText(objVentilacionEdit.textoPestana2 as number)}
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
@@ -1177,7 +1165,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                       className="text-lg"
                       style={{ color: COLORES.light }}
                     >
-                      {resolveText(objVentilacionEdit.textoPestana1 as number, lang)}
+                      {resolveText(objVentilacionEdit.textoPestana1 as number)}
                     </span>
                   </div>
                 </div>
@@ -1213,7 +1201,6 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                               indicePantallaActual={actual.indicePantalla}
                               textoConcatenados={textoConcatenadoMap}
                               responsive
-                              lang={lang}
                             />
                           ))}
                         </div>
@@ -1242,7 +1229,6 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                             onNavegar={navegarA}
                             responsive
                             smallFontSize={esTablaCompleja}
-                            lang={lang}
                           />
                         ))}
                       </div>
@@ -1261,7 +1247,6 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                               indicePantallaActual={actual.indicePantalla}
                               esLista
                               responsive
-                              lang={lang}
                             />
                           ))}
                         </div>
@@ -1277,7 +1262,6 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                               indicePantallaActual={actual.indicePantalla}
                               textoConcatenados={textoConcatenadoMap}
                               responsive
-                              lang={lang}
                             />
                           ))}
                         </div>
@@ -1422,7 +1406,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                     <LuX size={60} />
                   </button>
                   <span className="text-5xl font-normal text-white line-clamp-2 text-center px-2">
-                    {objEditVariablesString ? resolveText(objEditVariablesString.textoVar as number, lang) : objEditVariables ? resolveText(objEditVariables.textoVar as number, lang) : ''}
+                    {objEditVariablesString ? resolveText(objEditVariablesString.textoVar as number) : objEditVariables ? resolveText(objEditVariables.textoVar as number) : ''}
                   </span>
                   <button
                     onClick={() => {
@@ -1625,7 +1609,6 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                           isSelected={isSelected}
                           onSelect={handleSelect}
                           isDisabled={isDisabled}
-                          lang={lang}
                         />
                       );
                     })}
@@ -1645,7 +1628,6 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                     pestanaActiva={pestanaActivaVentilacion}
                     onPestanaChange={setPestanaActivaVentilacion}
                     onTrash={handleTrashVentiladores}
-                    lang={lang}
                   />
 
                   {/* Gráfico de ventiladores */}
@@ -1671,7 +1653,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                         className="text-5xl"
                         style={{ color: COLORES.light }}
                       >
-                        {resolveText(objVentilacionEdit.textoPestana2 as number, lang)}
+                        {resolveText(objVentilacionEdit.textoPestana2 as number)}
                       </span>
                     </div>
                     <div className="flex items-center gap-6">
@@ -1691,7 +1673,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                         className="text-5xl"
                         style={{ color: COLORES.light }}
                       >
-                        {resolveText(objVentilacionEdit.textoPestana2 as number, lang)}
+                        {resolveText(objVentilacionEdit.textoPestana2 as number)}
                       </span>
                     </div>
                     <div className="flex items-center gap-6">
@@ -1703,7 +1685,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                         className="text-5xl"
                         style={{ color: COLORES.light }}
                       >
-                        {resolveText(objVentilacionEdit.textoPestana1 as number, lang)}
+                        {resolveText(objVentilacionEdit.textoPestana1 as number)}
                       </span>
                     </div>
                   </div>
@@ -1740,7 +1722,6 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                                   idPantallaActual={actual.idPantalla}
                                   indicePantallaActual={actual.indicePantalla}
                                   textoConcatenados={textoConcatenadoMap}
-                                  lang={lang}
                                 />
                               ))}
                             </div>
@@ -1771,7 +1752,6 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                               filas={tabla.filas}
                               onNavegar={navegarA}
                               smallFontSize={esTablaCompleja}
-                              lang={lang}
                             />
                           ))}
                         </div>
@@ -1791,7 +1771,6 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                                   idPantallaActual={actual.idPantalla}
                                   indicePantallaActual={actual.indicePantalla}
                                   esLista
-                                  lang={lang}
                                 />
                               ))}
                             </div>
@@ -1806,7 +1785,6 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                                   idPantallaActual={actual.idPantalla}
                                   indicePantallaActual={actual.indicePantalla}
                                   textoConcatenados={textoConcatenadoMap}
-                                  lang={lang}
                                 />
                               ))}
                             </div>
@@ -1879,7 +1857,6 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                             key={i}
                             obj={obj}
                             textoConcatenados={textoConcatenadoMap}
-                            lang={lang}
                           />
                         );
                       case 19:
@@ -1888,7 +1865,6 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                             key={i}
                             obj={obj}
                             textoConcatenados={textoConcatenadoMap}
-                            lang={lang}
                           />
                         );
                       case 7:
@@ -1898,7 +1874,6 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                             key={i}
                             obj={obj}
                             textoConcatenados={textoConcatenadoMap}
-                            lang={lang}
                           />
                         );
                     }

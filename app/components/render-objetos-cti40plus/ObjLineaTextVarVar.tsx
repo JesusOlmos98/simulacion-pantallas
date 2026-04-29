@@ -17,11 +17,12 @@ interface ObjLineaTextVarVarProps {
   indicePantallaActual: number;
   textoConcatenados?: Map<number, string>;
   responsive?: boolean;
+  lang?: string;
 }
 
 const TIPOS_TEXTO = new Set([30, 31, 43]);
 
-export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual, indicePantallaActual, textoConcatenados, responsive }: ObjLineaTextVarVarProps): JSX.Element {
+export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual, indicePantallaActual, textoConcatenados, responsive, lang }: ObjLineaTextVarVarProps): JSX.Element {
   const nav = (obj.valorEditableONav as number | undefined) ?? 0;
 
   const handleClick = (): void => {
@@ -33,18 +34,18 @@ export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual, i
     }
   };
 
-  const texto = resolverTextoPantalla((obj.texto as number | undefined) ?? 0, textoConcatenados);
+  const texto = resolverTextoPantalla((obj.texto as number | undefined) ?? 0, textoConcatenados, lang);
 
   const tipoVarCentral = (obj.tipoVarCentral as number | undefined) ?? 0;
   const variableCentral = (obj.variableCentral as number | undefined) ?? 0;
   const IconoCentral = tipoVarCentral === 40 ? resolverIconoCTI40Plus(variableCentral & 0xff) : null;
-  const valorCentral = TIPOS_TEXTO.has(tipoVarCentral) ? resolverTextoPantalla(variableCentral & 0xffff, textoConcatenados) : decodificarVariable(variableCentral, tipoVarCentral);
+  const valorCentral = TIPOS_TEXTO.has(tipoVarCentral) ? resolverTextoPantalla(variableCentral & 0xffff, textoConcatenados, lang) : decodificarVariable(variableCentral, tipoVarCentral);
   const unidadCentral = resolverUnidad((obj.unidadCentral as number | undefined) ?? 0);
 
   const tipoVar = (obj.tipoVar as number | undefined) ?? 0;
   const variable = (obj.variable as number | undefined) ?? 0;
   const IconoValor = tipoVar === 40 ? resolverIconoCTI40Plus(variable & 0xff) : null;
-  const valor = TIPOS_TEXTO.has(tipoVar) ? resolverTextoPantalla(variable & 0xffff, textoConcatenados) : decodificarVariable(variable, tipoVar);
+  const valor = TIPOS_TEXTO.has(tipoVar) ? resolverTextoPantalla(variable & 0xffff, textoConcatenados, lang) : decodificarVariable(variable, tipoVar);
   const unidad = resolverUnidad((obj.unidad as number | undefined) ?? 0);
 
   const colorTexto = resolverColor((obj.coloresLinea as number | undefined) ?? 0);

@@ -9,24 +9,25 @@ interface ObjLineaInfoTextTextVarVarProps {
   obj: Record<string, unknown>;
   textoConcatenados?: Map<number, string>;
   responsive?: boolean;
+  lang?: string;
 }
 
 const TIPOS_TEXTO = new Set([30, 31, 43]);
 
-export default function ObjLineaInfoTextTextVarVar({ obj, textoConcatenados, responsive }: ObjLineaInfoTextTextVarVarProps): JSX.Element {
-  const texto = resolverTextoPantalla((obj.texto as number | undefined) ?? 0, textoConcatenados);
+export default function ObjLineaInfoTextTextVarVar({ obj, textoConcatenados, responsive, lang }: ObjLineaInfoTextTextVarVarProps): JSX.Element {
+  const texto = resolverTextoPantalla((obj.texto as number | undefined) ?? 0, textoConcatenados, lang);
 
   const tipoVar1 = (obj.tipoVar1 as number | undefined) ?? 0;
   const variable1 = (obj.variable1 as number | undefined) ?? 0;
   const IconoVar1 = tipoVar1 === 40 ? resolverIconoCTI40Plus(variable1 & 0xff) : null;
-  const var1Raw = TIPOS_TEXTO.has(tipoVar1) ? resolverTextoPantalla(variable1 & 0xffff, textoConcatenados) : decodificarVariable(variable1, tipoVar1);
+  const var1Raw = TIPOS_TEXTO.has(tipoVar1) ? resolverTextoPantalla(variable1 & 0xffff, textoConcatenados, lang) : decodificarVariable(variable1, tipoVar1);
   // En el firmware CTI40+ las etiquetas textG0…textGN (IDs 254…) son sondas S0…SN
   const var1 = var1Raw.replace(/^G (\d+)$/, 'S$1');
 
   const tipoVar2 = (obj.tipoVar2 as number | undefined) ?? 0;
   const variable2 = (obj.variable2 as number | undefined) ?? 0;
   const IconoVar2 = tipoVar2 === 40 ? resolverIconoCTI40Plus(variable2 & 0xff) : null;
-  const var2 = TIPOS_TEXTO.has(tipoVar2) ? resolverTextoPantalla(variable2 & 0xffff, textoConcatenados) : decodificarVariable(variable2, tipoVar2);
+  const var2 = TIPOS_TEXTO.has(tipoVar2) ? resolverTextoPantalla(variable2 & 0xffff, textoConcatenados, lang) : decodificarVariable(variable2, tipoVar2);
   const unidad2 = resolverUnidad((obj.unidad2 as number | undefined) ?? 0);
 
   const coloresLineaEdit = (obj.coloresLineaEdit as number | undefined) ?? 0;

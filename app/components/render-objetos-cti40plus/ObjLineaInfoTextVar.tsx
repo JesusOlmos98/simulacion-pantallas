@@ -9,21 +9,22 @@ interface ObjLineaInfoTextVarProps {
   obj: Record<string, unknown>;
   textoConcatenados?: Map<number, string>;
   responsive?: boolean;
+  lang?: string;
 }
 
 const TIPOS_TEXTO = new Set([30, 31, 43]);
 
-export default function ObjLineaInfoTextVar({ obj, textoConcatenados, responsive }: ObjLineaInfoTextVarProps): JSX.Element {
+export default function ObjLineaInfoTextVar({ obj, textoConcatenados, responsive, lang }: ObjLineaInfoTextVarProps): JSX.Element {
   const tipoVar = (obj.tipoVar as number | undefined) ?? 0;
   const variable = (obj.variable as number | undefined) ?? 0;
-  const texto = resolverTextoPantalla((obj.texto as number | undefined) ?? 0, textoConcatenados);
+  const texto = resolverTextoPantalla((obj.texto as number | undefined) ?? 0, textoConcatenados, lang);
   const unidad = resolverUnidad((obj.unidad as number | undefined) ?? 0);
 
   const coloresLineaEdit = (obj.coloresLineaEdit as number | undefined) ?? 0;
   const color = coloresLineaEdit === 4 ? COLORES.influences : resolverColor(coloresLineaEdit);
 
   const Icono = tipoVar === 40 ? resolverIconoCTI40Plus(variable & 0xff) : null;
-  const valor = TIPOS_TEXTO.has(tipoVar) ? resolverTextoPantalla(variable & 0xffff, textoConcatenados) : decodificarVariable(variable, tipoVar);
+  const valor = TIPOS_TEXTO.has(tipoVar) ? resolverTextoPantalla(variable & 0xffff, textoConcatenados, lang) : decodificarVariable(variable, tipoVar);
   const iconSize = responsive === true ? 28 : 75;
   const textSize = responsive === true ? 'text-lg' : 'text-5xl';
   const leading = responsive === true ? '' : 'leading-[50px]';

@@ -1,4 +1,5 @@
 import { EnTextos } from '@/src/utils/common-lib-commac-generador/enumTextos';
+import { getHtmlLang } from '@/app/lib/getHtmlLang';
 import {
   textMapEN,
   textMapES,
@@ -23,9 +24,9 @@ import {
 } from './map/index';
 
 export function resolveText(numText: number | EnTextos, lang?: string): string {
-  if (lang === undefined) return textMapES.get(numText) ?? '';
+  const resolvedLang = (lang ?? getHtmlLang()).toLowerCase().split('-')[0];
 
-  switch (lang) {
+  switch (resolvedLang) {
     case 'es':
       return textMapES.get(numText) ?? '';
     case 'en':
@@ -66,6 +67,8 @@ export function resolveText(numText: number | EnTextos, lang?: string): string {
       return textMapVI.get(numText) ?? '';
     case 'zh':
       return textMapZH.get(numText) ?? '';
+    case 'ja':
+      return textMapJP.get(numText) ?? '';
     default: // es
       return textMapES.get(numText) ?? '';
   }

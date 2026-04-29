@@ -10,12 +10,13 @@ interface ObjTablaDinamicaProps {
   onNavegar: (d: DescriptorPantalla) => void;
   responsive?: boolean;
   smallFontSize?: boolean;
+  lang?: string;
 }
 
 const RESPONSIVE_FIRST_COLUMN_WIDTH = 100;
 const RESPONSIVE_OTHER_COLUMN_WIDTH = 100;
 
-export default function ObjTablaDinamica({ init, filas, onNavegar, responsive, smallFontSize }: ObjTablaDinamicaProps): JSX.Element {
+export default function ObjTablaDinamica({ init, filas, onNavegar, responsive, smallFontSize, lang }: ObjTablaDinamicaProps): JSX.Element {
   const isResponsive = responsive === true;
   const numColumnas = Math.max(Number(init.numColumnas ?? 0), ...filas.map((fila) => (fila as FilaObj).celdas?.length ?? 0));
   const columnasSecundarias = Array.from({ length: Math.max(0, numColumnas - 1) }, () => `${RESPONSIVE_OTHER_COLUMN_WIDTH}px`).join(' ');
@@ -34,6 +35,7 @@ export default function ObjTablaDinamica({ init, filas, onNavegar, responsive, s
           smallFontSize={smallFontSize}
           gridTemplateColumns={isResponsive ? gridTemplateColumns : undefined}
           minWidth={isResponsive ? minWidth : undefined}
+          lang={lang}
         />
       ))}
     </div>

@@ -33,9 +33,20 @@ export interface RenderObjetoProps {
   esLista?: boolean;
   textoConcatenados?: Map<number, string>;
   responsive?: boolean;
+  lang?: string;
 }
 
-export default function RenderObjeto({ obj, onNavegar, onRefrescarPantalla, idPantallaActual, indicePantallaActual, esLista, textoConcatenados, responsive }: RenderObjetoProps): JSX.Element | null {
+export default function RenderObjeto({
+  obj,
+  onNavegar,
+  onRefrescarPantalla,
+  idPantallaActual,
+  indicePantallaActual,
+  esLista,
+  textoConcatenados,
+  responsive,
+  lang
+}: RenderObjetoProps): JSX.Element | null {
   // NOTA: Los objetos ObjDescripcionPantallaCambioParametro (56), ObjVineta (41) y ObjVarIndividual (36) NO renderizan nada
   switch (obj.tipoObjeto) {
     // objPlantilla — metadatos, no se pinta
@@ -72,6 +83,7 @@ export default function RenderObjeto({ obj, onNavegar, onRefrescarPantalla, idPa
           indicePantallaActual={indicePantallaActual}
           textoConcatenados={textoConcatenados}
           responsive={responsive}
+          lang={lang}
         />
       );
 
@@ -85,6 +97,7 @@ export default function RenderObjeto({ obj, onNavegar, onRefrescarPantalla, idPa
           indicePantallaActual={indicePantallaActual}
           textoConcatenados={textoConcatenados}
           responsive={responsive}
+          lang={lang}
         />
       );
 
@@ -98,6 +111,7 @@ export default function RenderObjeto({ obj, onNavegar, onRefrescarPantalla, idPa
           indicePantallaActual={indicePantallaActual}
           textoConcatenados={textoConcatenados}
           responsive={responsive}
+          lang={lang}
         />
       );
 
@@ -111,6 +125,7 @@ export default function RenderObjeto({ obj, onNavegar, onRefrescarPantalla, idPa
           textoConcatenados={textoConcatenados}
           idPantallaActual={idPantallaActual}
           responsive={responsive}
+          lang={lang}
         />
       );
 
@@ -123,6 +138,7 @@ export default function RenderObjeto({ obj, onNavegar, onRefrescarPantalla, idPa
           idPantallaActual={idPantallaActual}
           indicePantallaActual={indicePantallaActual}
           responsive={responsive}
+          lang={lang}
         />
       );
 
@@ -172,6 +188,7 @@ export default function RenderObjeto({ obj, onNavegar, onRefrescarPantalla, idPa
         <ObjVentilacionGrupoGraficoEdit
           obj={obj}
           responsive={responsive}
+          lang={lang}
         />
       );
 
@@ -197,6 +214,7 @@ export default function RenderObjeto({ obj, onNavegar, onRefrescarPantalla, idPa
         <ObjLineaInfoTextText
           obj={obj}
           textoConcatenados={textoConcatenados}
+          lang={lang}
         />
       );
 
@@ -206,6 +224,7 @@ export default function RenderObjeto({ obj, onNavegar, onRefrescarPantalla, idPa
         <ObjLineaInfoTextVar
           obj={obj}
           textoConcatenados={textoConcatenados}
+          lang={lang}
         />
       );
 
@@ -215,6 +234,7 @@ export default function RenderObjeto({ obj, onNavegar, onRefrescarPantalla, idPa
         <ObjLineaInfoTextTextVarVar
           obj={obj}
           textoConcatenados={textoConcatenados}
+          lang={lang}
         />
       );
 
@@ -239,7 +259,12 @@ export default function RenderObjeto({ obj, onNavegar, onRefrescarPantalla, idPa
 
     // objPopup - diálogo modal que se muestra automáticamente
     case EnObjPintaPantallasOmega.objPopup: // 40
-      return <ObjPopup obj={obj} />;
+      return (
+        <ObjPopup
+          obj={obj}
+          lang={lang}
+        />
+      );
 
     case EnObjPintaPantallasOmega.objRefrescoPantalla: {
       const segundos = (obj.tiempoRefrescoSegundo as number | undefined) ?? 0;
