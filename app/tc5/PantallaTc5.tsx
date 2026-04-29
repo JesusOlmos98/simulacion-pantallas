@@ -1010,6 +1010,8 @@ export default function PantallaTc5(): JSX.Element {
               <PantallaLibre
                 objetos={objetos}
                 onNavegar={navegarA}
+                idPantallaActual={actual.idPantalla}
+                indicePantallaActual={actual.indicePantalla}
                 containerWidth={viewportWidth}
               />
             )}
@@ -1524,6 +1526,8 @@ export default function PantallaTc5(): JSX.Element {
                 <PantallaLibre
                   objetos={objetos}
                   onNavegar={navegarA}
+                  idPantallaActual={actual.idPantalla}
+                  indicePantallaActual={actual.indicePantalla}
                 />
               )}
 

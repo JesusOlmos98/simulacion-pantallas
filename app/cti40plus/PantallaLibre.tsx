@@ -10,11 +10,13 @@ import { COLORES } from '../components/render-objetos-cti40plus';
 interface Props {
   objetos: ObjBase[];
   onNavegar: (descriptor: DescriptorPantalla) => void;
+  idPantallaActual: number;
+  indicePantallaActual: number;
   /** Ancho del contenedor en px. Si se omite, usa la escala fija 3x (960px). */
   containerWidth?: number;
 }
 
-export default function PantallaLibre({ objetos, onNavegar: _onNavegar, containerWidth }: Props): JSX.Element {
+export default function PantallaLibre({ objetos, onNavegar, idPantallaActual, indicePantallaActual, containerWidth }: Props): JSX.Element {
   const resObj = objetos.find((o) => o.tipoObjeto === 72);
   const sizeX = (resObj?.sizeX as number) ?? 320;
   const sizeY = (resObj?.sizeY as number) ?? 240;
@@ -36,6 +38,9 @@ export default function PantallaLibre({ objetos, onNavegar: _onNavegar, containe
                 <ObjPosXyLibreIcon
                   key={i}
                   obj={obj}
+                  onNavegar={onNavegar}
+                  idPantallaActual={idPantallaActual}
+                  indicePantallaActual={indicePantallaActual}
                 />
               );
             case 75:

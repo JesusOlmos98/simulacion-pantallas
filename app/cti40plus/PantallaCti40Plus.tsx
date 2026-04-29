@@ -1020,6 +1020,8 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
               <PantallaLibre
                 objetos={objetos}
                 onNavegar={navegarA}
+                idPantallaActual={actual.idPantalla}
+                indicePantallaActual={actual.indicePantalla}
                 containerWidth={viewportWidth}
               />
             )}
@@ -1540,6 +1542,8 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                 <PantallaLibre
                   objetos={objetos}
                   onNavegar={navegarA}
+                  idPantallaActual={actual.idPantalla}
+                  indicePantallaActual={actual.indicePantalla}
                 />
               )}
 
