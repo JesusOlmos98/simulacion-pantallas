@@ -6,7 +6,7 @@ import {
   LuFlame, // 38  – Calefacción (llama)
   LuSnowflake, // 37  – Refrigeración (copo de nieve)
   LuThermometer, // 23  – Contacto térmico
-  LuAirVent, // 22  – Entrada de aire
+  LuAirVent, // 22  – Entradas de aire
   LuDroplets, // 21  – Gotas de agua
   LuBell, // 71  – Alarmas
   LuBellRing, // 270 – Alarmas
