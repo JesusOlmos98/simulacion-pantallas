@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="ICON_WARNING.svg"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   id="svg14106"
+   version="1.1"
+   viewBox="0 0 18.519632 16.245613"
+   height="16.245613mm"
+   width="18.519632mm">
+  <defs
+     id="defs14100" />
+  <sodipodi:namedview
+     inkscape:window-maximized="0"
+     inkscape:window-y="0"
+     inkscape:window-x="104"
+     inkscape:window-height="1040"
+     inkscape:window-width="1300"
+     fit-margin-bottom="0"
+     fit-margin-right="0"
+     fit-margin-left="0"
+     fit-margin-top="0"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="90.700392"
+     inkscape:cx="12.140594"
+     inkscape:zoom="0.35"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#000000"
+     id="base" />
+  <metadata
+     id="metadata14103">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-102.62113,-124.16885)"
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Capa 1">
+    <path
+       inkscape:transform-center-x="-7.5287693e-06"
+       inkscape:export-ydpi="88.280228"
+       inkscape:export-xdpi="88.280228"
+       inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_WARNING"
+       inkscape:transform-center-y="-8.6809025"
+       d="m 120.36784,139.64149 -16.97378,0 8.48689,-14.69973 z"
+       inkscape:randomized="0"
+       inkscape:rounded="0"
+       inkscape:flatsided="true"
+       sodipodi:arg2="1.5707963"
+       sodipodi:arg1="0.52359878"
+       sodipodi:r2="4.8999095"
+       sodipodi:r1="9.7998199"
+       sodipodi:cy="134.74158"
+       sodipodi:cx="111.88095"
+       sodipodi:sides="3"
+       id="path6349"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:1.54596;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       sodipodi:type="star" />
+    <flowRoot
+       inkscape:export-ydpi="88.280228"
+       inkscape:export-xdpi="88.280228"
+       inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_WARNING"
+       transform="matrix(0.25766084,0,0,0.25766084,239.27589,-301.71262)"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:0.01%;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       id="flowRoot6357"
+       xml:space="preserve"><flowRegion
+         id="flowRegion6353"><rect
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';fill:#ffffff"
+           y="1668.6305"
+           x="-503.31293"
+           height="49.678581"
+           width="42.607544"
+           id="rect6351" /></flowRegion><flowPara
+         style="font-size:40px;line-height:1.25"
+         id="flowPara6355">!</flowPara></flowRoot>
+  </g>
+</svg>

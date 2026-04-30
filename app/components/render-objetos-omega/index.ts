@@ -6,6 +6,6 @@ export { default as ObjVarIndividual } from './ObjVarIndividual';
 export { default as ObjVarIndividualNavegacion } from './ObjVarIndividualNavegacion';
 export { ChevronRight, navegarSimple, navegarConEdicion } from './RenderHelpers';
 export { COLORES, resolverColor, getColorClass } from './colors';
-export { resolverIcono } from './iconos-menu';
+export { resolverIcono } from './iconos-omega';
 export { resolverUnidad, decodificarVariable } from './pantalla-utils';
 export { default as Divider } from './Divider';

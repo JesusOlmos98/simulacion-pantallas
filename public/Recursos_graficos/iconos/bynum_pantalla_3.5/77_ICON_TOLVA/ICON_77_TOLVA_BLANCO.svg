@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <g fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Upper bin (chamfered top corners) -->
+    <path d="M10.5 4.5 H21.5 L24.5 7.5 V17.5 H7.5 V7.5 Z"/>
+    <!-- Hopper (V bottom) -->
+    <path d="M7.5 17.5 L16 28.5 L24.5 17.5"/>
+    <!-- Inner top line -->
+    <path d="M11 9 H21"/>
+  </g>
+</svg>

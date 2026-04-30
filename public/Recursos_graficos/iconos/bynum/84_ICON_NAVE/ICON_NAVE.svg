@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="ICON_NAVE.svg"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   id="svg14768"
+   version="1.1"
+   viewBox="0 0 13.919966 11.109157"
+   height="11.109157mm"
+   width="13.919966mm">
+  <defs
+     id="defs14762" />
+  <sodipodi:namedview
+     inkscape:window-maximized="0"
+     inkscape:window-y="0"
+     inkscape:window-x="156"
+     inkscape:window-height="1040"
+     inkscape:window-width="1300"
+     fit-margin-bottom="0"
+     fit-margin-right="0"
+     fit-margin-left="0"
+     fit-margin-top="0"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="20.993677"
+     inkscape:cx="26.305448"
+     inkscape:zoom="6.4435322"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#000000"
+     id="base" />
+  <metadata
+     id="metadata14765">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-92.06978,-133.54066)"
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Capa 1">
+    <path
+       inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_NAVE"
+       inkscape:export-ydpi="116.60649"
+       inkscape:export-xdpi="116.60649"
+       sodipodi:nodetypes="cccccccccccc"
+       inkscape:connector-curvature="0"
+       id="path5930-2"
+       d="m 92.634112,139.95539 4.917328,-3.72497 4.98359,3.69844 h -1.80283 v 4.15651 h -1.815567 v -2.49973 h -2.650857 v 2.48364 h -1.766062 v -4.12716 z"
+       style="fill:none;stroke:#ffffff;stroke-width:1.12889;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.12889;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 97.58002,136.15586 2.7557,-2.05077 4.22967,3.14023 v 4.67829 l -3.52473,1.92255"
+       id="path11149"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_NAVE"
+       inkscape:export-xdpi="116.60649"
+       inkscape:export-ydpi="116.60649" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.12889;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 102.238,139.5986 3.18735,-1.75483 -5.04962,-3.65291 -2.757587,2.00553 z"
+       id="path11151"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc"
+       inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_NAVE"
+       inkscape:export-xdpi="116.60649"
+       inkscape:export-ydpi="116.60649" />
+  </g>
+</svg>

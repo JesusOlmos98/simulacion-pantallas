@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="ICON_AGUA.svg"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   id="svg5446"
+   version="1.1"
+   viewBox="0 0 13.886244 13.856575"
+   height="13.856575mm"
+   width="13.886244mm">
+  <defs
+     id="defs5440" />
+  <sodipodi:namedview
+     inkscape:window-maximized="0"
+     inkscape:window-y="0"
+     inkscape:window-x="208"
+     inkscape:window-height="1040"
+     inkscape:window-width="1300"
+     fit-margin-bottom="0"
+     fit-margin-right="0"
+     fit-margin-left="0"
+     fit-margin-top="0"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="49.042797"
+     inkscape:cx="71.956019"
+     inkscape:zoom="0.35"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#000000"
+     id="base" />
+  <metadata
+     id="metadata5443">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-86.79497,-135.19076)"
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Capa 1">
+    <g
+       transform="translate(-626.707,-545.38413)"
+       id="g5676"
+       inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_HUMEDAD"
+       inkscape:export-xdpi="117.31634"
+       inkscape:export-ydpi="117.31634"
+       style="fill:none;stroke:#ffffff;stroke-opacity:1">
+      <path
+         inkscape:export-ydpi="98.512001"
+         inkscape:export-xdpi="98.512001"
+         inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_HUMEDAD"
+         sodipodi:nodetypes="cccc"
+         inkscape:connector-curvature="0"
+         id="path5678"
+         d="m 717.48766,681.16724 c -0.31296,1.51267 -2.45869,3.42181 -3.30865,6.26151 -1.02891,5.31574 7.32258,5.21099 6.58171,0 -0.64555,-2.35445 -2.17935,-4.17595 -3.27306,-6.26151 z"
+         style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.18493;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="98.512001"
+         inkscape:export-xdpi="98.512001"
+         inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_HUMEDAD"
+         sodipodi:nodetypes="cccc"
+         inkscape:connector-curvature="0"
+         id="path5680"
+         d="m 725.05785,684.16536 c -0.16401,0.79278 -1.28856,1.79332 -1.73401,3.28158 -0.53924,2.78589 3.83765,2.73099 3.44938,0 -0.33832,-1.23394 -1.14217,-2.18856 -1.71537,-3.28158 z"
+         style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.18493;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="98.512001"
+         inkscape:export-xdpi="98.512001"
+         inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_HUMEDAD"
+         style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.18493;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 721.99823,690.42155 c -0.10476,0.50636 -0.82303,1.14543 -1.10755,2.09601 -0.34442,1.77942 2.45119,1.74433 2.20319,0 -0.2161,-0.78814 -0.72953,-1.39787 -1.09564,-2.09601 z"
+         id="path5682"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccc" />
+    </g>
+  </g>
+</svg>

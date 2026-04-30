@@ -63,21 +63,23 @@ export default function BarraBotonesTc5({ botones, /*idPantallaActual,*/ onNaveg
 
         const Icono = icono !== undefined ? resolverIconoCTI40Plus(icono) : null;
         const { color: ledColor, shouldBlink } = getLedState(ledEstado);
-        const puedeNavegar = accion === 1 && navegacion !== undefined && navegacion > 0;
+        const esBotonNavegacion = accion === 1 && navegacion !== undefined && navegacion > 0;
 
         return (
           <button
             key={index}
             onClick={() => {
-              if (!puedeNavegar) return;
-
-              // Para TC5, la navegación funciona igual que CTI40Plus
-              if (navegacion === undefined || navegacion <= 0) return;
-              onNavegar({ idPantalla: navegacion, indicePantalla: 0, esPrincipal: false });
+              if (esBotonNavegacion) {
+                // accion=1: navegar a la pantalla correspondiente
+                onNavegar({ idPantalla: navegacion!, indicePantalla: (obj.indice as number | undefined) ?? 0, esPrincipal: false });
+              } else {
+                // accion=0: ejecutar acción sin navegar (aquí podríamos añadir lógica futura)
+                console.log(`Botón TC5 ${indice + 1}: acción ejecutada (sin navegación)`);
+              }
             }}
             className={btnClass}
-            title={`Botón TC5 ${indice + 1}${puedeNavegar ? ' - Navegar a pantalla ' + navegacion : ''}`}
-            style={{ backgroundColor: COLORES.botonesFisicos, opacity: puedeNavegar ? 1 : 0.7, cursor: puedeNavegar ? 'pointer' : 'not-allowed' }}
+            title={`Botón TC5 ${indice + 1}${esBotonNavegacion ? ' - Navegar a pantalla ' + navegacion : ' - Acción directa'}`}
+            style={{ backgroundColor: COLORES.botonesFisicos, opacity: 1, cursor: 'pointer' }}
           >
             {Icono ? (
               <Icono

@@ -150,6 +150,10 @@ export default function RenderObjeto({
     case EnObjPintaPantallasOmega.objBarraAccesoDirectoIcon: // 66
       return null; // Se manejan en BarraBotonesCti40Plus
 
+    // objBarraAccesoDirectoIconV2 — botones de acceso directo V2 (tipoObjeto: 82)
+    case 82: // objBarraAccesoDirectoIconV2
+      return null; // Se manejan en BarraBotonesTc5
+
     // objTablaConfig — metadatos de tabla estática, se maneja agrupado en PantallaCti40Plus
     case EnObjPintaPantallasOmega.objTablaConfig: // 14
       return null;

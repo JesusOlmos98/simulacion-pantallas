@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="ICON_NUM325_icono_flcha_derecha.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#3c3c3c"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.0645786"
+     inkscape:cx="187.39809"
+     inkscape:cy="476.71445"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:pagecheckerboard="0"
+     inkscape:snap-intersection-paths="true"
+     inkscape:snap-midpoints="true"
+     inkscape:object-paths="true"
+     inkscape:snap-smooth-nodes="true"
+     inkscape:snap-object-midpoints="true" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g1432"
+       inkscape:export-filename="C:\Users\Usuario\Desktop\iconos pendiente de introducir en carpeta compartida\325_ICON_FLECHA_DERECHA\g1432.png"
+       inkscape:export-xdpi="403.20001"
+       inkscape:export-ydpi="403.20001">
+      <path
+         sodipodi:type="star"
+         style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:1.51181;stroke-linejoin:round;stroke-opacity:1"
+         id="path866"
+         inkscape:flatsided="true"
+         sodipodi:sides="3"
+         sodipodi:cx="166.26297"
+         sodipodi:cy="517.10602"
+         sodipodi:r1="90.237663"
+         sodipodi:r2="45.118832"
+         sodipodi:arg1="2.0880057"
+         sodipodi:arg2="3.1352033"
+         inkscape:rounded="0.03"
+         inkscape:randomized="0"
+         d="m 121.64438,595.54081 c -4.0756,-2.31845 -5.04427,-153.92268 -0.99864,-156.29303 4.04564,-2.37034 135.82309,72.59289 135.85305,77.28168 0.03,4.68879 -130.77882,81.3298 -134.85441,79.01135 z"
+         transform="matrix(0.18992717,0,0,0.23980088,43.986868,-15.379398)"
+         inkscape:transform-center-x="-3.9911479"
+         inkscape:transform-center-y="0.068707178" />
+      <rect
+         style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.418866;stroke-linejoin:round;stroke-opacity:1"
+         id="rect970"
+         width="27.419094"
+         height="17.378471"
+         x="41.141708"
+         y="99.79557"
+         ry="0.046081137" />
+    </g>
+    <g
+       id="g1452-1-5"
+       transform="translate(164.93331,0.29581556)" />
+  </g>
+</svg>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="ICON_DESVIACION.svg"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   id="svg9058"
+   version="1.1"
+   viewBox="0 0 9.4788637 8.3323936"
+   height="8.3323936mm"
+   width="9.4788637mm">
+  <defs
+     id="defs9052" />
+  <sodipodi:namedview
+     inkscape:window-maximized="0"
+     inkscape:window-y="0"
+     inkscape:window-x="208"
+     inkscape:window-height="1040"
+     inkscape:window-width="1300"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="58.603416"
+     inkscape:cx="97.912814"
+     inkscape:zoom="0.35"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#000000"
+     id="base" />
+  <metadata
+     id="metadata9055">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-79.927235,-132.66118)"
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Capa 1">
+    <path
+       inkscape:export-ydpi="170.70728"
+       inkscape:export-xdpi="170.70728"
+       id="path953"
+       d="m 83.744825,140.60004 v -4.04897 l -2.349849,-2.34985"
+       style="fill:none;stroke:#ffffff;stroke-width:0.787067;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="170.70728"
+       inkscape:export-xdpi="170.70728"
+       id="path955"
+       d="m 85.299337,138.06943 2.440231,-2.44022"
+       style="fill:#ffffff;stroke:#ffffff;stroke-width:0.787067;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="170.70728"
+       inkscape:export-xdpi="170.70728"
+       id="path957"
+       d="m 80.238125,136.55107 v -3.579 h 3.362095 z"
+       style="fill:#ffffff;stroke:#ffffff;stroke-width:0.621781px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
+    <path
+       inkscape:export-ydpi="170.70728"
+       inkscape:export-xdpi="170.70728"
+       style="fill:#ffffff;stroke:#ffffff;stroke-width:0.621781px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       d="m 89.095208,137.78023 v -3.57901 h -3.362095 z"
+       id="path959" />
+    <path
+       inkscape:export-ydpi="170.70728"
+       inkscape:export-xdpi="170.70728"
+       style="fill:#ffffff;stroke:#ffffff;stroke-width:0.787067;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 85.299337,138.06943 2.440231,-2.44022"
+       id="path1040" />
+    <path
+       inkscape:export-ydpi="170.70728"
+       inkscape:export-xdpi="170.70728"
+       id="path1042"
+       d="m 89.095208,137.78023 v -3.57901 h -3.362095 z"
+       style="fill:#ffffff;stroke:#ffffff;stroke-width:0.621781px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
+  </g>
+</svg>

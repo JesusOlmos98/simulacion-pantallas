@@ -79,8 +79,8 @@ export default function PantallaTc5(): JSX.Element {
   const controllerRef = useRef<AbortController | null>(null);
   const escribirSeleccionRef = useRef<() => Promise<void>>(async () => {});
 
-  // Botones de barra de acceso directo (tipoObjeto: 82) — solo llegan en pantallaId=0,
-  // se guardan aquí la primera vez y persisten durante toda la sesión TC5.
+  // Botones de barra de acceso directo (tipoObjeto: 82) — llegan en cualquier pantalla,
+  // se guardan aquí y se actualizan cada vez que llegan nuevos estados durante la sesión TC5.
   const barraAccesoDirectoPersistente = useRef<ObjBase[]>([]);
 
   const cargarPantalla = useCallback((descriptor: DescriptorPantalla) => {
@@ -105,9 +105,10 @@ export default function PantallaTc5(): JSX.Element {
 
     fetchPantalla(descriptor, controller.signal)
       .then((data) => {
-        if (descriptor.esPrincipal) {
-          const botones = data.filter((o) => o.tipoObjeto === 82);
-          if (botones.length > 0) barraAccesoDirectoPersistente.current = botones;
+        // Filtrar y guardar objetos tipo 82 (barra de acceso directo) siempre que lleguen
+        const botones = data.filter((o) => o.tipoObjeto === 82);
+        if (botones.length > 0) {
+          barraAccesoDirectoPersistente.current = botones;
         }
         // Inicializar editValue en el mismo batch que setObjetos para evitar el flash de valor incorrecto
         const editObjString = data.find((o) => o.tipoObjeto === 33);
@@ -640,7 +641,7 @@ export default function PantallaTc5(): JSX.Element {
 
   // ── Derivados ─────────────────────────────────────────────────────────────
 
-  // Objetos de barra de acceso directo (tipoObjeto: 82) — se usan los persistentes (capturados en pantallaId=0)
+  // Objetos de barra de acceso directo (tipoObjeto: 82) — se usan los persistentes (actualizados cada vez que llegan)
   const barraAccesoDirecto = barraAccesoDirectoPersistente.current;
 
   // Separar objetos: header (tipoObjeto: 2), líneas (tipoObjeto: 4, 5, 16), info (tipoObjeto: 7) y otros
@@ -701,6 +702,7 @@ export default function PantallaTc5(): JSX.Element {
         o.tipoObjeto !== 28 &&
         o.tipoObjeto !== 70 &&
         o.tipoObjeto !== 71 &&
+        o.tipoObjeto !== 82 && // Excluir objBarraAccesoDirectoIconV2
         !TIPOS_LINEA.has(o.tipoObjeto)
     ) ?? [];
 

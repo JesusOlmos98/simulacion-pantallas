@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="ICON_SALIDA_010.svg"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   id="svg7101"
+   version="1.1"
+   viewBox="0 0 14.740078 13.842182"
+   height="13.842182mm"
+   width="14.740078mm">
+  <defs
+     id="defs7095" />
+  <sodipodi:namedview
+     inkscape:window-maximized="0"
+     inkscape:window-y="0"
+     inkscape:window-x="26"
+     inkscape:window-height="1040"
+     inkscape:window-width="1300"
+     fit-margin-bottom="0"
+     fit-margin-right="0"
+     fit-margin-left="0"
+     fit-margin-top="0"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="140.44419"
+     inkscape:cx="-183.5733"
+     inkscape:zoom="0.35"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#000000"
+     id="base" />
+  <metadata
+     id="metadata7098">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-154.40377,-111.00748)"
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Capa 1">
+    <g
+       transform="matrix(0.28222223,0,0,0.28222223,295.57667,-121.75968)"
+       id="g6456"
+       style="stroke:#ffffff"
+       inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_SALIDA_010"
+       inkscape:export-xdpi="123"
+       inkscape:export-ydpi="123">
+      <path
+         inkscape:export-ydpi="110.09825"
+         inkscape:export-xdpi="110.09825"
+         inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_SALIDA_010"
+         sodipodi:nodetypes="ssscssssss"
+         inkscape:connector-curvature="0"
+         id="rect10094"
+         d="m -497.1595,826.76549 h 34.36295 c 0.58692,0 1.05942,0.4725 1.05942,1.0595 l 6.34466,22.31 -6.34466,20.6182 c -0.17261,0.5609 -0.4725,1.0594 -1.05942,1.0594 h -34.36295 c -0.58692,0 -1.05943,-0.4725 -1.05943,-1.0594 v -42.9282 c 0,-0.587 0.47251,-1.0595 1.05943,-1.0595 z"
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="110.09825"
+         inkscape:export-xdpi="110.09825"
+         inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_SALIDA_010"
+         inkscape:connector-curvature="0"
+         id="path10097"
+         d="m -454.22922,850.34649 h 6.23891"
+         style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <g
+       transform="matrix(0.28222223,0,0,0.28222223,295.57667,-121.75968)"
+       id="g6460">
+      <flowRoot
+         inkscape:export-ydpi="110.09825"
+         inkscape:export-xdpi="110.09825"
+         inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_SALIDA_010"
+         transform="matrix(0.2630045,0,0,0.2630045,-290.35966,580.56641)"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0.01%;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         id="flowRoot10107"
+         xml:space="preserve"><flowRegion
+           id="flowRegion10109"><rect
+             style="fill:#ffffff;fill-opacity:1;-inkscape-font-specification:Ubuntu;font-family:Ubuntu;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;"
+             y="1049.1898"
+             x="-774.36584"
+             height="67.676338"
+             width="122.66342"
+             id="rect10111" /></flowRegion><flowPara
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:39.9998px;line-height:125%;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1"
+           id="flowPara10113">0-10V</flowPara></flowRoot>
+      <path
+         inkscape:export-ydpi="110.09825"
+         inkscape:export-xdpi="110.09825"
+         inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_SALIDA_010"
+         inkscape:connector-curvature="0"
+         id="path10115"
+         d="m -478.70558,831.03399 a 15.383777,15.383777 0 0 0 -15.20117,13.1504 h 1.67773 a 12.065707,12.065707 0 0 1 11.89453,-10.1348 12.065707,12.065707 0 0 1 11.9043,10.1348 h 4.93164 a 15.383777,15.383777 0 0 0 -15.20703,-13.1504 z"
+         style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <circle
+         inkscape:export-ydpi="110.09825"
+         inkscape:export-xdpi="110.09825"
+         inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_SALIDA_010"
+         r="3.0164268"
+         cy="842.49567"
+         cx="-480.93686"
+         id="path10123"
+         style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="110.09825"
+         inkscape:export-xdpi="110.09825"
+         inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_SALIDA_010"
+         inkscape:connector-curvature="0"
+         id="path10125"
+         d="m -482.1434,841.77179 2.29248,-6.7568 v 7.4807 z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1" />
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="ICON_TAREAS_ELIMINAR_FILA.svg"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   id="svg5916"
+   version="1.1"
+   viewBox="0 0 5.9101624 8.9430609"
+   height="8.9430609mm"
+   width="5.9101624mm">
+  <defs
+     id="defs5910" />
+  <sodipodi:namedview
+     inkscape:window-maximized="0"
+     inkscape:window-y="0"
+     inkscape:window-x="52"
+     inkscape:window-height="1040"
+     inkscape:window-width="1300"
+     fit-margin-bottom="0"
+     fit-margin-right="0"
+     fit-margin-left="0"
+     fit-margin-top="0"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="74.043106"
+     inkscape:cx="-45.974045"
+     inkscape:zoom="0.35"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#000000"
+     id="base" />
+  <metadata
+     id="metadata5913">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-117.9973,-128.57609)"
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Capa 1">
+    <path
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.566632;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 118.47075,130.17218 h 4.95975 l -0.97251,7.06366 h -3.09254 z"
+       id="rect7687"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc"
+       inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_TAREAS_ELIMINAR_FILA"
+       inkscape:export-xdpi="180.50272"
+       inkscape:export-ydpi="180.50272" />
+    <rect
+       y="128.75851"
+       x="119.72277"
+       height="0.87760663"
+       width="2.3435004"
+       id="rect7692"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.364839;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_TAREAS_ELIMINAR_FILA"
+       inkscape:export-xdpi="180.50272"
+       inkscape:export-ydpi="180.50272" />
+    <rect
+       style="opacity:1;fill:#1a1a1a;fill-opacity:1;stroke:#ffffff;stroke-width:0.587539;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect7690"
+       width="5.3226233"
+       height="1.0020931"
+       x="118.29107"
+       y="129.56421"
+       inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_TAREAS_ELIMINAR_FILA"
+       inkscape:export-xdpi="180.50272"
+       inkscape:export-ydpi="180.50272" />
+    <circle
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.423333;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="path7694"
+       cx="121.93607"
+       cy="135.0609"
+       r="1.9191641"
+       inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_TAREAS_ELIMINAR_FILA"
+       inkscape:export-xdpi="180.50272"
+       inkscape:export-ydpi="180.50272" />
+    <path
+       style="fill:#1a1a1a;fill-opacity:1;fill-rule:evenodd;stroke:#1a1a1a;stroke-width:0.741003;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 121.13558,135.86139 1.601,-1.60096"
+       id="path7696"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_TAREAS_ELIMINAR_FILA"
+       inkscape:export-xdpi="180.50272"
+       inkscape:export-ydpi="180.50272" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path7698"
+       d="m 122.73658,135.86139 -1.601,-1.60096"
+       style="fill:#1a1a1a;fill-opacity:1;fill-rule:evenodd;stroke:#1a1a1a;stroke-width:0.741003;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_TAREAS_ELIMINAR_FILA"
+       inkscape:export-xdpi="180.50272"
+       inkscape:export-ydpi="180.50272" />
+  </g>
+</svg>

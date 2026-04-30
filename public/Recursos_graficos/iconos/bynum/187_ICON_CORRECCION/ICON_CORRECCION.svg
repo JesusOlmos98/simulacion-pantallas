@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="ICON_CORRECCION.svg"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   id="svg2605"
+   version="1.1"
+   viewBox="0 0 8.3358335 8.3358335"
+   height="8.3358335mm"
+   width="8.3358335mm">
+  <defs
+     id="defs2599" />
+  <sodipodi:namedview
+     inkscape:window-maximized="0"
+     inkscape:window-y="0"
+     inkscape:window-x="234"
+     inkscape:window-height="1040"
+     inkscape:window-width="1300"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="15.752745"
+     inkscape:cx="15.752743"
+     inkscape:zoom="21.520045"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#000000"
+     id="base" />
+  <metadata
+     id="metadata2602">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-111.4928,-173.48089)"
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Capa 1">
+    <circle
+       inkscape:export-ydpi="196.06079"
+       inkscape:export-xdpi="196.06079"
+       r="3.7398961"
+       cy="177.6488"
+       cx="115.66071"
+       id="path854"
+       style="opacity:0.994475;fill:none;stroke:#ffffff;stroke-width:0.856041;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none" />
+    <path
+       inkscape:export-ydpi="196.06079"
+       inkscape:export-xdpi="196.06079"
+       id="path856"
+       d="m 113.89306,177.9379 1.48583,1.48583 2.04948,-3.5498"
+       style="fill:none;stroke:#ffffff;stroke-width:0.570693;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  </g>
+</svg>

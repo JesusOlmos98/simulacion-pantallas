@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="ICON_MIN_PESO_PSCALE_NEGRO.svg"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   id="svg4793"
+   version="1.1"
+   viewBox="0 0 9.5189886 9.7121096"
+   height="9.7121096mm"
+   width="9.5189886mm">
+  <defs
+     id="defs4787">
+    <rect
+       x="-1053.3086"
+       y="2008.781"
+       width="90.423653"
+       height="65.949905"
+       id="rect8946-2-6" />
+    <rect
+       x="-1053.3086"
+       y="2008.781"
+       width="90.423653"
+       height="65.949905"
+       id="rect4778" />
+  </defs>
+  <sodipodi:namedview
+     inkscape:window-maximized="0"
+     inkscape:window-y="0"
+     inkscape:window-x="104"
+     inkscape:window-height="1040"
+     inkscape:window-width="1300"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="58.353592"
+     inkscape:cx="-24.868503"
+     inkscape:zoom="0.35"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base" />
+  <metadata
+     id="metadata4790">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-112.41312,-132.72728)"
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Capa 1">
+    <g
+       transform="translate(24.229149,-48.337739)"
+       inkscape:export-ydpi="168.10602"
+       inkscape:export-xdpi="168.10602"
+       id="g1130">
+      <rect
+         transform="rotate(90)"
+         inkscape:export-ydpi="164.75827"
+         inkscape:export-xdpi="164.75827"
+         y="-94.423065"
+         x="181.06502"
+         height="3.0224102"
+         width="2.4886949"
+         id="rect905-7-9"
+         style="opacity:0.994475;fill:#000000;stroke:none;stroke-width:0.467235;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none" />
+      <path
+         inkscape:export-ydpi="164.75827"
+         inkscape:export-xdpi="164.75827"
+         inkscape:transform-center-y="8.0430232e-06"
+         transform="matrix(0,-1.3755193,-4.3386909,0,281.54971,150.29539)"
+         inkscape:transform-center-x="-0.89371821"
+         inkscape:randomized="0"
+         inkscape:rounded="0"
+         inkscape:flatsided="true"
+         sodipodi:arg2="2.0943951"
+         sodipodi:arg1="1.0471976"
+         sodipodi:r2="0.62914413"
+         sodipodi:r1="1.2582883"
+         sodipodi:cy="43.47805"
+         sodipodi:cx="-24.585295"
+         sodipodi:sides="3"
+         id="path907-5-4"
+         style="opacity:0.994475;fill:#000000;stroke:none;stroke-width:0.264583;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+         sodipodi:type="star"
+         d="m -23.956151,44.56776 -1.887432,-1.08971 1.887432,-1.089709 z" />
+      <rect
+         transform="rotate(90)"
+         inkscape:export-ydpi="164.75827"
+         inkscape:export-xdpi="164.75827"
+         style="opacity:0.994475;fill:#000000;stroke:none;stroke-width:0.544858;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+         id="rect909-2-0"
+         width="1.0775552"
+         height="9.4926062"
+         x="186.06633"
+         y="-97.702965" />
+    </g>
+    <text
+       inkscape:export-ydpi="168.10602"
+       inkscape:export-xdpi="168.10602"
+       xml:space="preserve"
+       id="text8942-9-9"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:37.5px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';white-space:pre;shape-inside:url(#rect8946-2-6);fill:#000000;fill-opacity:1;stroke:none;"
+       transform="matrix(0.11561109,0,0,0.11561109,234.16469,-93.633829)"><tspan
+         x="-1053.3086"
+         y="2041.96"><tspan>MIN</tspan></tspan></text>
+  </g>
+</svg>

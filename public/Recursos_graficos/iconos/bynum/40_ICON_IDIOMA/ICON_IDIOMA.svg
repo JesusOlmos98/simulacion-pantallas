@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="ICON_IDIOMA.svg"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   id="svg9590"
+   version="1.1"
+   viewBox="0 0 14.437982 14.604989"
+   height="14.604989mm"
+   width="14.437982mm">
+  <defs
+     id="defs9584" />
+  <sodipodi:namedview
+     inkscape:window-maximized="0"
+     inkscape:window-y="0"
+     inkscape:window-x="26"
+     inkscape:window-height="1040"
+     inkscape:window-width="1300"
+     fit-margin-bottom="0"
+     fit-margin-right="0"
+     fit-margin-left="0"
+     fit-margin-top="0"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="81.885681"
+     inkscape:cx="-18.429909"
+     inkscape:zoom="0.35"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#000000"
+     id="base" />
+  <metadata
+     id="metadata9587">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-110.70958,-126.50108)"
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Capa 1">
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot8164"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0.01%;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       transform="matrix(0.20020546,0,0,0.20020546,256.13511,-101.75406)"><flowRegion
+         id="flowRegion8166"><rect
+           id="rect8168"
+           width="65.56266"
+           height="60.53405"
+           x="-717.17932"
+           y="1143.7043"
+           style="fill:#ffffff;fill-opacity:1;-inkscape-font-specification:Ubuntu;font-family:Ubuntu;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;" /></flowRegion><flowPara
+         id="flowPara8170"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:125%;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1">A</flowPara></flowRoot>
+    <g
+       transform="matrix(0.28222223,0,0,0.28222223,226.00668,-106.30693)"
+       id="g6469"
+       style="stroke:#ffffff"
+       inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_IDIOMA"
+       inkscape:export-xdpi="123"
+       inkscape:export-ydpi="123">
+      <path
+         inkscape:export-ydpi="111"
+         inkscape:export-xdpi="111"
+         inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_IDIOMA"
+         inkscape:connector-curvature="0"
+         id="rect6843-5"
+         d="m -399.65607,826.91025 c -3.80897,0 -6.87695,3.066 -6.87695,6.875 v 22.9043 c 0,3.809 3.06798,6.875 6.87695,6.875 h 8.75391 c -2.37004,8.5041 -6.0615,9.7357 -9.73047,11.0957 10.40845,-0.3474 20.25345,-1.821 26.58399,-10.3242 l 0.17578,-0.7715 h 7.62304 c 3.80898,0 6.875,-3.066 6.875,-6.875 v -22.9043 c 0,-3.809 -3.06602,-6.875 -6.875,-6.875 z"
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:4;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path8172"
+         d="m -380.53513,839.88055 v 13.1762"
+         style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:2.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path8174"
+         d="m -380.08956,835.17025 1.97325,2.4825"
+         style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:2.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cccc"
+         inkscape:connector-curvature="0"
+         id="path8176"
+         d="m -375.31558,836.31605 h 10.56642 v 14.8948 c -0.0484,2.0518 -1.80775,1.4149 -2.92805,1.7823"
+         style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:2.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="ccc"
+         inkscape:connector-curvature="0"
+         id="path8178"
+         d="m -370.47794,839.56235 v 10.5027 c -0.97601,1.0307 -1.95203,0.7421 -2.92804,0.8275"
+         style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:2.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path8180"
+         d="m -367.67721,842.23575 h -9.80257"
+         style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:2.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="path8182"
+         d="m -371.36909,842.36305 c -1.51688,2.4649 -3.15548,4.8622 -6.17435,6.4926"
+         style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:2.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+  </g>
+</svg>

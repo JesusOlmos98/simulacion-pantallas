@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="ICON_HOME_SILOS_PAGINA_ANTERIOR_Y_SIGUIENTE.svg"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   id="svg9348"
+   version="1.1"
+   viewBox="0 0 39.567776 15.310209"
+   height="15.310209mm"
+   width="39.567776mm">
+  <defs
+     id="defs9342" />
+  <sodipodi:namedview
+     inkscape:window-maximized="0"
+     inkscape:window-y="0"
+     inkscape:window-x="26"
+     inkscape:window-height="1040"
+     inkscape:window-width="1300"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="166.07554"
+     inkscape:cx="-102.36909"
+     inkscape:zoom="0.35"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#ffffff"
+     id="base" />
+  <metadata
+     id="metadata9345">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-132.91849,-104.22585)"
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Capa 1">
+    <circle
+       r="7.1259394"
+       cy="111.88095"
+       cx="140.57359"
+       id="circle5021-4"
+       style="fill:none;stroke:#0088aa;stroke-width:1.05833;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       inkscape:export-xdpi="106.17774"
+       inkscape:export-ydpi="106.17774" />
+    <path
+       style="fill:none;stroke:#0088aa;stroke-width:1.05833;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 138.6911,115.33958 3.7651,-3.49759 -3.7128,-3.41966"
+       id="path5154"
+       sodipodi:nodetypes="ccc" />
+    <circle
+       style="fill:none;stroke:#0088aa;stroke-width:1.05833;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none"
+       id="circle5933"
+       cx="-164.83116"
+       cy="111.88095"
+       r="7.1259394"
+       transform="scale(-1,1)"
+       inkscape:export-xdpi="106.17774"
+       inkscape:export-ydpi="106.17774" />
+    <path
+       sodipodi:nodetypes="ccc"
+       id="path5935"
+       d="m 166.7136,115.33958 -3.7651,-3.49759 3.7128,-3.41966"
+       style="fill:none;stroke:#0088aa;stroke-width:1.05833;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  </g>
+</svg>

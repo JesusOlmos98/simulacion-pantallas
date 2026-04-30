@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="13.288721mm"
+   height="13.421372mm"
+   viewBox="0 0 13.288721 13.421372"
+   version="1.1"
+   id="svg9007"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   sodipodi:docname="ICON_MENU_CALEFACCION.svg">
+  <defs
+     id="defs9001" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#000000"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="-12.030308"
+     inkscape:cy="236.79179"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1300"
+     inkscape:window-height="1040"
+     inkscape:window-x="26"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata9004">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-109.01635,-85.515504)">
+    <g
+       style="stroke:#ffffff"
+       transform="matrix(0.28222223,0,0,0.28222223,390.60024,60.961464)"
+       id="g5954"
+       inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_CALEFACCION"
+       inkscape:export-xdpi="120.41796"
+       inkscape:export-ydpi="120.41796">
+      <path
+         sodipodi:nodetypes="cccccccccccc"
+         inkscape:connector-curvature="0"
+         id="path5956"
+         d="m -990.71869,104.7045 c 0.0142,-0.0751 -10.69601,9.25271 -0.97703,22.55258 6.82706,5.86237 17.64478,-0.21508 22.3083,2.36112 7.31651,4.57675 10.16798,2.82164 12.78259,1.30262 0.98398,-0.62822 3.62657,-3.97583 3.7452,-11.39835 0.31004,-8.23589 1.23906,-23.408472 -6.67622,-22.389807 5.89911,14.009707 0.49624,18.303487 -3.17527,20.761437 -2.1685,-3.57165 -2.52648,-7.93544 -1.2213,-13.02682 -3.18034,1.54258 -4.32404,4.83084 -6.10629,7.5718 -3.49718,-2.74894 -4.58238,-8.74152 -1.79121,-19.947192 -6.17429,-0.582768 -10.84543,9.544392 -15.30649,21.168492 -1.82225,-1.17928 -3.47053,-2.85881 -3.58228,-8.95588 z"
+         style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cccc"
+         inkscape:connector-curvature="0"
+         id="path5958"
+         d="m -990.80019,96.969813 c -1.33621,-5.024622 0.9698,-7.100788 4.1523,-8.467406 -0.36925,2.252551 -1.07791,4.505067 1.05838,6.757618 -4.12306,8.474175 -4.42428,4.288323 -5.21068,1.709788 z"
+         style="fill:none;fill-rule:evenodd;stroke:#ffffff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+  </g>
+</svg>

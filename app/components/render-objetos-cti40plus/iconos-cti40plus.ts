@@ -39,7 +39,14 @@ import {
   LuPower,
   LuSquare,
   LuCirclePlus,
-  LuFeather
+  LuFeather,
+  LuPhoneIncoming,
+  LuSquareArrowRight,
+  LuPlugZap,
+  LuRefreshCcw,
+  LuBatteryFull,
+  LuBattery,
+  LuZap
 } from 'react-icons/lu';
 import { COLORES } from './colors';
 
@@ -143,6 +150,18 @@ const IconoVentiladorGirando: IconType = ({ size = 24, className }) => {
   );
 };
 
+// Icono de batería llena rotada 90º - ID 412
+const IconoBatteryFullRotated: IconType = ({ size = 24, color, className }) => {
+  return React.createElement(
+    'span',
+    { className, style: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: size, height: size, transform: 'rotate(270deg)' } },
+    React.createElement(LuBatteryFull, {
+      size: size,
+      color: color ?? 'currentColor'
+    })
+  );
+};
+
 // Icono de 3 puntitos verticales con tamaño reducido al 80%
 const IconoEllipsisVertical: IconType = ({ size = 24, color, className }) => {
   const actualSize = typeof size === 'number' ? Math.round(size * 0.95) : size;
@@ -190,19 +209,19 @@ const IconoPlusGrande: IconType = ({ size = 24, color, className }) => {
 };
 
 // Icono compuesto: LuUsb girado 45 grados dentro de LuRectangleVertical
-const IconoUsbRotado: IconType = ({ size = 5, color, className }) => {
+const IconoBatteryCargandoODesconectadaRotado: IconType = ({ size = 5, color, className }) => {
   const s = typeof size === 'number' ? size : 24;
-  const usbSize = Math.round(s * 0.6); // USB más pequeño para que quepa dentro
+  const zapSize = Math.round(s * 0.45); // USB más pequeño para que quepa dentro
   return React.createElement(
     'span',
     { className, style: { position: 'relative', display: 'inline-flex', width: s, height: s, flexShrink: 0, alignItems: 'center', justifyContent: 'center' } },
     // Rectángulo vertical como contenedor
-    React.createElement(LuRectangleVertical, { size: s, color }),
+    React.createElement(LuBattery, { size: s, color, style: { transform: 'rotate(270deg)' } }),
     // USB girado 45 grados centrado
-    React.createElement(LuUsb, {
-      size: usbSize,
+    React.createElement(LuZap, {
+      size: zapSize,
       color: 'white', // Contraste con el rectángulo
-      style: { position: 'absolute', transform: 'rotate(315deg)' }
+      style: { position: 'absolute', top: '35%', left: '50%', transform: 'translateX(-50%)' }
     })
   );
 };
@@ -403,6 +422,19 @@ const IconoA6: IconType = ({ /*size = 24,*/ color, className }) => {
   );
 };
 
+// Icono personalizado: square-arrow-right girado 180 grados (flecha hacia la izquierda) - ID 49
+const IconoSquareArrowLeft: IconType = ({ size = 24, color, className }) => {
+  return React.createElement(
+    'span',
+    { className, style: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: size, height: size } },
+    React.createElement(LuSquareArrowRight, { 
+      size, 
+      color, 
+      style: { transform: 'rotate(180deg)' }
+    })
+  );
+};
+
 const ICONO_CTI40PLUS_MAP: Record<number, IconType> = {
   1: LuThermometer, // Termómetro de mercurio (Sondas)
   2: LuFan, // Ventilación
@@ -415,6 +447,7 @@ const ICONO_CTI40PLUS_MAP: Record<number, IconType> = {
   23: LuUnplug, // Contacto térmico
   24: IconoPlusGrande, // Añadir / editar
   30: LuBaby, // Crianza
+  31: LuPlugZap, // Reles
   35: IconoInfluencias, // Modo/estado de operación
   36: IconoInfluenciasActivas,
   37: LuSnowflake, // Refrigeración
@@ -424,6 +457,7 @@ const ICONO_CTI40PLUS_MAP: Record<number, IconType> = {
   47: IconoNubeCO2, // Nube CO2
   48: IconoNubeNH3, // Nube NH3
   55: LuSlidersHorizontal, // Barritas horizontales con sliders (Ajustes)
+  49: IconoSquareArrowLeft, // Entradas Digitales (flecha hacia izquierda)
   57: LuTrash, // Papelera
   59: LuLightbulb, // Iluminación
   63: LuCheck, // Check
@@ -434,18 +468,19 @@ const ICONO_CTI40PLUS_MAP: Record<number, IconType> = {
   85: IconoVentiladorTemporizado, // 0x55 — ventilador temporizado (mitad success/light)
   86: IconoVentiladorFijo, // 0x56 — ventilador rotatorio al 100% (success)
   123: LuWrench, // Llave inglesa (Mantenimiento)
+  124: LuRefreshCcw, // Actualización
   145: IconoWifiZero,
   146: IconoWifiLow,
   147: IconoWifiHigh,
   148: LuWifi,
+  153: IconoSignalConX, // Signal en color wifi con X pequeña en esquina superior izquierda
   270: LuBellRing, // Alarmas
   322: IconoEllipsisVertical, // Más opciones
+  344: LuX, // USB girado 45° dentro de rectángulo vertical
   346: IconoVentiladorGirando, // Ventilador girando en color naranja
-
-  153: IconoSignalConX, // Signal en color wifi con X pequeña en esquina superior izquierda
-  344: IconoUsbRotado, // USB girado 45° dentro de rectángulo vertical
-  408: LuX, // X que tacha el USB
-
+  405: LuPhoneIncoming, // Teléfonos
+  408: IconoBatteryCargandoODesconectadaRotado, // X que tacha el USB IconoBatteryFullRotated
+  412: IconoBatteryFullRotated, // Batería llena rotada 90º LuX
   414: IconoA1, // A1
   415: IconoA2, // A2
   416: IconoA3, // A3

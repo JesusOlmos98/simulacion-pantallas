@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="ICON_TAREAS_VENTILAORES_NO_SELEC.svg"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   id="svg7560"
+   version="1.1"
+   viewBox="0 0 10.563287 10.558003"
+   height="10.558003mm"
+   width="10.563287mm">
+  <defs
+     id="defs7554" />
+  <sodipodi:namedview
+     inkscape:window-maximized="0"
+     inkscape:window-y="0"
+     inkscape:window-x="182"
+     inkscape:window-height="1040"
+     inkscape:window-width="1300"
+     fit-margin-bottom="0"
+     fit-margin-right="0"
+     fit-margin-left="0"
+     fit-margin-top="0"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="11.380702"
+     inkscape:cx="8.5335583"
+     inkscape:zoom="0.35"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#000000"
+     id="base" />
+  <metadata
+     id="metadata7557">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-103.5755,-145.15552)"
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Capa 1">
+    <g
+       inkscape:export-ydpi="153"
+       inkscape:export-xdpi="153"
+       inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_TAREAS_VENTILADORES_NO_SELEC"
+       transform="matrix(0.36938961,0,0,0.36938961,-620.08648,-481.15834)"
+       id="g18120">
+      <path
+         inkscape:connector-curvature="0"
+         d="m 1973.3734,1709.8284 c 0,-2.5383 2.1164,-4.6537 4.6562,-4.6537 2.5397,0 4.6561,2.1154 4.6561,4.6537 z m 0,0 c 0,2.5385 -2.1164,4.6538 -4.6563,4.6538 -2.5396,0 -4.6561,-2.1153 -4.6561,-4.6538 z m 0,0 c -2.5398,0 -4.6563,-2.1153 -4.6563,-4.6537 0,-2.5384 2.1165,-4.6538 4.6563,-4.6538 z m 0,0 c 2.5397,0 4.6562,2.1154 4.6562,4.6538 0,2.5384 -2.1165,4.6537 -4.6562,4.6537 z"
+         id="path17776-5"
+         style="fill:#ffffff;fill-opacity:1;stroke-width:0.292845"
+         inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_VENTILADOR_MODULADO"
+         inkscape:export-xdpi="152.12407"
+         inkscape:export-ydpi="152.12407" />
+      <circle
+         r="2.2361677"
+         cy="1709.8284"
+         cx="1973.3734"
+         id="circle17780-3"
+         style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:1.4604;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    </g>
+    <ellipse
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.447821;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="ellipse7072"
+       cx="108.85714"
+       cy="150.43452"
+       inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_TAREAS_VENTILADORES_NO_SELEC"
+       inkscape:export-xdpi="153.96863"
+       inkscape:export-ydpi="153.96863"
+       rx="5.0577331"
+       ry="5.0550914" />
+  </g>
+</svg>

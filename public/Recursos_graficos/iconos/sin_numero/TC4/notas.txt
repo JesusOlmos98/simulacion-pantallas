@@ -1,0 +1,7 @@
+Los iconos del TC4 los he puesto en sin_numero porque no comparte la numeracion
+estandar del resto de proyectos.
+He copiado los bitstreams de los iconos que existen un equivalenet en comun para
+tenerlos en la librería general de diseños, pero hay muchos que son especificos
+del TC4 y no existen de momento en la librería común, así que se añaden en esta
+carpeta y así si en el futuro los necesitamos en la librería común se pueden sacar
+de los del TC4 y añadirlo en la librería común en vez de tener que rediseñarlo.

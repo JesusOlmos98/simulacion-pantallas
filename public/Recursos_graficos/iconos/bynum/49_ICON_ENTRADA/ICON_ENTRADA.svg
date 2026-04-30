@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   sodipodi:docname="ICON_ENTRADA.svg"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   id="svg13462"
+   version="1.1"
+   viewBox="0 0 12.063159 11.068832"
+   height="11.068832mm"
+   width="12.063159mm">
+  <defs
+     id="defs13456" />
+  <sodipodi:namedview
+     inkscape:window-maximized="0"
+     inkscape:window-y="0"
+     inkscape:window-x="26"
+     inkscape:window-height="1040"
+     inkscape:window-width="1300"
+     showgrid="false"
+     inkscape:document-rotation="0"
+     inkscape:current-layer="layer1"
+     inkscape:document-units="mm"
+     inkscape:cy="20.917483"
+     inkscape:cx="22.796502"
+     inkscape:zoom="14.87069"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     borderopacity="1.0"
+     bordercolor="#666666"
+     pagecolor="#000000"
+     id="base" />
+  <metadata
+     id="metadata13459">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-119.45652,-129.78106)"
+     id="layer1"
+     inkscape:groupmode="layer"
+     inkscape:label="Capa 1">
+    <path
+       id="circle17025-3-8-9"
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:1.03404;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-xdpi="113.31193"
+       inkscape:export-ydpi="113.31193"
+       inkscape:export-filename="/home/joseasensio/controlador omega 2/iconos/navegacion/ICON_TAREAS_VALIDAR"
+       sodipodi:type="arc"
+       sodipodi:cx="-172.70145"
+       sodipodi:cy="-66.005981"
+       sodipodi:rx="5.0173945"
+       sodipodi:ry="5.0173945"
+       sodipodi:start="0.06804223"
+       sodipodi:end="5.248889"
+       sodipodi:open="true"
+       sodipodi:arc-type="arc"
+       d="m -167.69566,-65.66485 a 5.0173945,5.0173945 0 0 1 -3.97192,4.568591 5.0173945,5.0173945 0 0 1 -5.477,-2.578889 5.0173945,5.0173945 0 0 1 0.99123,-5.972072 5.0173945,5.0173945 0 0 1 6.01645,-0.671227"
+       transform="rotate(-153.87171)" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:0.79375;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 119.85339,135.41002 h 6.83779"
+       id="path13430" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:0.79375;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 124.59531,133.28795 2.10242,2.10242 -2.10242,2.10242"
+       id="path13432" />
+  </g>
+</svg>

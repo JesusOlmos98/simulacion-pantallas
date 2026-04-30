@@ -1,0 +1,10 @@
+/* Format: name, bitmap dimension (W x H), color mode, pointer to data */
+D4D_DECLARE_IMG_HEADER_2_D4DINT (ICON_NUM334_ICON_WIFI_0_COBERTURA_PEQUENYO, 13, 13, 0x800E, ICON_NUM334_ICON_WIFI_0_COBERTURA_PEQUENYO_data)
+
+/* Compression ratio: 0% */
+const Byte ICON_NUM334_ICON_WIFI_0_COBERTURA_PEQUENYO_data[] = {
+
+/* Data */
+0x00, 0x00, 0x00, 0x13, 0xE0, 0x60, 0xC5, 0x01, 0x47, 0x84, 0x73, 0x04, 0x44, 0x07, 0x00, 0x44, 
+0x00, 0x10, 0x0E, 0x40, 0x21, 0x00
+};
