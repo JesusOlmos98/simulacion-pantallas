@@ -25,8 +25,10 @@ export default function ObjPosXyLibreIcon({ obj, onNavegar, idPantallaActual = 0
   const nav = (obj.valorEditableONav as number | undefined) ?? 0;
 
   const Icono = resolverIconoCTI40Plus(icono);
-  const iconSize = Math.min(anchoPx, altoPx);
+  const minIconSize = Math.min(anchoPx, altoPx);
+  const iconSize = icono === 344 ? minIconSize * 0.8 : minIconSize;
   const shouldBlink = icono === 270;
+
   const esAccionable = accion > 0 && nav > 0 && onNavegar !== undefined;
 
   const handleClick = (): void => {

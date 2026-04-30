@@ -15,7 +15,10 @@ export const COLORES = {
   influences: '#ffe600ff', // Verde para influencias
   grey_table: '#5a5a5aff',
   disabled: '#8b8b8bff', // 777777ff Gris para elementos deshabilitados
-  lastBackground: '#1E1E1E'
+  lastBackground: '#1E1E1E',
+  desarmadoTc5: '#ffdd92ff',
+  botonesFisicos: '#bddc28'
+  //      ? 'w-14 h-14 rounded-full bg-[#bddc28] flex items-center justify-center hover:bg-[#a8c023] active:scale-95 transition-all shadow-md'
 } as const;
 
 /** Obtiene el color HEX correspondiente a un número (1-indexed) */
@@ -29,9 +32,10 @@ export function getColorHex(colorId: number): string {
     6: COLORES.warning, // Ámbar
     7: COLORES.info, // Azul
     8: COLORES.success, // Esmeralda
-    13: COLORES.error, // Rojo
+    13: COLORES.error, // error Rojo
     15: COLORES.disabled, // Gris claro
-    16: COLORES.success
+    16: COLORES.success,
+    17: '#871effff' //
   };
   return colorMap[colorId] ?? COLORES.light;
 }

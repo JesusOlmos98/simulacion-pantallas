@@ -18,7 +18,7 @@ import ObjEditVariablesTiempoFecha from '../components/render-objetos-cti40plus/
 import ObjCamposMultiseleccion from '../components/render-objetos-cti40plus/ObjCamposMultiseleccion';
 import { resolveText } from '../components/render-objetos-cti40plus/textos/resolverTexto';
 import { EnTextos } from '@/src/utils/common-lib-commac-generador/enumTextos';
-import { parseConcatenado, COLORES, BarraBotonesCti40Plus, decodificarVariable, decodificarStringVariable } from '../components/render-objetos-cti40plus';
+import { parseConcatenado, COLORES, BarraBotonesTc5, decodificarVariable, decodificarStringVariable } from '../components/render-objetos-cti40plus';
 import type { DescriptorPantalla, ObjBase } from '../components/pantalla-types';
 import { getColorHex } from '../components/render-objetos-cti40plus/colors';
 import PantallaLibre from './PantallaLibre';
@@ -79,7 +79,7 @@ export default function PantallaTc5(): JSX.Element {
   const controllerRef = useRef<AbortController | null>(null);
   const escribirSeleccionRef = useRef<() => Promise<void>>(async () => {});
 
-  // Botones de barra de acceso directo (tipoObjeto: 66) — solo llegan en pantallaId=0,
+  // Botones de barra de acceso directo (tipoObjeto: 82) — solo llegan en pantallaId=0,
   // se guardan aquí la primera vez y persisten durante toda la sesión TC5.
   const barraAccesoDirectoPersistente = useRef<ObjBase[]>([]);
 
@@ -106,7 +106,7 @@ export default function PantallaTc5(): JSX.Element {
     fetchPantalla(descriptor, controller.signal)
       .then((data) => {
         if (descriptor.esPrincipal) {
-          const botones = data.filter((o) => o.tipoObjeto === 66);
+          const botones = data.filter((o) => o.tipoObjeto === 82);
           if (botones.length > 0) barraAccesoDirectoPersistente.current = botones;
         }
         // Inicializar editValue en el mismo batch que setObjetos para evitar el flash de valor incorrecto
@@ -640,7 +640,7 @@ export default function PantallaTc5(): JSX.Element {
 
   // ── Derivados ─────────────────────────────────────────────────────────────
 
-  // Objetos de barra de acceso directo (tipoObjeto: 66) — se usan los persistentes (capturados en pantallaId=0)
+  // Objetos de barra de acceso directo (tipoObjeto: 82) — se usan los persistentes (capturados en pantallaId=0)
   const barraAccesoDirecto = barraAccesoDirectoPersistente.current;
 
   // Separar objetos: header (tipoObjeto: 2), líneas (tipoObjeto: 4, 5, 16), info (tipoObjeto: 7) y otros
@@ -973,11 +973,10 @@ export default function PantallaTc5(): JSX.Element {
         {/* Barra acceso directo desplegable */}
         {barraAbierta && (
           <div style={{ backgroundColor: '#2a2a2a' }}>
-            <BarraBotonesCti40Plus
+            <BarraBotonesTc5
               botones={barraAccesoDirecto}
               idPantallaActual={actual.idPantalla}
               onNavegar={navegarA}
-              compact
             />
           </div>
         )}
@@ -1889,7 +1888,7 @@ export default function PantallaTc5(): JSX.Element {
         </div>
 
         {/* ── Barra de botones de acceso directo (fuera de la pantalla) ── */}
-        <BarraBotonesCti40Plus
+        <BarraBotonesTc5
           botones={barraAccesoDirecto}
           idPantallaActual={actual.idPantalla}
           onNavegar={navegarA}

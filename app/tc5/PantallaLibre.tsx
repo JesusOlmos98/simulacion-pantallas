@@ -3,9 +3,11 @@
 import type { JSX } from 'react';
 import type { ObjBase, DescriptorPantalla } from '../components/pantalla-types';
 import ObjPosXyLibreIcon from '../components/render-objetos-cti40plus/ObjPosXyLibreIcon';
+import ObjPosXyLibreTexto from '../components/render-objetos-cti40plus/ObjPosXyLibreTexto';
 import ObjPosXyLibreVariable from '../components/render-objetos-cti40plus/ObjPosXyLibreVariable';
 import ObjPosXyLibreLineas from '../components/render-objetos-cti40plus/ObjPosXyLibreLineas';
-import { COLORES } from '../components/render-objetos-cti40plus';
+import { COLORES, parseConcatenado } from '../components/render-objetos-cti40plus';
+import { EnObjPintaPantallasOmega } from '@/src/utils/common-lib-commac-generador/NXP_BE/globals/enumOld';
 
 interface Props {
   objetos: ObjBase[];
@@ -24,7 +26,13 @@ export default function PantallaLibre({ objetos, onNavegar, idPantallaActual, in
   // Escala dinámica: si se pasa containerWidth, ajustamos al contenedor; si no, 3x fijo (desktop).
   const ESCALA = containerWidth !== undefined ? containerWidth / sizeX : 3;
 
-  const objetosLibres = objetos.filter((o) => o.tipoObjeto === 73 || o.tipoObjeto === 75 || o.tipoObjeto === 76);
+  const textoConcatenadoMap = new Map(
+    objetos
+      .filter((o) => o.tipoObjeto === EnObjPintaPantallasOmega.objTextoConcatenadoPlantilla) //67
+      .map((o) => [(o.idTextoConcatenado as number) ?? 0, parseConcatenado(o.cadenaConcatenadaRaw as { type: string; data: number[] })] as const)
+  );
+
+  const objetosLibres = objetos.filter((o) => o.tipoObjeto === 73 || o.tipoObjeto === 74 || o.tipoObjeto === 75 || o.tipoObjeto === 76);
 
   return (
     // Contenedor externo con las dimensiones ya escaladas
@@ -48,6 +56,17 @@ export default function PantallaLibre({ objetos, onNavegar, idPantallaActual, in
                 <ObjPosXyLibreVariable
                   key={i}
                   obj={obj}
+                />
+              );
+            case 74:
+              return (
+                <ObjPosXyLibreTexto
+                  key={i}
+                  obj={obj}
+                  onNavegar={onNavegar}
+                  idPantallaActual={idPantallaActual}
+                  indicePantallaActual={indicePantallaActual}
+                  textoConcatenados={textoConcatenadoMap}
                 />
               );
             case 76:

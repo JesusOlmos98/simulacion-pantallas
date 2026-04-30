@@ -31,7 +31,15 @@ import {
   LuWifiLow, // 147 - WiFi con 2 rayas de cobertura
   LuWifiHigh, // 148 - WiFi máximo (full cobertura)
   LuWifiZero,
-  LuEllipsisVertical
+  LuEllipsisVertical,
+  LuSignal,
+  LuUsb,
+  LuX,
+  LuRectangleVertical,
+  LuPower,
+  LuSquare,
+  LuCirclePlus,
+  LuFeather
 } from 'react-icons/lu';
 import { COLORES } from './colors';
 
@@ -181,6 +189,220 @@ const IconoPlusGrande: IconType = ({ size = 24, color, className }) => {
   return React.createElement(LuPlus, { size: actualSize, color, className });
 };
 
+// Icono compuesto: LuUsb girado 45 grados dentro de LuRectangleVertical
+const IconoUsbRotado: IconType = ({ size = 5, color, className }) => {
+  const s = typeof size === 'number' ? size : 24;
+  const usbSize = Math.round(s * 0.6); // USB más pequeño para que quepa dentro
+  return React.createElement(
+    'span',
+    { className, style: { position: 'relative', display: 'inline-flex', width: s, height: s, flexShrink: 0, alignItems: 'center', justifyContent: 'center' } },
+    // Rectángulo vertical como contenedor
+    React.createElement(LuRectangleVertical, { size: s, color }),
+    // USB girado 45 grados centrado
+    React.createElement(LuUsb, {
+      size: usbSize,
+      color: 'white', // Contraste con el rectángulo
+      style: { position: 'absolute', transform: 'rotate(315deg)' }
+    })
+  );
+};
+
+// Icono compuesto: LuSignal en color wifi con LuX pequeño en esquina superior izquierda
+const IconoSignalConX: IconType = ({ size = 24, color: _color, className }) => {
+  const s = typeof size === 'number' ? size : 24;
+  const xSize = Math.round(s * 0.5); // X más pequeña
+  return React.createElement(
+    'span',
+    { className, style: { position: 'relative', display: 'inline-flex', width: s, height: s, flexShrink: 0 } },
+    // Signal de fondo en color wifi
+    React.createElement(LuSignal, { size: s, color: COLORES.wifi }),
+    // X pequeña en esquina superior izquierda en color light
+    React.createElement(LuX, { size: xSize, color: COLORES.light, style: { position: 'absolute', top: 0, left: 0 } })
+  );
+};
+
+// Icono compuesto: bell-ring con LuInfo superpuesto (ID 422)
+const IconoBellRingInfo: IconType = ({ size = 24, color, className }) => {
+  const s = typeof size === 'number' ? size : 24;
+  const infoSize = Math.round(s * 0.5); // Info más pequeño
+  const iconColor = color ?? COLORES.botonesFisicos;
+  return React.createElement(
+    'span',
+    { className, style: { position: 'relative', display: 'inline-flex', width: s, height: s, flexShrink: 0 } },
+    // Bell-ring de fondo
+    React.createElement(LuBellRing, { size: s, color: iconColor }),
+    // Círculo de fondo para LuInfo en esquina superior izquierda
+    React.createElement('div', { style: { position: 'absolute', top: 0, left: 0, width: infoSize, height: infoSize, borderRadius: '50%', backgroundColor: color ?? iconColor, zIndex: 1 } }),
+    // LuInfo superpuesto en esquina superior izquierda (más visible)
+    React.createElement(LuInfo, { size: infoSize, color: COLORES.botonesFisicos, style: { position: 'absolute', top: 0, left: 0, zIndex: 2 } })
+  );
+};
+
+// Icono compuesto: square con circle-plus en esquina superior izquierda y "EX" abajo (ID 420)
+const IconoSquareConPlusYEx: IconType = ({ size = 24, color, className }) => {
+  const s = typeof size === 'number' ? size : 24;
+  const plusSize = Math.round(s * 0.5); // Circle-plus más pequeño
+  const fontSize = Math.round(s * 0.3); // Texto "EX" más pequeño
+  const iconColor = color ?? COLORES.botonesFisicos;
+  return React.createElement(
+    'span',
+    { className, style: { position: 'relative', display: 'inline-flex', width: s, height: s, flexShrink: 0, alignItems: 'center', justifyContent: 'center' } },
+    // Square de fondo
+    React.createElement(LuSquare, { size: s, color: iconColor }),
+    // Círculo de fondo para LuCirclePlus en esquina superior izquierda
+    React.createElement('div', { style: { position: 'absolute', top: 0, left: 0, width: plusSize, height: plusSize, borderRadius: '50%', backgroundColor: color ?? iconColor, zIndex: 1 } }),
+    // Circle-plus en esquina superior izquierda (más visible)
+    React.createElement(LuCirclePlus, { size: plusSize, color: COLORES.botonesFisicos, style: { position: 'absolute', top: 0, left: 0, zIndex: 2 } }),
+    // Texto "EX" en el centro inferior
+    React.createElement('span', { style: { position: 'absolute', bottom: Math.round(s * 0.15), fontSize, fontWeight: 700, color: iconColor, userSelect: 'none' } }, 'EX')
+  );
+};
+
+// Iconos de texto A1-A6 (IDs 414-419)
+const IconoA1: IconType = ({ /*size = 24,*/ color, className }) => {
+  // const fontSize = typeof size === 'number' ? Math.round(size * 0.6) : size;
+  const size = 40;
+  const fontSize = 40;
+  return React.createElement(
+    'span',
+    {
+      className,
+      style: {
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: size,
+        height: size,
+        fontSize,
+        fontWeight: 700,
+        color: color ?? COLORES.botonesFisicos,
+        userSelect: 'none'
+      }
+    },
+    'A1'
+  );
+};
+
+const IconoA2: IconType = ({ /*size = 24,*/ color, className }) => {
+  // const fontSize = typeof size === 'number' ? Math.round(size * 0.6) : size;
+  const size = 40;
+  const fontSize = 40;
+  return React.createElement(
+    'span',
+    {
+      className,
+      style: {
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: size,
+        height: size,
+        fontSize,
+        fontWeight: 700,
+        color: color ?? COLORES.botonesFisicos,
+        userSelect: 'none'
+      }
+    },
+    'A2'
+  );
+};
+
+const IconoA3: IconType = ({ /*size = 24,*/ color, className }) => {
+  // const fontSize = typeof size === 'number' ? Math.round(size * 0.6) : size;
+  const size = 40;
+  const fontSize = 40;
+  return React.createElement(
+    'span',
+    {
+      className,
+      style: {
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: size,
+        height: size,
+        fontSize,
+        fontWeight: 700,
+        color: color ?? COLORES.botonesFisicos,
+        userSelect: 'none'
+      }
+    },
+    'A3'
+  );
+};
+
+const IconoA4: IconType = ({ /*size = 24,*/ color, className }) => {
+  // const fontSize = typeof size === 'number' ? Math.round(size * 0.6) : size;
+  const size = 40;
+  const fontSize = 40;
+  return React.createElement(
+    'span',
+    {
+      className,
+      style: {
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: size,
+        height: size,
+        fontSize,
+        fontWeight: 700,
+        color: color ?? COLORES.botonesFisicos,
+        userSelect: 'none'
+      }
+    },
+    'A4'
+  );
+};
+
+const IconoA5: IconType = ({ /*size = 24,*/ color, className }) => {
+  // const fontSize = typeof size === 'number' ? Math.round(size * 0.6) : size;
+  const size = 40;
+  const fontSize = 40;
+  return React.createElement(
+    'span',
+    {
+      className,
+      style: {
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: size,
+        height: size,
+        fontSize,
+        fontWeight: 700,
+        color: color ?? COLORES.botonesFisicos,
+        userSelect: 'none'
+      }
+    },
+    'A5'
+  );
+};
+
+const IconoA6: IconType = ({ /*size = 24,*/ color, className }) => {
+  // const fontSize = typeof size === 'number' ? Math.round(size * 0.6) : size;
+  const size = 40;
+  const fontSize = 40;
+  return React.createElement(
+    'span',
+    {
+      className,
+      style: {
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: size,
+        height: size,
+        fontSize,
+        fontWeight: 700,
+        color: color ?? COLORES.botonesFisicos,
+        userSelect: 'none'
+      }
+    },
+    'A6'
+  );
+};
+
 const ICONO_CTI40PLUS_MAP: Record<number, IconType> = {
   1: LuThermometer, // Termómetro de mercurio (Sondas)
   2: LuFan, // Ventilación
@@ -218,7 +440,23 @@ const ICONO_CTI40PLUS_MAP: Record<number, IconType> = {
   148: LuWifi,
   270: LuBellRing, // Alarmas
   322: IconoEllipsisVertical, // Más opciones
-  346: IconoVentiladorGirando // Ventilador girando en color naranja
+  346: IconoVentiladorGirando, // Ventilador girando en color naranja
+
+  153: IconoSignalConX, // Signal en color wifi con X pequeña en esquina superior izquierda
+  344: IconoUsbRotado, // USB girado 45° dentro de rectángulo vertical
+  408: LuX, // X que tacha el USB
+
+  414: IconoA1, // A1
+  415: IconoA2, // A2
+  416: IconoA3, // A3
+  417: IconoA4, // A4
+  418: IconoA5, // A5
+  419: IconoA6, // A6
+  420: IconoSquareConPlusYEx, // Square con circle-plus y "EX"
+  421: LuUnplug, // Plug
+  422: IconoBellRingInfo, // Bell-ring con Info superpuesto
+  423: LuPower, // Botón de encender/apagar
+  424: LuFeather // Feather
 };
 
 /** Devuelve el componente de icono para un id de icono de barra, o null si no existe mapeo. */

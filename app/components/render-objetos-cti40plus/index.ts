@@ -14,6 +14,7 @@ export { default as ObjLineaTextVar } from './ObjLineaTextVar';
 export { default as ObjLineaTextVarVar } from './ObjLineaTextVarVar';
 export { default as RenderObjeto } from './RenderObjeto';
 export { default as BarraBotonesCti40Plus } from './BarraBotonesCti40Plus';
+export { default as BarraBotonesTc5 } from './BarraBotonesTc5';
 export { default as ObjPosXyLibreIcon } from './ObjPosXyLibreIcon';
 export { default as ObjPosXyLibreVariable } from './ObjPosXyLibreVariable';
 export { default as ObjPosXyLibreLineas } from './ObjPosXyLibreLineas';

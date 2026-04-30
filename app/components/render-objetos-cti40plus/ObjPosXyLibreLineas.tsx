@@ -2,7 +2,7 @@
 
 import type { JSX } from 'react';
 import type { ObjBase } from '../pantalla-types';
-import { getColorHex } from './colors';
+import { resolverColor } from './colors';
 import { COLORES } from './colors';
 
 interface Props {
@@ -28,8 +28,10 @@ export default function ObjPosXyLibreLineas({ obj }: Props): JSX.Element {
     borderColor = COLORES.tertiary;
   } else if (color === 13) {
     borderColor = COLORES.error;
+  } else if (color === 5) {
+    borderColor = COLORES.desarmadoTc5;
   } else {
-    borderColor = getColorHex(color);
+    borderColor = resolverColor(color);
   }
 
   return <div style={{ position: 'absolute', left: posXInicio, top: posYInicio, width, height, backgroundColor: borderColor, borderRadius: 4, boxSizing: 'border-box', pointerEvents: 'none' }} />;
