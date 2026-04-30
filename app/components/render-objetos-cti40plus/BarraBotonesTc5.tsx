@@ -13,6 +13,7 @@ interface Props {
   idPantallaActual: number;
   onNavegar: (descriptor: DescriptorPantalla) => void;
   compact?: boolean;
+  habilitados?: boolean;
 }
 
 // Obtener color y estado de parpadeo del LED según ledEstado
@@ -33,13 +34,13 @@ function getLedState(ledEstado: number): { color: string; shouldBlink: boolean }
   }
 }
 
-export default function BarraBotonesTc5({ botones, /*idPantallaActual,*/ onNavegar, compact }: Props): JSX.Element | null {
+export default function BarraBotonesTc5({ botones, /*idPantallaActual,*/ onNavegar, compact, habilitados = true }: Props): JSX.Element | null {
   if (botones.length === 0) return null;
 
   const btnClass =
     compact === true
-      ? 'mt-8 w-14 h-14 rounded-full bg-[#bddc28] flex items-center justify-center hover:bg-[#a8c023] active:scale-95 transition-all shadow-md relative'
-      : 'mt-8 w-20 h-20 rounded-full bg-[#bddc28] flex items-center justify-center hover:bg-[#a8c023] active:scale-95 transition-all shadow-md relative';
+      ? `mt-8 h-14 w-14 rounded-full hover:brightness-90 flex items-center justify-center transition-all shadow-md relative`
+      : `mt-8 h-20 w-20 rounded-full hover:brightness-90 flex items-center justify-center transition-all shadow-md relative`;
   const iconSize = compact === true ? 32 : 48;
   const ledSize = compact === true ? 20 : 28;
 
@@ -62,34 +63,46 @@ export default function BarraBotonesTc5({ botones, /*idPantallaActual,*/ onNaveg
         const indice = (obj.indice as number | undefined) ?? index;
 
         const Icono = icono !== undefined ? resolverIconoCTI40Plus(icono) : null;
-        const { color: ledColor, shouldBlink } = getLedState(ledEstado);
+        const ledEstadoEfectivo = habilitados ? ledEstado : -1;
+        const { color: ledColor, shouldBlink } = getLedState(ledEstadoEfectivo);
+        const esBotonAccion = accion === 0;
         const esBotonNavegacion = accion === 1 && navegacion !== undefined && navegacion > 0;
+        const esInteractivo = habilitados && (esBotonNavegacion || esBotonAccion);
+        const esIconoEspecial = icono === 423;
+        const title = habilitados
+          ? `Botón TC5 ${indice + 1}${esBotonNavegacion ? ' - Navegar a pantalla ' + navegacion : ' - Acción directa'}`
+          : `Botón TC5 ${indice + 1} - No disponible en esta pantalla`;
 
         return (
           <button
             key={index}
             onClick={() => {
-              if (esBotonNavegacion) {
+              if (esBotonNavegacion && esInteractivo) {
                 // accion=1: navegar a la pantalla correspondiente
                 onNavegar({ idPantalla: navegacion!, indicePantalla: (obj.indice as number | undefined) ?? 0, esPrincipal: false });
-              } else {
-                // accion=0: ejecutar acción sin navegar (aquí podríamos añadir lógica futura)
-                console.log(`Botón TC5 ${indice + 1}: acción ejecutada (sin navegación)`);
               }
             }}
             className={btnClass}
-            title={`Botón TC5 ${indice + 1}${esBotonNavegacion ? ' - Navegar a pantalla ' + navegacion : ' - Acción directa'}`}
-            style={{ backgroundColor: COLORES.botonesFisicos, opacity: 1, cursor: 'pointer' }}
+            title={title}
+            aria-disabled={!esInteractivo}
+            style={{
+              backgroundColor: esIconoEspecial ? COLORES.error : COLORES.botonesFisicos,
+              cursor: esInteractivo ? 'pointer' : 'not-allowed',
+              filter: esInteractivo ? undefined : 'brightness(0.72)',
+              opacity: esInteractivo ? 1 : 0.75
+            }}
           >
             {Icono ? (
               <Icono
                 size={iconSize}
                 color={COLORES.lastBackground}
+                style={esInteractivo ? undefined : { opacity: 0.75 }}
               />
             ) : (
               <LuCircle
                 size={iconSize}
                 color={COLORES.lastBackground}
+                style={esInteractivo ? undefined : { opacity: 0.75 }}
               />
             )}
 

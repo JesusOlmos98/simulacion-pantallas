@@ -79,8 +79,8 @@ export default function PantallaTc5(): JSX.Element {
   const controllerRef = useRef<AbortController | null>(null);
   const escribirSeleccionRef = useRef<() => Promise<void>>(async () => {});
 
-  // Botones de barra de acceso directo (tipoObjeto: 82) — llegan en cualquier pantalla,
-  // se guardan aquí y se actualizan cada vez que llegan nuevos estados durante la sesión TC5.
+  // Botones de barra de acceso directo (tipoObjeto: 82) — se conservan para seguir pintando
+  // la botonera física aunque la pantalla actual no los reenvíe.
   const barraAccesoDirectoPersistente = useRef<ObjBase[]>([]);
 
   const cargarPantalla = useCallback((descriptor: DescriptorPantalla) => {
@@ -979,6 +979,7 @@ export default function PantallaTc5(): JSX.Element {
               botones={barraAccesoDirecto}
               idPantallaActual={actual.idPantalla}
               onNavegar={navegarA}
+              habilitados={(objetos?.some((o) => o.tipoObjeto === 82) ?? false) && !loading}
             />
           </div>
         )}
@@ -1894,6 +1895,7 @@ export default function PantallaTc5(): JSX.Element {
           botones={barraAccesoDirecto}
           idPantallaActual={actual.idPantalla}
           onNavegar={navegarA}
+          habilitados={(objetos?.some((o) => o.tipoObjeto === 82) ?? false) && !loading}
         />
       </div>
     </div>

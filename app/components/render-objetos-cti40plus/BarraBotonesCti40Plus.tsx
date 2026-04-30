@@ -20,8 +20,8 @@ export default function BarraBotonesCti40Plus({ botones, idPantallaActual, onNav
 
   const btnClass =
     compact === true
-      ? 'w-14 h-14 rounded-full bg-[#bddc28] flex items-center justify-center hover:bg-[#a8c023] active:scale-95 transition-all shadow-md'
-      : 'w-25 h-25 rounded-full bg-[#bddc28] flex items-center justify-center hover:bg-[#a8c023] active:scale-95 transition-all shadow-md';
+      ? `w-14 h-14 rounded-full bg-[${COLORES.botonesFisicos}] flex items-center justify-center hover:brightness-90 active:scale-95 transition-all shadow-md`
+      : `w-25 h-25 rounded-full bg-[${COLORES.botonesFisicos}] flex items-center justify-center hover:brightness-90 active:scale-95 transition-all shadow-md`;
   const iconSize = compact === true ? 32 : 65;
 
   return (

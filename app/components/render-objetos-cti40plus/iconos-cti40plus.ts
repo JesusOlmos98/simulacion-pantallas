@@ -155,10 +155,7 @@ const IconoBatteryFullRotated: IconType = ({ size = 24, color, className }) => {
   return React.createElement(
     'span',
     { className, style: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: size, height: size, transform: 'rotate(270deg)' } },
-    React.createElement(LuBatteryFull, {
-      size: size,
-      color: color ?? 'currentColor'
-    })
+    React.createElement(LuBatteryFull, { size: size, color: color ?? 'currentColor' })
   );
 };
 
@@ -427,11 +424,7 @@ const IconoSquareArrowLeft: IconType = ({ size = 24, color, className }) => {
   return React.createElement(
     'span',
     { className, style: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: size, height: size } },
-    React.createElement(LuSquareArrowRight, { 
-      size, 
-      color, 
-      style: { transform: 'rotate(180deg)' }
-    })
+    React.createElement(LuSquareArrowRight, { size, color, style: { transform: 'rotate(180deg)' } })
   );
 };
 
