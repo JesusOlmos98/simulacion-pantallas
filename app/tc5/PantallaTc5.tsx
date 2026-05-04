@@ -844,8 +844,6 @@ export default function PantallaTc5(): JSX.Element {
 
   if (isSmallScreen) {
     const navBg = encabezado !== undefined ? colorHeader || COLORES.tertiary : COLORES.primary;
-    const sinTareasIcono = (encabezado?.iconoTarea2 ?? 0) === 0 && (encabezado?.iconoTarea3 ?? 0) === 0;
-    const navPadding = !encabezado || (sinTareasIcono && !esVentilacionGrupoEdit) ? 'py-[15.5px]' : 'py-3';
     const scrollbarStyle = { '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties;
     const scrollbarClass = `flex-1 overflow-y-auto p-4 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-[${COLORES.lastBackground}] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)]`;
     const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 320;
@@ -857,7 +855,7 @@ export default function PantallaTc5(): JSX.Element {
         {/* ── Navbar ── */}
         {!esTeclado && !esSeleccion && (
           <div
-            className={`flex items-center justify-between px-3 ${navPadding} shrink-0`}
+            className="flex items-center justify-between px-3 py-3 shrink-0"
             style={{ backgroundColor: navBg }}
           >
             {/* Izquierda: hamburguesa + back/menú */}
@@ -940,7 +938,7 @@ export default function PantallaTc5(): JSX.Element {
         {/* Header edición/selección */}
         {!esPantallaPrincipal && (esTeclado || esSeleccion) && (
           <div
-            className="flex items-center justify-between px-3 py-[15.5px] shrink-0"
+            className="flex items-center justify-between px-3 py-3 shrink-0"
             style={{ backgroundColor: COLORES.tertiary }}
           >
             <button
@@ -1305,7 +1303,7 @@ export default function PantallaTc5(): JSX.Element {
             style={{ backgroundColor: COLORES.lastBackground }}
           >
             <div
-              className="flex items-center px-3 py-[15.5px] shrink-0"
+              className="flex items-center px-3 py-3 shrink-0"
               style={{ backgroundColor: COLORES.info }}
             >
               <button
@@ -1401,7 +1399,7 @@ export default function PantallaTc5(): JSX.Element {
               {/* Barra superior — pantallas de edición (tipoPlantilla 2): X + título + Check */}
               {!esPantallaPrincipal && esTeclado && (
                 <div
-                  className="flex items-center justify-between px-3 py-6 shrink-0"
+                  className="flex items-center justify-between px-3 py-3 shrink-0"
                   style={{ backgroundColor: COLORES.tertiary }}
                 >
                   <button
@@ -1433,7 +1431,7 @@ export default function PantallaTc5(): JSX.Element {
               {/* Barra superior — pantallas de selección (radio o checkbox): X + título + Check */}
               {!esPantallaPrincipal && esSeleccion && (
                 <div
-                  className="flex items-center justify-between px-3 py-6 shrink-0"
+                  className="flex items-center justify-between px-3 py-3 shrink-0"
                   style={{ backgroundColor: COLORES.tertiary }}
                 >
                   <button
@@ -1459,7 +1457,7 @@ export default function PantallaTc5(): JSX.Element {
               {/* Barra superior — pantallas normales (no principal, no edición, no selección) */}
               {!esPantallaPrincipal && !esTeclado && !esSeleccion && (
                 <div
-                  className="flex items-center justify-between px-3 py-6 shrink-0"
+                  className="flex items-center justify-between px-3 py-3 shrink-0"
                   style={{ backgroundColor: esVentilacionGrupoEdit ? COLORES.tertiary : colorHeader }}
                 >
                   {/* Izquierda: flecha + hamburguesa */}
@@ -1833,7 +1831,7 @@ export default function PantallaTc5(): JSX.Element {
             >
               {/* Header del dialog */}
               <div
-                className="flex items-center px-3 py-6 shrink-0"
+                className="flex items-center px-3 py-3 shrink-0"
                 style={{ backgroundColor: COLORES.info }}
               >
                 <button

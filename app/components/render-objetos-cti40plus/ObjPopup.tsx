@@ -39,7 +39,7 @@ export default function ObjPopup({ obj, lang }: ObjPopupProps): JSX.Element {
       >
         {/* Header con título */}
         <div
-          className="flex items-center gap-3 px-6 py-4"
+          className="flex items-center gap-3 px-6 py-3"
           style={{ backgroundColor: COLORES.primary }}
         >
           <button
