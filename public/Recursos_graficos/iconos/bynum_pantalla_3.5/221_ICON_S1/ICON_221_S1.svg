@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-  <defs>
-    <mask id="m" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
-      <image width="32" height="32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABlklEQVR42u2VP0tWYRiHr1tCyyHDoIIWaQgJynd2kiYHB1sa/AY1CQqtjkIE1uBqW+ik38AGHWqJdGgKhxw0guSFghQvB5/hcDjv8bzvscnzg2e4nz/3uQ7P/fxuaNSo0VVXXLRBvQW8BKaAUeAm8BdoA7+A72ksRsRB7lwrhb8j4kvXdOojdd9qamXOTat7mbXNXj7ep+5mkvxUn6m31RvqE3VBPcwCqO8L4HoCGM8lmeuwb1B9oz5O8WY3AH0lDKO5uF1YRBF/ImIuInYy00fA2yo/WgZwmotfqeMVci4BI8B6FYBrJWufc/EDYEvdA7aBT8DHfHVHxHq6ivpvVF2rUP3f1OcFZydqFWFKcl19px5XAJm9dIBMsnvqC3W1xBfa6sB/ASgAaqkfLjCjibrPsLN/nxfeTLLgrqy9MoD6VH2tDnWAEDjJTJ0UANXygX5gHvihLquT6h21Xx1Rl4CHmf0bEXF0mfc8aXXtqHd7eQVRAjAMTKeWOgbcB4bSOE2t+GtyvJWI+FfQxuu140aNGl0JnQEIFSzTMrZF2AAAAABJRU5ErkJggg==" />
-    </mask>
-  </defs>
-  <rect width="32" height="32" fill="#FFFFFF" mask="url(#m)" />
-</svg>
