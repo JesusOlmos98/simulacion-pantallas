@@ -1,11 +1,16 @@
 'use client';
 
 import type { JSX } from 'react';
-import { LuFan, LuChevronRight } from 'react-icons/lu';
+import { LuChevronRight } from 'react-icons/lu';
 import { COLORES } from './colors';
+import { resolverIconoCTI40Plus } from './iconos-cti40plus';
 import type { ObjBase, DescriptorPantalla } from '../pantalla-types';
 
 const SCREEN_PTR_MIN = 65536;
+const IconoVentiladorApagado = resolverIconoCTI40Plus(2);
+const IconoVentiladorEstatico = resolverIconoCTI40Plus(340);
+const IconoVentiladorTemporizado = resolverIconoCTI40Plus(341);
+const IconoVentiladorRotatorio = resolverIconoCTI40Plus(342);
 
 interface DatoVentilador {
   km3: number;
@@ -62,28 +67,25 @@ export default function ObjVentilacionGrupoGrafico({ obj, onNavegar, idPantallaA
         {datos.slice(0, 5).map((dato, idx) => {
           const km3 = dato.km3;
           const estadoVentilador = estadosOverride ? (estadosOverride[idx] ?? 0) : dato.estadoVentilador;
-          const esAlarma = estadoVentilador === 255;
+          const esFijo = estadoVentilador === 255;
           const esApagado = estadoVentilador === 0;
 
-          const rango = !esAlarma && !esApagado ? (rangoMap.get(estadoVentilador) ?? 0) : 0;
-
-          let colorIcono: string;
-          if (esAlarma) {
-            colorIcono = COLORES.menuWords;
-          } else if (esApagado) {
-            colorIcono = COLORES.disabled;
-          } else if (rango <= numFijos) {
-            colorIcono = COLORES.success;
-          } else if (rango <= numFijos + numTemporizados) {
-            colorIcono = COLORES.success; // esMitad maneja el split rendering
-          } else {
-            colorIcono = COLORES.light;
-          }
+          const rango = !esFijo && !esApagado ? (rangoMap.get(estadoVentilador) ?? 0) : 0;
 
           const colorKm3 = esApagado ? COLORES.disabled : COLORES.light;
-          const textoEstado = esAlarma || esApagado ? '-' : String(estadoVentilador);
+          const textoEstado = esFijo || esApagado ? '-' : String(estadoVentilador);
 
           const esMitad = rango > numFijos && rango <= numFijos + numTemporizados;
+          const esRotatorio = rango > 0 && rango <= numFijos;
+          const IconoVentilador = esApagado
+            ? IconoVentiladorApagado
+            : esFijo
+              ? IconoVentiladorEstatico
+              : esRotatorio
+                ? IconoVentiladorRotatorio
+                : esMitad
+                  ? IconoVentiladorTemporizado
+                  : IconoVentiladorApagado;
 
           const esClickable = modoEdicion;
 
@@ -108,23 +110,10 @@ export default function ObjVentilacionGrupoGrafico({ obj, onNavegar, idPantallaA
                 {idx + 1}
               </span>
               {/* Icono ventilador */}
-              {esMitad ? (
-                <span style={{ position: 'relative', display: 'inline-flex', width: fanSize, height: fanSize }}>
-                  <LuFan
-                    size={fanSize}
-                    color={COLORES.success}
-                    style={{ position: 'absolute', clipPath: 'inset(0 50% 0 0)' }}
-                  />
-                  <LuFan
-                    size={fanSize}
-                    color={COLORES.light}
-                    style={{ position: 'absolute', clipPath: 'inset(0 0 0 50%)' }}
-                  />
-                </span>
-              ) : (
-                <LuFan
+              {IconoVentilador && (
+                <IconoVentilador
                   size={fanSize}
-                  color={colorIcono}
+                  style={esApagado ? { opacity: 0.35 } : undefined}
                 />
               )}
               {/* km3 */}

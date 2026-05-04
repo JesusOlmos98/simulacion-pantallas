@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import type { JSX } from 'react';
 import { useRouter } from 'next/navigation';
-import { LuCheck, LuChevronLeft, LuFan, LuInfo, LuMenu, LuX } from 'react-icons/lu';
+import { LuCheck, LuChevronLeft, LuInfo, LuMenu, LuX } from 'react-icons/lu';
 import { useIsSmallScreen } from '../hooks/useIsSmallScreen';
 import ObjVentilacionGrupoGrafico from '../components/render-objetos-cti40plus/ObjVentilacionGrupoGrafico';
 import ObjVentilacionGrupoGraficoEdit from '../components/render-objetos-cti40plus/ObjVentilacionGrupoGraficoEdit';
@@ -32,6 +32,9 @@ let idEnvioCounter = 1;
 // ─── Descriptor de pantalla ───────────────────────────────────────────────────
 
 const PRINCIPAL: DescriptorPantalla = { idPantalla: 0, indicePantalla: 0, esPrincipal: true };
+const IconoVentiladorEstatico = resolverIconoCTI40Plus(340);
+const IconoVentiladorTemporizado = resolverIconoCTI40Plus(341);
+const IconoVentiladorRotatorio = resolverIconoCTI40Plus(342);
 
 interface DestinoTrasEdicion {
   destino: DescriptorPantalla;
@@ -1139,10 +1142,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                 )}
                 <div className="flex flex-col gap-4 px-4 py-4">
                   <div className="flex items-center gap-3">
-                    <LuFan
-                      size={28}
-                      color={COLORES.success}
-                    />
+                    {IconoVentiladorRotatorio && <IconoVentiladorRotatorio size={28} />}
                     <span
                       className="text-lg"
                       style={{ color: COLORES.light }}
@@ -1151,18 +1151,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span style={{ position: 'relative', display: 'inline-flex', width: 28, height: 28 }}>
-                      <LuFan
-                        size={28}
-                        color={COLORES.success}
-                        style={{ position: 'absolute', clipPath: 'inset(0 50% 0 0)' }}
-                      />
-                      <LuFan
-                        size={28}
-                        color={COLORES.light}
-                        style={{ position: 'absolute', clipPath: 'inset(0 0 0 50%)' }}
-                      />
-                    </span>
+                    {IconoVentiladorTemporizado && <IconoVentiladorTemporizado size={28} />}
                     <span
                       className="text-lg"
                       style={{ color: COLORES.light }}
@@ -1171,10 +1160,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
-                    <LuFan
-                      size={28}
-                      color={COLORES.menuWords}
-                    />
+                    {IconoVentiladorEstatico && <IconoVentiladorEstatico size={28} />}
                     <span
                       className="text-lg"
                       style={{ color: COLORES.light }}
@@ -1667,10 +1653,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                   {/* Leyenda */}
                   <div className="flex flex-col gap-8 px-8 py-8">
                     <div className="flex items-center gap-6">
-                      <LuFan
-                        size={75}
-                        color={COLORES.success}
-                      />
+                      {IconoVentiladorRotatorio && <IconoVentiladorRotatorio size={75} />}
                       <span
                         className="text-5xl"
                         style={{ color: COLORES.light }}
@@ -1679,18 +1662,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                       </span>
                     </div>
                     <div className="flex items-center gap-6">
-                      <span style={{ position: 'relative', display: 'inline-flex', width: 75, height: 75 }}>
-                        <LuFan
-                          size={75}
-                          color={COLORES.success}
-                          style={{ position: 'absolute', clipPath: 'inset(0 50% 0 0)' }}
-                        />
-                        <LuFan
-                          size={75}
-                          color={COLORES.light}
-                          style={{ position: 'absolute', clipPath: 'inset(0 0 0 50%)' }}
-                        />
-                      </span>
+                      {IconoVentiladorTemporizado && <IconoVentiladorTemporizado size={75} />}
                       <span
                         className="text-5xl"
                         style={{ color: COLORES.light }}
@@ -1699,10 +1671,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                       </span>
                     </div>
                     <div className="flex items-center gap-6">
-                      <LuFan
-                        size={75}
-                        color={COLORES.menuWords}
-                      />
+                      {IconoVentiladorEstatico && <IconoVentiladorEstatico size={75} />}
                       <span
                         className="text-5xl"
                         style={{ color: COLORES.light }}
