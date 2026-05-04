@@ -11,6 +11,7 @@ import { COLORES } from './colors';
 interface Props {
   botones: ObjBase[];
   idPantallaActual: number;
+  indicePantallaActual: number;
   onNavegar: (descriptor: DescriptorPantalla) => void;
   compact?: boolean;
   habilitados?: boolean;
@@ -34,7 +35,7 @@ function getLedState(ledEstado: number): { color: string; shouldBlink: boolean }
   }
 }
 
-export default function BarraBotonesTc5({ botones, /*idPantallaActual,*/ onNavegar, compact, habilitados = true }: Props): JSX.Element | null {
+export default function BarraBotonesTc5({ botones, idPantallaActual, indicePantallaActual, onNavegar, compact, habilitados = true }: Props): JSX.Element | null {
   if (botones.length === 0) return null;
 
   const btnClass =
@@ -65,7 +66,7 @@ export default function BarraBotonesTc5({ botones, /*idPantallaActual,*/ onNaveg
         const Icono = icono !== undefined ? resolverIconoCTI40Plus(icono) : null;
         const ledEstadoEfectivo = habilitados ? ledEstado : -1;
         const { color: ledColor, shouldBlink } = getLedState(ledEstadoEfectivo);
-        const esBotonAccion = accion === 0;
+        const esBotonAccion = accion === 0 && navegacion !== undefined && navegacion > 0;
         const esBotonNavegacion = accion === 1 && navegacion !== undefined && navegacion > 0;
         const esInteractivo = habilitados && (esBotonNavegacion || esBotonAccion);
         const esIconoEspecial = icono === 423;
@@ -76,10 +77,23 @@ export default function BarraBotonesTc5({ botones, /*idPantallaActual,*/ onNaveg
         return (
           <button
             key={index}
+            type="button"
             onClick={() => {
-              if (esBotonNavegacion && esInteractivo) {
-                // accion=1: navegar a la pantalla correspondiente
+              if (!esInteractivo) return;
+
+              if (esBotonNavegacion) {
                 onNavegar({ idPantalla: navegacion!, indicePantalla: (obj.indice as number | undefined) ?? 0, esPrincipal: false });
+                return;
+              }
+
+              if (esBotonAccion) {
+                onNavegar({
+                  idPantalla: idPantallaActual,
+                  indicePantalla: (obj.indice as number | undefined) ?? indicePantallaActual,
+                  esPrincipal: idPantallaActual === 0,
+                  // esPrincipal: false,
+                  idUnicoEdicion: navegacion!
+                });
               }
             }}
             className={btnClass}

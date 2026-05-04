@@ -42,7 +42,7 @@ interface DestinoTrasEdicion {
 
 async function fetchPantalla(d: DescriptorPantalla, signal: AbortSignal): Promise<ObjBase[]> {
   const params = new URLSearchParams({ mac: MAC_TC5, eventId: '1', idEnvio: String(idEnvioCounter++), readWrite: '0', esPantallaPrincipal: d.esPrincipal ? '1' : '0' });
-  if (!d.esPrincipal) {
+  if (!d.esPrincipal || d.idUnicoEdicion !== undefined) {
     params.set('idNav', String(d.idPantalla));
     params.set('indicePantalla', String(d.indicePantalla));
     if (d.idUnicoEdicion !== undefined) {
@@ -50,6 +50,7 @@ async function fetchPantalla(d: DescriptorPantalla, signal: AbortSignal): Promis
     }
   }
   // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST', signal });
+  console.log('🔍 Endpoint generado:', params.toString());
   const res = await apiFetch(params, signal);
   if (!res.ok) throw new Error(`Error ${res.status}`);
   return res.json();
@@ -978,6 +979,7 @@ export default function PantallaTc5(): JSX.Element {
             <BarraBotonesTc5
               botones={barraAccesoDirecto}
               idPantallaActual={actual.idPantalla}
+              indicePantallaActual={actual.indicePantalla}
               onNavegar={navegarA}
               habilitados={(objetos?.some((o) => o.tipoObjeto === 82) ?? false) && !loading}
             />
@@ -1894,6 +1896,7 @@ export default function PantallaTc5(): JSX.Element {
         <BarraBotonesTc5
           botones={barraAccesoDirecto}
           idPantallaActual={actual.idPantalla}
+          indicePantallaActual={actual.indicePantalla}
           onNavegar={navegarA}
           habilitados={(objetos?.some((o) => o.tipoObjeto === 82) ?? false) && !loading}
         />
