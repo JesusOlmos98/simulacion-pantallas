@@ -4,7 +4,7 @@ import type { JSX } from 'react';
 import { LuChevronRight } from 'react-icons/lu';
 import { resolverTextoPantalla, resolverUnidad, decodificarVariable } from './pantalla-utils';
 import { COLORES, resolverColor } from './colors';
-import { resolverIconoCTI40Plus } from './iconos-cti40plus';
+import { resolverIconoVariableCTI40Plus } from './iconos-cti40plus';
 import type { DescriptorPantalla } from '../pantalla-types';
 
 // Umbral para distinguir punteros de pantalla (>65535) de índices idUnicoEdicion (<=65535)
@@ -38,13 +38,13 @@ export default function ObjLineaTextVarVar({ obj, onNavegar, idPantallaActual, i
 
   const tipoVarCentral = (obj.tipoVarCentral as number | undefined) ?? 0;
   const variableCentral = (obj.variableCentral as number | undefined) ?? 0;
-  const IconoCentral = tipoVarCentral === 40 ? resolverIconoCTI40Plus(variableCentral & 0xff) : null;
+  const IconoCentral = tipoVarCentral === 40 ? resolverIconoVariableCTI40Plus(variableCentral) : null;
   const valorCentral = TIPOS_TEXTO.has(tipoVarCentral) ? resolverTextoPantalla(variableCentral & 0xffff, textoConcatenados, lang) : decodificarVariable(variableCentral, tipoVarCentral);
   const unidadCentral = resolverUnidad((obj.unidadCentral as number | undefined) ?? 0);
 
   const tipoVar = (obj.tipoVar as number | undefined) ?? 0;
   const variable = (obj.variable as number | undefined) ?? 0;
-  const IconoValor = tipoVar === 40 ? resolverIconoCTI40Plus(variable & 0xff) : null;
+  const IconoValor = tipoVar === 40 ? resolverIconoVariableCTI40Plus(variable) : null;
   const valor = TIPOS_TEXTO.has(tipoVar) ? resolverTextoPantalla(variable & 0xffff, textoConcatenados, lang) : decodificarVariable(variable, tipoVar);
   const unidad = resolverUnidad((obj.unidad as number | undefined) ?? 0);
 

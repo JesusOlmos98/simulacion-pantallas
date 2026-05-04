@@ -3,7 +3,7 @@
 import type { JSX } from 'react';
 import { decodificarVariable, resolverTextoPantalla, resolverUnidad } from './pantalla-utils';
 import { COLORES, resolverColor } from './colors';
-import { resolverIconoCTI40Plus } from './iconos-cti40plus';
+import { resolverIconoVariableCTI40Plus } from './iconos-cti40plus';
 
 interface ObjLineaInfoTextVarProps {
   obj: Record<string, unknown>;
@@ -23,7 +23,7 @@ export default function ObjLineaInfoTextVar({ obj, textoConcatenados, responsive
   const coloresLineaEdit = (obj.coloresLineaEdit as number | undefined) ?? 0;
   const color = coloresLineaEdit === 4 ? COLORES.influences : resolverColor(coloresLineaEdit);
 
-  const Icono = tipoVar === 40 ? resolverIconoCTI40Plus(variable & 0xff) : null;
+  const Icono = tipoVar === 40 ? resolverIconoVariableCTI40Plus(variable) : null;
   const valor = TIPOS_TEXTO.has(tipoVar) ? resolverTextoPantalla(variable & 0xffff, textoConcatenados, lang) : decodificarVariable(variable, tipoVar);
   const iconSize = responsive === true ? 28 : 75;
   const textSize = responsive === true ? 'text-lg' : 'text-5xl';

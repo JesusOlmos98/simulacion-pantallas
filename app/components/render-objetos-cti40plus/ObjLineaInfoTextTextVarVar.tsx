@@ -3,7 +3,7 @@
 import type { JSX } from 'react';
 import { resolverTextoPantalla, resolverUnidad, decodificarVariable } from './pantalla-utils';
 import { COLORES, resolverColor } from './colors';
-import { resolverIconoCTI40Plus } from './iconos-cti40plus';
+import { resolverIconoVariableCTI40Plus } from './iconos-cti40plus';
 
 interface ObjLineaInfoTextTextVarVarProps {
   obj: Record<string, unknown>;
@@ -19,14 +19,14 @@ export default function ObjLineaInfoTextTextVarVar({ obj, textoConcatenados, res
 
   const tipoVar1 = (obj.tipoVar1 as number | undefined) ?? 0;
   const variable1 = (obj.variable1 as number | undefined) ?? 0;
-  const IconoVar1 = tipoVar1 === 40 ? resolverIconoCTI40Plus(variable1 & 0xff) : null;
+  const IconoVar1 = tipoVar1 === 40 ? resolverIconoVariableCTI40Plus(variable1) : null;
   const var1Raw = TIPOS_TEXTO.has(tipoVar1) ? resolverTextoPantalla(variable1 & 0xffff, textoConcatenados, lang) : decodificarVariable(variable1, tipoVar1);
   // En el firmware CTI40+ las etiquetas textG0…textGN (IDs 254…) son sondas S0…SN
   const var1 = var1Raw.replace(/^G (\d+)$/, 'S$1');
 
   const tipoVar2 = (obj.tipoVar2 as number | undefined) ?? 0;
   const variable2 = (obj.variable2 as number | undefined) ?? 0;
-  const IconoVar2 = tipoVar2 === 40 ? resolverIconoCTI40Plus(variable2 & 0xff) : null;
+  const IconoVar2 = tipoVar2 === 40 ? resolverIconoVariableCTI40Plus(variable2) : null;
   const var2 = TIPOS_TEXTO.has(tipoVar2) ? resolverTextoPantalla(variable2 & 0xffff, textoConcatenados, lang) : decodificarVariable(variable2, tipoVar2);
   const unidad2 = resolverUnidad((obj.unidad2 as number | undefined) ?? 0);
 
