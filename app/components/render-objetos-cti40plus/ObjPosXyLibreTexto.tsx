@@ -35,7 +35,7 @@ export default function ObjPosXyLibreTexto({ obj, onNavegar, idPantallaActual = 
   // Caso especial para el símbolo al lado del icono de wifi y usb
   const esTextoConcatenado = (obj.texto as number) >= 65000;
   if (esTextoConcatenado && textoConcatenados !== undefined && textoConcatenados.has((obj.texto as number) ?? 0)) {
-    colorTexto = COLORES.primary;
+    colorTexto = COLORES.light;
     altoPx = 10;
     posY += 8;
   }

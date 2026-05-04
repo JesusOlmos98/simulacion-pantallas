@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import type { JSX } from 'react';
 import { LuCircle } from 'react-icons/lu';
 import type { ObjBase, DescriptorPantalla } from '../pantalla-types';
@@ -21,8 +20,8 @@ export default function BarraBotonesCti40Plus({ botones, idPantallaActual, onNav
 
   const btnClass =
     compact === true
-      ? `w-14 h-14 rounded-full flex items-center justify-center active:scale-95 transition-all shadow-md`
-      : `w-25 h-25 rounded-full flex items-center justify-center active:scale-95 transition-all shadow-md`;
+      ? `w-14 h-14 rounded-full hover:brightness-90 flex items-center justify-center active:scale-95 transition-all shadow-md`
+      : `w-25 h-25 rounded-full hover:brightness-90 flex items-center justify-center active:scale-95 transition-all shadow-md`;
   const iconSize = compact === true ? 32 : 65;
 
   return (
@@ -34,7 +33,6 @@ export default function BarraBotonesCti40Plus({ botones, idPantallaActual, onNav
         const icono = obj.icono as number | undefined;
         const navPtr = obj.navegacionPtr as number | undefined;
         const Icono = icono !== undefined ? resolverIconoCTI40Plus(icono) : null;
-        const [isHovered, setIsHovered] = useState(false);
 
         return (
           <button
@@ -49,9 +47,7 @@ export default function BarraBotonesCti40Plus({ botones, idPantallaActual, onNav
             }}
             className={btnClass}
             title={`Acceso directo ${index + 1}`}
-            style={{ backgroundColor: COLORES.botonesFisicos, filter: isHovered ? 'brightness(0.9)' : 'brightness(1)' }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            style={{ backgroundColor: COLORES.botonesFisicos }}
           >
             {Icono ? (
               <Icono

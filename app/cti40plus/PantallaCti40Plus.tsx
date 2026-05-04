@@ -763,7 +763,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
   const tareas = [
     { icono: encabezado?.iconoTarea3 ?? 0, pantalla: encabezado?.pantallaSaltoTarea3 ?? 0, indice: encabezado?.indicePantallaTarea3 ?? 0 },
     { icono: encabezado?.iconoTarea2 ?? 0, pantalla: encabezado?.pantallaSaltoTarea2 ?? 0, indice: encabezado?.indicePantallaTarea2 ?? 0 }
-  ].filter((t) => t.pantalla > 0);
+  ].filter((t) => t.icono > 0);
 
   // tipoPlantilla: 2 = teclado (edición), 4 = lista de filas, 21 = canvas libre (objPosXyLibre*), otros = grid de iconos
   const tipoPlantilla = (objetos?.find((o) => o.tipoObjeto === 1)?.tipoPlantilla as number) ?? 0;
@@ -916,7 +916,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                     return (
                       <button
                         key={i}
-                        onClick={() => navegarA({ idPantalla: tarea.pantalla, indicePantalla: tarea.indice, esPrincipal: false })}
+                        onClick={() => navegarA({ idPantalla: tarea.pantalla, indicePantalla: tarea.indice, esPrincipal: tarea.pantalla === 0 })}
                         className="p-1 text-white hover:text-gray-200 transition-colors"
                       >
                         {IconoTarea ? <IconoTarea size={28} /> : null}
@@ -1499,7 +1499,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
                           return (
                             <button
                               key={i}
-                              onClick={() => navegarA({ idPantalla: tarea.pantalla, indicePantalla: tarea.indice, esPrincipal: false })}
+                              onClick={() => navegarA({ idPantalla: tarea.pantalla, indicePantalla: tarea.indice, esPrincipal: tarea.pantalla === 0 })}
                               className="p-1 text-white hover:text-gray-200 transition-colors"
                             >
                               {IconoTarea ? <IconoTarea size={60} /> : null}

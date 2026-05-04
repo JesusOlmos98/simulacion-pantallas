@@ -759,13 +759,25 @@ export default function PantallaTc5(): JSX.Element {
   const tareas = [
     { icono: encabezado?.iconoTarea3 ?? 0, pantalla: encabezado?.pantallaSaltoTarea3 ?? 0, indice: encabezado?.indicePantallaTarea3 ?? 0 },
     { icono: encabezado?.iconoTarea2 ?? 0, pantalla: encabezado?.pantallaSaltoTarea2 ?? 0, indice: encabezado?.indicePantallaTarea2 ?? 0 }
-  ].filter((t) => t.pantalla > 0);
+  ].filter((t) => t.icono > 0);
 
   // tipoPlantilla: 2 = teclado (edición), 4 = lista de filas, 21 = canvas libre (objPosXyLibre*), otros = grid de iconos
   const tipoPlantilla = (objetos?.find((o) => o.tipoObjeto === 1)?.tipoPlantilla as number) ?? 0;
   const esLista = tipoPlantilla === 4;
   const esVentilacionGrupoEdit = tipoPlantilla === 10;
   const esLibre = tipoPlantilla === 21;
+  const esLibreListadoConEncabezado =
+    esLibre &&
+    encabezado !== undefined &&
+    (objetos?.some(
+      (o) =>
+        (o.tipoObjeto === 79 && ((o.ancho as number | undefined) ?? 0) > 0 && ((o.alto as number | undefined) ?? 0) > 0) ||
+        (o.tipoObjeto === 76 &&
+          ((o.color as number | undefined) ?? 0) === 13 &&
+          ((o.posXFin as number | undefined) ?? 0) > ((o.posXInicio as number | undefined) ?? 0) &&
+          ((o.posYFin as number | undefined) ?? 0) > ((o.posYInicio as number | undefined) ?? 0))
+    ) ??
+      false);
   const objVentilacionGrafico = esVentilacionGrupoEdit ? (objetos?.find((o) => o.tipoObjeto === 21) ?? null) : null;
   const objVentilacionEdit = esVentilacionGrupoEdit ? (objetos?.find((o) => o.tipoObjeto === 22) ?? null) : null;
   const tituloVentilacionEdit = objVentilacionEdit ? resolveText(objVentilacionEdit.textoCabecera as number) : null;
@@ -845,7 +857,7 @@ export default function PantallaTc5(): JSX.Element {
   if (isSmallScreen) {
     const navBg = encabezado !== undefined ? colorHeader || COLORES.tertiary : COLORES.primary;
     const scrollbarStyle = { '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties;
-    const scrollbarClass = `flex-1 overflow-y-auto p-4 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-[${COLORES.lastBackground}] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)]`;
+    const scrollbarClass = `flex-1 overflow-y-auto p-4 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-track]:bg-[${COLORES.lastBackground}] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)]`;
     const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 320;
     return (
       <div
@@ -912,7 +924,7 @@ export default function PantallaTc5(): JSX.Element {
                     return (
                       <button
                         key={i}
-                        onClick={() => navegarA({ idPantalla: tarea.pantalla, indicePantalla: tarea.indice, esPrincipal: false })}
+                        onClick={() => navegarA({ idPantalla: tarea.pantalla, indicePantalla: tarea.indice, esPrincipal: tarea.pantalla === 0 })}
                         className="p-1 text-white hover:text-gray-200 transition-colors"
                       >
                         {IconoTarea ? <IconoTarea size={28} /> : null}
@@ -1008,15 +1020,29 @@ export default function PantallaTc5(): JSX.Element {
         {!loading && error === null && objetos !== null && objetos.length > 0 && (
           <>
             {/* Canvas libre */}
-            {esLibre && (
-              <PantallaLibre
-                objetos={objetos}
-                onNavegar={navegarA}
-                idPantallaActual={actual.idPantalla}
-                indicePantallaActual={actual.indicePantalla}
-                containerWidth={viewportWidth}
-              />
-            )}
+            {esLibre &&
+              (esLibreListadoConEncabezado ? (
+                <div
+                  className={`${scrollbarClass} overflow-x-hidden pb-5`}
+                  style={scrollbarStyle}
+                >
+                  <PantallaLibre
+                    objetos={objetos}
+                    onNavegar={navegarA}
+                    idPantallaActual={actual.idPantalla}
+                    indicePantallaActual={actual.indicePantalla}
+                    containerWidth={viewportWidth}
+                  />
+                </div>
+              ) : (
+                <PantallaLibre
+                  objetos={objetos}
+                  onNavegar={navegarA}
+                  idPantallaActual={actual.idPantalla}
+                  indicePantallaActual={actual.indicePantalla}
+                  containerWidth={viewportWidth}
+                />
+              ))}
 
             {/* Edición tiempo/fecha */}
             {esTeclado && objEditVariables && esTiempoFecha && (
@@ -1501,7 +1527,7 @@ export default function PantallaTc5(): JSX.Element {
                           return (
                             <button
                               key={i}
-                              onClick={() => navegarA({ idPantalla: tarea.pantalla, indicePantalla: tarea.indice, esPrincipal: false })}
+                              onClick={() => navegarA({ idPantalla: tarea.pantalla, indicePantalla: tarea.indice, esPrincipal: tarea.pantalla === 0 })}
                               className="p-1 text-white hover:text-gray-200 transition-colors"
                             >
                               {IconoTarea ? <IconoTarea size={60} /> : null}
@@ -1524,14 +1550,27 @@ export default function PantallaTc5(): JSX.Element {
               )}
 
               {/* Canvas libre (tipoPlantilla 21) — ocupa todo el espacio sin padding */}
-              {esLibre && (
-                <PantallaLibre
-                  objetos={objetos}
-                  onNavegar={navegarA}
-                  idPantallaActual={actual.idPantalla}
-                  indicePantallaActual={actual.indicePantalla}
-                />
-              )}
+              {esLibre &&
+                (esLibreListadoConEncabezado ? (
+                  <div
+                    className={`flex-1 overflow-y-auto overflow-x-hidden pb-5 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[${COLORES.lastBackground}] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]`}
+                    style={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}
+                  >
+                    <PantallaLibre
+                      objetos={objetos}
+                      onNavegar={navegarA}
+                      idPantallaActual={actual.idPantalla}
+                      indicePantallaActual={actual.indicePantalla}
+                    />
+                  </div>
+                ) : (
+                  <PantallaLibre
+                    objetos={objetos}
+                    onNavegar={navegarA}
+                    idPantallaActual={actual.idPantalla}
+                    indicePantallaActual={actual.indicePantalla}
+                  />
+                ))}
 
               {/* Pantalla de edición de Tiempo/Fecha (tipoPlantilla 2 + tipoVarEdicion tiempo/fecha) */}
               {esTeclado && objEditVariables && esTiempoFecha && (

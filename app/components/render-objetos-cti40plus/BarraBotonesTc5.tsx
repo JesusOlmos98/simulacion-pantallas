@@ -21,7 +21,7 @@ interface Props {
 function getLedState(ledEstado: number): { color: string; shouldBlink: boolean } {
   switch (ledEstado) {
     case 5: // led apagado
-      return { color: COLORES.tertiary, shouldBlink: false };
+      return { color: COLORES.lastBackground, shouldBlink: false };
     case 4: // primary parpadeante
       return { color: COLORES.primary, shouldBlink: true };
     case 3: // primary fijo
@@ -31,7 +31,7 @@ function getLedState(ledEstado: number): { color: string; shouldBlink: boolean }
     case 1: // error fijo
       return { color: COLORES.error, shouldBlink: false };
     default: // por defecto apagado
-      return { color: COLORES.tertiary, shouldBlink: false };
+      return { color: COLORES.lastBackground, shouldBlink: false };
   }
 }
 
