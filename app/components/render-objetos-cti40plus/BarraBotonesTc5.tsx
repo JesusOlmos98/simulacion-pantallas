@@ -105,7 +105,7 @@ export default function BarraBotonesTc5({ botones, idPantallaActual, indicePanta
               if (esBotonAccion) {
                 onNavegar({
                   idPantalla: idPantallaActual,
-                  indicePantalla: (obj.indice as number | undefined) ?? indicePantallaActual,
+                  indicePantalla: indicePantallaActual,
                   esPrincipal: idPantallaActual === 0,
                   // esPrincipal: false,
                   idUnicoEdicion: navegacion!
