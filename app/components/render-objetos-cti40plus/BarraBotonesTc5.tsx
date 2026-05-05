@@ -74,7 +74,7 @@ export default function BarraBotonesTc5({ botones, idPantallaActual, indicePanta
           ? `Botón TC5 ${indice + 1}${esBotonNavegacion ? ' - Navegar a pantalla ' + navegacion : ' - Acción directa'}`
           : `Botón TC5 ${indice + 1} - No disponible en esta pantalla`;
 
-        const ledStyle = {
+        const ledBaseStyle: CSSProperties = {
           position: 'absolute',
           top: compact === true ? -5 : -30,
           left: '50%',
@@ -82,13 +82,11 @@ export default function BarraBotonesTc5({ botones, idPantallaActual, indicePanta
           width: ledSize,
           height: ledSize,
           borderRadius: '50%',
-          backgroundColor: ledColor,
-          '--led-on-color': ledColor,
-          '--led-off-color': COLORES.ledOff,
+          backgroundColor: shouldBlink ? COLORES.ledOff : ledColor,
           // border: '2px solid rgba(255,255,255,0.5)',
-          animation: shouldBlink ? 'blink 1s infinite' : 'none',
           zIndex: 10
-        } as CSSProperties & Record<'--led-on-color' | '--led-off-color', string>;
+        };
+        const ledBlinkStyle: CSSProperties = { ...ledBaseStyle, backgroundColor: ledColor, animation: 'blink 1s infinite', zIndex: 11 };
 
         return (
           <button
@@ -137,13 +135,14 @@ export default function BarraBotonesTc5({ botones, idPantallaActual, indicePanta
             )}
 
             {/* LED circular centrado encima del botón */}
-            <div style={ledStyle} />
+            <div style={ledBaseStyle} />
+            {shouldBlink && <div style={ledBlinkStyle} />}
 
             {shouldBlink && (
               <style>{`
                 @keyframes blink {
-                  0%, 50% { background-color: var(--led-on-color); }
-                  51%, 100% { background-color: var(--led-off-color); }
+                  0%, 50% { opacity: 1; }
+                  51%, 100% { opacity: 0; }
                 }
               `}</style>
             )}
