@@ -992,6 +992,7 @@ export default function PantallaTc5(): JSX.Element {
               indicePantallaActual={actual.indicePantalla}
               onNavegar={navegarA}
               habilitados={(objetos?.some((o) => o.tipoObjeto === 82) ?? false) && !loading}
+              compact
             />
           </div>
         )}

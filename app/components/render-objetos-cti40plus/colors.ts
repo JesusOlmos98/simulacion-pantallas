@@ -17,7 +17,8 @@ export const COLORES = {
   disabled: '#8b8b8bff', // 777777ff Gris para elementos deshabilitados
   lastBackground: '#1E1E1E',
   desarmadoTc5: '#ffdd92ff',
-  botonesFisicos: '#525252'
+  botonesFisicos: '#525252',
+  ledOff: '#292929ff'
   //      ? 'w-14 h-14 rounded-full bg-[#bddc28] flex items-center justify-center hover:bg-[#a8c023] active:scale-95 transition-all shadow-md'
 } as const;
 

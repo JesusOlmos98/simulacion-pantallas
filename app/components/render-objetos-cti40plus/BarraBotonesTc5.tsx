@@ -1,6 +1,6 @@
 'use client';
 
-import type { JSX } from 'react';
+import type { CSSProperties, JSX } from 'react';
 import { LuCircle } from 'react-icons/lu';
 import type { ObjBase, DescriptorPantalla } from '../pantalla-types';
 import { resolverIconoCTI40Plus } from './iconos-cti40plus';
@@ -21,7 +21,7 @@ interface Props {
 function getLedState(ledEstado: number): { color: string; shouldBlink: boolean } {
   switch (ledEstado) {
     case 5: // led apagado
-      return { color: COLORES.lastBackground, shouldBlink: false };
+      return { color: COLORES.ledOff, shouldBlink: false };
     case 4: // primary parpadeante
       return { color: COLORES.primary, shouldBlink: true };
     case 3: // primary fijo
@@ -31,7 +31,7 @@ function getLedState(ledEstado: number): { color: string; shouldBlink: boolean }
     case 1: // error fijo
       return { color: COLORES.error, shouldBlink: false };
     default: // por defecto apagado
-      return { color: COLORES.lastBackground, shouldBlink: false };
+      return { color: COLORES.ledOff, shouldBlink: false };
   }
 }
 
@@ -40,14 +40,14 @@ export default function BarraBotonesTc5({ botones, idPantallaActual, indicePanta
 
   const btnClass =
     compact === true
-      ? `mt-8 h-14 w-14 rounded-full hover:brightness-90 flex items-center justify-center transition-all shadow-md relative`
+      ? `mt-3 col-span-2 h-10 w-10 rounded-full hover:brightness-90 flex items-center justify-center transition-all shadow-md relative`
       : `mt-8 h-20 w-20 rounded-full hover:brightness-90 flex items-center justify-center transition-all shadow-md relative`;
-  const iconSize = compact === true ? 32 : 48;
-  const ledSize = compact === true ? 20 : 28;
+  const iconSize = compact === true ? 30 : 54;
+  const ledSize = compact === true ? 14 : 28;
 
   return (
     <div
-      className={compact === true ? 'grid grid-cols-5 gap-3 px-8 py-2 place-items-center' : 'flex items-center justify-center gap-3 px-4 py-3'}
+      className={compact === true ? 'grid grid-cols-14 gap-2 px-4 py-1 place-items-center' : 'flex items-center justify-center gap-3 px-4 py-3'}
       style={compact === true ? { backgroundColor: COLORES.lastBackground } : {}}
     >
       {botones.map((obj, index) => {
@@ -74,6 +74,22 @@ export default function BarraBotonesTc5({ botones, idPantallaActual, indicePanta
           ? `Botón TC5 ${indice + 1}${esBotonNavegacion ? ' - Navegar a pantalla ' + navegacion : ' - Acción directa'}`
           : `Botón TC5 ${indice + 1} - No disponible en esta pantalla`;
 
+        const ledStyle = {
+          position: 'absolute',
+          top: compact === true ? -5 : -30,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: ledSize,
+          height: ledSize,
+          borderRadius: '50%',
+          backgroundColor: ledColor,
+          '--led-on-color': ledColor,
+          '--led-off-color': COLORES.ledOff,
+          // border: '2px solid rgba(255,255,255,0.5)',
+          animation: shouldBlink ? 'blink 1s infinite' : 'none',
+          zIndex: 10
+        } as CSSProperties & Record<'--led-on-color' | '--led-off-color', string>;
+
         return (
           <button
             key={index}
@@ -96,7 +112,7 @@ export default function BarraBotonesTc5({ botones, idPantallaActual, indicePanta
                 });
               }
             }}
-            className={btnClass}
+            className={`${btnClass}${compact === true && botones.length === 11 && index === 0 ? ' col-start-4' : ''}${compact === true && botones.length === 11 && index === 4 ? ' col-start-1' : ''}`}
             title={title}
             aria-disabled={!esInteractivo}
             style={{
@@ -121,27 +137,13 @@ export default function BarraBotonesTc5({ botones, idPantallaActual, indicePanta
             )}
 
             {/* LED circular centrado encima del botón */}
-            <div
-              style={{
-                position: 'absolute',
-                top: compact === true ? -10 : -30,
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: ledSize,
-                height: ledSize,
-                borderRadius: '50%',
-                backgroundColor: ledColor,
-                // border: '2px solid rgba(255,255,255,0.5)',
-                animation: shouldBlink ? 'blink 1s infinite' : 'none',
-                zIndex: 10
-              }}
-            />
+            <div style={ledStyle} />
 
             {shouldBlink && (
               <style>{`
                 @keyframes blink {
-                  0%, 50% { opacity: 1; }
-                  51%, 100% { opacity: 0; }
+                  0%, 50% { background-color: var(--led-on-color); }
+                  51%, 100% { background-color: var(--led-off-color); }
                 }
               `}</style>
             )}
