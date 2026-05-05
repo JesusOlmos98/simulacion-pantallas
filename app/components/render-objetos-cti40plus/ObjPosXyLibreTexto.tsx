@@ -7,6 +7,7 @@ import { COLORES } from './colors';
 import { EnTextos } from '@/src/utils/common-lib-commac-generador/enumTextos';
 
 const SCREEN_PTR_MIN = 65536;
+const SIMBOLO_TRIANGULO_IZQUIERDA = '\u25C0';
 const TRANSFORM_JUSTIFY: Record<number, string> = { 0: 'none', 1: 'translateX(-100%)', 2: 'translateX(-50%)' };
 
 interface Props {
@@ -35,7 +36,7 @@ export default function ObjPosXyLibreTexto({ obj, onNavegar, idPantallaActual = 
   // Caso especial para el símbolo al lado del icono de wifi y usb
   const esTextoConcatenado = (obj.texto as number) >= 65000;
   if (esTextoConcatenado && textoConcatenados !== undefined && textoConcatenados.has((obj.texto as number) ?? 0)) {
-    colorTexto = COLORES.light;
+    colorTexto = texto === SIMBOLO_TRIANGULO_IZQUIERDA ? COLORES.primary : COLORES.light;
     altoPx = 10;
     posY += 8;
   }
