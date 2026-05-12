@@ -43,8 +43,15 @@ interface DestinoTrasEdicion {
 
 // ─── Fetch ────────────────────────────────────────────────────────────────────
 
-async function fetchPantalla(d: DescriptorPantalla, signal: AbortSignal): Promise<ObjBase[]> {
-  const params = new URLSearchParams({ mac: MAC_CTI40PLUS, eventId: '1', idEnvio: String(idEnvioCounter++), readWrite: '0', esPantallaPrincipal: d.esPrincipal ? '1' : '0' });
+async function fetchPantalla(d: DescriptorPantalla, signal: AbortSignal, versionEquipo: number): Promise<ObjBase[]> {
+  const params = new URLSearchParams({
+    mac: MAC_CTI40PLUS,
+    eventId: '1',
+    idEnvio: String(idEnvioCounter++),
+    readWrite: '0',
+    esPantallaPrincipal: d.esPrincipal ? '1' : '0',
+    versionEquipo: String(versionEquipo)
+  });
   if (!d.esPrincipal) {
     params.set('idNav', String(d.idPantalla));
     params.set('indicePantalla', String(d.indicePantalla));
@@ -85,10 +92,16 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
   // Ref para poder cancelar el fetch en vuelo al desmontar o al lanzar uno nuevo
   const controllerRef = useRef<AbortController | null>(null);
   const escribirSeleccionRef = useRef<() => Promise<void>>(async () => {});
+  const versionEquipoRef = useRef(304);
 
   // Botones de barra de acceso directo (tipoObjeto: 66) — solo llegan en pantallaId=0,
   // se guardan aquí la primera vez y persisten durante toda la sesión CTI40 Plus.
   const barraAccesoDirectoPersistente = useRef<ObjBase[]>([]);
+
+  const requestPantalla = useCallback((params: URLSearchParams, signal?: AbortSignal): Promise<Response> => {
+    params.set('versionEquipo', String(versionEquipoRef.current));
+    return apiFetch(params, signal);
+  }, []);
 
   const cargarPantalla = useCallback((descriptor: DescriptorPantalla) => {
     // Cancela silenciosamente cualquier petición en vuelo
@@ -110,8 +123,13 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
       controller.abort();
     }, 35_000);
 
-    fetchPantalla(descriptor, controller.signal)
+    fetchPantalla(descriptor, controller.signal, versionEquipoRef.current)
       .then((data) => {
+        const versionEquipo = Number(data.find((o) => o.tipoObjeto === 1)?.versionEquipo);
+        if (Number.isFinite(versionEquipo) && Number.isInteger(versionEquipo) && versionEquipo > 0) {
+          versionEquipoRef.current = versionEquipo;
+        }
+
         if (descriptor.esPrincipal) {
           const botones = data.filter((o) => o.tipoObjeto === 66);
           if (botones.length > 0) barraAccesoDirectoPersistente.current = botones;
@@ -214,7 +232,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
     setError(null);
 
     try {
-      const res = await apiFetch(params);
+      const res = await requestPantalla(params);
       if (!res.ok) throw new Error(`Error ${res.status}`);
       navegarTrasEscritura(destinoTrasEdicion);
     } catch (err: unknown) {
@@ -360,7 +378,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
 
     try {
       // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
-      const res = await apiFetch(params);
+      const res = await requestPantalla(params);
       if (!res.ok) throw new Error(`Error ${res.status}`);
       navegarTrasEscritura(destinoTrasEdicion);
     } catch (err: unknown) {
@@ -404,7 +422,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
 
     try {
       // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
-      const res = await apiFetch(params);
+      const res = await requestPantalla(params);
       if (!res.ok) throw new Error(`Error ${res.status}`);
       navegarTrasEscritura(destinoTrasEdicion);
     } catch (err: unknown) {
@@ -455,7 +473,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
 
       try {
         // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
-        const res = await apiFetch(params);
+        const res = await requestPantalla(params);
         if (!res.ok) throw new Error(`Error ${res.status}`);
         navegarTrasEscritura(destinoTrasEdicion);
       } catch (err: unknown) {
@@ -499,7 +517,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
 
       try {
         // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
-        const res = await apiFetch(params);
+        const res = await requestPantalla(params);
         if (!res.ok) throw new Error(`Error ${res.status}`);
         navegarTrasEscritura(destinoTrasEdicion);
       } catch (err: unknown) {
@@ -538,7 +556,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
 
       try {
         // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
-        const res = await apiFetch(params);
+        const res = await requestPantalla(params);
         if (!res.ok) throw new Error(`Error ${res.status}`);
         navegarTrasEscritura(destinoTrasEdicion);
       } catch (err: unknown) {
@@ -582,7 +600,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
 
       try {
         // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
-        const res = await apiFetch(params);
+        const res = await requestPantalla(params);
         if (!res.ok) throw new Error(`Error ${res.status}`);
         navegarTrasEscritura(destinoTrasEdicion);
       } catch (err: unknown) {
@@ -632,7 +650,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
           });
 
           // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
-          const res = await apiFetch(params);
+          const res = await requestPantalla(params);
           if (!res.ok) throw new Error(`Error ${res.status} en petición ${idx + 1}`);
         }
         navegarTrasEscritura(destinoTrasEdicion);
