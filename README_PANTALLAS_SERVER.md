@@ -52,7 +52,7 @@ const params = new URLSearchParams({
   idNav: '302949',
 });
 
-const res = await fetch(`http://localhost:3000/pruebas/peticionPantallaConEspera?${params}`, {
+const res = await fetch(`${process.env.NEXT_PUBLIC_COMMAC_BASE_URL}/pruebas/peticionPantallaConEspera?${params}`, {
   method: 'POST',
 });
 

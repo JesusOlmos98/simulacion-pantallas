@@ -1,9 +1,10 @@
-'use client'
+'use client';
 
-import { useRouter } from 'next/navigation'
+import type { JSX } from 'react';
+import { useRouter } from 'next/navigation';
 
-export default function OmegaButton() {
-  const router = useRouter()
+export default function OmegaButton(): JSX.Element {
+  const router = useRouter();
 
   return (
     <button
@@ -12,5 +13,5 @@ export default function OmegaButton() {
     >
       OMEGA
     </button>
-  )
+  );
 }
