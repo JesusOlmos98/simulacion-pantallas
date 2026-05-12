@@ -27,7 +27,7 @@ import { apiFetch } from '../api/apiFetch';
 
 const MAC_CTI40PLUS = '202000029'; // MAC address para CTI40 PLUS
 let idEnvioCounter = 1;
-// const URL = process.env.COMMAC_BASE_URL || 'http://localhost:8020/api'; // Centralizado en apiFetch
+// const URL = process.env.NEXT_PUBLIC_COMMAC_BASE_URL || 'http://localhost:8020/api'; // Centralizado en apiFetch
 
 // ─── Descriptor de pantalla ───────────────────────────────────────────────────
 

@@ -27,7 +27,7 @@ import { apiFetch } from '../api/apiFetch';
 
 const MAC_TC5 = '206000003'; // MAC address para TC5
 let idEnvioCounter = 1;
-// const URL = process.env.COMMAC_BASE_URL || 'http://localhost:8020/api'; // Centralizado en apiFetch
+// const URL = process.env.NEXT_PUBLIC_COMMAC_BASE_URL || 'http://localhost:8020/api'; // Centralizado en apiFetch
 
 // ─── Descriptor de pantalla ───────────────────────────────────────────────────
 

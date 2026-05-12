@@ -3,12 +3,12 @@ export {};
 //
 // import { type NextRequest } from 'next/server';
 //
-// const COMMAC_BASE_URL = process.env.COMMAC_BASE_URL || 'http://localhost:8020/api';
+// const NEXT_PUBLIC_COMMAC_BASE_URL = process.env.NEXT_PUBLIC_COMMAC_BASE_URL || 'http://localhost:8020/api';
 //
 // export async function POST(request: NextRequest): Promise<Response> {
 //   const incoming = request.nextUrl.searchParams;
 //
-//   const url = new URL(`${COMMAC_BASE_URL}/pruebas/peticionPantallaConEspera`);
+//   const url = new URL(`${NEXT_PUBLIC_COMMAC_BASE_URL}/pruebas/peticionPantallaConEspera`);
 //   incoming.forEach((value, key) => url.searchParams.set(key, value));
 //
 //   let commacRes: Response;

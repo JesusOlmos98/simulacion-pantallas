@@ -47,7 +47,7 @@ It is written as working context for an agent that needs to modify or extend the
   - this is the only switch between desktop and responsive rendering
 - `app/api/apiFetch.ts`
   - wraps `fetch`
-  - builds URL from `COMMAC_BASE_URL ?? 'http://localhost:8020/api'`
+  - builds URL from `NEXT_PUBLIC_COMMAC_BASE_URL ?? 'http://localhost:8020/api'`
   - always calls `POST /pruebas/peticionPantallaConEspera?...`
 
 ## COMMAC request model
