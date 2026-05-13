@@ -5,25 +5,24 @@ import { buildScreenFrameHex, type EventBusDataPantalla } from './screen-command
 
 const COMMAC_BASE_URL = process.env.NEXT_PUBLIC_COMMAC_BASE_URL ?? 'http://localhost:8020/api';
 // process.env['COMMAC_BASE_URL'] ?? (process.env['NODE_ENV'] === 'production' ? process.env['NEXT_PUBLIC_COMMAC_BASE_URL'] : undefined) ?? 'http://127.0.0.1:8020/api';
-const SCREEN_SIMULATOR_PATH = '/pruebas/rabbitmq-command-simulator-screen';
-const READWRITE_ERROR = { TIMEOUT: 1, DUPLICATE_PENDING: 2, VALIDATION_ERROR: 4, CAUGHT_ERROR: 5 } as const;
+const SCREEN_ENDPOINT_PATH = '/device/screen';
+const READWRITE_ERROR = { TIMEOUT: 1, DUPLICATE_PENDING: 2, BUSY: 3, VALIDATION_ERROR: 4, CAUGHT_ERROR: 5 } as const;
 
-type ScreenCommandResponse = { success?: boolean; error?: unknown; message?: unknown; type?: string; mac?: string; data?: unknown; readWrite?: number | string; cid?: number | string };
+type ScreenCommandResponse = { status?: boolean; payload?: unknown };
 
 export async function POST(request: NextRequest): Promise<Response> {
   try {
     const query = request.nextUrl.searchParams;
     const mac = requiredString(query, 'mac');
-    const cid = requiredString(query, 'idEnvio');
     const readWrite = readWriteFromQuery(query);
     const versionEquipo = intFromQuery(query, 'versionEquipo') ?? 304;
     const data = eventBusDataPantallaFromQuery(query);
     const frameHex = buildScreenFrameHex({ readWrite, versionEquipo, data });
 
-    const commacResponse = await fetch(`${COMMAC_BASE_URL}${SCREEN_SIMULATOR_PATH}`, {
+    const commacResponse = await fetch(`${COMMAC_BASE_URL}${SCREEN_ENDPOINT_PATH}`, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ type: 'screen', mac, data: frameHex, readWrite, cid }),
+      body: JSON.stringify({ mac, payload: frameHex }),
       signal: AbortSignal.timeout(35_000)
     });
 
@@ -32,15 +31,16 @@ export async function POST(request: NextRequest): Promise<Response> {
     }
 
     const command = (await commacResponse.json()) as ScreenCommandResponse;
-    if (command.success === false) {
-      const errorMessage = typeof command.error === 'string' ? command.error : 'COMMAC no devolvio respuesta screen valida';
-      const status = errorMessage.toLowerCase().includes('timeout') ? 504 : 502;
-      return Response.json({ error: errorMessage, message: command.message, commacUrl: `${COMMAC_BASE_URL}${SCREEN_SIMULATOR_PATH}` }, { status });
+    const responseHex = typeof command.payload === 'string' ? command.payload : '';
+
+    if (command.status === false) {
+      return responseHex.length === 2 && isValidHex(responseHex)
+        ? responseError(responseHex)
+        : Response.json({ error: 'COMMAC no devolvio respuesta screen valida', commacUrl: `${COMMAC_BASE_URL}${SCREEN_ENDPOINT_PATH}` }, { status: 502 });
     }
 
-    const responseHex = typeof command.data === 'string' ? command.data : '';
     if (!isValidHex(responseHex)) {
-      return Response.json({ error: 'Respuesta screen invalida: data no es hex', command }, { status: 502 });
+      return Response.json({ error: 'Respuesta screen invalida: payload no es hex', command }, { status: 502 });
     }
 
     if (responseHex.length === 2) {
@@ -113,7 +113,17 @@ function eventBusDataPantallaFromQuery(query: URLSearchParams): EventBusDataPant
 function responseError(hex: string): Response {
   const code = Buffer.from(hex, 'hex').readUInt8(0);
   const status =
-    code === READWRITE_ERROR.TIMEOUT ? 504 : code === READWRITE_ERROR.DUPLICATE_PENDING ? 409 : code === READWRITE_ERROR.VALIDATION_ERROR ? 400 : code === READWRITE_ERROR.CAUGHT_ERROR ? 502 : 502;
+    code === READWRITE_ERROR.TIMEOUT
+      ? 504
+      : code === READWRITE_ERROR.DUPLICATE_PENDING
+        ? 409
+        : code === READWRITE_ERROR.BUSY
+          ? 409
+          : code === READWRITE_ERROR.VALIDATION_ERROR
+            ? 400
+            : code === READWRITE_ERROR.CAUGHT_ERROR
+              ? 502
+              : 502;
 
   return Response.json({ error: readWriteErrorName(code), code }, { status });
 }
@@ -124,6 +134,8 @@ function readWriteErrorName(code: number): string {
       return 'TIMEOUT';
     case READWRITE_ERROR.DUPLICATE_PENDING:
       return 'DUPLICATE_PENDING';
+    case READWRITE_ERROR.BUSY:
+      return 'BUSY';
     case READWRITE_ERROR.VALIDATION_ERROR:
       return 'VALIDATION_ERROR';
     case READWRITE_ERROR.CAUGHT_ERROR:
