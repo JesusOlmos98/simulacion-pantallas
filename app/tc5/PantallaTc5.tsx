@@ -25,7 +25,7 @@ import PantallaLibre from './PantallaLibre';
 import { esTipoVarTiempoFecha, parseTiempoFechaString, maskMinMaxTiempoFecha } from '@/src/utils/common-lib-commac-generador/fnTiempo';
 import { apiFetch } from '../api/apiFetch';
 
-const MAC_TC5 = '206000003'; // MAC address para TC5
+const DEFAULT_MAC_TC5 = '206000003'; // MAC por defecto para entradas antiguas a /tc5
 let idEnvioCounter = 1;
 // const URL = process.env.NEXT_PUBLIC_COMMAC_BASE_URL || 'http://localhost:8020/api'; // Centralizado en apiFetch
 
@@ -40,15 +40,8 @@ interface DestinoTrasEdicion {
 
 // ─── Fetch ────────────────────────────────────────────────────────────────────
 
-async function fetchPantalla(d: DescriptorPantalla, signal: AbortSignal, versionEquipo: number): Promise<ObjBase[]> {
-  const params = new URLSearchParams({
-    mac: MAC_TC5,
-    eventId: '1',
-    idEnvio: String(idEnvioCounter++),
-    readWrite: '0',
-    esPantallaPrincipal: d.esPrincipal ? '1' : '0',
-    versionEquipo: String(versionEquipo)
-  });
+async function fetchPantalla(d: DescriptorPantalla, signal: AbortSignal, versionEquipo: number, mac: string): Promise<ObjBase[]> {
+  const params = new URLSearchParams({ mac, eventId: '1', idEnvio: String(idEnvioCounter++), readWrite: '0', esPantallaPrincipal: d.esPrincipal ? '1' : '0', versionEquipo: String(versionEquipo) });
   if (!d.esPrincipal || d.idUnicoEdicion !== undefined) {
     params.set('idNav', String(d.idPantalla));
     params.set('indicePantalla', String(d.indicePantalla));
@@ -64,7 +57,11 @@ async function fetchPantalla(d: DescriptorPantalla, signal: AbortSignal, version
 
 // ─── Componente principal ─────────────────────────────────────────────────────
 
-export default function PantallaTc5(): JSX.Element {
+interface PantallaTc5Props {
+  mac?: string;
+}
+
+export default function PantallaTc5({ mac = DEFAULT_MAC_TC5 }: PantallaTc5Props): JSX.Element {
   const router = useRouter();
 
   const [pila, setPila] = useState<DescriptorPantalla[]>([]);
@@ -91,66 +88,73 @@ export default function PantallaTc5(): JSX.Element {
   // la botonera física aunque la pantalla actual no los reenvíe.
   const barraAccesoDirectoPersistente = useRef<ObjBase[]>([]);
 
-  const requestPantalla = useCallback((params: URLSearchParams, signal?: AbortSignal): Promise<Response> => {
-    params.set('versionEquipo', String(versionEquipoRef.current));
-    return apiFetch(params, signal);
-  }, []);
+  const requestPantalla = useCallback(
+    (params: URLSearchParams, signal?: AbortSignal): Promise<Response> => {
+      params.set('mac', mac);
+      params.set('versionEquipo', String(versionEquipoRef.current));
+      return apiFetch(params, signal);
+    },
+    [mac]
+  );
 
-  const cargarPantalla = useCallback((descriptor: DescriptorPantalla) => {
-    // Cancela silenciosamente cualquier petición en vuelo
-    controllerRef.current?.abort();
+  const cargarPantalla = useCallback(
+    (descriptor: DescriptorPantalla) => {
+      // Cancela silenciosamente cualquier petición en vuelo
+      controllerRef.current?.abort();
 
-    setLoading(true);
-    setError(null);
-    setObjetos(null);
-    setActual(descriptor);
-    setBarraAbierta(descriptor.esPrincipal);
+      setLoading(true);
+      setError(null);
+      setObjetos(null);
+      setActual(descriptor);
+      setBarraAbierta(descriptor.esPrincipal);
 
-    const controller = new AbortController();
-    controllerRef.current = controller;
+      const controller = new AbortController();
+      controllerRef.current = controller;
 
-    // El timeout de 35 s marca el abort como "por timeout" con una flag
-    let timedOut = false;
-    const timeout = setTimeout(() => {
-      timedOut = true;
-      controller.abort();
-    }, 35_000);
+      // El timeout de 35 s marca el abort como "por timeout" con una flag
+      let timedOut = false;
+      const timeout = setTimeout(() => {
+        timedOut = true;
+        controller.abort();
+      }, 35_000);
 
-    fetchPantalla(descriptor, controller.signal, versionEquipoRef.current)
-      .then((data) => {
-        const versionEquipo = Number(data.find((o) => o.tipoObjeto === 1)?.versionEquipo);
-        if (Number.isFinite(versionEquipo) && Number.isInteger(versionEquipo) && versionEquipo > 0) {
-          versionEquipoRef.current = versionEquipo;
-        }
-
-        // Filtrar y guardar objetos tipo 82 (barra de acceso directo) siempre que lleguen
-        const botones = data.filter((o) => o.tipoObjeto === 82);
-        if (botones.length > 0) {
-          barraAccesoDirectoPersistente.current = botones;
-        }
-        // Inicializar editValue en el mismo batch que setObjetos para evitar el flash de valor incorrecto
-        const editObjString = data.find((o) => o.tipoObjeto === 33);
-        if (editObjString) {
-          setEditValue(decodificarStringVariable(editObjString.valorVariable));
-        } else {
-          const editObj = data.find((o) => o.tipoObjeto === 8);
-          if (editObj) {
-            const tipoVarEdicion = (editObj.tipoVarEdicion ?? editObj.tipoVar) as number;
-            setEditValue(decodificarVariable(editObj.valorVariable as number, tipoVarEdicion));
-          } else {
-            setEditValue('');
+      fetchPantalla(descriptor, controller.signal, versionEquipoRef.current, mac)
+        .then((data) => {
+          const versionEquipo = Number(data.find((o) => o.tipoObjeto === 1)?.versionEquipo);
+          if (Number.isFinite(versionEquipo) && Number.isInteger(versionEquipo) && versionEquipo > 0) {
+            versionEquipoRef.current = versionEquipo;
           }
-        }
-        setObjetos(data);
-        setLoading(false);
-      })
-      .catch((err: Error) => {
-        if (err.name === 'AbortError' && !timedOut) return; // abort limpio (cleanup/navegación), ignorar
-        setError(timedOut ? 'Timeout: el dispositivo no respondió' : err.message);
-        setLoading(false);
-      })
-      .finally(() => clearTimeout(timeout));
-  }, []);
+
+          // Filtrar y guardar objetos tipo 82 (barra de acceso directo) siempre que lleguen
+          const botones = data.filter((o) => o.tipoObjeto === 82);
+          if (botones.length > 0) {
+            barraAccesoDirectoPersistente.current = botones;
+          }
+          // Inicializar editValue en el mismo batch que setObjetos para evitar el flash de valor incorrecto
+          const editObjString = data.find((o) => o.tipoObjeto === 33);
+          if (editObjString) {
+            setEditValue(decodificarStringVariable(editObjString.valorVariable));
+          } else {
+            const editObj = data.find((o) => o.tipoObjeto === 8);
+            if (editObj) {
+              const tipoVarEdicion = (editObj.tipoVarEdicion ?? editObj.tipoVar) as number;
+              setEditValue(decodificarVariable(editObj.valorVariable as number, tipoVarEdicion));
+            } else {
+              setEditValue('');
+            }
+          }
+          setObjetos(data);
+          setLoading(false);
+        })
+        .catch((err: Error) => {
+          if (err.name === 'AbortError' && !timedOut) return; // abort limpio (cleanup/navegación), ignorar
+          setError(timedOut ? 'Timeout: el dispositivo no respondió' : err.message);
+          setLoading(false);
+        })
+        .finally(() => clearTimeout(timeout));
+    },
+    [mac]
+  );
 
   useEffect(() => {
     cargarPantalla(PRINCIPAL);
@@ -203,7 +207,7 @@ export default function PantallaTc5(): JSX.Element {
     const params = new URLSearchParams({
       eventId: '255',
       idEnvio: String(idEnvioCounter++),
-      mac: MAC_TC5,
+      mac,
       readWrite: '1',
       esPantallaPrincipal: '0',
       idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
@@ -344,7 +348,7 @@ export default function PantallaTc5(): JSX.Element {
     const params = new URLSearchParams({
       eventId: '255',
       idEnvio: String(idEnvioCounter++),
-      mac: MAC_TC5,
+      mac,
       readWrite: '1',
       esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
       idNav: String(idPantallaRespuesta),
@@ -394,7 +398,7 @@ export default function PantallaTc5(): JSX.Element {
     const params = new URLSearchParams({
       eventId: '1',
       idEnvio: String(idEnvioCounter++),
-      mac: MAC_TC5,
+      mac,
       readWrite: '1',
       esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
       idNav: String(idPantallaRespuesta),
@@ -445,7 +449,7 @@ export default function PantallaTc5(): JSX.Element {
       const params = new URLSearchParams({
         eventId: '1',
         idEnvio: String(idEnvioCounter++),
-        mac: MAC_TC5,
+        mac,
         readWrite: '1',
         esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
         idNav: String(idPantallaRespuesta),
@@ -489,7 +493,7 @@ export default function PantallaTc5(): JSX.Element {
       const params = new URLSearchParams({
         eventId: '1',
         idEnvio: String(idEnvioCounter++),
-        mac: MAC_TC5,
+        mac,
         readWrite: '1',
         esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
         idNav: String(idPantallaRespuesta),
@@ -532,7 +536,7 @@ export default function PantallaTc5(): JSX.Element {
         readWrite: '1',
         eventId: '255',
         idEnvio: String(idEnvioCounter++),
-        mac: MAC_TC5,
+        mac,
         idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
         navIdPantallaRespuestaTrama: String(idPantallaActual),
         indicePantalla: String(indicePantallaActual),
@@ -574,7 +578,7 @@ export default function PantallaTc5(): JSX.Element {
       const params = new URLSearchParams({
         eventId: '255',
         idEnvio: String(idEnvioCounter++),
-        mac: MAC_TC5,
+        mac,
         readWrite: '1',
         esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
         idNav: String(idPantallaRespuesta),
@@ -629,7 +633,7 @@ export default function PantallaTc5(): JSX.Element {
           const params = new URLSearchParams({
             eventId: '255',
             idEnvio: String(idEnvioCounter++),
-            mac: MAC_TC5,
+            mac,
             readWrite: '1',
             esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
             idNav: String(idPantallaRespuesta),

@@ -12,7 +12,7 @@ It is written as working context for an agent that needs to modify or extend the
 
 ## High-level architecture
 
-`app/cti40plus/page.tsx` is only an entrypoint. It renders `PantallaCti40Plus`.
+`app/page.tsx` is the canonical entrypoint. It reads the `mac` query param, detects the equipment type, and renders `PantallaCti40Plus` only for CTI40 Plus MAC prefixes.
 
 `PantallaCti40Plus.tsx` is the real controller. It:
 

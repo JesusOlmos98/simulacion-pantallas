@@ -25,7 +25,7 @@ import PantallaLibre from './PantallaLibre';
 import { esTipoVarTiempoFecha, parseTiempoFechaString, maskMinMaxTiempoFecha } from '@/src/utils/common-lib-commac-generador/fnTiempo';
 import { apiFetch } from '../api/apiFetch';
 
-const MAC_CTI40PLUS = '202000029'; // MAC address para CTI40 PLUS
+const DEFAULT_MAC_CTI40PLUS = '202000029'; // MAC por defecto para entradas antiguas a /cti40plus
 let idEnvioCounter = 1;
 // const URL = process.env.NEXT_PUBLIC_COMMAC_BASE_URL || 'http://localhost:8020/api'; // Centralizado en apiFetch
 
@@ -41,17 +41,15 @@ interface DestinoTrasEdicion {
   nuevaPila: DescriptorPantalla[];
 }
 
+interface ApiErrorResponse {
+  error?: unknown;
+  message?: unknown;
+}
+
 // ─── Fetch ────────────────────────────────────────────────────────────────────
 
-async function fetchPantalla(d: DescriptorPantalla, signal: AbortSignal, versionEquipo: number): Promise<ObjBase[]> {
-  const params = new URLSearchParams({
-    mac: MAC_CTI40PLUS,
-    eventId: '1',
-    idEnvio: String(idEnvioCounter++),
-    readWrite: '0',
-    esPantallaPrincipal: d.esPrincipal ? '1' : '0',
-    versionEquipo: String(versionEquipo)
-  });
+async function fetchPantalla(d: DescriptorPantalla, signal: AbortSignal, versionEquipo: number, mac: string): Promise<ObjBase[]> {
+  const params = new URLSearchParams({ mac, eventId: '1', idEnvio: String(idEnvioCounter++), readWrite: '0', esPantallaPrincipal: d.esPrincipal ? '1' : '0', versionEquipo: String(versionEquipo) });
   if (!d.esPrincipal) {
     params.set('idNav', String(d.idPantalla));
     params.set('indicePantalla', String(d.indicePantalla));
@@ -61,17 +59,55 @@ async function fetchPantalla(d: DescriptorPantalla, signal: AbortSignal, version
   }
   // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST', signal });
   const res = await apiFetch(params, signal);
-  if (!res.ok) throw new Error(`Error ${res.status}`);
-  return res.json();
+  return responseToObjetos(res);
+}
+
+async function responseToObjetos(res: Response): Promise<ObjBase[]> {
+  const body = await readJsonBody(res);
+
+  if (!res.ok) {
+    const message = getErrorMessage(body) ?? `Error ${res.status}`;
+    throw new Error(message);
+  }
+
+  if (!Array.isArray(body)) {
+    const message = getErrorMessage(body) ?? 'Respuesta invalida del endpoint de pantalla';
+    throw new Error(message);
+  }
+
+  if (body.length === 0) {
+    throw new Error('El endpoint no devolvio objetos de pantalla');
+  }
+
+  return body as ObjBase[];
+}
+
+async function readJsonBody(res: Response): Promise<unknown> {
+  try {
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
+
+function getErrorMessage(body: unknown): string | null {
+  if (body === null || typeof body !== 'object') return null;
+
+  const apiError = body as ApiErrorResponse;
+  if (typeof apiError.error === 'string' && apiError.error.trim() !== '') return apiError.error;
+  if (typeof apiError.message === 'string' && apiError.message.trim() !== '') return apiError.message;
+
+  return null;
 }
 
 // ─── Componente principal ─────────────────────────────────────────────────────
 
 interface PantallaCti40PlusProps {
   lang?: string;
+  mac?: string;
 }
 
-export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX.Element {
+export default function PantallaCti40Plus({ lang, mac = DEFAULT_MAC_CTI40PLUS }: PantallaCti40PlusProps): JSX.Element {
   const router = useRouter();
 
   const [pila, setPila] = useState<DescriptorPantalla[]>([]);
@@ -98,65 +134,72 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
   // se guardan aquí la primera vez y persisten durante toda la sesión CTI40 Plus.
   const barraAccesoDirectoPersistente = useRef<ObjBase[]>([]);
 
-  const requestPantalla = useCallback((params: URLSearchParams, signal?: AbortSignal): Promise<Response> => {
-    params.set('versionEquipo', String(versionEquipoRef.current));
-    return apiFetch(params, signal);
-  }, []);
+  const requestPantalla = useCallback(
+    (params: URLSearchParams, signal?: AbortSignal): Promise<Response> => {
+      params.set('mac', mac);
+      params.set('versionEquipo', String(versionEquipoRef.current));
+      return apiFetch(params, signal);
+    },
+    [mac]
+  );
 
-  const cargarPantalla = useCallback((descriptor: DescriptorPantalla) => {
-    // Cancela silenciosamente cualquier petición en vuelo
-    controllerRef.current?.abort();
+  const cargarPantalla = useCallback(
+    (descriptor: DescriptorPantalla) => {
+      // Cancela silenciosamente cualquier petición en vuelo
+      controllerRef.current?.abort();
 
-    setLoading(true);
-    setError(null);
-    setObjetos(null);
-    setActual(descriptor);
-    setBarraAbierta(descriptor.esPrincipal);
+      setLoading(true);
+      setError(null);
+      setObjetos(null);
+      setActual(descriptor);
+      setBarraAbierta(descriptor.esPrincipal);
 
-    const controller = new AbortController();
-    controllerRef.current = controller;
+      const controller = new AbortController();
+      controllerRef.current = controller;
 
-    // El timeout de 35 s marca el abort como "por timeout" con una flag
-    let timedOut = false;
-    const timeout = setTimeout(() => {
-      timedOut = true;
-      controller.abort();
-    }, 35_000);
+      // El timeout de 35 s marca el abort como "por timeout" con una flag
+      let timedOut = false;
+      const timeout = setTimeout(() => {
+        timedOut = true;
+        controller.abort();
+      }, 35_000);
 
-    fetchPantalla(descriptor, controller.signal, versionEquipoRef.current)
-      .then((data) => {
-        const versionEquipo = Number(data.find((o) => o.tipoObjeto === 1)?.versionEquipo);
-        if (Number.isFinite(versionEquipo) && Number.isInteger(versionEquipo) && versionEquipo > 0) {
-          versionEquipoRef.current = versionEquipo;
-        }
-
-        if (descriptor.esPrincipal) {
-          const botones = data.filter((o) => o.tipoObjeto === 66);
-          if (botones.length > 0) barraAccesoDirectoPersistente.current = botones;
-        }
-        // Inicializar editValue en el mismo batch que setObjetos para evitar el flash de valor incorrecto
-        const editObjString = data.find((o) => o.tipoObjeto === 33);
-        if (editObjString) {
-          setEditValue(decodificarStringVariable(editObjString.valorVariable));
-        } else {
-          const editObj = data.find((o) => o.tipoObjeto === 8);
-          if (editObj) {
-            const tipoVarEdicion = (editObj.tipoVarEdicion ?? editObj.tipoVar) as number;
-            setEditValue(decodificarVariable(editObj.valorVariable as number, tipoVarEdicion));
-          } else {
-            setEditValue('');
+      fetchPantalla(descriptor, controller.signal, versionEquipoRef.current, mac)
+        .then((data) => {
+          const versionEquipo = Number(data.find((o) => o.tipoObjeto === 1)?.versionEquipo);
+          if (Number.isFinite(versionEquipo) && Number.isInteger(versionEquipo) && versionEquipo > 0) {
+            versionEquipoRef.current = versionEquipo;
           }
-        }
-        setObjetos(data);
-        setLoading(false);
-      })
-      .catch((err: Error) => {
-        if (err.name === 'AbortError' && !timedOut) return; // abort limpio (cleanup/navegación), ignorar
-        setError(timedOut ? 'Timeout: el dispositivo no respondió' : err.message);
-        setLoading(false);
-      })
-      .finally(() => clearTimeout(timeout));
-  }, []);
+
+          if (descriptor.esPrincipal) {
+            const botones = data.filter((o) => o.tipoObjeto === 66);
+            if (botones.length > 0) barraAccesoDirectoPersistente.current = botones;
+          }
+          // Inicializar editValue en el mismo batch que setObjetos para evitar el flash de valor incorrecto
+          const editObjString = data.find((o) => o.tipoObjeto === 33);
+          if (editObjString) {
+            setEditValue(decodificarStringVariable(editObjString.valorVariable));
+          } else {
+            const editObj = data.find((o) => o.tipoObjeto === 8);
+            if (editObj) {
+              const tipoVarEdicion = (editObj.tipoVarEdicion ?? editObj.tipoVar) as number;
+              setEditValue(decodificarVariable(editObj.valorVariable as number, tipoVarEdicion));
+            } else {
+              setEditValue('');
+            }
+          }
+          setObjetos(data);
+          setLoading(false);
+        })
+        .catch((err: Error) => {
+          if (err.name === 'AbortError' && !timedOut) return; // abort limpio (cleanup/navegación), ignorar
+          setError(timedOut ? 'Timeout: el dispositivo no respondió' : err.message);
+          setLoading(false);
+        })
+        .finally(() => clearTimeout(timeout));
+    },
+    [mac]
+  );
 
   useEffect(() => {
     cargarPantalla(PRINCIPAL);
@@ -209,7 +252,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
     const params = new URLSearchParams({
       eventId: '255',
       idEnvio: String(idEnvioCounter++),
-      mac: MAC_CTI40PLUS,
+      mac,
       readWrite: '1',
       esPantallaPrincipal: '0',
       idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
@@ -350,7 +393,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
     const params = new URLSearchParams({
       eventId: '255',
       idEnvio: String(idEnvioCounter++),
-      mac: MAC_CTI40PLUS,
+      mac,
       readWrite: '1',
       esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
       idNav: String(idPantallaRespuesta),
@@ -400,7 +443,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
     const params = new URLSearchParams({
       eventId: '1',
       idEnvio: String(idEnvioCounter++),
-      mac: MAC_CTI40PLUS,
+      mac,
       readWrite: '1',
       esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
       idNav: String(idPantallaRespuesta),
@@ -451,7 +494,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
       const params = new URLSearchParams({
         eventId: '1',
         idEnvio: String(idEnvioCounter++),
-        mac: MAC_CTI40PLUS,
+        mac,
         readWrite: '1',
         esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
         idNav: String(idPantallaRespuesta),
@@ -495,7 +538,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
       const params = new URLSearchParams({
         eventId: '1',
         idEnvio: String(idEnvioCounter++),
-        mac: MAC_CTI40PLUS,
+        mac,
         readWrite: '1',
         esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
         idNav: String(idPantallaRespuesta),
@@ -538,7 +581,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
         readWrite: '1',
         eventId: '255',
         idEnvio: String(idEnvioCounter++),
-        mac: MAC_CTI40PLUS,
+        mac,
         idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
         navIdPantallaRespuestaTrama: String(idPantallaActual),
         indicePantalla: String(indicePantallaActual),
@@ -580,7 +623,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
       const params = new URLSearchParams({
         eventId: '255',
         idEnvio: String(idEnvioCounter++),
-        mac: MAC_CTI40PLUS,
+        mac,
         readWrite: '1',
         esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
         idNav: String(idPantallaRespuesta),
@@ -635,7 +678,7 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
           const params = new URLSearchParams({
             eventId: '255',
             idEnvio: String(idEnvioCounter++),
-            mac: MAC_CTI40PLUS,
+            mac,
             readWrite: '1',
             esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
             idNav: String(idPantallaRespuesta),
@@ -1021,7 +1064,10 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
         {/* Error */}
         {!loading && error !== null && (
           <div className="flex-1 flex flex-col items-center justify-center gap-4 p-4">
-            <p className="text-red-500 text-sm">{error}</p>
+            <div className="text-center">
+              <p className="text-red-500 text-lg font-semibold">Error</p>
+              <p className="mt-2 text-red-400 text-sm">{error}</p>
+            </div>
             <button
               onClick={volver}
               className="px-4 py-2 bg-zinc-800 rounded text-sm text-white hover:bg-zinc-700"
@@ -1399,7 +1445,10 @@ export default function PantallaCti40Plus({ lang }: PantallaCti40PlusProps): JSX
           {/* ── Error ── */}
           {!loading && error !== null && (
             <div className="flex-1 flex flex-col items-center justify-center gap-4">
-              <p className="text-red-500 text-sm">{error}</p>
+              <div className="text-center">
+                <p className="text-red-500 text-2xl font-semibold">Error</p>
+                <p className="mt-2 text-red-400 text-sm">{error}</p>
+              </div>
               <button
                 onClick={volver}
                 className="px-4 py-2 bg-zinc-800 rounded text-sm text-white hover:bg-zinc-700"
