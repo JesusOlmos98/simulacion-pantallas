@@ -1,10 +1,12 @@
 import { type NextRequest } from 'next/server';
 import { parseObjetosPintaPantallasOmegaFromPayload } from '@/src/utils/common-lib-commac-generador/NXP_BE/get/getObjPintaPantallasOmega';
 import type { ObjPintaPantalla } from '@/src/utils/common-lib-commac-generador/NXP_BE/dtoBE/objetosPintaPantallaOmega.dto';
+import { mlogger } from '@/src/utils/common-lib-commac-generador/ctilogs';
 import { buildScreenFrameHex, type EventBusDataPantalla } from './screen-command-helpers';
 
 const COMMAC_BASE_URL = process.env.NEXT_PUBLIC_COMMAC_BASE_URL ?? 'http://localhost:8020/api';
 // process.env['COMMAC_BASE_URL'] ?? (process.env['NODE_ENV'] === 'production' ? process.env['NEXT_PUBLIC_COMMAC_BASE_URL'] : undefined) ?? 'http://127.0.0.1:8020/api';
+const COMMAC_AUTH_TOKEN = process.env.TOKEN?.trim();
 const SCREEN_ENDPOINT_PATH = '/device/screen';
 const READWRITE_ERROR = { TIMEOUT: 1, DUPLICATE_PENDING: 2, BUSY: 3, VALIDATION_ERROR: 4, CAUGHT_ERROR: 5 } as const;
 
@@ -18,19 +20,33 @@ export async function POST(request: NextRequest): Promise<Response> {
     const versionEquipo = intFromQuery(query, 'versionEquipo') ?? 304;
     const data = eventBusDataPantallaFromQuery(query);
     const frameHex = buildScreenFrameHex({ readWrite, versionEquipo, data });
-
-    const commacResponse = await fetch(`${COMMAC_BASE_URL}${SCREEN_ENDPOINT_PATH}`, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ mac, payload: frameHex }),
-      signal: AbortSignal.timeout(35_000)
-    });
-
-    if (!commacResponse.ok) {
-      return Response.json({ error: `COMMAC respondio con ${commacResponse.status}` }, { status: commacResponse.status });
+    const commacUrl = `${COMMAC_BASE_URL}${SCREEN_ENDPOINT_PATH}`;
+    const commacBody = { mac, payload: frameHex };
+    const commacHeaders: Record<string, string> = { 'content-type': 'application/json' };
+    if (COMMAC_AUTH_TOKEN) {
+      commacHeaders.authorization = `Bearer ${COMMAC_AUTH_TOKEN}`;
     }
 
-    const command = (await commacResponse.json()) as ScreenCommandResponse;
+    mlogger.info(`Pedimos a endpoint ${commacUrl} con body mac=${commacBody.mac} payload=${commacBody.payload}`);
+
+    const commacResponse = await fetch(commacUrl, {
+      method: 'POST',
+      headers: commacHeaders,
+      body: JSON.stringify(commacBody),
+      signal: AbortSignal.timeout(35_000)
+    });
+    const commacResponseText = await commacResponse.text();
+    const commacContentType = commacResponse.headers.get('content-type') ?? '';
+
+    mlogger.info(`Recibimos respuesta status=${commacResponse.status} content-type=${commacContentType} body=${commacResponseText}`);
+
+    if (!commacResponse.ok) {
+      return Response.json({ error: `COMMAC respondio con ${commacResponse.status}`, body: commacResponseText }, { status: commacResponse.status });
+    }
+
+    const command = parseScreenCommandResponse(commacResponseText);
+    mlogger.info(`Recibimos JSON payload=${typeof command.payload === 'string' ? command.payload : '<payload no string>'} status=${String(command.status)}`);
+
     const responseHex = typeof command.payload === 'string' ? command.payload : '';
 
     if (command.status === false) {
@@ -56,6 +72,18 @@ export async function POST(request: NextRequest): Promise<Response> {
     const message = err instanceof Error ? err.message : 'Error de red';
     const status = err instanceof DOMException && err.name === 'TimeoutError' ? 504 : 500;
     return Response.json({ error: message }, { status });
+  }
+}
+
+function parseScreenCommandResponse(responseText: string): ScreenCommandResponse {
+  if (responseText.trim() === '') {
+    throw new Error('COMMAC devolvio cuerpo vacio');
+  }
+
+  try {
+    return JSON.parse(responseText) as ScreenCommandResponse;
+  } catch {
+    throw new Error('COMMAC devolvio una respuesta que no es JSON valido');
   }
 }
 
