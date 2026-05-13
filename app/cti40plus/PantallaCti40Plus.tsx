@@ -48,8 +48,11 @@ interface ApiErrorResponse {
 
 // ─── Fetch ────────────────────────────────────────────────────────────────────
 
-async function fetchPantalla(d: DescriptorPantalla, signal: AbortSignal, versionEquipo: number, mac: string): Promise<ObjBase[]> {
+async function fetchPantalla(d: DescriptorPantalla, signal: AbortSignal, versionEquipo: number, mac: string, token: string): Promise<ObjBase[]> {
   const params = new URLSearchParams({ mac, eventId: '1', idEnvio: String(idEnvioCounter++), readWrite: '0', esPantallaPrincipal: d.esPrincipal ? '1' : '0', versionEquipo: String(versionEquipo) });
+  if (token !== '') {
+    params.set('token', token);
+  }
   if (!d.esPrincipal) {
     params.set('idNav', String(d.idPantalla));
     params.set('indicePantalla', String(d.indicePantalla));
@@ -105,9 +108,10 @@ function getErrorMessage(body: unknown): string | null {
 interface PantallaCti40PlusProps {
   lang?: string;
   mac?: string;
+  token?: string;
 }
 
-export default function PantallaCti40Plus({ lang, mac = DEFAULT_MAC_CTI40PLUS }: PantallaCti40PlusProps): JSX.Element {
+export default function PantallaCti40Plus({ lang, mac = DEFAULT_MAC_CTI40PLUS, token = '' }: PantallaCti40PlusProps): JSX.Element {
   const router = useRouter();
 
   const [pila, setPila] = useState<DescriptorPantalla[]>([]);
@@ -138,9 +142,12 @@ export default function PantallaCti40Plus({ lang, mac = DEFAULT_MAC_CTI40PLUS }:
     (params: URLSearchParams, signal?: AbortSignal): Promise<Response> => {
       params.set('mac', mac);
       params.set('versionEquipo', String(versionEquipoRef.current));
+      if (token !== '') {
+        params.set('token', token);
+      }
       return apiFetch(params, signal);
     },
-    [mac]
+    [mac, token]
   );
 
   const cargarPantalla = useCallback(
@@ -164,7 +171,7 @@ export default function PantallaCti40Plus({ lang, mac = DEFAULT_MAC_CTI40PLUS }:
         controller.abort();
       }, 35_000);
 
-      fetchPantalla(descriptor, controller.signal, versionEquipoRef.current, mac)
+      fetchPantalla(descriptor, controller.signal, versionEquipoRef.current, mac, token)
         .then((data) => {
           const versionEquipo = Number(data.find((o) => o.tipoObjeto === 1)?.versionEquipo);
           if (Number.isFinite(versionEquipo) && Number.isInteger(versionEquipo) && versionEquipo > 0) {
@@ -198,7 +205,7 @@ export default function PantallaCti40Plus({ lang, mac = DEFAULT_MAC_CTI40PLUS }:
         })
         .finally(() => clearTimeout(timeout));
     },
-    [mac]
+    [mac, token]
   );
 
   useEffect(() => {

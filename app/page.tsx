@@ -9,19 +9,22 @@ import { EnTextos } from '@/src/utils/common-lib-commac-generador/enumTextos';
 import { getMacPrefix3 } from '@/src/utils/common-lib-commac-generador/helpers';
 
 interface HomeProps {
-  searchParams: Promise<{ mac?: string | string[] | undefined }>;
+  searchParams: Promise<{ mac?: string | string[] | undefined; token?: string | string[] | undefined }>;
 }
 
-function getMacParam(searchParams: { mac?: string | string[] | undefined }): string {
-  const value = searchParams.mac;
+function getSearchParam(searchParams: { [key: string]: string | string[] | undefined }, key: string): string {
+  const value = searchParams[key];
   return (Array.isArray(value) ? value[0] : value)?.trim() ?? '';
 }
 
-function renderSelector(defaultMac: string): JSX.Element {
+function renderSelector(defaultMac: string, defaultToken: string): JSX.Element {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-50 dark:bg-black">
       <div className="flex w-full max-w-sm flex-col gap-6 px-6">
-        <MacInputForm defaultMac={defaultMac} />
+        <MacInputForm
+          defaultMac={defaultMac}
+          defaultToken={defaultToken}
+        />
       </div>
     </div>
   );
@@ -29,10 +32,11 @@ function renderSelector(defaultMac: string): JSX.Element {
 
 export default async function Home({ searchParams }: HomeProps): Promise<JSX.Element> {
   const [params, lang] = await Promise.all([searchParams, getBrowserLang()]);
-  const mac = getMacParam(params);
+  const mac = getSearchParam(params, 'mac');
+  const token = getSearchParam(params, 'token');
 
   if (mac.length < 6) {
-    return renderSelector(mac);
+    return renderSelector(mac, token);
   }
 
   const prefix = getMacPrefix3(mac);
@@ -41,12 +45,18 @@ export default async function Home({ searchParams }: HomeProps): Promise<JSX.Ele
       <PantallaCti40Plus
         lang={lang}
         mac={mac}
+        token={token}
       />
     );
   }
 
   if (prefix === EnTipoEquipo.tc5) {
-    return <PantallaTc5 mac={mac} />;
+    return (
+      <PantallaTc5
+        mac={mac}
+        token={token}
+      />
+    );
   }
 
   return (

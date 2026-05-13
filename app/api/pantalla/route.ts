@@ -6,7 +6,6 @@ import { buildScreenFrameHex, type EventBusDataPantalla } from './screen-command
 
 const COMMAC_BASE_URL = process.env.NEXT_PUBLIC_COMMAC_BASE_URL ?? 'http://localhost:8020/api';
 // process.env['COMMAC_BASE_URL'] ?? (process.env['NODE_ENV'] === 'production' ? process.env['NEXT_PUBLIC_COMMAC_BASE_URL'] : undefined) ?? 'http://127.0.0.1:8020/api';
-const COMMAC_AUTH_TOKEN = process.env.TOKEN?.trim();
 const SCREEN_ENDPOINT_PATH = '/device/screen';
 const READWRITE_ERROR = { TIMEOUT: 1, DUPLICATE_PENDING: 2, BUSY: 3, VALIDATION_ERROR: 4, CAUGHT_ERROR: 5 } as const;
 
@@ -16,6 +15,7 @@ export async function POST(request: NextRequest): Promise<Response> {
   try {
     const query = request.nextUrl.searchParams;
     const mac = requiredString(query, 'mac');
+    const token = optionalString(query, 'token');
     const readWrite = readWriteFromQuery(query);
     const versionEquipo = intFromQuery(query, 'versionEquipo') ?? 304;
     const data = eventBusDataPantallaFromQuery(query);
@@ -23,8 +23,8 @@ export async function POST(request: NextRequest): Promise<Response> {
     const commacUrl = `${COMMAC_BASE_URL}${SCREEN_ENDPOINT_PATH}`;
     const commacBody = { mac, payload: frameHex };
     const commacHeaders: Record<string, string> = { 'content-type': 'application/json' };
-    if (COMMAC_AUTH_TOKEN) {
-      commacHeaders.authorization = `Bearer ${COMMAC_AUTH_TOKEN}`;
+    if (token !== '') {
+      commacHeaders.authorization = `Bearer ${token}`;
     }
 
     mlogger.info(`Pedimos a endpoint ${commacUrl} con body mac=${commacBody.mac} payload=${commacBody.payload}`);
@@ -194,6 +194,10 @@ function requiredString(query: URLSearchParams, key: string): string {
     throw new Error(`${key} es requerido`);
   }
   return value;
+}
+
+function optionalString(query: URLSearchParams, key: string): string {
+  return query.get(key)?.trim() ?? '';
 }
 
 function requiredInt(query: URLSearchParams, key: string): number {

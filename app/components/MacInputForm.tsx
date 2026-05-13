@@ -6,9 +6,10 @@ const MAC_VALIDATION_MESSAGE = 'La MAC debe ser numérica y tener al menos 6 dí
 
 interface MacInputFormProps {
   defaultMac: string;
+  defaultToken: string;
 }
 
-export default function MacInputForm({ defaultMac }: MacInputFormProps): JSX.Element {
+export default function MacInputForm({ defaultMac, defaultToken }: MacInputFormProps): JSX.Element {
   function handleInvalid(event: FormEvent<HTMLInputElement>): void {
     event.currentTarget.setCustomValidity(MAC_VALIDATION_MESSAGE);
   }
@@ -34,6 +35,13 @@ export default function MacInputForm({ defaultMac }: MacInputFormProps): JSX.Ele
         pattern="[0-9]{6,}"
         placeholder="Introduce la MAC"
         title={MAC_VALIDATION_MESSAGE}
+        type="text"
+      />
+      <input
+        className="rounded-lg border border-zinc-300 bg-white px-4 py-4 text-center text-lg font-semibold text-zinc-600 outline-none transition-colors focus:border-purple-600"
+        defaultValue={defaultToken}
+        name="token"
+        placeholder="Introduce el token"
         type="text"
       />
       <button

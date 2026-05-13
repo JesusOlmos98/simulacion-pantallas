@@ -13,7 +13,7 @@ http://37.187.180.179:8080/api
 En PowerShell, desde la raiz del proyecto:
 
 ```powershell
-$VERSION = "0.0.3"
+$VERSION = "0.0.4"
 $IMAGEN_REMOTA = "cticontrol/simulacion-pantallas:$VERSION"
 
 # Verificacion local opcional antes de construir
@@ -34,7 +34,7 @@ docker push "$IMAGEN_REMOTA"
 En Linux:
 
 ```bash
-VERSION="0.0.3"
+VERSION="0.0.4"
 IMAGEN_REMOTA="cticontrol/simulacion-pantallas:$VERSION"
 
 docker pull "$IMAGEN_REMOTA"
@@ -47,7 +47,6 @@ docker run -d \
   --network portal-net \
   -p 3005:3005 \
   -e NEXT_PUBLIC_COMMAC_BASE_URL=http://backportal-1:8022/api \
-  -e TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Im1pZ3VlbEBjdGljb250cm9sLmNvbSIsInVzZXJJZCI6MSwiaWF0IjoxNzc4NjczODQzLCJleHAiOjE3Nzg3MTcwNDN9.jSsobX5UdyxLD-SCFd0SsU-nwhElHDwlHvmTARgPTwQ" \
   "$IMAGEN_REMOTA"
 
 # PARA PEDIR ENDPOINT A COMMAC
@@ -56,7 +55,6 @@ docker run -d \
   --network portal-net \
   -p 3005:3005 \
   -e NEXT_PUBLIC_COMMAC_BASE_URL=http://commac-app:8020/api \
-  -e TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6Im1pZ3VlbEBjdGljb250cm9sLmNvbSIsInVzZXJJZCI6MSwiaWF0IjoxNzc4NjczODQzLCJleHAiOjE3Nzg3MTcwNDN9.jSsobX5UdyxLD-SCFd0SsU-nwhElHDwlHvmTARgPTwQ" \
   "$IMAGEN_REMOTA"
 
 ```
