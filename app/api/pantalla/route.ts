@@ -10,7 +10,7 @@ const COMMAC_AUTH_TOKEN = process.env.TOKEN?.trim();
 const SCREEN_ENDPOINT_PATH = '/device/screen';
 const READWRITE_ERROR = { TIMEOUT: 1, DUPLICATE_PENDING: 2, BUSY: 3, VALIDATION_ERROR: 4, CAUGHT_ERROR: 5 } as const;
 
-type ScreenCommandResponse = { status?: boolean; payload?: unknown };
+type ScreenCommandResponse = { status?: boolean; data?: unknown; payload?: unknown };
 
 export async function POST(request: NextRequest): Promise<Response> {
   try {
@@ -29,12 +29,7 @@ export async function POST(request: NextRequest): Promise<Response> {
 
     mlogger.info(`Pedimos a endpoint ${commacUrl} con body mac=${commacBody.mac} payload=${commacBody.payload}`);
 
-    const commacResponse = await fetch(commacUrl, {
-      method: 'POST',
-      headers: commacHeaders,
-      body: JSON.stringify(commacBody),
-      signal: AbortSignal.timeout(35_000)
-    });
+    const commacResponse = await fetch(commacUrl, { method: 'POST', headers: commacHeaders, body: JSON.stringify(commacBody), signal: AbortSignal.timeout(35_000) });
     const commacResponseText = await commacResponse.text();
     const commacContentType = commacResponse.headers.get('content-type') ?? '';
 
@@ -45,9 +40,9 @@ export async function POST(request: NextRequest): Promise<Response> {
     }
 
     const command = parseScreenCommandResponse(commacResponseText);
-    mlogger.info(`Recibimos JSON payload=${typeof command.payload === 'string' ? command.payload : '<payload no string>'} status=${String(command.status)}`);
+    const responseHex = getScreenResponseHex(command);
 
-    const responseHex = typeof command.payload === 'string' ? command.payload : '';
+    // mlogger.info(`Recibimos JSON data=${responseHex !== '' ? responseHex : '<data no string>'} status=${String(command.status)}`);
 
     if (command.status === false) {
       return responseHex.length === 2 && isValidHex(responseHex)
@@ -73,6 +68,18 @@ export async function POST(request: NextRequest): Promise<Response> {
     const status = err instanceof DOMException && err.name === 'TimeoutError' ? 504 : 500;
     return Response.json({ error: message }, { status });
   }
+}
+
+function getScreenResponseHex(command: ScreenCommandResponse): string {
+  if (typeof command.data === 'string') {
+    return command.data;
+  }
+
+  if (typeof command.payload === 'string') {
+    return command.payload;
+  }
+
+  return '';
 }
 
 function parseScreenCommandResponse(responseText: string): ScreenCommandResponse {
