@@ -18,65 +18,41 @@ import ObjEditVariablesTiempoFecha from '../components/render-objetos-cti40plus/
 import ObjCamposMultiseleccion from '../components/render-objetos-cti40plus/ObjCamposMultiseleccion';
 import { resolveText } from '../components/render-objetos-cti40plus/textos/resolverTexto';
 import { EnTextos } from '@/src/utils/common-lib-commac-generador/enumTextos';
-import { parseConcatenado, COLORES, BarraBotonesTc5, decodificarVariable, decodificarStringVariable } from '../components/render-objetos-cti40plus';
+import { COLORES, BarraBotonesTc5 } from '../components/render-objetos-cti40plus';
 import type { DescriptorPantalla, ObjBase } from '../components/pantalla-types';
-import { getColorHex } from '../components/render-objetos-cti40plus/colors';
 import PantallaLibre from './PantallaLibre';
-import { esTipoVarTiempoFecha, parseTiempoFechaString, maskMinMaxTiempoFecha } from '@/src/utils/common-lib-commac-generador/fnTiempo';
 import { apiFetch } from '../api/apiFetch';
+import {
+  buildDerivadosTc5,
+  buildEscribirVariableParams,
+  buildEscribirVariableStringParams,
+  buildGuardarVentiladoresParams,
+  buildParametrosSeleccionTc5,
+  buildTextoConcatenadoMap,
+  calcularVolver,
+  DEFAULT_MAC_TC5,
+  fetchPantalla,
+  getBotonesAccesoDirecto,
+  getDescriptorRefresco,
+  getEditValueInicial,
+  getEstadosVentiladoresIniciales,
+  getSegundosRefresco,
+  getSeleccionInicial,
+  getVersionEquipo,
+  isEditValueValido,
+  isSeleccionConfirmable,
+  PRINCIPAL,
+  resolverDestinoTrasEdicion as resolverDestinoTrasEdicionTc5,
+  toggleEstadoVentilador,
+  type CargarPantallaOptions,
+  type DestinoTrasEdicion
+} from './fnTc5';
 
-const DEFAULT_MAC_TC5 = '206000003'; // MAC por defecto para entradas antiguas a /tc5
-const DEFAULT_REFRESH_SECONDS = 6;
-let idEnvioCounter = 1;
 // const URL = process.env.NEXT_PUBLIC_COMMAC_BASE_URL || 'http://localhost:8020/api'; // Centralizado en apiFetch
 
 // ─── Descriptor de pantalla ───────────────────────────────────────────────────
 
-const PRINCIPAL: DescriptorPantalla = { idPantalla: 0, indicePantalla: 0, esPrincipal: true };
-
-interface DestinoTrasEdicion {
-  destino: DescriptorPantalla;
-  nuevaPila: DescriptorPantalla[];
-}
-
-interface CargarPantallaOptions {
-  onSuccess?: () => void;
-  mostrarLoading?: boolean;
-}
-
-function getSegundosRefresco(objetos: ObjBase[] | null): number {
-  const segundos = Number(objetos?.find((o) => o.tipoObjeto === 51)?.tiempoRefrescoSegundo);
-  return Number.isFinite(segundos) && segundos > 0 ? segundos : DEFAULT_REFRESH_SECONDS;
-}
-
-function getDescriptorRefresco(actual: DescriptorPantalla, objetos: ObjBase[] | null): DescriptorPantalla | null {
-  if (actual.idUnicoEdicion === undefined) return actual;
-
-  const idPantallaRenderizada = objetos?.find((o) => o.tipoObjeto === 1)?.idPantalla;
-  if (idPantallaRenderizada === 0) return PRINCIPAL;
-
-  return null;
-}
-
 // ─── Fetch ────────────────────────────────────────────────────────────────────
-
-async function fetchPantalla(d: DescriptorPantalla, signal: AbortSignal, versionEquipo: number, mac: string, token: string): Promise<ObjBase[]> {
-  const params = new URLSearchParams({ mac, eventId: '1', idEnvio: String(idEnvioCounter++), readWrite: '0', esPantallaPrincipal: d.esPrincipal ? '1' : '0', versionEquipo: String(versionEquipo) });
-  if (token !== '') {
-    params.set('token', token);
-  }
-  if (!d.esPrincipal || d.idUnicoEdicion !== undefined) {
-    params.set('idNav', String(d.idPantalla));
-    params.set('indicePantalla', String(d.indicePantalla));
-    if (d.idUnicoEdicion !== undefined) {
-      params.set('idUnicoEdicion', String(d.idUnicoEdicion));
-    }
-  }
-  // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST', signal });
-  const res = await apiFetch(params, signal);
-  if (!res.ok) throw new Error(`Error ${res.status}`);
-  return res.json();
-}
 
 // ─── Componente principal ─────────────────────────────────────────────────────
 
@@ -147,29 +123,18 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
 
       fetchPantalla(descriptor, controller.signal, versionEquipoRef.current, mac, token)
         .then((data) => {
-          const versionEquipo = Number(data.find((o) => o.tipoObjeto === 1)?.versionEquipo);
-          if (Number.isFinite(versionEquipo) && Number.isInteger(versionEquipo) && versionEquipo > 0) {
+          const versionEquipo = getVersionEquipo(data);
+          if (versionEquipo !== null) {
             versionEquipoRef.current = versionEquipo;
           }
 
           // Filtrar y guardar objetos tipo 82 (barra de acceso directo) siempre que lleguen
-          const botones = data.filter((o) => o.tipoObjeto === 82);
+          const botones = getBotonesAccesoDirecto(data);
           if (botones.length > 0) {
             barraAccesoDirectoPersistente.current = botones;
           }
           // Inicializar editValue en el mismo batch que setObjetos para evitar el flash de valor incorrecto
-          const editObjString = data.find((o) => o.tipoObjeto === 33);
-          if (editObjString) {
-            setEditValue(decodificarStringVariable(editObjString.valorVariable));
-          } else {
-            const editObj = data.find((o) => o.tipoObjeto === 8);
-            if (editObj) {
-              const tipoVarEdicion = (editObj.tipoVarEdicion ?? editObj.tipoVar) as number;
-              setEditValue(decodificarVariable(editObj.valorVariable as number, tipoVarEdicion));
-            } else {
-              setEditValue('');
-            }
-          }
+          setEditValue(getEditValueInicial(data));
           onSuccess?.();
           setActual(descriptor);
           setBarraAbierta(descriptor.esPrincipal);
@@ -208,66 +173,24 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
 
   // Inicializa los estados de ventiladores cuando carga una pantalla de edición de ventiladores (tipoPlantilla: 10)
   useEffect(() => {
-    if (!objetos) return;
-    const plantilla = objetos.find((o) => o.tipoObjeto === 1);
-    if ((plantilla?.tipoPlantilla as number | undefined) !== 10) return;
-    const grafico = objetos.find((o) => o.tipoObjeto === 21);
-    const datos = (grafico?.datos as { estadoVentilador: number }[] | undefined) ?? [];
-    setEstadosVentiladores(datos.map((d) => d.estadoVentilador));
+    const estados = getEstadosVentiladoresIniciales(objetos);
+    if (estados === null) return;
+    setEstadosVentiladores(estados);
     setPestanaActivaVentilacion(0);
   }, [objetos]);
 
-  // Inicializa las opciones seleccionadas cuando carga una pantalla de selección (tipoObjeto: 10)
+  // Inicializa las opciones seleccionadas cuando carga una pantalla de seleccion (tipoObjeto: 10)
   useEffect(() => {
-    if (!objetos) return;
-    const objEditVars = objetos.filter((o) => o.tipoObjeto === 8);
-    const esRadio = objEditVars.length === 1;
-
-    if (esRadio) {
-      // RADIO BUTTON: buscar la opción preseleccionada (opcionSeleccionada=2)
-      const seleccionActual = objetos.find((o) => o.tipoObjeto === 10 && (o.opcionSeleccionada as number) === 2);
-      if (seleccionActual) {
-        setSelectedIdSeleccion(seleccionActual.idSeleccion as number);
-      }
-    } else if (objEditVars.length > 1) {
-      // CHECKBOX: agregar todas las opciones preseleccionadas (opcionSeleccionada=2) al Set
-      const selecciones = objetos.filter((o) => o.tipoObjeto === 10 && (o.opcionSeleccionada as number) === 2).map((o) => o.idSeleccion as number);
-      setSelectedIdSelecciones(new Set(selecciones));
-    }
+    const seleccion = getSeleccionInicial(objetos);
+    if (seleccion === null) return;
+    setSelectedIdSeleccion(seleccion.selectedIdSeleccion);
+    setSelectedIdSelecciones(seleccion.selectedIdSelecciones);
   }, [objetos]);
-
   async function guardarVentiladores(): Promise<void> {
     if (!objVentilacionEdit || !objetos) return;
-    const objIdUnicoEdicion = objetos.find((o) => o.tipoObjeto === 12);
-    const objPlantilla = objetos.find((o) => o.tipoObjeto === 1);
-    if (!objIdUnicoEdicion || !objPlantilla) return;
-
     const destinoTrasEdicion = resolverDestinoTrasEdicion();
-    const idPantallaActual = objPlantilla.idPantalla as number;
-    const indicePantallaActual = objPlantilla.indicePantalla as number;
-    const numDatos = (objVentilacionGrafico?.numDatos as number | undefined) ?? estadosVentiladores.length;
-
-    const params = new URLSearchParams({
-      eventId: '255',
-      idEnvio: String(idEnvioCounter++),
-      mac,
-      readWrite: '1',
-      esPantallaPrincipal: '0',
-      idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
-      indicePantalla: String(indicePantallaActual),
-      navIdPantallaRespuestaTrama: String(idPantallaActual),
-      navegacion: '0',
-      tipoVariableEdicion: String(objVentilacionEdit.tipoVarEdicion as number),
-      textoTituloVariable: String(objVentilacionEdit.textoCabecera as number),
-      textoNombreVariable: String(objVentilacionEdit.textoCabecera as number),
-      punteroVariableEdicion: String(objVentilacionEdit.ptrVarEditBase as number),
-      punteroFuncionSaltoTrasEdit: String(objVentilacionEdit.ptrFuncionSaltoTrasEdit as number),
-      numDatosEditar: String(numDatos)
-    });
-
-    for (const estado of estadosVentiladores.slice(0, numDatos)) {
-      params.append('valores', String(estado));
-    }
+    const params = buildGuardarVentiladoresParams({ mac, objetos, objVentilacionEdit, objVentilacionGrafico, estadosVentiladores });
+    if (params === null) return;
 
     setLoading(true);
     setError(null);
@@ -283,37 +206,8 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
   }
 
   function handleClickVentilador(idx: number): void {
-    setEstadosVentiladores((prev) => {
-      const estado = prev[idx] ?? 0;
-      const next = [...prev];
-
-      if (pestanaActivaVentilacion === 0) {
-        // Estáticos: toggle entre 0 y 255
-        if (estado === 0) {
-          next[idx] = 255;
-        } else if (estado === 255) {
-          next[idx] = 0;
-        }
-        // Si es temporizado (1,2,3...) no hacer nada
-      } else {
-        // Temporizados
-        if (estado === 0) {
-          // Asignar siguiente número de temporizado
-          const numTemporizados = next.filter((e) => e !== 0 && e !== 255).length;
-          next[idx] = numTemporizados + 1;
-        } else if (estado !== 255) {
-          // Solo deshacer si es el máximo valor temporizado
-          const maxTemporizados = Math.max(...next.filter((e) => e !== 0 && e !== 255));
-          if (estado === maxTemporizados) {
-            next[idx] = 0;
-          }
-        }
-        // Si es estático (255) no hacer nada
-      }
-      return next;
-    });
+    setEstadosVentiladores((prev) => toggleEstadoVentilador(prev, idx, pestanaActivaVentilacion));
   }
-
   function handleTrashVentiladores(): void {
     setEstadosVentiladores((prev) => prev.map(() => 0));
   }
@@ -323,46 +217,17 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
   }
 
   function volver(): void {
-    if (pila.length === 0) {
-      router.push('/');
-      return;
-    }
-
-    // Skip same-screen entries (device can re-send same screen with extra objs e.g. objPopup)
-    // All four fields must match to consider it the same screen
-    const mismaPantalla = (d: DescriptorPantalla): boolean =>
-      d.idPantalla === actual.idPantalla && d.indicePantalla === actual.indicePantalla && !!d.esPrincipal === !!actual.esPrincipal && d.idUnicoEdicion === actual.idUnicoEdicion;
-
-    let idx = pila.length - 1;
-    while (idx > 0 && mismaPantalla(pila[idx]!)) {
-      idx--;
-    }
-
-    const anterior = pila[idx]!;
-
-    // If even the bottom of the stack is the same screen, go to root
-    if (mismaPantalla(anterior)) {
+    const retorno = calcularVolver(pila, actual);
+    if (retorno === null) {
       setPila([]);
       router.push('/');
       return;
     }
 
-    const nuevaPila = pila.slice(0, idx);
-    cargarPantalla(anterior, { onSuccess: () => setPila(nuevaPila) });
+    cargarPantalla(retorno.anterior, { onSuccess: () => setPila(retorno.nuevaPila) });
   }
-
   function resolverDestinoTrasEdicion(): DestinoTrasEdicion {
-    const objTrasEditPantallaAtras = objetos?.find((o) => typeof o.numeroPantallasRetroceso === 'number');
-    const numeroPantallasRetroceso = Math.max(0, (objTrasEditPantallaAtras?.numeroPantallasRetroceso as number | undefined) ?? 0);
-    const nivelesARetroceder = Math.min(pila.length, numeroPantallasRetroceso + 1);
-
-    if (nivelesARetroceder <= 0) {
-      return { destino: PRINCIPAL, nuevaPila: [] };
-    }
-
-    const indiceDestino = pila.length - nivelesARetroceder;
-    const destino = pila[indiceDestino] ?? PRINCIPAL;
-    return { destino, nuevaPila: pila.slice(0, indiceDestino) };
+    return resolverDestinoTrasEdicionTc5(objetos, pila);
   }
 
   function navegarTrasEscritura(destinoTrasEdicion: DestinoTrasEdicion): void {
@@ -381,36 +246,8 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
     const destinoTrasEdicion = resolverDestinoTrasEdicion();
     const idPantallaRespuesta = destinoTrasEdicion.destino.idPantalla;
     const indicePantallaRespuesta = destinoTrasEdicion.destino.indicePantalla;
-    const ptrSalto = objEditVariables.ptrFuncionSaltoTrasEdit as number;
-
-    const tipoVarEdicion = objEditVariables.tipoVarEdicion as number;
-    const esTF = esTipoVarTiempoFecha(tipoVarEdicion);
-
-    const params = new URLSearchParams({
-      eventId: '255',
-      idEnvio: String(idEnvioCounter++),
-      mac,
-      readWrite: '1',
-      esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
-      idNav: String(idPantallaRespuesta),
-      idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
-      indicePantalla: String(indicePantallaRespuesta),
-      navIdPantallaRespuestaTrama: String(idPantallaRespuesta),
-      tipoVariableEdicion: String(tipoVarEdicion),
-      punteroVariableEdicion: String(objEditVariables.ptrVariableEdicion as number),
-      // Si ptrFuncionSaltoTrasEdit es 0 el servidor espera la pantalla de respuesta como destino de salto
-      punteroFuncionSaltoTrasEdit: String(ptrSalto !== 0 ? ptrSalto : idPantallaRespuesta),
-      textoTituloVariable: String(objEditVariables.textoVar as number),
-      textoNombreVariable: String(objEditVariables.textoVar as number)
-    });
-
-    if (esTF) {
-      const u32 = parseTiempoFechaString(valor, tipoVarEdicion);
-      if (u32 === null) return;
-      params.set('valorVariableHex', u32.toString(16).padStart(8, '0'));
-    } else {
-      params.set('valorVariable', valor);
-    }
+    const params = buildEscribirVariableParams({ mac, destinoTrasEdicion, objIdUnicoEdicion, idPantallaRespuesta, indicePantallaRespuesta, objEditVariables, valor });
+    if (params === null) return;
 
     setLoading(true);
     setError(null);
@@ -434,27 +271,7 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
     const destinoTrasEdicion = resolverDestinoTrasEdicion();
     const idPantallaRespuesta = destinoTrasEdicion.destino.idPantalla;
     const indicePantallaRespuesta = destinoTrasEdicion.destino.indicePantalla;
-    const ptrSalto = objEditVariablesString.ptrFuncionSaltoTrasEdit as number;
-
-    const params = new URLSearchParams({
-      eventId: '1',
-      idEnvio: String(idEnvioCounter++),
-      mac,
-      readWrite: '1',
-      esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
-      idNav: String(idPantallaRespuesta),
-      indicePantalla: String(indicePantallaRespuesta),
-      idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
-      navIdPantallaRespuestaTrama: String(idPantallaRespuesta),
-      navegacion: '0',
-      tipoVariableEdicion: String(objEditVariablesString.tipoVarEdicion as number),
-      valorVariableTexto: valor,
-      punteroVariableEdicion: String(objEditVariablesString.ptrVariableEdicion as number),
-      punteroFuncionSaltoTrasEdit: String(ptrSalto !== 0 ? ptrSalto : idPantallaRespuesta),
-      textoTituloVariable: String(objEditVariablesString.textoVar as number),
-      textoNombreVariable: String(objEditVariablesString.textoVar as number),
-      textoOpcionCambioParametro: '0'
-    });
+    const params = buildEscribirVariableStringParams({ mac, destinoTrasEdicion, objIdUnicoEdicion, idPantallaRespuesta, indicePantallaRespuesta, objEditVariablesString, valor });
 
     setLoading(true);
     setError(null);
@@ -472,426 +289,78 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
 
   async function escribirSeleccion(): Promise<void> {
     if (!objetos) return;
-    const objPlantilla = objetos.find((o) => o.tipoObjeto === 1);
-    const objIdUnicoEdicion = objetos.find((o) => o.tipoObjeto === 12);
-    if (!objPlantilla || !objIdUnicoEdicion) return;
 
     const destinoTrasEdicion = resolverDestinoTrasEdicion();
-    const idPantallaRespuesta = destinoTrasEdicion.destino.idPantalla;
-    const indicePantallaRespuesta = destinoTrasEdicion.destino.indicePantalla;
-    const encabezadoObj = objetos.find((o) => o.tipoObjeto === 2);
+    const parametrosSeleccion = buildParametrosSeleccionTc5({ objetos, camposMultiseleccion, esRadioButton, esCheckbox, selectedIdSeleccion, selectedIdSelecciones, mac, destinoTrasEdicion });
+    if (parametrosSeleccion === null) return;
 
-    // tipoVarEdicion=9, selección única (1 objEditVariables — ej. relés): valorVariable singular
-    const objEditVarsV9 = objetos.filter((o) => o.tipoObjeto === 8 && (o.tipoVarEdicion as number) === 9);
-    if (objEditVarsV9.length === 1) {
-      const objEditVar = objEditVarsV9[0]!;
-      if (selectedIdSeleccion === null) return;
+    setLoading(true);
+    setError(null);
 
-      const params = new URLSearchParams({
-        eventId: '1',
-        idEnvio: String(idEnvioCounter++),
-        mac,
-        readWrite: '1',
-        esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
-        idNav: String(idPantallaRespuesta),
-        idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
-        indicePantalla: String(indicePantallaRespuesta),
-        navIdPantallaRespuestaTrama: String(idPantallaRespuesta),
-        navegacion: '0',
-        tipoVariableEdicion: String(objEditVar.tipoVarEdicion as number),
-        punteroVariableEdicion: String(objEditVar.ptrVariableEdicion as number),
-        valorVariable: String(selectedIdSeleccion),
-        punteroFuncionSaltoTrasEdit: String(objEditVar.ptrFuncionSaltoTrasEdit as number),
-        textoTituloVariable: String((encabezadoObj?.tituloText as number | undefined) ?? 0),
-        textoNombreVariable: String((objEditVar.textoVar as number | undefined) ?? 0),
-        textoOpcionCambioParametro: '0'
-      });
+    try {
+      if (parametrosSeleccion.navegarSinPeticiones) {
+        navegarTrasEscritura(destinoTrasEdicion);
+        return;
+      }
 
-      setLoading(true);
-      setError(null);
-
-      try {
-        // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
+      for (let idx = 0; idx < parametrosSeleccion.params.length; idx++) {
+        const params = parametrosSeleccion.params[idx]!;
         const res = await requestPantalla(params);
-        if (!res.ok) throw new Error(`Error ${res.status}`);
-        navegarTrasEscritura(destinoTrasEdicion);
-      } catch (err: unknown) {
-        setError(err instanceof Error ? err.message : 'Error al escribir selección');
-        setLoading(false);
+        if (!res.ok) throw new Error(`Error ${res.status}${parametrosSeleccion.params.length > 1 ? ` en peticion ${idx + 1}` : ''}`);
       }
-      return;
-    }
-
-    // tipoVarEdicion=9, multiselección (N objEditVariables — ej. sondas): arrays valores/punteros/textos
-    if (objEditVarsV9.length > 1) {
-      const primeraV9 = objEditVarsV9[0]!;
-
-      const valores = camposMultiseleccion.map((opt) => {
-        const idSel = opt.idSeleccion as number;
-        return selectedIdSelecciones.has(idSel) ? idSel : 0;
-      });
-
-      const params = new URLSearchParams({
-        eventId: '1',
-        idEnvio: String(idEnvioCounter++),
-        mac,
-        readWrite: '1',
-        esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
-        idNav: String(idPantallaRespuesta),
-        idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
-        indicePantalla: String(indicePantallaRespuesta),
-        navIdPantallaRespuestaTrama: String(idPantallaRespuesta),
-        navegacion: '0',
-        tipoVariableEdicion: String(primeraV9.tipoVarEdicion as number),
-        punteroVariableEdicion: String(primeraV9.ptrVariableEdicion as number),
-        punteroFuncionSaltoTrasEdit: String(primeraV9.ptrFuncionSaltoTrasEdit as number),
-        textoTituloVariable: String((encabezadoObj?.tituloText as number | undefined) ?? 0)
-      });
-      for (const v of valores) params.append('valores', String(v));
-      for (const obj of objEditVarsV9) params.append('punterosVariablesEdicion', String(obj.ptrVariableEdicion as number));
-      for (const opt of camposMultiseleccion) params.append('textosNombreVariable', String(opt.textoVar as number));
-
-      setLoading(true);
-      setError(null);
-
-      try {
-        // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
-        const res = await requestPantalla(params);
-        if (!res.ok) throw new Error(`Error ${res.status}`);
-        navegarTrasEscritura(destinoTrasEdicion);
-      } catch (err: unknown) {
-        setError(err instanceof Error ? err.message : 'Error al escribir selección');
-        setLoading(false);
-      }
-      return;
-    }
-
-    // tipoVarEdicion=1 con una única opción (ej. confirmar eliminar punto de curva): valorVariable = indicePantalla actual
-    const objEditVarV1 = objetos.find((o) => o.tipoObjeto === 8 && (o.tipoVarEdicion as number) === 1);
-    if (objEditVarV1 && camposMultiseleccion.length <= 1) {
-      const indicePantallaActual = objPlantilla.indicePantalla as number;
-      const idPantallaActual = objPlantilla.idPantalla as number;
-
-      const params = new URLSearchParams({
-        esPantallaPrincipal: '0',
-        readWrite: '1',
-        eventId: '255',
-        idEnvio: String(idEnvioCounter++),
-        mac,
-        idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
-        navIdPantallaRespuestaTrama: String(idPantallaActual),
-        indicePantalla: String(indicePantallaActual),
-        navegacion: '0',
-        tipoVariableEdicion: String(objEditVarV1.tipoVarEdicion as number),
-        valorVariable: String(indicePantallaActual),
-        punteroVariableEdicion: String(objEditVarV1.ptrVariableEdicion as number),
-        punteroFuncionSaltoTrasEdit: String(objEditVarV1.ptrFuncionSaltoTrasEdit as number),
-        textoTituloVariable: String((encabezadoObj?.tituloText as number | undefined) ?? 0),
-        textoNombreVariable: String((objEditVarV1.textoVar as number | undefined) ?? 0)
-      });
-
-      setLoading(true);
-      setError(null);
-
-      try {
-        // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
-        const res = await requestPantalla(params);
-        if (!res.ok) throw new Error(`Error ${res.status}`);
-        navegarTrasEscritura(destinoTrasEdicion);
-      } catch (err: unknown) {
-        setError(err instanceof Error ? err.message : 'Error al eliminar punto');
-        setLoading(false);
-      }
-      return;
-    }
-
-    // RADIO BUTTON: una selección (tipoVarEdicion !== 9)
-    if (esRadioButton) {
-      const objEditVar = objetos.find((o) => o.tipoObjeto === 8);
-      const objSeleccionado = objetos.find((o) => o.tipoObjeto === 10 && (o.idSeleccion as number) === selectedIdSeleccion);
-      const esConfirmacionEdicion = ((objPlantilla.tipoPlantilla as number | undefined) ?? 0) === 5;
-      if (!objEditVar) return;
-      if (!esConfirmacionEdicion && (selectedIdSeleccion === null || !objSeleccionado)) return;
-
-      const valorVariableSeleccion = selectedIdSeleccion !== null ? String(selectedIdSeleccion) : String((objetos.find((o) => o.tipoObjeto === 10)?.opcionSeleccionada as number | undefined) ?? 0);
-      const textoNombreVariable = objSeleccionado ? String(objSeleccionado.textoVar as number) : String((objEditVar.textoVar as number | undefined) ?? 0);
-
-      const params = new URLSearchParams({
-        eventId: '255',
-        idEnvio: String(idEnvioCounter++),
-        mac,
-        readWrite: '1',
-        esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
-        idNav: String(idPantallaRespuesta),
-        idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
-        indicePantalla: String(indicePantallaRespuesta),
-        navIdPantallaRespuestaTrama: String(idPantallaRespuesta),
-        tipoVariableEdicion: String(objEditVar.tipoVarEdicion as number),
-        valorVariable: valorVariableSeleccion,
-        punteroVariableEdicion: String(objEditVar.ptrVariableEdicion as number),
-        punteroFuncionSaltoTrasEdit: String(objEditVar.ptrFuncionSaltoTrasEdit as number),
-        textoTituloVariable: String((encabezadoObj?.tituloText as number | undefined) ?? 0),
-        textoNombreVariable
-      });
-
-      setLoading(true);
-      setError(null);
-
-      try {
-        // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
-        const res = await requestPantalla(params);
-        if (!res.ok) throw new Error(`Error ${res.status}`);
-        navegarTrasEscritura(destinoTrasEdicion);
-      } catch (err: unknown) {
-        setError(err instanceof Error ? err.message : 'Error al escribir selección');
-        setLoading(false);
-      }
-    }
-    // CHECKBOX: múltiples selecciones (tipoVarEdicion !== 9)
-    else if (esCheckbox) {
-      const objEditVars = objetos.filter((o) => o.tipoObjeto === 8);
-      setLoading(true);
-      setError(null);
-
-      try {
-        // Si no hay selecciones, simplemente volver
-        if (selectedIdSelecciones.size === 0) {
-          navegarTrasEscritura(destinoTrasEdicion);
-          return;
-        }
-
-        // Hacer una petición por cada objEditVariables con su correspondiente selección
-        for (let idx = 0; idx < objEditVars.length; idx++) {
-          const objEditVar = objEditVars[idx]!;
-          const idSeleccionParaEsteVar = Array.from(selectedIdSelecciones)[idx];
-
-          // Si no hay selección para este índice, saltar
-          if (idSeleccionParaEsteVar === undefined) continue;
-
-          const objSeleccionado = objetos.find((o) => o.tipoObjeto === 10 && (o.idSeleccion as number) === idSeleccionParaEsteVar);
-          if (!objSeleccionado) continue;
-
-          const params = new URLSearchParams({
-            eventId: '255',
-            idEnvio: String(idEnvioCounter++),
-            mac,
-            readWrite: '1',
-            esPantallaPrincipal: destinoTrasEdicion.destino.esPrincipal ? '1' : '0',
-            idNav: String(idPantallaRespuesta),
-            idUnicoEdicion: String(objIdUnicoEdicion.idUnicoEdicion as number),
-            indicePantalla: String(indicePantallaRespuesta),
-            navIdPantallaRespuestaTrama: String(idPantallaRespuesta),
-            tipoVariableEdicion: String(objEditVar.tipoVarEdicion as number),
-            valorVariable: String(idSeleccionParaEsteVar),
-            punteroVariableEdicion: String(objEditVar.ptrVariableEdicion as number),
-            textoTituloVariable: String((encabezadoObj?.tituloText as number | undefined) ?? 0),
-            textoNombreVariable: String(objSeleccionado.textoVar as number)
-          });
-
-          // const res = await fetch(`${URL}/pruebas/peticionPantallaConEspera?${params}`, { method: 'POST' });
-          const res = await requestPantalla(params);
-          if (!res.ok) throw new Error(`Error ${res.status} en petición ${idx + 1}`);
-        }
-        navegarTrasEscritura(destinoTrasEdicion);
-      } catch (err: unknown) {
-        setError(err instanceof Error ? err.message : 'Error al escribir selecciones');
-        setLoading(false);
-      }
+      navegarTrasEscritura(destinoTrasEdicion);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : parametrosSeleccion.errorMessage);
+      setLoading(false);
     }
   }
-
   escribirSeleccionRef.current = escribirSeleccion;
 
-  // ── Derivados ─────────────────────────────────────────────────────────────
+  // Derivados
 
-  // Objetos de barra de acceso directo (tipoObjeto: 82) — se usan los persistentes (actualizados cada vez que llegan)
+  // Objetos de barra de acceso directo (tipoObjeto: 82) - se usan los persistentes (actualizados cada vez que llegan)
   const barraAccesoDirecto = barraAccesoDirectoPersistente.current;
+  const textoConcatenadoMap = useMemo<Map<number, string>>(() => buildTextoConcatenadoMap(objetos), [objetos]);
+  const {
+    gruposLineas,
+    tablasEstaticas,
+    tablasGrupos,
+    infoObjetos,
+    otrosObjetos,
+    esPantallaPrincipal,
+    menuNavPtr,
+    encabezado,
+    titulo,
+    colorHeader,
+    esTablaCompleja,
+    encabezadoEditIcono,
+    tareas,
+    tipoPlantilla,
+    esLista,
+    esVentilacionGrupoEdit,
+    esLibre,
+    esLibreListadoConEncabezado,
+    objVentilacionGrafico,
+    objVentilacionEdit,
+    tituloVentilacionEdit,
+    esTeclado,
+    camposMultiseleccion,
+    esSeleccion,
+    objEditVariables,
+    objEditVariablesString,
+    esRadioButton,
+    esCheckbox,
+    esTiempoFecha
+  } = useMemo(() => buildDerivadosTc5(objetos, actual, textoConcatenadoMap), [actual, objetos, textoConcatenadoMap]);
 
-  // Separar objetos: header (tipoObjeto: 2), líneas (tipoObjeto: 4, 5, 16), info (tipoObjeto: 7) y otros
-  const TIPOS_LINEA = new Set([3, 4, 5, 16, 21, 35]);
-  // Agrupar líneas en bloques separados por objLineaGrafica (tipoObjeto: 20)
-  const gruposLineas: ObjBase[][] = [];
-  if (objetos) {
-    let grupoActual: ObjBase[] = [];
-    for (const obj of objetos) {
-      if (TIPOS_LINEA.has(obj.tipoObjeto)) {
-        grupoActual.push(obj);
-      } else if (obj.tipoObjeto === 20 && grupoActual.length > 0) {
-        gruposLineas.push(grupoActual);
-        grupoActual = [];
-      }
-    }
-    if (grupoActual.length > 0) gruposLineas.push(grupoActual);
-  }
-  // Agrupar tabla estática: objTablaConfig (14) + objTablaDatosSinEdicion (28) consecutivos
-  const tablasEstaticas: { config: ObjBase; datos: ObjBase }[] = [];
-  if (objetos) {
-    for (let i = 0; i < objetos.length - 1; i++) {
-      if (objetos[i]!.tipoObjeto === 14 && objetos[i + 1]!.tipoObjeto === 28) {
-        tablasEstaticas.push({ config: objetos[i]!, datos: objetos[i + 1]! });
-      }
-    }
-  }
-
-  // Agrupar bloques de tabla: objTablaDinamicaInit (70) + filas objTablaDinamicaFila (71)
-  // Las filas pueden no ser inmediatamente consecutivas (puede haber otros objetos entre init y filas)
-  const tablasGrupos: { init: ObjBase; filas: ObjBase[] }[] = [];
-  if (objetos) {
-    const inits = objetos.map((o, i) => (o.tipoObjeto === 70 ? i : -1)).filter((i) => i !== -1);
-    const filasIndices = objetos.map((o, i) => (o.tipoObjeto === 71 ? i : -1)).filter((i) => i !== -1);
-
-    for (const initIdx of inits) {
-      const init = objetos[initIdx]!;
-      // Recolectar todas las filas (71) que vienen después de este init,
-      // hasta el siguiente init o fin del array
-      const nextInitIdx = inits.find((i) => i > initIdx) ?? objetos.length;
-      const filasParaEsteInit = filasIndices.filter((fIdx) => fIdx > initIdx && fIdx < nextInitIdx).map((fIdx) => objetos[fIdx]!);
-
-      tablasGrupos.push({ init, filas: filasParaEsteInit });
-    }
-  }
-  const infoObjetos = objetos?.filter((o) => o.tipoObjeto === 7 || o.tipoObjeto === 6 || o.tipoObjeto === 19) ?? [];
-  const otrosObjetos =
-    objetos?.filter(
-      (o) =>
-        o.tipoObjeto !== 2 &&
-        o.tipoObjeto !== 7 &&
-        o.tipoObjeto !== 6 &&
-        o.tipoObjeto !== 10 &&
-        o.tipoObjeto !== 19 &&
-        o.tipoObjeto !== 20 &&
-        o.tipoObjeto !== 67 &&
-        o.tipoObjeto !== 14 &&
-        o.tipoObjeto !== 28 &&
-        o.tipoObjeto !== 70 &&
-        o.tipoObjeto !== 71 &&
-        o.tipoObjeto !== 82 && // Excluir objBarraAccesoDirectoIconV2
-        !TIPOS_LINEA.has(o.tipoObjeto)
-    ) ?? [];
-
-  // Mapa de textos concatenados: idTextoConcatenado → texto resuelto (tipo 67)
-  const textoConcatenadoMap = useMemo<Map<number, string>>(() => {
-    const map = new Map<number, string>();
-    if (!objetos) return map;
-    for (const obj of objetos) {
-      if (obj.tipoObjeto === 67) {
-        const id = obj.idTextoConcatenado as number | undefined;
-        const raw = obj.cadenaConcatenadaRaw as { type: string; data: number[] } | number[] | undefined;
-        if (id !== undefined && raw !== undefined) {
-          map.set(id, parseConcatenado(raw));
-        }
-      }
-    }
-    return map;
-  }, [objetos]);
-
-  // Verificar si estamos en pantalla principal (idPantalla: 0)
-  const esPantallaPrincipal = (objetos?.find((o) => o.tipoObjeto === 1)?.idPantalla ?? 0) === 0;
-
-  // Puntero al menú: primer obj37 con tipoDato=0 (noVariable) y nav>0
-  // Solo disponible cuando estamos en la pantalla principal
-  const menuNavPtr: number | undefined = actual.esPrincipal
-    ? (objetos?.find((o) => o.tipoObjeto === 37 && (o.tipoDato as number) === 0 && (o.valorEditableONav as number) > 0)?.valorEditableONav as number | undefined)
-    : undefined;
-
-  // Título: viene en objEncabezado (tipoObjeto=2) si la pantalla lo tiene
-  const encabezado = objetos?.find((o) => o.tipoObjeto === 2) as
-    | {
-        tituloText?: number;
-        colorTitulo?: number;
-        iconoTarea2?: number;
-        pantallaSaltoTarea2?: number;
-        indicePantallaTarea2?: number;
-        iconoTarea3?: number;
-        pantallaSaltoTarea3?: number;
-        indicePantallaTarea3?: number;
-      }
-    | undefined;
-  const tituloTextId = encabezado?.tituloText ?? 0;
-  const titulo = encabezado ? (textoConcatenadoMap.get(tituloTextId) ?? resolveText(tituloTextId)) : '';
-  const colorHeader = encabezado ? getColorHex(encabezado.colorTitulo ?? 0) : COLORES.primary;
-
-  // Detectar si es la pantalla de curva de ventilación para aplicar smallFontSize
-  const esTablaCompleja = tituloTextId === EnTextos.textCurvaVentilacion || tituloTextId === EnTextos.textIluminacion; //4904 1311; // EnTextos.textCurvaVentilacion
-
-  // objEncabezadoEditIcono (tipoObjeto: 31) — botón de acción a la derecha del header
-  const encabezadoEditIcono = objetos?.find((o) => o.tipoObjeto === 31);
-
-  // Tareas de navegación del encabezado (botones a la derecha del header)
-  const tareas = [
-    { icono: encabezado?.iconoTarea3 ?? 0, pantalla: encabezado?.pantallaSaltoTarea3 ?? 0, indice: encabezado?.indicePantallaTarea3 ?? 0 },
-    { icono: encabezado?.iconoTarea2 ?? 0, pantalla: encabezado?.pantallaSaltoTarea2 ?? 0, indice: encabezado?.indicePantallaTarea2 ?? 0 }
-  ].filter((t) => t.icono > 0);
-
-  // tipoPlantilla: 2 = teclado (edición), 4 = lista de filas, 21 = canvas libre (objPosXyLibre*), otros = grid de iconos
-  const tipoPlantilla = (objetos?.find((o) => o.tipoObjeto === 1)?.tipoPlantilla as number) ?? 0;
-  const esLista = tipoPlantilla === 4;
-  const esVentilacionGrupoEdit = tipoPlantilla === 10;
-  const esLibre = tipoPlantilla === 21;
-  const esLibreListadoConEncabezado =
-    esLibre &&
-    encabezado !== undefined &&
-    (objetos?.some(
-      (o) =>
-        (o.tipoObjeto === 79 && ((o.ancho as number | undefined) ?? 0) > 0 && ((o.alto as number | undefined) ?? 0) > 0) ||
-        (o.tipoObjeto === 76 &&
-          ((o.color as number | undefined) ?? 0) === 13 &&
-          ((o.posXFin as number | undefined) ?? 0) > ((o.posXInicio as number | undefined) ?? 0) &&
-          ((o.posYFin as number | undefined) ?? 0) > ((o.posYInicio as number | undefined) ?? 0))
-    ) ??
-      false);
-  const objVentilacionGrafico = esVentilacionGrupoEdit ? (objetos?.find((o) => o.tipoObjeto === 21) ?? null) : null;
-  const objVentilacionEdit = esVentilacionGrupoEdit ? (objetos?.find((o) => o.tipoObjeto === 22) ?? null) : null;
-  const tituloVentilacionEdit = objVentilacionEdit ? resolveText(objVentilacionEdit.textoCabecera as number) : null;
-  const esTeclado = tipoPlantilla === 2;
-
-  // Campos de selección única (tipoObjeto: 10 — objCamposMultiseleccion)
-  const camposMultiseleccion = objetos?.filter((o) => o.tipoObjeto === 10) ?? [];
-  const esSeleccion = camposMultiseleccion.length > 0;
-
-  // Objeto de edición de variable numérica (tipoObjeto: 8 — objEditVariables), presente solo en pantallas de edición
-  const objEditVariables = esTeclado ? (objetos?.find((o) => o.tipoObjeto === 8) ?? null) : null;
-  // Objeto de edición de variable string (tipoObjeto: 33 — objEditVariablesString), presente solo en pantallas de edición de texto
-  const objEditVariablesString = esTeclado ? (objetos?.find((o) => o.tipoObjeto === 33) ?? null) : null;
-
-  // Detectar si es RADIO BUTTON (1 objEditVariables) o CHECKBOX (múltiples objEditVariables)
-  const objEditVariablesMultiples = objetos?.filter((o) => o.tipoObjeto === 8) ?? [];
-  const esRadioButton = esSeleccion && objEditVariablesMultiples.length === 1;
-  const esCheckbox = esSeleccion && objEditVariablesMultiples.length > 1;
-
-  // Detectar si la pantalla de edición es de Tiempo o Fecha
-  const esTiempoFecha = objEditVariables ? esTipoVarTiempoFecha(objEditVariables.tipoVarEdicion as number) : false;
-
-  // Validez del valor introducido: siempre válido para strings, rango numérico para el resto
-  const editValido = useMemo<boolean>(() => {
-    if (objEditVariablesString) return true;
-    if (!objEditVariables) return false;
-    const tipoVarEdicion = objEditVariables.tipoVarEdicion as number;
-    if (esTiempoFecha) {
-      const encoded = parseTiempoFechaString(editValue, tipoVarEdicion);
-      if (encoded === null) return false;
-      const maskedMin = maskMinMaxTiempoFecha(objEditVariables.minimo as number, tipoVarEdicion);
-      const maskedMax = maskMinMaxTiempoFecha(objEditVariables.maximo as number, tipoVarEdicion);
-      return encoded >= maskedMin && encoded <= maskedMax;
-    }
-    const tipoVar = objEditVariables.tipoVar as number;
-    const val = parseFloat(editValue);
-    if (!isFinite(val)) return false;
-    const minVal = parseFloat(decodificarVariable(objEditVariables.minimo as number, tipoVar));
-    const maxVal = parseFloat(decodificarVariable(objEditVariables.maximo as number, tipoVar));
-    return val >= minVal && val <= maxVal;
-  }, [editValue, esTiempoFecha, objEditVariables, objEditVariablesString]);
-
-  const seleccionConfirmable = useMemo<boolean>(() => {
-    if (!esSeleccion) return false;
-    if (esRadioButton) {
-      const esConfirmacionEdicion = tipoPlantilla === 5;
-      return esConfirmacionEdicion || selectedIdSeleccion !== null;
-    }
-    if (esCheckbox) return true;
-    return false;
-  }, [esCheckbox, esRadioButton, esSeleccion, selectedIdSeleccion, tipoPlantilla]);
-
+  const editValido = useMemo<boolean>(
+    () => isEditValueValido(editValue, objEditVariables, objEditVariablesString, esTiempoFecha),
+    [editValue, esTiempoFecha, objEditVariables, objEditVariablesString]
+  );
+  const seleccionConfirmable = useMemo<boolean>(
+    () => isSeleccionConfirmable(esSeleccion, esRadioButton, esCheckbox, selectedIdSeleccion, tipoPlantilla),
+    [esCheckbox, esRadioButton, esSeleccion, selectedIdSeleccion, tipoPlantilla]
+  );
   useEffect(() => {
     if (esSeleccion && seleccionConfirmable && !loading && error === null) {
       const handleKeyDown = (event: KeyboardEvent): void => {
