@@ -49,6 +49,15 @@ function getSegundosRefresco(objetos: ObjBase[] | null): number {
   return Number.isFinite(segundos) && segundos > 0 ? segundos : DEFAULT_REFRESH_SECONDS;
 }
 
+function getDescriptorRefresco(actual: DescriptorPantalla, objetos: ObjBase[] | null): DescriptorPantalla | null {
+  if (actual.idUnicoEdicion === undefined) return actual;
+
+  const idPantallaRenderizada = objetos?.find((o) => o.tipoObjeto === 1)?.idPantalla;
+  if (idPantallaRenderizada === 0) return PRINCIPAL;
+
+  return null;
+}
+
 // ─── Fetch ────────────────────────────────────────────────────────────────────
 
 async function fetchPantalla(d: DescriptorPantalla, signal: AbortSignal, versionEquipo: number, mac: string, token: string): Promise<ObjBase[]> {
@@ -185,16 +194,17 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
   }, [cargarPantalla]);
 
   const segundosRefresco = useMemo(() => getSegundosRefresco(objetos), [objetos]);
+  const descriptorRefresco = useMemo(() => getDescriptorRefresco(actual, objetos), [actual, objetos]);
 
   useEffect(() => {
-    if (!objetos || loading || error !== null) return undefined;
+    if (!objetos || loading || error !== null || descriptorRefresco === null) return undefined;
 
     const timeoutId = window.setTimeout(() => {
-      cargarPantalla(actual, { mostrarLoading: false });
+      cargarPantalla(descriptorRefresco, { mostrarLoading: false });
     }, segundosRefresco * 1000);
 
     return (): void => window.clearTimeout(timeoutId);
-  }, [actual, cargarPantalla, error, loading, objetos, segundosRefresco]);
+  }, [cargarPantalla, descriptorRefresco, error, loading, objetos, segundosRefresco]);
 
   // Inicializa los estados de ventiladores cuando carga una pantalla de edición de ventiladores (tipoPlantilla: 10)
   useEffect(() => {

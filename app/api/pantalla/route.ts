@@ -60,7 +60,9 @@ export async function POST(request: NextRequest): Promise<Response> {
 
     const responseFrame = Buffer.from(responseHex, 'hex');
     const payload = getDataSectionSt(responseFrame);
-    const objetos = parseObjetosPintaPantallasOmegaFromPayload(payload, payload.length, false);
+    const objetos = parseObjetosPintaPantallasOmegaFromPayload(payload, payload.length, true);
+
+    // mlogger.info(`Objetos parseados: ${JSON.stringify(objetos)}`);
 
     return Response.json(objetos satisfies ObjPintaPantalla[]);
   } catch (err: unknown) {
