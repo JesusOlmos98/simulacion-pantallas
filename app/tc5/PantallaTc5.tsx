@@ -105,15 +105,12 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
   );
 
   const cargarPantalla = useCallback(
-    (descriptor: DescriptorPantalla) => {
+    (descriptor: DescriptorPantalla, onSuccess?: () => void) => {
       // Cancela silenciosamente cualquier petición en vuelo
       controllerRef.current?.abort();
 
       setLoading(true);
       setError(null);
-      setObjetos(null);
-      setActual(descriptor);
-      setBarraAbierta(descriptor.esPrincipal);
 
       const controller = new AbortController();
       controllerRef.current = controller;
@@ -150,6 +147,9 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
               setEditValue('');
             }
           }
+          onSuccess?.();
+          setActual(descriptor);
+          setBarraAbierta(descriptor.esPrincipal);
           setObjetos(data);
           setLoading(false);
         })
@@ -283,8 +283,7 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
   }
 
   function navegarA(descriptor: DescriptorPantalla): void {
-    setPila((prev) => [...prev, actual]);
-    cargarPantalla(descriptor);
+    cargarPantalla(descriptor, () => setPila((prev) => [...prev, actual]));
   }
 
   function volver(): void {
@@ -312,8 +311,8 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
       return;
     }
 
-    setPila(pila.slice(0, idx));
-    cargarPantalla(anterior);
+    const nuevaPila = pila.slice(0, idx);
+    cargarPantalla(anterior, () => setPila(nuevaPila));
   }
 
   function resolverDestinoTrasEdicion(): DestinoTrasEdicion {
@@ -331,8 +330,7 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
   }
 
   function navegarTrasEscritura(destinoTrasEdicion: DestinoTrasEdicion): void {
-    setPila(destinoTrasEdicion.nuevaPila);
-    cargarPantalla(destinoTrasEdicion.destino);
+    cargarPantalla(destinoTrasEdicion.destino, () => setPila(destinoTrasEdicion.nuevaPila));
   }
 
   const refrescarPantallaActual = useCallback((): void => {
@@ -882,6 +880,8 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
 
   // ── Render responsive (viewport < 960×720) ───────────────────────────────
 
+  const hayObjetos = objetos !== null && objetos.length > 0;
+
   if (isSmallScreen) {
     const navBg = encabezado !== undefined ? colorHeader || COLORES.tertiary : COLORES.primary;
     const scrollbarStyle = { '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties;
@@ -889,7 +889,7 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
     const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 320;
     return (
       <div
-        className="min-h-dvh bg-zinc-950 flex flex-col"
+        className="relative min-h-dvh bg-zinc-950 flex flex-col"
         style={{ backgroundColor: COLORES.lastBackground }}
       >
         {/* ── Navbar ── */}
@@ -932,7 +932,7 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
 
             {/* Título */}
             <span className="min-w-0 flex-1 text-lg font-medium leading-tight text-white text-center px-2 line-clamp-2">
-              {!loading && (tituloVentilacionEdit ?? (esPantallaPrincipal ? resolveText(EnTextos.textPrincipal) : titulo))}
+              {tituloVentilacionEdit ?? (esPantallaPrincipal ? resolveText(EnTextos.textPrincipal) : titulo)}
             </span>
 
             {/* Derecha: tareas + botones toggle */}
@@ -1026,14 +1026,14 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
         )}
 
         {/* Loading */}
-        {loading && (
+        {loading && !hayObjetos && (
           <div className="flex-1 flex items-center justify-center">
             <div className="w-10 h-10 border-4 border-green-600 border-t-transparent rounded-full animate-spin" />
           </div>
         )}
 
         {/* Error */}
-        {!loading && error !== null && (
+        {!loading && error !== null && !hayObjetos && (
           <div className="flex-1 flex flex-col items-center justify-center gap-4 p-4">
             <p className="text-red-500 text-sm">{error}</p>
             <button
@@ -1046,7 +1046,7 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
         )}
 
         {/* Contenido */}
-        {!loading && error === null && objetos !== null && objetos.length > 0 && (
+        {hayObjetos && (
           <>
             {/* Canvas libre */}
             {esLibre &&
@@ -1414,6 +1414,22 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
             </div>
           </div>
         )}
+        {loading && hayObjetos && (
+          <div className="absolute inset-0 z-[60] flex items-center justify-center bg-black/30">
+            <div className="w-10 h-10 border-4 border-green-600 border-t-transparent rounded-full animate-spin" />
+          </div>
+        )}
+        {!loading && error !== null && hayObjetos && (
+          <div className="absolute inset-0 z-[60] flex flex-col items-center justify-center gap-4 bg-black/70 p-4">
+            <p className="text-red-500 text-sm">{error}</p>
+            <button
+              onClick={volver}
+              className="px-4 py-2 bg-zinc-800 rounded text-sm text-white hover:bg-zinc-700"
+            >
+              Volver
+            </button>
+          </div>
+        )}
       </div>
     );
   }
@@ -1429,14 +1445,14 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
           style={{ width: '960px', height: '720px', minWidth: '960px', maxWidth: '960px', minHeight: '720px', maxHeight: '720px', backgroundColor: COLORES.lastBackground }}
         >
           {/* ── Loading ── */}
-          {loading && (
+          {loading && !hayObjetos && (
             <div className="flex-1 flex flex-col items-center justify-center gap-4">
               <div className="w-12 h-12 border-4 border-green-600 border-t-transparent rounded-full animate-spin" />
             </div>
           )}
 
           {/* ── Error ── */}
-          {!loading && error !== null && (
+          {!loading && error !== null && !hayObjetos && (
             <div className="flex-1 flex flex-col items-center justify-center gap-4">
               <p className="text-red-500 text-sm">{error}</p>
               <button
@@ -1449,7 +1465,7 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
           )}
 
           {/* ── Contenido ── */}
-          {!loading && error === null && objetos !== null && objetos.length > 0 && (
+          {hayObjetos && (
             <>
               {/* Barra superior — pantallas de edición (tipoPlantilla 2): X + título + Check */}
               {!esPantallaPrincipal && esTeclado && (
@@ -1954,6 +1970,22 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
                   })}
                 </div>
               </div>
+            </div>
+          )}
+          {loading && hayObjetos && (
+            <div className="absolute inset-0 z-[60] flex items-center justify-center bg-black/30">
+              <div className="w-12 h-12 border-4 border-green-600 border-t-transparent rounded-full animate-spin" />
+            </div>
+          )}
+          {!loading && error !== null && hayObjetos && (
+            <div className="absolute inset-0 z-[60] flex flex-col items-center justify-center gap-4 bg-black/70">
+              <p className="text-red-500 text-sm">{error}</p>
+              <button
+                onClick={volver}
+                className="px-4 py-2 bg-zinc-800 rounded text-sm text-white hover:bg-zinc-700"
+              >
+                Volver
+              </button>
             </div>
           )}
         </div>
