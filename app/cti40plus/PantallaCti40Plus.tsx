@@ -26,6 +26,7 @@ import { esTipoVarTiempoFecha, parseTiempoFechaString, maskMinMaxTiempoFecha } f
 import { apiFetch } from '../api/apiFetch';
 
 const DEFAULT_MAC_CTI40PLUS = '202000029'; // MAC por defecto para entradas antiguas a /cti40plus
+const DEFAULT_REFRESH_SECONDS = 6;
 let idEnvioCounter = 1;
 // const URL = process.env.NEXT_PUBLIC_COMMAC_BASE_URL || 'http://localhost:8020/api'; // Centralizado en apiFetch
 
@@ -44,6 +45,11 @@ interface DestinoTrasEdicion {
 interface ApiErrorResponse {
   error?: unknown;
   message?: unknown;
+}
+
+interface CargarPantallaOptions {
+  onSuccess?: () => void;
+  mostrarLoading?: boolean;
 }
 
 // ─── Fetch ────────────────────────────────────────────────────────────────────
@@ -103,6 +109,11 @@ function getErrorMessage(body: unknown): string | null {
   return null;
 }
 
+function getSegundosRefresco(objetos: ObjBase[] | null): number {
+  const segundos = Number(objetos?.find((o) => o.tipoObjeto === 51)?.tiempoRefrescoSegundo);
+  return Number.isFinite(segundos) && segundos > 0 ? segundos : DEFAULT_REFRESH_SECONDS;
+}
+
 // ─── Componente principal ─────────────────────────────────────────────────────
 
 interface PantallaCti40PlusProps {
@@ -151,11 +162,14 @@ export default function PantallaCti40Plus({ lang, mac = DEFAULT_MAC_CTI40PLUS, t
   );
 
   const cargarPantalla = useCallback(
-    (descriptor: DescriptorPantalla, onSuccess?: () => void) => {
+    (descriptor: DescriptorPantalla, options: CargarPantallaOptions = {}) => {
+      const { onSuccess, mostrarLoading = true } = options;
       // Cancela silenciosamente cualquier petición en vuelo
       controllerRef.current?.abort();
 
-      setLoading(true);
+      if (mostrarLoading) {
+        setLoading(true);
+      }
       setError(null);
 
       const controller = new AbortController();
@@ -214,6 +228,18 @@ export default function PantallaCti40Plus({ lang, mac = DEFAULT_MAC_CTI40PLUS, t
       controllerRef.current?.abort();
     };
   }, [cargarPantalla]);
+
+  const segundosRefresco = useMemo(() => getSegundosRefresco(objetos), [objetos]);
+
+  useEffect(() => {
+    if (!objetos || loading || error !== null) return undefined;
+
+    const timeoutId = window.setTimeout(() => {
+      cargarPantalla(actual, { mostrarLoading: false });
+    }, segundosRefresco * 1000);
+
+    return (): void => window.clearTimeout(timeoutId);
+  }, [actual, cargarPantalla, error, loading, objetos, segundosRefresco]);
 
   // Inicializa los estados de ventiladores cuando carga una pantalla de edición de ventiladores (tipoPlantilla: 10)
   useEffect(() => {
@@ -328,7 +354,7 @@ export default function PantallaCti40Plus({ lang, mac = DEFAULT_MAC_CTI40PLUS, t
   }
 
   function navegarA(descriptor: DescriptorPantalla): void {
-    cargarPantalla(descriptor, () => setPila((prev) => [...prev, actual]));
+    cargarPantalla(descriptor, { onSuccess: () => setPila((prev) => [...prev, actual]) });
   }
 
   function volver(): void {
@@ -357,7 +383,7 @@ export default function PantallaCti40Plus({ lang, mac = DEFAULT_MAC_CTI40PLUS, t
     }
 
     const nuevaPila = pila.slice(0, idx);
-    cargarPantalla(anterior, () => setPila(nuevaPila));
+    cargarPantalla(anterior, { onSuccess: () => setPila(nuevaPila) });
   }
 
   function resolverDestinoTrasEdicion(): DestinoTrasEdicion {
@@ -375,11 +401,11 @@ export default function PantallaCti40Plus({ lang, mac = DEFAULT_MAC_CTI40PLUS, t
   }
 
   function navegarTrasEscritura(destinoTrasEdicion: DestinoTrasEdicion): void {
-    cargarPantalla(destinoTrasEdicion.destino, () => setPila(destinoTrasEdicion.nuevaPila));
+    cargarPantalla(destinoTrasEdicion.destino, { onSuccess: () => setPila(destinoTrasEdicion.nuevaPila) });
   }
 
   const refrescarPantallaActual = useCallback((): void => {
-    cargarPantalla(actual);
+    cargarPantalla(actual, { mostrarLoading: false });
   }, [actual, cargarPantalla]);
 
   async function escribirVariable(valor: string): Promise<void> {
