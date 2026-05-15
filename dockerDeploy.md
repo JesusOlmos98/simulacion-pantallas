@@ -13,7 +13,7 @@ http://37.187.180.179:8080/api
 En PowerShell, desde la raiz del proyecto:
 
 ```powershell
-$VERSION = "0.0.5"
+$VERSION = "0.0.7"
 $IMAGEN_REMOTA = "cticontrol/simulacion-pantallas:$VERSION"
 
 # Verificacion local opcional antes de construir
@@ -34,7 +34,7 @@ docker push "$IMAGEN_REMOTA"
 En Linux:
 
 ```bash
-VERSION="0.0.5"
+VERSION="0.0.7"
 IMAGEN_REMOTA="cticontrol/simulacion-pantallas:$VERSION"
 
 docker pull "$IMAGEN_REMOTA"

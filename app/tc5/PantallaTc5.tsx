@@ -3,22 +3,12 @@
 import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import type { JSX } from 'react';
 import { useRouter } from 'next/navigation';
-import { LuCheck, LuChevronLeft, LuFan, LuInfo, LuMenu, LuX } from 'react-icons/lu';
 import { useIsSmallScreen } from '../hooks/useIsSmallScreen';
-import ObjVentilacionGrupoGrafico from '../components/render-objetos-cti40plus/ObjVentilacionGrupoGrafico';
-import ObjVentilacionGrupoGraficoEdit from '../components/render-objetos-cti40plus/ObjVentilacionGrupoGraficoEdit';
-import { RenderObjeto, resolverIconoCTI40Plus, ObjTablaDinamica, ObjLineaInfoTextVar, ObjLineaInfoTextTextVarVar } from '../components/render-objetos-cti40plus';
-import ObjLineaInfoTextText from '../components/render-objetos-cti40plus/ObjLineaInfoTextText';
-import ObjEncabezadoEditIcono from '../components/render-objetos-cti40plus/ObjEncabezadoEditIcono';
-import ObjTablaDatosSinEdicion from '../components/render-objetos-cti40plus/ObjTablaDatosSinEdicion';
-import { parseConfigTabla } from '../components/render-objetos-cti40plus/ObjTablaConfig';
 import ObjEditVariables from '../components/render-objetos-cti40plus/ObjEditVariables';
 import ObjEditVariablesString from '../components/render-objetos-cti40plus/ObjEditVariablesString';
 import ObjEditVariablesTiempoFecha from '../components/render-objetos-cti40plus/ObjEditVariablesTiempoFecha';
-import ObjCamposMultiseleccion from '../components/render-objetos-cti40plus/ObjCamposMultiseleccion';
-import { resolveText } from '../components/render-objetos-cti40plus/textos/resolverTexto';
-import { EnTextos } from '@/src/utils/common-lib-commac-generador/enumTextos';
 import { COLORES, BarraBotonesTc5 } from '../components/render-objetos-cti40plus';
+import { ContenidoObjetosPantalla, DialogInfoPantalla, FooterInfoButton, PantallaEdicionVentilacion, PantallaHeader, PantallaSeleccion } from '../components/tc5-components';
 import type { DescriptorPantalla, ObjBase } from '../components/pantalla-types';
 import PantallaLibre from './PantallaLibre';
 import { apiFetch } from '../api/apiFetch';
@@ -329,7 +319,6 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
     otrosObjetos,
     esPantallaPrincipal,
     menuNavPtr,
-    encabezado,
     titulo,
     colorHeader,
     esTablaCompleja,
@@ -388,7 +377,6 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
   const hayObjetos = objetos !== null && objetos.length > 0;
 
   if (isSmallScreen) {
-    const navBg = encabezado !== undefined ? colorHeader || COLORES.tertiary : COLORES.primary;
     const scrollbarStyle = { '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties;
     const scrollbarClass = `flex-1 overflow-y-auto p-4 [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar]:h-1 [&::-webkit-scrollbar-track]:bg-[${COLORES.lastBackground}] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)]`;
     const viewportWidth = typeof window !== 'undefined' ? window.innerWidth : 320;
@@ -397,124 +385,35 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
         className="relative min-h-dvh bg-zinc-950 flex flex-col"
         style={{ backgroundColor: COLORES.lastBackground }}
       >
-        {/* ── Navbar ── */}
-        {!esTeclado && !esSeleccion && (
-          <div
-            className="flex items-center justify-between px-3 py-3 shrink-0"
-            style={{ backgroundColor: navBg }}
-          >
-            {/* Izquierda: hamburguesa + back/menú */}
-            <div className="flex items-center gap-1">
-              {barraAccesoDirecto.length > 0 && (
-                <button
-                  onClick={() => setBarraAbierta((v) => !v)}
-                  className="p-1 text-white hover:text-gray-200 transition-colors"
-                  aria-label="Accesos directos"
-                >
-                  <LuMenu size={28} />
-                </button>
-              )}
-              {!esPantallaPrincipal && (
-                <button
-                  onClick={volver}
-                  className="p-1 text-white hover:text-gray-200 transition-colors"
-                  aria-label="Atrás"
-                >
-                  <LuChevronLeft size={28} />
-                </button>
-              )}
-              {esPantallaPrincipal && menuNavPtr !== undefined && (
-                <button
-                  onClick={() => navegarA({ idPantalla: menuNavPtr, indicePantalla: 0, esPrincipal: false })}
-                  className="p-1 text-white hover:text-gray-200 transition-colors"
-                  aria-label="Menú"
-                >
-                  <LuMenu size={28} />
-                </button>
-              )}
-              {esPantallaPrincipal && menuNavPtr === undefined && barraAccesoDirecto.length === 0 && <div className="w-9" />}
-            </div>
-
-            {/* Título */}
-            <span className="min-w-0 flex-1 text-lg font-medium leading-tight text-white text-center px-2 line-clamp-2">
-              {tituloVentilacionEdit ?? (esPantallaPrincipal ? resolveText(EnTextos.textPrincipal) : titulo)}
-            </span>
-
-            {/* Derecha: tareas + botones toggle */}
-            <div className="flex items-center gap-1">
-              {esVentilacionGrupoEdit ? (
-                <button
-                  onClick={() => void guardarVentiladores()}
-                  className="p-1 text-white hover:text-gray-200 transition-colors"
-                  aria-label="Guardar"
-                >
-                  <LuCheck size={28} />
-                </button>
-              ) : (
-                <>
-                  {tareas.map((tarea, i) => {
-                    const IconoTarea = resolverIconoCTI40Plus(tarea.icono);
-                    return (
-                      <button
-                        key={i}
-                        onClick={() => navegarA({ idPantalla: tarea.pantalla, indicePantalla: tarea.indice, esPrincipal: tarea.pantalla === 0 })}
-                        className="p-1 text-white hover:text-gray-200 transition-colors"
-                      >
-                        {IconoTarea ? <IconoTarea size={28} /> : null}
-                      </button>
-                    );
-                  })}
-                  {encabezadoEditIcono && (
-                    <ObjEncabezadoEditIcono
-                      obj={encabezadoEditIcono}
-                      idPantallaActual={(objetos?.find((o) => o.tipoObjeto === 1)?.idPantalla as number | undefined) ?? actual.idPantalla}
-                      indicePantallaActual={(objetos?.find((o) => o.tipoObjeto === 1)?.indicePantalla as number | undefined) ?? actual.indicePantalla}
-                      onNavegar={navegarA}
-                      responsive
-                    />
-                  )}
-                </>
-              )}
-              {tareas.length === 0 && !encabezadoEditIcono && !esVentilacionGrupoEdit && <div className="w-9" />}
-            </div>
-          </div>
-        )}
-
-        {/* Header edición/selección */}
-        {!esPantallaPrincipal && (esTeclado || esSeleccion) && (
-          <div
-            className="flex items-center justify-between px-3 py-3 shrink-0"
-            style={{ backgroundColor: COLORES.tertiary }}
-          >
-            <button
-              onClick={volver}
-              className="p-1 text-white hover:text-gray-200 transition-colors"
-              aria-label="Cancelar"
-            >
-              <LuX size={28} />
-            </button>
-            <span className="min-w-0 text-lg font-normal leading-tight text-white line-clamp-2 text-center px-2">
-              {esTeclado ? (objEditVariablesString ? resolveText(objEditVariablesString.textoVar as number) : objEditVariables ? resolveText(objEditVariables.textoVar as number) : '') : titulo}
-            </span>
-            <button
-              onClick={() => {
-                if (esTeclado) {
-                  if (objEditVariablesString) {
-                    void escribirVariableString(editValue);
-                    return;
-                  }
-                  if (editValido) void escribirVariable(editValue);
-                } else {
-                  if (seleccionConfirmable) void escribirSeleccion();
-                }
-              }}
-              className={`p-1 transition-colors ${(esTeclado ? editValido || !!objEditVariablesString : seleccionConfirmable) ? 'text-white hover:text-gray-200' : 'text-white/30 cursor-not-allowed'}`}
-              aria-label="Confirmar"
-            >
-              <LuCheck size={28} />
-            </button>
-          </div>
-        )}
+        <PantallaHeader
+          actual={actual}
+          pilaLength={pila.length}
+          objetos={objetos}
+          barraAccesoDirecto={barraAccesoDirecto}
+          esPantallaPrincipal={esPantallaPrincipal}
+          esTeclado={esTeclado}
+          esSeleccion={esSeleccion}
+          esVentilacionGrupoEdit={esVentilacionGrupoEdit}
+          menuNavPtr={menuNavPtr}
+          titulo={titulo}
+          tituloVentilacionEdit={tituloVentilacionEdit}
+          colorHeader={colorHeader}
+          tareas={tareas}
+          encabezadoEditIcono={encabezadoEditIcono}
+          objEditVariables={objEditVariables}
+          objEditVariablesString={objEditVariablesString}
+          editValue={editValue}
+          editValido={editValido}
+          seleccionConfirmable={seleccionConfirmable}
+          onToggleBarra={() => setBarraAbierta((v) => !v)}
+          onVolver={volver}
+          onNavegar={navegarA}
+          onGuardarVentiladores={() => void guardarVentiladores()}
+          onEscribirVariable={(valor) => void escribirVariable(valor)}
+          onEscribirVariableString={(valor) => void escribirVariableString(valor)}
+          onEscribirSeleccion={() => void escribirSeleccion()}
+          responsive
+        />
 
         {/* Barra acceso directo desplegable */}
         {barraAbierta && (
@@ -622,303 +521,75 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
               </div>
             )}
 
-            {/* Selección */}
-            {esSeleccion && (
-              <div
-                className={scrollbarClass}
-                style={scrollbarStyle}
-              >
-                {camposMultiseleccion.map((obj, i) => {
-                  const idSeleccion = obj.idSeleccion as number;
-                  const opcionSeleccionada = obj.opcionSeleccionada as number;
-                  const isDisabled = opcionSeleccionada === 0;
-                  const isSelectedRadio = esRadioButton && selectedIdSeleccion === idSeleccion;
-                  const isSelectedCheckbox = esCheckbox && selectedIdSelecciones.has(idSeleccion);
-                  const isSelected = (isSelectedRadio || isSelectedCheckbox) && !isDisabled;
-                  const handleSelect = (): void => {
-                    if (isDisabled) return;
-                    if (esRadioButton) {
-                      setSelectedIdSeleccion(idSeleccion);
-                    } else if (esCheckbox) {
-                      const newSet = new Set(selectedIdSelecciones);
-                      if (newSet.has(idSeleccion)) {
-                        newSet.delete(idSeleccion);
-                      } else {
-                        newSet.add(idSeleccion);
-                      }
-                      setSelectedIdSelecciones(newSet);
-                    }
-                  };
-                  return (
-                    <ObjCamposMultiseleccion
-                      key={i}
-                      obj={obj}
-                      isSelected={isSelected}
-                      onSelect={handleSelect}
-                      isDisabled={isDisabled}
-                      responsive
-                    />
-                  );
-                })}
-              </div>
-            )}
+            <PantallaSeleccion
+              visible={esSeleccion}
+              camposMultiseleccion={camposMultiseleccion}
+              esRadioButton={esRadioButton}
+              esCheckbox={esCheckbox}
+              selectedIdSeleccion={selectedIdSeleccion}
+              selectedIdSelecciones={selectedIdSelecciones}
+              setSelectedIdSeleccion={setSelectedIdSeleccion}
+              setSelectedIdSelecciones={setSelectedIdSelecciones}
+              className={scrollbarClass}
+              style={scrollbarStyle}
+              responsive
+            />
 
-            {/* Ventilación */}
-            {esVentilacionGrupoEdit && objVentilacionEdit && (
-              <div
-                className={scrollbarClass}
-                style={scrollbarStyle}
-              >
-                <ObjVentilacionGrupoGraficoEdit
-                  obj={objVentilacionEdit}
-                  pestanaActiva={pestanaActivaVentilacion}
-                  onPestanaChange={setPestanaActivaVentilacion}
-                  onTrash={handleTrashVentiladores}
-                  responsive
-                />
-                {objVentilacionGrafico && (
-                  <ObjVentilacionGrupoGrafico
-                    obj={objVentilacionGrafico}
-                    onNavegar={navegarA}
-                    idPantallaActual={actual.idPantalla}
-                    indicePantallaActual={actual.indicePantalla}
-                    estadosOverride={estadosVentiladores}
-                    onClickVentilador={handleClickVentilador}
-                    responsive
-                  />
-                )}
-                <div className="flex flex-col gap-4 px-4 py-4">
-                  <div className="flex items-center gap-3">
-                    <LuFan
-                      size={28}
-                      color={COLORES.success}
-                    />
-                    <span
-                      className="text-lg"
-                      style={{ color: COLORES.light }}
-                    >
-                      {resolveText(objVentilacionEdit.textoPestana2 as number)}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <span style={{ position: 'relative', display: 'inline-flex', width: 28, height: 28 }}>
-                      <LuFan
-                        size={28}
-                        color={COLORES.success}
-                        style={{ position: 'absolute', clipPath: 'inset(0 50% 0 0)' }}
-                      />
-                      <LuFan
-                        size={28}
-                        color={COLORES.light}
-                        style={{ position: 'absolute', clipPath: 'inset(0 0 0 50%)' }}
-                      />
-                    </span>
-                    <span
-                      className="text-lg"
-                      style={{ color: COLORES.light }}
-                    >
-                      {resolveText(objVentilacionEdit.textoPestana2 as number)}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <LuFan
-                      size={28}
-                      color={COLORES.menuWords}
-                    />
-                    <span
-                      className="text-lg"
-                      style={{ color: COLORES.light }}
-                    >
-                      {resolveText(objVentilacionEdit.textoPestana1 as number)}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            )}
+            <PantallaEdicionVentilacion
+              visible={esVentilacionGrupoEdit}
+              objVentilacionEdit={objVentilacionEdit}
+              objVentilacionGrafico={objVentilacionGrafico}
+              pestanaActivaVentilacion={pestanaActivaVentilacion}
+              estadosVentiladores={estadosVentiladores}
+              actual={actual}
+              onPestanaChange={setPestanaActivaVentilacion}
+              onTrash={handleTrashVentiladores}
+              onNavegar={navegarA}
+              onClickVentilador={handleClickVentilador}
+              className={scrollbarClass}
+              style={scrollbarStyle}
+              responsive
+            />
 
-            {/* Objetos principales */}
             {!esLibre && !esTeclado && !esSeleccion && !esVentilacionGrupoEdit && (
-              <div
+              <ContenidoObjetosPantalla
+                gruposLineas={gruposLineas}
+                tablasEstaticas={tablasEstaticas}
+                tablasGrupos={tablasGrupos}
+                otrosObjetos={otrosObjetos}
+                esPantallaPrincipal={esPantallaPrincipal}
+                esLista={esLista}
+                esVentilacionGrupoEdit={esVentilacionGrupoEdit}
+                esTablaCompleja={esTablaCompleja}
+                actual={actual}
+                textoConcatenadoMap={textoConcatenadoMap}
+                onNavegar={navegarA}
+                onRefrescarPantalla={refrescarPantallaActual}
                 className={scrollbarClass}
                 style={scrollbarStyle}
-              >
-                {esPantallaPrincipal ? (
-                  <div className="flex-1 flex items-center justify-center py-8">
-                    <p className="text-white text-lg">Pantalla principal</p>
-                  </div>
-                ) : (
-                  <>
-                    {gruposLineas.length > 0 &&
-                      gruposLineas.map((grupo, gi) => (
-                        <div
-                          key={gi}
-                          className="rounded-2xl mb-3"
-                          style={{ backgroundColor: COLORES.tertiary }}
-                        >
-                          {grupo.map((obj, i) => (
-                            <RenderObjeto
-                              key={i}
-                              obj={obj}
-                              onNavegar={navegarA}
-                              onRefrescarPantalla={refrescarPantallaActual}
-                              idPantallaActual={actual.idPantalla}
-                              indicePantallaActual={actual.indicePantalla}
-                              textoConcatenados={textoConcatenadoMap}
-                              responsive
-                            />
-                          ))}
-                        </div>
-                      ))}
-
-                    {tablasEstaticas.length > 0 && (
-                      <div className="overflow-x-auto mb-3">
-                        {tablasEstaticas.map((tabla, ti) => (
-                          <ObjTablaDatosSinEdicion
-                            key={ti}
-                            config={parseConfigTabla(tabla.config)}
-                            datos={tabla.datos}
-                            responsive
-                          />
-                        ))}
-                      </div>
-                    )}
-
-                    {tablasGrupos.length > 0 && (
-                      <div className="overflow-x-auto mb-3">
-                        {tablasGrupos.map((tabla, ti) => (
-                          <ObjTablaDinamica
-                            key={ti}
-                            init={tabla.init}
-                            filas={tabla.filas}
-                            onNavegar={navegarA}
-                            responsive
-                            smallFontSize={esTablaCompleja}
-                          />
-                        ))}
-                      </div>
-                    )}
-
-                    {otrosObjetos.length > 0 &&
-                      (esLista ? (
-                        <div className="flex flex-col">
-                          {otrosObjetos.map((obj, i) => (
-                            <RenderObjeto
-                              key={i}
-                              obj={obj}
-                              onNavegar={navegarA}
-                              onRefrescarPantalla={refrescarPantallaActual}
-                              idPantallaActual={actual.idPantalla}
-                              indicePantallaActual={actual.indicePantalla}
-                              esLista
-                              responsive
-                            />
-                          ))}
-                        </div>
-                      ) : (
-                        <div className="grid grid-cols-4 gap-2 p-2">
-                          {otrosObjetos.map((obj, i) => (
-                            <RenderObjeto
-                              key={i}
-                              obj={obj}
-                              onNavegar={navegarA}
-                              onRefrescarPantalla={refrescarPantallaActual}
-                              idPantallaActual={actual.idPantalla}
-                              indicePantallaActual={actual.indicePantalla}
-                              textoConcatenados={textoConcatenadoMap}
-                              responsive
-                            />
-                          ))}
-                        </div>
-                      ))}
-                  </>
-                )}
-              </div>
+                responsive
+              />
             )}
 
-            {/* Footer info */}
-            {infoObjetos.length > 0 && (
-              <div
-                className="flex justify-center shrink-0 py-2"
-                style={{ backgroundColor: COLORES.lastBackground }}
-              >
-                <button
-                  className="flex items-center gap-2 px-6 rounded-xl"
-                  style={{ backgroundColor: COLORES.primary }}
-                  onClick={() => setInfoDialogAbierto(true)}
-                >
-                  <LuInfo
-                    size={32}
-                    color={COLORES.light}
-                  />
-                </button>
-              </div>
-            )}
+            <FooterInfoButton
+              visible={infoObjetos.length > 0}
+              onClick={() => setInfoDialogAbierto(true)}
+              responsive
+            />
           </>
         )}
 
-        {/* Dialog info (responsive) */}
-        {infoDialogAbierto && infoObjetos.length > 0 && (
-          <div
-            className="fixed inset-0 z-50 flex flex-col"
-            style={{ backgroundColor: COLORES.lastBackground }}
-          >
-            <div
-              className="flex items-center px-3 py-3 shrink-0"
-              style={{ backgroundColor: COLORES.info }}
-            >
-              <button
-                className="p-1 text-white hover:text-gray-200 transition-colors"
-                aria-label="Cerrar"
-                onClick={() => setInfoDialogAbierto(false)}
-              >
-                <LuX size={28} />
-              </button>
-              <span className="min-w-0 flex-1 text-center text-lg font-normal leading-tight text-white line-clamp-2 px-2">{titulo}</span>
-              <div style={{ width: 36 }} />
-            </div>
-            <div
-              className={scrollbarClass}
-              style={scrollbarStyle}
-            >
-              <div
-                className="rounded-2xl"
-                style={{ backgroundColor: COLORES.tertiary }}
-              >
-                {infoObjetos.map((obj, i) => {
-                  switch (obj.tipoObjeto) {
-                    case 6:
-                      return (
-                        <ObjLineaInfoTextVar
-                          key={i}
-                          obj={obj}
-                          textoConcatenados={textoConcatenadoMap}
-                          responsive
-                        />
-                      );
-                    case 19:
-                      return (
-                        <ObjLineaInfoTextTextVarVar
-                          key={i}
-                          obj={obj}
-                          textoConcatenados={textoConcatenadoMap}
-                          responsive
-                        />
-                      );
-                    default:
-                      return (
-                        <ObjLineaInfoTextText
-                          key={i}
-                          obj={obj}
-                          textoConcatenados={textoConcatenadoMap}
-                          responsive
-                        />
-                      );
-                  }
-                })}
-              </div>
-            </div>
-          </div>
-        )}
+        <DialogInfoPantalla
+          abierto={infoDialogAbierto}
+          titulo={titulo}
+          infoObjetos={infoObjetos}
+          textoConcatenadoMap={textoConcatenadoMap}
+          onClose={() => setInfoDialogAbierto(false)}
+          className="fixed inset-0 z-50 flex flex-col"
+          scrollClassName={scrollbarClass}
+          scrollStyle={scrollbarStyle}
+          responsive
+        />
         {loading && hayObjetos && (
           <div className="absolute inset-0 z-[60] flex items-center justify-center bg-black/30">
             <div className="w-10 h-10 border-4 border-green-600 border-t-transparent rounded-full animate-spin" />
@@ -972,132 +643,34 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
           {/* ── Contenido ── */}
           {hayObjetos && (
             <>
-              {/* Barra superior — pantallas de edición (tipoPlantilla 2): X + título + Check */}
-              {!esPantallaPrincipal && esTeclado && (
-                <div
-                  className="flex items-center justify-between px-3 py-3 shrink-0"
-                  style={{ backgroundColor: COLORES.tertiary }}
-                >
-                  <button
-                    onClick={volver}
-                    className="p-1 text-white hover:text-gray-200 transition-colors"
-                    aria-label="Cancelar"
-                  >
-                    <LuX size={60} />
-                  </button>
-                  <span className="text-5xl font-normal text-white line-clamp-2 text-center px-2">
-                    {objEditVariablesString ? resolveText(objEditVariablesString.textoVar as number) : objEditVariables ? resolveText(objEditVariables.textoVar as number) : ''}
-                  </span>
-                  <button
-                    onClick={() => {
-                      if (objEditVariablesString) {
-                        void escribirVariableString(editValue);
-                        return;
-                      }
-                      if (editValido) void escribirVariable(editValue);
-                    }}
-                    className={`p-1 transition-colors ${editValido ? 'text-white hover:text-gray-200' : 'text-white/30 cursor-not-allowed'}`}
-                    aria-label="Confirmar"
-                  >
-                    <LuCheck size={60} />
-                  </button>
-                </div>
-              )}
-
-              {/* Barra superior — pantallas de selección (radio o checkbox): X + título + Check */}
-              {!esPantallaPrincipal && esSeleccion && (
-                <div
-                  className="flex items-center justify-between px-3 py-3 shrink-0"
-                  style={{ backgroundColor: COLORES.tertiary }}
-                >
-                  <button
-                    onClick={volver}
-                    className="p-1 text-white hover:text-gray-200 transition-colors"
-                    aria-label="Cancelar"
-                  >
-                    <LuX size={60} />
-                  </button>
-                  <span className="text-5xl font-normal text-white line-clamp-2 text-center px-2">{titulo}</span>
-                  <button
-                    onClick={() => {
-                      if (seleccionConfirmable) void escribirSeleccion();
-                    }}
-                    className={`p-1 transition-colors ${seleccionConfirmable ? 'text-white hover:text-gray-200' : 'text-white/30 cursor-not-allowed'}`}
-                    aria-label="Confirmar"
-                  >
-                    <LuCheck size={60} />
-                  </button>
-                </div>
-              )}
-
-              {/* Barra superior — pantallas normales (no principal, no edición, no selección) */}
-              {!esPantallaPrincipal && !esTeclado && !esSeleccion && (
-                <div
-                  className="flex items-center justify-between px-3 py-3 shrink-0"
-                  style={{ backgroundColor: esVentilacionGrupoEdit ? COLORES.tertiary : colorHeader }}
-                >
-                  {/* Izquierda: flecha + hamburguesa */}
-                  <div className="flex items-center gap-1">
-                    <button
-                      onClick={volver}
-                      className="p-1 text-white hover:text-gray-200 transition-colors"
-                      aria-label={pila.length === 0 ? 'Inicio' : 'Atrás'}
-                    >
-                      <LuChevronLeft size={60} />
-                    </button>
-
-                    {menuNavPtr !== undefined && (
-                      <button
-                        onClick={() => navegarA({ idPantalla: menuNavPtr, indicePantalla: 0, esPrincipal: false })}
-                        className="p-1 text-white hover:text-gray-200 transition-colors"
-                        aria-label="Menú"
-                      >
-                        <LuMenu size={60} />
-                      </button>
-                    )}
-                  </div>
-
-                  {/* Título */}
-                  <span className="text-5xl font-normal text-white line-clamp-2 text-center px-2">{tituloVentilacionEdit ?? titulo}</span>
-
-                  {/* Derecha: check (ventilación) / botones de tarea / espaciador */}
-                  <div className="flex items-center gap-1">
-                    {esVentilacionGrupoEdit ? (
-                      <button
-                        onClick={() => void guardarVentiladores()}
-                        className="p-1 text-white hover:text-gray-200 transition-colors"
-                        aria-label="Guardar"
-                      >
-                        <LuCheck size={60} />
-                      </button>
-                    ) : (
-                      <>
-                        {tareas.map((tarea, i) => {
-                          const IconoTarea = resolverIconoCTI40Plus(tarea.icono);
-                          return (
-                            <button
-                              key={i}
-                              onClick={() => navegarA({ idPantalla: tarea.pantalla, indicePantalla: tarea.indice, esPrincipal: tarea.pantalla === 0 })}
-                              className="p-1 text-white hover:text-gray-200 transition-colors"
-                            >
-                              {IconoTarea ? <IconoTarea size={60} /> : null}
-                            </button>
-                          );
-                        })}
-                        {encabezadoEditIcono && (
-                          <ObjEncabezadoEditIcono
-                            obj={encabezadoEditIcono}
-                            idPantallaActual={(objetos?.find((o) => o.tipoObjeto === 1)?.idPantalla as number | undefined) ?? actual.idPantalla}
-                            indicePantallaActual={(objetos?.find((o) => o.tipoObjeto === 1)?.indicePantalla as number | undefined) ?? actual.indicePantalla}
-                            onNavegar={navegarA}
-                          />
-                        )}
-                        {tareas.length === 0 && !encabezadoEditIcono && <div className="w-12" />}
-                      </>
-                    )}
-                  </div>
-                </div>
-              )}
+              <PantallaHeader
+                actual={actual}
+                pilaLength={pila.length}
+                objetos={objetos}
+                barraAccesoDirecto={barraAccesoDirecto}
+                esPantallaPrincipal={esPantallaPrincipal}
+                esTeclado={esTeclado}
+                esSeleccion={esSeleccion}
+                esVentilacionGrupoEdit={esVentilacionGrupoEdit}
+                menuNavPtr={menuNavPtr}
+                titulo={titulo}
+                tituloVentilacionEdit={tituloVentilacionEdit}
+                colorHeader={colorHeader}
+                tareas={tareas}
+                encabezadoEditIcono={encabezadoEditIcono}
+                objEditVariables={objEditVariables}
+                objEditVariablesString={objEditVariablesString}
+                editValue={editValue}
+                editValido={editValido}
+                seleccionConfirmable={seleccionConfirmable}
+                onToggleBarra={() => setBarraAbierta((v) => !v)}
+                onVolver={volver}
+                onNavegar={navegarA}
+                onGuardarVentiladores={() => void guardarVentiladores()}
+                onEscribirVariable={(valor) => void escribirVariable(valor)}
+                onEscribirVariableString={(valor) => void escribirVariableString(valor)}
+                onEscribirSeleccion={() => void escribirSeleccion()}
+              />
 
               {/* Canvas libre (tipoPlantilla 21) — ocupa todo el espacio sin padding */}
               {esLibre &&
@@ -1163,320 +736,70 @@ export default function PantallaTc5({ mac = DEFAULT_MAC_TC5, token = '' }: Panta
                 </div>
               )}
 
-              {/* Pantalla de selección — lista de radio buttons o checkboxes */}
-              {esSeleccion && (
-                <div
-                  className={`flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-[${COLORES.lastBackground}] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]`}
-                  style={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}
-                >
-                  <div>
-                    {camposMultiseleccion.map((obj, i) => {
-                      const idSeleccion = obj.idSeleccion as number;
-                      const opcionSeleccionada = obj.opcionSeleccionada as number;
-                      const isDisabled = opcionSeleccionada === 0;
+              <PantallaSeleccion
+                visible={esSeleccion}
+                camposMultiseleccion={camposMultiseleccion}
+                esRadioButton={esRadioButton}
+                esCheckbox={esCheckbox}
+                selectedIdSeleccion={selectedIdSeleccion}
+                selectedIdSelecciones={selectedIdSelecciones}
+                setSelectedIdSeleccion={setSelectedIdSeleccion}
+                setSelectedIdSelecciones={setSelectedIdSelecciones}
+                className={`flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-[${COLORES.lastBackground}] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]`}
+                style={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}
+              />
 
-                      const isSelectedRadio = esRadioButton && selectedIdSeleccion === idSeleccion;
-                      const isSelectedCheckbox = esCheckbox && selectedIdSelecciones.has(idSeleccion);
-                      const isSelected = (isSelectedRadio || isSelectedCheckbox) && !isDisabled;
+              <PantallaEdicionVentilacion
+                visible={esVentilacionGrupoEdit}
+                objVentilacionEdit={objVentilacionEdit}
+                objVentilacionGrafico={objVentilacionGrafico}
+                pestanaActivaVentilacion={pestanaActivaVentilacion}
+                estadosVentiladores={estadosVentiladores}
+                actual={actual}
+                onPestanaChange={setPestanaActivaVentilacion}
+                onTrash={handleTrashVentiladores}
+                onNavegar={navegarA}
+                onClickVentilador={handleClickVentilador}
+                className={`flex-1 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[${COLORES.lastBackground}] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]`}
+                style={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}
+              />
 
-                      const handleSelect = (): void => {
-                        if (isDisabled) return;
-
-                        if (esRadioButton) {
-                          // RADIO: reemplazar la selección
-                          setSelectedIdSeleccion(idSeleccion);
-                        } else if (esCheckbox) {
-                          // CHECKBOX: toggle (agregar o remover)
-                          const newSet = new Set(selectedIdSelecciones);
-                          if (newSet.has(idSeleccion)) {
-                            newSet.delete(idSeleccion);
-                          } else {
-                            newSet.add(idSeleccion);
-                          }
-                          setSelectedIdSelecciones(newSet);
-                        }
-                      };
-
-                      return (
-                        <ObjCamposMultiseleccion
-                          key={i}
-                          obj={obj}
-                          isSelected={isSelected}
-                          onSelect={handleSelect}
-                          isDisabled={isDisabled}
-                        />
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {/* Pantalla de edición de ventiladores (tipoPlantilla 10) */}
-              {esVentilacionGrupoEdit && objVentilacionEdit && (
-                <div
-                  className={`flex-1 overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-[${COLORES.lastBackground}] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]`}
-                  style={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}
-                >
-                  {/* Pestañas */}
-                  <ObjVentilacionGrupoGraficoEdit
-                    obj={objVentilacionEdit}
-                    pestanaActiva={pestanaActivaVentilacion}
-                    onPestanaChange={setPestanaActivaVentilacion}
-                    onTrash={handleTrashVentiladores}
-                  />
-
-                  {/* Gráfico de ventiladores */}
-                  {objVentilacionGrafico && (
-                    <ObjVentilacionGrupoGrafico
-                      obj={objVentilacionGrafico}
-                      onNavegar={navegarA}
-                      idPantallaActual={actual.idPantalla}
-                      indicePantallaActual={actual.indicePantalla}
-                      estadosOverride={estadosVentiladores}
-                      onClickVentilador={handleClickVentilador}
-                    />
-                  )}
-
-                  {/* Leyenda */}
-                  <div className="flex flex-col gap-8 px-8 py-8">
-                    <div className="flex items-center gap-6">
-                      <LuFan
-                        size={75}
-                        color={COLORES.success}
-                      />
-                      <span
-                        className="text-5xl"
-                        style={{ color: COLORES.light }}
-                      >
-                        {resolveText(objVentilacionEdit.textoPestana2 as number)}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-6">
-                      <span style={{ position: 'relative', display: 'inline-flex', width: 75, height: 75 }}>
-                        <LuFan
-                          size={75}
-                          color={COLORES.success}
-                          style={{ position: 'absolute', clipPath: 'inset(0 50% 0 0)' }}
-                        />
-                        <LuFan
-                          size={75}
-                          color={COLORES.light}
-                          style={{ position: 'absolute', clipPath: 'inset(0 0 0 50%)' }}
-                        />
-                      </span>
-                      <span
-                        className="text-5xl"
-                        style={{ color: COLORES.light }}
-                      >
-                        {resolveText(objVentilacionEdit.textoPestana2 as number)}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-6">
-                      <LuFan
-                        size={75}
-                        color={COLORES.menuWords}
-                      />
-                      <span
-                        className="text-5xl"
-                        style={{ color: COLORES.light }}
-                      >
-                        {resolveText(objVentilacionEdit.textoPestana1 as number)}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Objetos — scrollable si hay muchos */}
               {!esLibre && !esTeclado && !esSeleccion && !esVentilacionGrupoEdit && (
-                <div
+                <ContenidoObjetosPantalla
+                  gruposLineas={gruposLineas}
+                  tablasEstaticas={tablasEstaticas}
+                  tablasGrupos={tablasGrupos}
+                  otrosObjetos={otrosObjetos}
+                  esPantallaPrincipal={esPantallaPrincipal}
+                  esLista={esLista}
+                  esVentilacionGrupoEdit={esVentilacionGrupoEdit}
+                  esTablaCompleja={esTablaCompleja}
+                  actual={actual}
+                  textoConcatenadoMap={textoConcatenadoMap}
+                  onNavegar={navegarA}
+                  onRefrescarPantalla={refrescarPantallaActual}
                   className={`flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-[${COLORES.lastBackground}] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]`}
                   style={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}
-                >
-                  {esPantallaPrincipal ? (
-                    <div className="flex-1 flex items-center justify-center">
-                      <p className="text-white text-5xl">Pantalla principal</p>
-                    </div>
-                  ) : (
-                    <>
-                      {/* Bloques de líneas — cada grupo separado por objLineaGrafica (tipo 20) va en su propio contenedor */}
-                      {gruposLineas.length > 0 && (
-                        <>
-                          {gruposLineas.map((grupo, gi) => (
-                            <div
-                              key={gi}
-                              className="rounded-2xl mb-4"
-                              style={{ backgroundColor: COLORES.tertiary }}
-                            >
-                              {grupo.map((obj, i) => (
-                                <RenderObjeto
-                                  key={i}
-                                  obj={obj}
-                                  onNavegar={navegarA}
-                                  onRefrescarPantalla={refrescarPantallaActual}
-                                  idPantallaActual={actual.idPantalla}
-                                  indicePantallaActual={actual.indicePantalla}
-                                  textoConcatenados={textoConcatenadoMap}
-                                />
-                              ))}
-                            </div>
-                          ))}
-                        </>
-                      )}
-
-                      {/* Tablas estáticas (objTablaConfig+objTablaDatosSinEdicion) — edge-to-edge */}
-                      {tablasEstaticas.length > 0 && (
-                        <div className="-mx-4 -mt-4">
-                          {tablasEstaticas.map((tabla, ti) => (
-                            <ObjTablaDatosSinEdicion
-                              key={ti}
-                              config={parseConfigTabla(tabla.config)}
-                              datos={tabla.datos}
-                            />
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Tablas dinámicas — edge-to-edge, sin esquinas ni margen lateral */}
-                      {tablasGrupos.length > 0 && (
-                        <div className="-mx-4 -mt-4">
-                          {tablasGrupos.map((tabla, ti) => (
-                            <ObjTablaDinamica
-                              key={ti}
-                              init={tabla.init}
-                              filas={tabla.filas}
-                              onNavegar={navegarA}
-                              smallFontSize={esTablaCompleja}
-                            />
-                          ))}
-                        </div>
-                      )}
-
-                      {/* Otros objetos (grid o lista) */}
-                      {otrosObjetos.length > 0 && (
-                        <>
-                          {esLista || esVentilacionGrupoEdit ? (
-                            <div className="flex flex-col">
-                              {otrosObjetos.map((obj, i) => (
-                                <RenderObjeto
-                                  key={i}
-                                  obj={obj}
-                                  onNavegar={navegarA}
-                                  onRefrescarPantalla={refrescarPantallaActual}
-                                  idPantallaActual={actual.idPantalla}
-                                  indicePantallaActual={actual.indicePantalla}
-                                  esLista
-                                />
-                              ))}
-                            </div>
-                          ) : (
-                            <div className="grid grid-cols-7 gap-2 p-2">
-                              {otrosObjetos.map((obj, i) => (
-                                <RenderObjeto
-                                  key={i}
-                                  obj={obj}
-                                  onNavegar={navegarA}
-                                  onRefrescarPantalla={refrescarPantallaActual}
-                                  idPantallaActual={actual.idPantalla}
-                                  indicePantallaActual={actual.indicePantalla}
-                                  textoConcatenados={textoConcatenadoMap}
-                                />
-                              ))}
-                            </div>
-                          )}
-                        </>
-                      )}
-                    </>
-                  )}
-                </div>
+                />
               )}
 
-              {/* Footer: botón de información — aparece si hay objLineaInfoTextText (tipo 7) */}
-              {infoObjetos.length > 0 && (
-                <div
-                  className="flex justify-center shrink-0 py-2"
-                  style={{ backgroundColor: COLORES.lastBackground }}
-                >
-                  <button
-                    className="flex items-center gap-2 px-8 rounded-xl font-medium"
-                    style={{ backgroundColor: COLORES.primary }}
-                    onClick={() => setInfoDialogAbierto(true)}
-                  >
-                    <LuInfo
-                      size={62}
-                      color={COLORES.light}
-                    />
-                  </button>
-                </div>
-              )}
+              <FooterInfoButton
+                visible={infoObjetos.length > 0}
+                onClick={() => setInfoDialogAbierto(true)}
+              />
             </>
           )}
 
-          {/* ── Dialog de información (objLineaInfoTextText) ── */}
-          {infoDialogAbierto && infoObjetos.length > 0 && (
-            <div
-              className="absolute inset-0 flex flex-col"
-              style={{ backgroundColor: COLORES.lastBackground }}
-            >
-              {/* Header del dialog */}
-              <div
-                className="flex items-center px-3 py-3 shrink-0"
-                style={{ backgroundColor: COLORES.info }}
-              >
-                <button
-                  className="p-1 text-white hover:text-gray-200 transition-colors"
-                  aria-label="Cerrar"
-                  onClick={() => setInfoDialogAbierto(false)}
-                >
-                  <LuX size={60} />
-                </button>
-                <span className="flex-1 text-center text-5xl font-normal text-white line-clamp-2 px-2">{titulo}</span>
-                {/* Espaciador simétrico para centrar el título */}
-                <div style={{ width: 56 }} />
-              </div>
-
-              {/* Filas info */}
-              <div
-                className={`flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-[${COLORES.lastBackground}] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]`}
-                style={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}
-              >
-                <div
-                  className="rounded-2xl"
-                  style={{ backgroundColor: COLORES.tertiary }}
-                >
-                  {infoObjetos.map((obj, i) => {
-                    switch (obj.tipoObjeto) {
-                      case 6:
-                        return (
-                          <ObjLineaInfoTextVar
-                            key={i}
-                            obj={obj}
-                            textoConcatenados={textoConcatenadoMap}
-                          />
-                        );
-                      case 19:
-                        return (
-                          <ObjLineaInfoTextTextVarVar
-                            key={i}
-                            obj={obj}
-                            textoConcatenados={textoConcatenadoMap}
-                          />
-                        );
-                      case 7:
-                      default:
-                        return (
-                          <ObjLineaInfoTextText
-                            key={i}
-                            obj={obj}
-                            textoConcatenados={textoConcatenadoMap}
-                          />
-                        );
-                    }
-                  })}
-                </div>
-              </div>
-            </div>
-          )}
+          <DialogInfoPantalla
+            abierto={infoDialogAbierto}
+            titulo={titulo}
+            infoObjetos={infoObjetos}
+            textoConcatenadoMap={textoConcatenadoMap}
+            onClose={() => setInfoDialogAbierto(false)}
+            className="absolute inset-0 flex flex-col"
+            scrollClassName={`flex-1 overflow-y-auto p-4 my-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-track]:bg-[${COLORES.lastBackground}] [&::-webkit-scrollbar-thumb]:rounded-none [&::-webkit-scrollbar-thumb]:bg-[var(--scrollbar-thumb)] [&::-webkit-scrollbar-thumb:hover]:bg-[var(--scrollbar-thumb-hover)]`}
+            scrollStyle={{ '--scrollbar-thumb': COLORES.primary, '--scrollbar-thumb-hover': '#4fa316' } as React.CSSProperties}
+          />
           {loading && hayObjetos && (
             <div className="absolute inset-0 z-[60] flex items-center justify-center bg-black/30">
               <div className="w-12 h-12 border-4 border-green-600 border-t-transparent rounded-full animate-spin" />
