@@ -1,6 +1,6 @@
 import type { JSX } from 'react';
 import { LuInfo } from 'react-icons/lu';
-import { COLORES } from '../render-objetos-cti40plus';
+import { COLORES } from '../render-objetos-st';
 
 interface FooterInfoButtonProps {
   visible: boolean;

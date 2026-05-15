@@ -1,10 +1,11 @@
 import type { CSSProperties, JSX } from 'react';
 import { LuFan } from 'react-icons/lu';
+import type { IconType } from 'react-icons/lib';
 import type { ObjBase, DescriptorPantalla } from '../pantalla-types';
-import { COLORES } from '../render-objetos-cti40plus';
-import ObjVentilacionGrupoGrafico from '../render-objetos-cti40plus/ObjVentilacionGrupoGrafico';
-import ObjVentilacionGrupoGraficoEdit from '../render-objetos-cti40plus/ObjVentilacionGrupoGraficoEdit';
-import { resolveText } from '../render-objetos-cti40plus/textos/resolverTexto';
+import { COLORES } from '../render-objetos-st';
+import ObjVentilacionGrupoGrafico from '../render-objetos-st/ObjVentilacionGrupoGrafico';
+import ObjVentilacionGrupoGraficoEdit from '../render-objetos-st/ObjVentilacionGrupoGraficoEdit';
+import { resolveText } from '../render-objetos-st/textos/resolverTexto';
 
 interface PantallaEdicionVentilacionProps {
   visible: boolean;
@@ -19,7 +20,11 @@ interface PantallaEdicionVentilacionProps {
   onClickVentilador: (idx: number) => void;
   className: string;
   style: CSSProperties;
+  iconoVentiladorRotatorio?: IconType | null;
+  iconoVentiladorTemporizado?: IconType | null;
+  iconoVentiladorEstatico?: IconType | null;
   responsive?: boolean;
+  lang?: string;
 }
 
 export default function PantallaEdicionVentilacion({
@@ -35,7 +40,11 @@ export default function PantallaEdicionVentilacion({
   onClickVentilador,
   className,
   style,
-  responsive
+  iconoVentiladorRotatorio: IconoVentiladorRotatorio,
+  iconoVentiladorTemporizado: IconoVentiladorTemporizado,
+  iconoVentiladorEstatico: IconoVentiladorEstatico,
+  responsive,
+  lang
 }: PantallaEdicionVentilacionProps): JSX.Element | null {
   if (!visible || !objVentilacionEdit) return null;
 
@@ -56,6 +65,7 @@ export default function PantallaEdicionVentilacion({
         onPestanaChange={onPestanaChange}
         onTrash={onTrash}
         responsive={isResponsive}
+        lang={lang}
       />
 
       {objVentilacionGrafico && (
@@ -72,47 +82,59 @@ export default function PantallaEdicionVentilacion({
 
       <div className={legendClassName}>
         <div className={legendItemClassName}>
-          <LuFan
-            size={iconSize}
-            color={COLORES.success}
-          />
-          <span
-            className={textClassName}
-            style={{ color: COLORES.light }}
-          >
-            {resolveText(objVentilacionEdit.textoPestana2 as number)}
-          </span>
-        </div>
-        <div className={legendItemClassName}>
-          <span style={{ position: 'relative', display: 'inline-flex', width: iconSize, height: iconSize }}>
+          {IconoVentiladorRotatorio ? (
+            <IconoVentiladorRotatorio size={iconSize} />
+          ) : (
             <LuFan
               size={iconSize}
               color={COLORES.success}
-              style={{ position: 'absolute', clipPath: 'inset(0 50% 0 0)' }}
             />
-            <LuFan
-              size={iconSize}
-              color={COLORES.light}
-              style={{ position: 'absolute', clipPath: 'inset(0 0 0 50%)' }}
-            />
-          </span>
+          )}
           <span
             className={textClassName}
             style={{ color: COLORES.light }}
           >
-            {resolveText(objVentilacionEdit.textoPestana2 as number)}
+            {resolveText(objVentilacionEdit.textoPestana2 as number, lang)}
           </span>
         </div>
         <div className={legendItemClassName}>
-          <LuFan
-            size={iconSize}
-            color={COLORES.menuWords}
-          />
+          {IconoVentiladorTemporizado ? (
+            <IconoVentiladorTemporizado size={iconSize} />
+          ) : (
+            <span style={{ position: 'relative', display: 'inline-flex', width: iconSize, height: iconSize }}>
+              <LuFan
+                size={iconSize}
+                color={COLORES.success}
+                style={{ position: 'absolute', clipPath: 'inset(0 50% 0 0)' }}
+              />
+              <LuFan
+                size={iconSize}
+                color={COLORES.light}
+                style={{ position: 'absolute', clipPath: 'inset(0 0 0 50%)' }}
+              />
+            </span>
+          )}
           <span
             className={textClassName}
             style={{ color: COLORES.light }}
           >
-            {resolveText(objVentilacionEdit.textoPestana1 as number)}
+            {resolveText(objVentilacionEdit.textoPestana2 as number, lang)}
+          </span>
+        </div>
+        <div className={legendItemClassName}>
+          {IconoVentiladorEstatico ? (
+            <IconoVentiladorEstatico size={iconSize} />
+          ) : (
+            <LuFan
+              size={iconSize}
+              color={COLORES.menuWords}
+            />
+          )}
+          <span
+            className={textClassName}
+            style={{ color: COLORES.light }}
+          >
+            {resolveText(objVentilacionEdit.textoPestana1 as number, lang)}
           </span>
         </div>
       </div>

@@ -2,9 +2,9 @@ import type { CSSProperties, JSX } from 'react';
 import { EnTextos } from '@/src/utils/common-lib-commac-generador/enumTextos';
 import type { DerivadosCti40Plus } from '../../cti40plus/fnCti40Plus';
 import type { DescriptorPantalla } from '../pantalla-types';
-import { COLORES, ObjTablaDinamica, RenderObjeto } from '../render-objetos-cti40plus';
-import ObjTablaDatosSinEdicion from '../render-objetos-cti40plus/ObjTablaDatosSinEdicion';
-import { parseConfigTabla } from '../render-objetos-cti40plus/ObjTablaConfig';
+import { COLORES, ObjTablaDinamica, RenderObjeto } from '../render-objetos-st';
+import ObjTablaDatosSinEdicion from '../render-objetos-st/ObjTablaDatosSinEdicion';
+import { parseConfigTabla } from '../render-objetos-st/ObjTablaConfig';
 
 interface ContenidoObjetosPantallaProps {
   gruposLineas: DerivadosCti40Plus['gruposLineas'];

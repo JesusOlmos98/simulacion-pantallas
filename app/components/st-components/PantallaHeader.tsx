@@ -3,9 +3,9 @@ import { LuCheck, LuChevronLeft, LuMenu, LuX } from 'react-icons/lu';
 import { EnTextos } from '@/src/utils/common-lib-commac-generador/enumTextos';
 import type { DerivadosCti40Plus } from '../../cti40plus/fnCti40Plus';
 import type { DescriptorPantalla, ObjBase } from '../pantalla-types';
-import { COLORES, resolverIconoCTI40Plus } from '../render-objetos-cti40plus';
-import ObjEncabezadoEditIcono from '../render-objetos-cti40plus/ObjEncabezadoEditIcono';
-import { resolveText } from '../render-objetos-cti40plus/textos/resolverTexto';
+import { COLORES, resolverIconoCTI40Plus } from '../render-objetos-st';
+import ObjEncabezadoEditIcono from '../render-objetos-st/ObjEncabezadoEditIcono';
+import { resolveText } from '../render-objetos-st/textos/resolverTexto';
 
 interface PantallaHeaderProps {
   actual: DescriptorPantalla;

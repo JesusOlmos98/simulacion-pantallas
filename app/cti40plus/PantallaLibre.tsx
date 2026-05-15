@@ -2,11 +2,11 @@
 
 import type { JSX } from 'react';
 import type { ObjBase, DescriptorPantalla } from '../components/pantalla-types';
-import ObjPosXyLibreIcon from '../components/render-objetos-cti40plus/ObjPosXyLibreIcon';
-import ObjPosXyLibreTexto from '../components/render-objetos-cti40plus/ObjPosXyLibreTexto';
-import ObjPosXyLibreVariable from '../components/render-objetos-cti40plus/ObjPosXyLibreVariable';
-import ObjPosXyLibreLineas from '../components/render-objetos-cti40plus/ObjPosXyLibreLineas';
-import { COLORES, parseConcatenado } from '../components/render-objetos-cti40plus';
+import ObjPosXyLibreIcon from '../components/render-objetos-st/ObjPosXyLibreIcon';
+import ObjPosXyLibreTexto from '../components/render-objetos-st/ObjPosXyLibreTexto';
+import ObjPosXyLibreVariable from '../components/render-objetos-st/ObjPosXyLibreVariable';
+import ObjPosXyLibreLineas from '../components/render-objetos-st/ObjPosXyLibreLineas';
+import { COLORES, parseConcatenado } from '../components/render-objetos-st';
 
 interface Props {
   objetos: ObjBase[];

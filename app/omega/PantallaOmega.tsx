@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import type { JSX } from 'react';
 import { useRouter } from 'next/navigation';
-import { resolveText } from '../components/render-objetos-cti40plus/textos/resolverTexto';
+import { resolveText } from '../components/render-objetos-st/textos/resolverTexto';
 import { COLORES, RenderObjeto, Divider } from '../components/render-objetos-omega';
 import type { DescriptorPantalla, ObjBase } from '../components/pantalla-types';
 

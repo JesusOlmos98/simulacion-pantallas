@@ -6,7 +6,7 @@ import type { JSX } from 'react';
 import type { IconType } from 'react-icons/lib';
 import { COLORES } from './colors';
 import { resolverIcono } from './iconos-omega';
-import { resolveText } from '../render-objetos-cti40plus/textos/resolverTexto';
+import { resolveText } from '../render-objetos-st/textos/resolverTexto';
 import { decodificarVariable, resolverUnidad } from './pantalla-utils';
 import { navegarSimple, ChevronRight } from './RenderHelpers';
 

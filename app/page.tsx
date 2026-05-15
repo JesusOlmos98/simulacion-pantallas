@@ -2,7 +2,7 @@ import type { JSX } from 'react';
 import MacInputForm from './components/MacInputForm';
 import PantallaCti40Plus from './cti40plus/PantallaCti40Plus';
 import PantallaTc5 from './tc5/PantallaTc5';
-import { resolveText } from './components/render-objetos-cti40plus/textos/resolverTexto';
+import { resolveText } from './components/render-objetos-st/textos/resolverTexto';
 import { getBrowserLang } from '../server/getBrowserLang';
 import { EnTipoEquipo } from '@/src/utils/common-lib-commac-generador/enumGlobales';
 import { EnTextos } from '@/src/utils/common-lib-commac-generador/enumTextos';

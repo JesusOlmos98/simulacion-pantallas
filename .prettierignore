@@ -1,3 +1,3 @@
 # Ignore common-lib-commac-generador directory 
 # src/utils/common-lib-commac-generador # No hace falta ignorarlo porque el prettier solo formatea los ficheros .ts y .tsx dentro de app/
-app/components/render-objetos-cti40plus/textos
+app/components/render-objetos-st/textos

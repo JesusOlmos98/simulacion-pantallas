@@ -1,8 +1,8 @@
 import type { CSSProperties, JSX } from 'react';
 import { LuX } from 'react-icons/lu';
 import type { ObjBase } from '../pantalla-types';
-import { COLORES, ObjLineaInfoTextTextVarVar, ObjLineaInfoTextVar } from '../render-objetos-cti40plus';
-import ObjLineaInfoTextText from '../render-objetos-cti40plus/ObjLineaInfoTextText';
+import { COLORES, ObjLineaInfoTextTextVarVar, ObjLineaInfoTextVar } from '../render-objetos-st';
+import ObjLineaInfoTextText from '../render-objetos-st/ObjLineaInfoTextText';
 
 interface DialogInfoPantallaProps {
   abierto: boolean;

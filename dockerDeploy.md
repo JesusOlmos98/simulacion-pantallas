@@ -13,7 +13,7 @@ http://37.187.180.179:8080/api
 En PowerShell, desde la raiz del proyecto:
 
 ```powershell
-$VERSION = "0.0.7"
+$VERSION = "0.0.8"
 $IMAGEN_REMOTA = "cticontrol/simulacion-pantallas:$VERSION"
 
 # Verificacion local opcional antes de construir
@@ -34,12 +34,23 @@ docker push "$IMAGEN_REMOTA"
 En Linux:
 
 ```bash
-VERSION="0.0.7"
+VERSION="0.0.8"
 IMAGEN_REMOTA="cticontrol/simulacion-pantallas:$VERSION"
 
 docker pull "$IMAGEN_REMOTA"
 
 docker rm -f simulacion-pantallas-app
+
+# PARA PEDIR ENDPOINT A CORE (Con límite estricto de logs a 2MB)
+docker run -d \
+  --name simulacion-pantallas-app \
+  --network portal-net \
+  -p 3005:3005 \
+  -e NEXT_PUBLIC_COMMAC_BASE_URL=http://backportal-1:8022/api \
+  --log-driver json-file \
+  --log-opt max-size=2m \
+  --log-opt max-file=1 \
+  "$IMAGEN_REMOTA"
 
 # PARA PEDIR ENDPOINT A CORE
 docker run -d \

@@ -1,9 +1,9 @@
 import { EnTextos } from '@/src/utils/common-lib-commac-generador/enumTextos';
 import { esTipoVarTiempoFecha, maskMinMaxTiempoFecha, parseTiempoFechaString } from '@/src/utils/common-lib-commac-generador/fnTiempo';
 import { apiFetch } from '../api/apiFetch';
-import { COLORES, decodificarStringVariable, decodificarVariable, parseConcatenado } from '../components/render-objetos-cti40plus';
-import { getColorHex } from '../components/render-objetos-cti40plus/colors';
-import { resolveText } from '../components/render-objetos-cti40plus/textos/resolverTexto';
+import { COLORES, decodificarStringVariable, decodificarVariable, parseConcatenado } from '../components/render-objetos-st';
+import { getColorHex } from '../components/render-objetos-st/colors';
+import { resolveText } from '../components/render-objetos-st/textos/resolverTexto';
 import type { DescriptorPantalla, ObjBase } from '../components/pantalla-types';
 import { nextIdEnvio } from './fnCti40PlusEnvio';
 export { buildEscribirVariableParams, buildEscribirVariableStringParams, buildGuardarVentiladoresParams } from './fnCti40PlusEscritura';

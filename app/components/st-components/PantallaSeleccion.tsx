@@ -1,6 +1,6 @@
 import type { CSSProperties, Dispatch, JSX, SetStateAction } from 'react';
 import type { ObjBase } from '../pantalla-types';
-import ObjCamposMultiseleccion from '../render-objetos-cti40plus/ObjCamposMultiseleccion';
+import ObjCamposMultiseleccion from '../render-objetos-st/ObjCamposMultiseleccion';
 
 interface PantallaSeleccionProps {
   visible: boolean;
